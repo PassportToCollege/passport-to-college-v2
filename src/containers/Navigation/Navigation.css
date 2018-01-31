@@ -1,0 +1,84 @@
+.navigation {
+  width: 1350px;
+  max-width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Navigation Logo */
+.navigation .navigation__logo_container {
+  width: 140px;
+  max-width: 100%;
+}
+
+.navigation .navigation__logo_container > a > img {
+  max-width: 100%;
+}
+
+/* Navigation Items */
+.navigation .navigation__nav_container > ul {
+  display: flex;
+  flex-direction: row;
+}
+
+.navigation .navigation__nav_container > ul > li > a {
+  font-weight: bold;
+  line-height: normal;
+  font-size: 16px;
+  color: #FFFFFF;
+  padding: 30px;
+  position: relative;
+}
+
+.navigation .navigation__nav_container>ul>li>a.active:after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 50px;
+  height: 3px;
+  background-color: white;
+  left: 0;
+  right: 0;
+  bottom: 20px;
+  margin: auto;
+}
+
+.navigation .navigation__nav_container>ul>li>a:after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 0;
+  height: 3px;
+  background-color: white;
+  left: 0;
+  right: 0;
+  bottom: 20px;
+  margin: auto;
+  transition: width 250ms linear 100ms;
+}
+
+.navigation .navigation__nav_container>ul>li>a:hover:after {
+  width: 50px;
+}
+
+/* Hamburger Menu */
+.navigation .navigation__hamburger {
+  cursor: pointer;
+}
+
+.navigation .navigation__hamburger .toggle {
+  display: block;
+  width: 18px;
+  height: 3px;
+  background-color: white;
+  margin-bottom: 3px;
+}
+
+.navigation .navigation__hamburger .toggle__bottom {
+  margin-bottom: 0;
+  width: 9px;
+}
+

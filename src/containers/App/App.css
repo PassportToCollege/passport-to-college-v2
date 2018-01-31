@@ -1,0 +1,27 @@
+ul {
+  padding: 0;
+  margin: 0;
+}
+
+ul > li {
+  list-style-type: none;
+}
+
+a,
+a:visited,
+a:focus {
+  color: inherit;
+  text-decoration: none;
+}
+
+.app {
+  width: 100%;
+  height: 100%;
+}
+
+.app__main {
+  width: 100%;
+  min-height: 100%;
+  background-color: #53D1D7;
+  padding: 47px;
+}

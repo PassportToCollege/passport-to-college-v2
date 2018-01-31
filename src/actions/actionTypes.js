@@ -1,0 +1,2 @@
+export const OPEN_HAMBURGER = "OPEN_HAMBURGER";
+export const CLOSE_HAMBURGER = "CLOSE_HAMBURGER";
