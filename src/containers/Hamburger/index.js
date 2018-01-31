@@ -76,7 +76,6 @@ Hamburger.propTypes = {
 };
 
 const mapStateToProps = state => {
-  console.log(state)
   return {
     hamburgerState: state.hamburgerState
   };

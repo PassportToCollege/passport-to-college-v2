@@ -35,3 +35,59 @@ a:focus {
 .app__main[data-hamburger="open"] {
   transform: scale(0.75);
 }
+
+/* Forms */
+.form__input_container {
+  display: block;
+  margin: 1em 0;
+  padding: 2em 3.5em;
+  position: relative;
+}
+
+.form__input_container > label {
+  display: block;
+  position: absolute;
+  font-weight: 500;
+  font-size: 1em;
+  color: rgba(51, 51, 51, 0.5);
+  transition: transform 100ms linear;
+  transform: translate(1em, -1.5em);
+  text-transform: uppercase;
+}
+
+.form__input_container > input[type] {
+  display: block;
+  width: 100%;
+  background: transparent;
+  outline: none;
+  box-shadow: none;
+  border: none;
+  border-bottom: 3px solid rgba(51, 51, 51, 0.5);
+  position: relative;
+  z-index: 99;
+  padding: 1em;
+  font-size: 1.3em;
+  font-weight: 300;
+}
+
+.form__input_container > button[type] {
+  background-color: #53D1D7;
+  outline: none;
+  border: none;
+  padding: 0.85em 2.25em;
+  border-radius: 2em;
+  font-size: 1.25em;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+}
+
+.form__input_container>input[type]:focus,
+.form__input_container>input[type]:valid {
+  border-color: #53D1D7;
+}
+
+.form__input_container > input[type]:focus + label,
+.form__input_container > input[type]:valid + label {
+  transform: translate(1em, -4.5em);
+}

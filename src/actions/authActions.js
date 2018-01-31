@@ -7,3 +7,10 @@ export const doSignIn = (email, password) => {
       return { type: types.SIGN_IN, user }
     });
 }
+
+export const doSignOut = () => {
+  auth.doSignOut()
+    .then(() => {
+      return { type: types.SIGN_OUT, user: null };
+    });
+}

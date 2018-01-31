@@ -2,7 +2,7 @@ import * as firebase from "firebase";
 
 var config = {};
 
-if (process.env.ENVIRONMENT == "production") {
+if (process.env.ENVIRONMENT === "production") {
   config = {
     apiKey: process.env.API_KEY,
     authDomain: process.env.AUTH_DOMAIN,
@@ -27,6 +27,4 @@ if (!firebase.apps.length)
 
 const auth = firebase.auth();
 
-export default {
-  auth
-};
+export default auth;
