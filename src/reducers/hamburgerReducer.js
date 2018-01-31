@@ -1,19 +1,16 @@
 import initialState from "./initialState";
 import { OPEN_HAMBURGER, CLOSE_HAMBURGER } from "../actions/actionTypes";
 
-const hamburgerOpen = (state = initialState.hamburgerOpen, action) => {
-  let newState;
-
+const hamburgerState = (state = initialState.hamburgerState, action) => {
   switch(action.type) {
     case OPEN_HAMBURGER:
-      newState = action.hamburgerOpen;
-      return newState;
     case CLOSE_HAMBURGER:
-      newState = action.hamburgerOpen;
-      return newState;
+      return Object.assign({}, { previousHamburgerState: state }, {
+        hamburgerState: action.hamburgerState
+      });
     default:
       return state;
   }
 }
 
-export default hamburgerOpen;
+export default hamburgerState;

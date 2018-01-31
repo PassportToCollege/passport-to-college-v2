@@ -5,6 +5,7 @@ import { bindActionCreators } from "redux";
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 import feather from "feather-icons";
+import propTypes from "prop-types";
 
 import * as hamburgerActions from "../../actions/hamburgerActions";
 import * as routes from "../../constants/routes";
@@ -19,13 +20,9 @@ const mainNavItems = [
 ]
 
 class Hamburger extends Component {
-  componentWillMount() {
-    this.props.hamburgerActions.closeHamburger();
-  }
-
   render() {
     return (
-      <div className="hamburger" data-active={this.props.hamburgerOpen ? "yes" : "no"}>
+      <div className="hamburger" data-active={this.props.hamburgerState.hamburgerState}>
         <div className="hamburger__close_space"
           onClick={this.handleCloseButtonClick}>
         </div>
@@ -40,7 +37,11 @@ class Hamburger extends Component {
               {mainNavItems.map((v, i) => {
                 return (
                   <li>
-                    <NavLink exact to={v.route} activeClassName="active" onClick={this.handleCloseButtonClick}>
+                    <NavLink
+                      key={v.route} 
+                      exact to={v.route} 
+                      activeClassName="active" 
+                      onClick={this.handleCloseButtonClick}>
                       {v.name}
                     </NavLink>
                   </li>
@@ -50,8 +51,8 @@ class Hamburger extends Component {
           </div>
           <div className="hamburger__other_nav">
             <ul>
-              <li><NavLink to={routes.APPLY}>Apply</NavLink></li>
-              <li><NavLink to={routes.LOGIN}>Login</NavLink></li>
+              <li><NavLink to={routes.APPLY.route} onClick={this.handleCloseButtonClick}>{routes.APPLY.name}</NavLink></li>
+              <li><NavLink to={routes.LOGIN.route} onClick={this.handleCloseButtonClick}>{routes.LOGIN.name}</NavLink></li>
             </ul>
           </div>
         </div>
@@ -69,9 +70,15 @@ class Hamburger extends Component {
   }
 }
 
+Hamburger.propTypes = {
+  hamburgerActions: propTypes.object,
+  hamburgerState: propTypes.string
+};
+
 const mapStateToProps = state => {
+  console.log(state)
   return {
-    hamburgerOpen: state.hamburgerOpen
+    hamburgerState: state.hamburgerState
   };
 }
 

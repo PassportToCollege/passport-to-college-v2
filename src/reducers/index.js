@@ -1,9 +1,9 @@
 import { combineReducers } from "redux";
 
-import hamburgerOpen from "./hamburgerReducer";
+import hamburgerState from "./hamburgerReducer";
 
 const rootReducer = combineReducers({
-  hamburgerOpen
+  hamburgerState
 });
 
 export default rootReducer;

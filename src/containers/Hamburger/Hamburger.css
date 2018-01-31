@@ -7,12 +7,12 @@
   background-color: rgba(51,51,51,0.45);
 }
 
-.hamburger[data-active="no"] {
+.hamburger[data-active="closed"] {
   transition: z-index 200ms linear 200ms;
   z-index: 0;
 }
 
-.hamburger[data-active="yes"] {
+.hamburger[data-active="open"] {
   z-index: 9999;
   transition: z-index linear 200ms;
 }
@@ -38,12 +38,12 @@
   justify-content: space-around;
 }
 
-.hamburger[data-active="no"] .hamburger__navs {
+.hamburger[data-active="closed"] .hamburger__navs {
   transition: transform 200ms linear;  
   transform: translateX(400px);
 }
 
-.hamburger[data-active="yes"] .hamburger__navs {
+.hamburger[data-active="open"] .hamburger__navs {
   transition: transform 200ms linear 200ms;
   transform: translateX(0);
 }

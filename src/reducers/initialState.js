@@ -1,3 +1,4 @@
 export default {
-  hamburgerOpen : true
+  hamburgerState: "closed",
+  user: null
 }

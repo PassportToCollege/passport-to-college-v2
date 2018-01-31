@@ -5,6 +5,7 @@ import { NavLink, Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { withRouter } from "react-router-dom";
+import propTypes from "prop-types";
 
 import * as routes from "../../constants/routes";
 import * as hamburgerActions from "../../actions/hamburgerActions";
@@ -33,7 +34,11 @@ class Navigation extends Component {
             {mainNavItems.map((v, i) => {
               return (
                 <li>
-                  <NavLink exact to={v.route} activeClassName="active" onClick={this.handleCloseButtonClick}>
+                  <NavLink
+                    key={v.route}
+                    exact to={v.route}
+                    activeClassName="active"
+                    onClick={this.handleCloseButtonClick}>
                     {v.name}
                   </NavLink>
                 </li>
@@ -56,6 +61,11 @@ class Navigation extends Component {
     this.props.hamburgerActions.openHamburger();
     this.props.updateHamburgerState("open");
   }
+};
+
+Navigation.propTypes = {
+  hamburgerActions: propTypes.object,
+  hamburgerState: propTypes.string
 };
 
 const mapStateToProps = state => {
