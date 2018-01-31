@@ -4,16 +4,25 @@
   height: 100%;
   left: 0;
   top: 0;
-  z-index: 9999;
   background-color: rgba(51,51,51,0.45);
 }
 
 .hamburger[data-active="no"] {
-  display: none;
+  transition: z-index 200ms linear 200ms;
+  z-index: 0;
 }
 
 .hamburger[data-active="yes"] {
-  display: block;
+  z-index: 9999;
+  transition: z-index linear 200ms;
+}
+
+.hamburger .hamburger__close_space {
+  position: absolute;
+  width: calc(100% - 400px);
+  height: 100%;
+  left: 0;
+  top: 0;
 }
 
 .hamburger .hamburger__navs {
@@ -29,6 +38,16 @@
   justify-content: space-around;
 }
 
+.hamburger[data-active="no"] .hamburger__navs {
+  transition: transform 200ms linear;  
+  transform: translateX(400px);
+}
+
+.hamburger[data-active="yes"] .hamburger__navs {
+  transition: transform 200ms linear 200ms;
+  transform: translateX(0);
+}
+
 /* Close Button */
 .hamburger .hamburger__close_button {
   cursor: pointer;
@@ -38,6 +57,7 @@
   display: flex;
   align-items: center;
   right: 0;
+  top: 0;
   z-index: 9999;
 }
 

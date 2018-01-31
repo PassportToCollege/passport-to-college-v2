@@ -31,13 +31,18 @@ class Navigation extends Component {
         </nav>
         <div 
           className="navigation__hamburger"
-          onClick={() => this.props.hamburgerActions.openHamburger()}>
+          onClick={this.handleHamburgerOpenClick}>
           <span className="toggle toggle__top"></span>
           <span className="toggle toggle__middle"></span>
           <span className="toggle toggle__bottom"></span>
         </div>
       </div>
     );
+  }
+
+  handleHamburgerOpenClick = () => {
+    this.props.hamburgerActions.openHamburger();
+    this.props.updateHamburgerState("open");
   }
 };
 

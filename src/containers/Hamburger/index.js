@@ -21,12 +21,15 @@ class Hamburger extends Component {
   render() {
     return (
       <div className="hamburger" data-active={this.props.hamburgerOpen ? "yes" : "no"}>
-        <div 
-          className="hamburger__close_button" 
-          onClick={() => this.props.hamburgerActions.closeHamburger()}>
-          <i data-feather="x" width="18" height="18"></i>
+        <div className="hamburger__close_space"
+          onClick={this.handleCloseButtonClick}>
         </div>
         <div className="hamburger__navs">
+          <div
+            className="hamburger__close_button"
+            onClick={this.handleCloseButtonClick}>
+            <i data-feather="x" width="18" height="18"></i>
+          </div>
           <div className="hamburger__main_nav">
             <ul>
               <li><NavLink exact to={routes.LANDING} activeClassName="active">Home</NavLink></li>
@@ -50,6 +53,11 @@ class Hamburger extends Component {
 
   componentDidMount() {
     feather.replace();
+  }
+
+  handleCloseButtonClick = () => {
+    this.props.hamburgerActions.closeHamburger();
+    this.props.updateHamburgerState("closed");
   }
 }
 

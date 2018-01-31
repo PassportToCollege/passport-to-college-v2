@@ -24,4 +24,14 @@ a:focus {
   min-height: 100%;
   background-color: #53D1D7;
   padding: 47px;
+  overflow: hidden;
+  transition: transform 250ms linear 100ms;
+}
+
+.app__main[data-hamburger="closed"] {
+  transform: scale(1); 
+}
+
+.app__main[data-hamburger="open"] {
+  transform: scale(0.75);
 }
