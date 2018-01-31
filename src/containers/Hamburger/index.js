@@ -9,12 +9,17 @@ import feather from "feather-icons";
 import * as hamburgerActions from "../../actions/hamburgerActions";
 import * as routes from "../../constants/routes";
 
+const mainNavItems = [
+  routes.LANDING,
+  routes.ABOUT_US,
+  routes.SCHOLARS,
+  routes.EVENTS,
+  routes.STORIES,
+  routes.CONTACT_US
+]
+
 class Hamburger extends Component {
   componentWillMount() {
-    this.props.hamburgerActions.closeHamburger();
-  }
-
-  componentWillUnmount() {
     this.props.hamburgerActions.closeHamburger();
   }
 
@@ -32,12 +37,15 @@ class Hamburger extends Component {
           </div>
           <div className="hamburger__main_nav">
             <ul>
-              <li><NavLink exact to={routes.LANDING} activeClassName="active">Home</NavLink></li>
-              <li><NavLink to={routes.ABOUT_US} activeClassName="active">About Us</NavLink></li>
-              <li><NavLink to={routes.SCHOLARS} activeClassName="active">Scholars</NavLink></li>
-              <li><NavLink to={routes.EVENTS} activeClassName="active">Events</NavLink></li>
-              <li><NavLink to={routes.STORIES} activeClassName="active">Stories</NavLink></li>
-              <li><NavLink to={routes.CONTACT_US} activeClassName="active">Contact Us</NavLink></li>
+              {mainNavItems.map((v, i) => {
+                return (
+                  <li>
+                    <NavLink exact to={v.route} activeClassName="active" onClick={this.handleCloseButtonClick}>
+                      {v.name}
+                    </NavLink>
+                  </li>
+                )
+              })}
             </ul>
           </div>
           <div className="hamburger__other_nav">
