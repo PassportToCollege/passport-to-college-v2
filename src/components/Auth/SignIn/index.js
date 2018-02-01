@@ -36,6 +36,10 @@ class SignIn extends Component {
     )
   }
 
+  componentWillMount() {
+    this.props.updateLocation("sign-in");
+  }
+
   updateEmail = (e) => { this.setState({ email: e.target.value }); }
   updatePassword = (e) => { this.setState({ password: e.target.value }); }
 

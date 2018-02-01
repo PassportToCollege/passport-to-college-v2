@@ -9,6 +9,7 @@ import propTypes from "prop-types";
 
 import * as hamburgerActions from "../../actions/hamburgerActions";
 import * as routes from "../../constants/routes";
+import { isAuthorized } from "../../utils";
 
 const mainNavItems = [
   routes.LANDING,
@@ -51,7 +52,7 @@ class Hamburger extends Component {
           <div className="hamburger__other_nav">
             <ul>
               <li><NavLink to={routes.APPLY.route} onClick={this.handleCloseButtonClick}>{routes.APPLY.name}</NavLink></li>
-              <li><NavLink to={routes.SIGN_IN.route} onClick={this.handleCloseButtonClick}>{routes.SIGN_IN.name}</NavLink></li>
+              {this.selectAuthLink()}
             </ul>
           </div>
         </div>
@@ -61,6 +62,14 @@ class Hamburger extends Component {
 
   componentDidMount() {
     feather.replace();
+  }
+
+  selectAuthLink() {
+    if (isAuthorized()) {
+      return <li><NavLink to={routes.SIGN_OUT.route} onClick={this.handleCloseButtonClick}>{routes.SIGN_OUT.name}</NavLink></li>
+    }
+
+    return <li><NavLink to={routes.SIGN_IN.route} onClick={this.handleCloseButtonClick}>{routes.SIGN_IN.name}</NavLink></li>
   }
 
   handleCloseButtonClick = () => {

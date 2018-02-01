@@ -71,7 +71,7 @@ a:focus {
 }
 
 .form__input_container > button[type] {
-  background-color: #53D1D7;
+  background-color: #FF6561;
   outline: none;
   border: none;
   padding: 0.85em 2.25em;
@@ -84,7 +84,7 @@ a:focus {
 
 .form__input_container>input[type]:focus,
 .form__input_container>input[type]:valid {
-  border-color: #53D1D7;
+  border-color: #FF6561;
 }
 
 .form__input_container > input[type]:focus + label,

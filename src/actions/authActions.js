@@ -1,5 +1,10 @@
 import * as types from "./actionTypes";
 import * as firebase from "firebase";
+import Cookies from "universal-cookie";
+
+import history from "../constants/history";
+
+const cookies = new Cookies();
 
 var config = {};
 
@@ -56,7 +61,14 @@ export const doSignIn = (email, password) => {
 
     auth.signInWithEmailAndPassword(email, password)
       .then(user => {
+        // set cookie
+        cookies.set("ssid", user, { path: "/" });
+
         dispatch(signInDone(user));
+
+        // redirect to homepage
+        // TODO: Redirect based on role
+        history.push("/");
       })
       .catch(error => {
         dispatch(signInFailed(error));

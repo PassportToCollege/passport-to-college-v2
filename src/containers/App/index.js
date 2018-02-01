@@ -1,8 +1,9 @@
 import './App.css';
 
 import React, { Component } from 'react';
-import { Route, BrowserRouter as Router } from "react-router-dom";
+import { Route, Router } from "react-router-dom";
 
+import history from "../../constants/history";
 import * as routes from "../../constants/routes";
 
 import Hamburger from "../Hamburger";
@@ -22,24 +23,29 @@ class App extends Component {
     }
 
      render() {
+        let main_bg = {};
+        if(this.state.location === "sign-in")
+            main_bg.backgroundColor = "#FF6561";
+
         return (
-            <Router {...this.props}>
+            <Router history={history}>
                 <div className="app">
                     <Hamburger updateHamburgerState={ newState => { this.setState({ hamburgerState: newState }) } }/>
-                    <div className="app__main" data-hamburger={this.state.hamburgerState}>
+                    <div 
+                        className="app__main" 
+                        data-hamburger={this.state.hamburgerState}
+                        style={main_bg}>
                         <Navigation updateHamburgerState={newState => { this.setState({ hamburgerState: newState }) }} />
                         <Route 
                             exact 
                             path={routes.LANDING.route} 
-                            component={Home} 
-                            updateLocation={newLocation => { this.setState({ location: newLocation }) }}>
-                        </Route>
+                            render={props => <Home {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }}/>}
+                        ></Route>
                         <Route 
                             exact 
-                            path={routes.SIGN_IN.route} 
-                            component={SignIn} 
-                            updateLocation={newLocation => { this.setState({ location: newLocation }) }}
-                            ></Route>
+                            path={routes.SIGN_IN.route}
+                            render={props => <SignIn {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }} />}
+                        ></Route>
                     </div>
                 </div>
             </Router>

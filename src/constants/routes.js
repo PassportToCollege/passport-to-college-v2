@@ -1,5 +1,6 @@
 export const LANDING = { name: "Home", route: "/" };
 export const SIGN_IN = { name: "Sign In", route: "/auth/sign-in" };
+export const SIGN_OUT = { name: "Sign Out", route: "/auth/sign-out" };
 export const ABOUT_US = { name: "About Us", route: "/about-us" };
 export const SCHOLARS = { name: "Scholars", route: "/scholars" };
 export const EVENTS = { name: "Events", route: "/events" };

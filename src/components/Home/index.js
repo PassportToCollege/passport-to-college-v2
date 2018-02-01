@@ -10,6 +10,10 @@ class Home extends Component {
       </div>
     )
   }
+
+  componentWillMount() {
+    this.props.updateLocation("landing");
+  }
 }
 
 export default Home;
