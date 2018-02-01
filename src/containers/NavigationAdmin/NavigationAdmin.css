@@ -1,0 +1,72 @@
+nav.dashboard__navigation {
+  background-color: #333;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 220px;
+}
+
+/* Top Container */
+.dashboard__navigation__top {
+  padding: 2em 1em;
+  background-color: #111;
+  text-align: center;
+}
+
+/* Avatar */
+.dashboard__navigation_avatar_container {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  margin: 0 auto 1em;
+  overflow: hidden;
+  background-color: white;
+  color: white;
+}
+
+.dashboard__navigation_avatar_container img {
+  max-width: 64px;
+}
+
+/* Username */
+.dashboard__navigation__top > h3 {
+  text-align: center;
+  color: white;
+  margin-bottom: 0;
+}
+
+/* Edit Profile Link */
+.dashboard__navigation__top > a {
+  color: #FF6561;
+  text-transform: lowercase;
+}
+
+/* Navs */
+.dashboard__navigation_container {
+  padding: 2em 0.5em;
+}
+
+.dashboard__navigation_container hr {
+  margin: 1em 0;
+  border-color: rgba(255,255,255,0.25);
+}
+
+.dashboard__navigation_container > ul > li > a {
+  display: block;
+  padding: 0.85em 0.5em;
+  color: white;
+  text-transform: lowercase;
+  font-weight: bold;
+  font-family: "Nunito", "Roboto", sans-serif;
+}
+
+.dashboard__navigation_container>ul>li>a > span {
+  display: inline-block;
+  margin-left: 1em;
+}
+
+.dashboard__navigation_container > ul > li > a.active,
+.dashboard__navigation_container > ul > li > a:hover {
+  color: #FF6561;
+}

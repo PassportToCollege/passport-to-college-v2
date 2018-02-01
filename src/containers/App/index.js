@@ -17,57 +17,60 @@ import SignIn from "../../components/Auth/SignIn";
 import Dashboard from "../../components/Dashboard/Home";
 
 class App extends Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        this.state = {
-            hamburgerState: "closed",
-            location: "landing"
-        }
+    this.state = {
+      hamburgerState: "closed",
+      location: "landing"
+    }
+  }
+
+  render() {
+    let main_bg = {};
+    if(this.state.location === "sign-in") {
+      main_bg.backgroundColor = "#FF6561";
+    } else if(this.state.location.indexOf("dashboard") > -1) {
+      main_bg.backgroundColor = "#FFF";
     }
 
-     render() {
-        let main_bg = {};
-        if(this.state.location === "sign-in")
-            main_bg.backgroundColor = "#FF6561";
+    return (
+      <Router history={history}>
+        <div className="app">
+          {this.renderHamburger()}
+          <div className="app__main" data-hamburger={this.state.hamburgerState} style={main_bg}>
+            {this.selectNavigation()}
+            <Route exact path={routes.LANDING.route} render={props => this.defaultRouteMiddleware(props, Home)}></Route>
+            <Route exact path={routes.SIGN_IN.route} render={(props) => this.signInMiddleware(props)}></Route>
+            <Route exact path={routes.DASHBOARD.route} render={props => this.defaultRouteMiddleware(props, Dashboard)}></Route>
+          </div>
+        </div>
+      </Router>
+    );
+  }
 
-        return (
-            <Router history={history}>
-                <div className="app">
-                    {this.renderHamburger()}
-                    <div className="app__main" data-hamburger={this.state.hamburgerState} style={main_bg}>
-                        {this.selectNavigation()}
-                        <Route exact path={routes.LANDING.route} render={props => this.defaultRouteMiddleware(props, Home)}></Route>
-                        <Route exact path={routes.SIGN_IN.route} render={(props) => this.signInMiddleware(props)}></Route>
-                        <Route exact path={routes.DASHBOARD.route} render={props => this.defaultRouteMiddleware(props, Dashboard)}></Route>
-                    </div>
-                </div>
-            </Router>
-        );
-    }
+  defaultRouteMiddleware(props, Component) {
+    return <Component {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }} />
+  }
 
-    defaultRouteMiddleware(props, Component) {
-        return <Component {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }} />
-    }
+  signInMiddleware(props) {
+    if(isAuthorized())
+      return <Redirect to="/"/>
 
-    signInMiddleware(props) {
-        if(isAuthorized())
-            return <Redirect to="/"/>
+    return <SignIn {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }} />
+  }
 
-        return <SignIn {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }} />
-    }
+  renderHamburger() {
+    if (this.state.location.indexOf("dashboard") === -1)
+      return <Hamburger updateHamburgerState={newState => { this.setState({ hamburgerState: newState }) }} />
+  }
 
-    renderHamburger() {
-        if (this.state.location.indexOf("dashboard") === -1)
-            return <Hamburger updateHamburgerState={newState => { this.setState({ hamburgerState: newState }) }} />
-    }
-
-    selectNavigation() {
-        if(this.state.location.indexOf("dashboard") > -1)
-            return <NavigationAdmin />
-        
-        return <Navigation updateHamburgerState={newState => { this.setState({ hamburgerState: newState }) }} />
-    }
+  selectNavigation() {
+    if(this.state.location.indexOf("dashboard") > -1)
+      return <NavigationAdmin />
+    
+    return <Navigation updateHamburgerState={newState => { this.setState({ hamburgerState: newState }) }} />
+  }
 }
 
 export default App;
