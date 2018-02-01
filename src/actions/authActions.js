@@ -55,14 +55,36 @@ export const signInFailed = (error) => {
   }
 }
 
+export const signOutInitiated = user => {
+  return {
+    type: types.SIGN_OUT_AUTHORIZING,
+    user
+  }
+}
+
+export const signOutDone = () => {
+  return {
+    type: types.SIGNED_OUT,
+    user: null
+  }
+}
+
+export const signOutFailed = error => {
+  return {
+    type: types.SIGN_OUT_FAILED,
+    error,
+    user: null
+  }
+}
+
 export const doSignIn = (email, password) => {
-  return function(dispatch) {
+  return dispatch => {
     dispatch(signInInitiated());
 
     auth.signInWithEmailAndPassword(email, password)
       .then(user => {
         // set cookie
-        cookies.set("ssid", user, { path: "/" });
+        cookies.set("ssid", user, { path: "/", maxAge: 60*60*24 });
 
         dispatch(signInDone(user));
 
@@ -72,6 +94,26 @@ export const doSignIn = (email, password) => {
       })
       .catch(error => {
         dispatch(signInFailed(error));
+      })
+  }
+}
+
+export const doSignOut = user => {
+  return dispatch => {
+    dispatch(signOutInitiated(user));
+
+    auth.signOut()
+      .then(() => {
+        // destroy cookie
+        cookies.remove("ssid", { path: "/" });
+
+        dispatch(signOutDone());
+
+        // redirect to homepage
+        history.push("/");
+      })
+      .catch(error => {
+        dispatch(signOutFailed(error));
       })
   }
 }

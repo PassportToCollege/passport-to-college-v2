@@ -6,8 +6,10 @@ import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 import feather from "feather-icons";
 import propTypes from "prop-types";
+import Cookies from "universal-cookie";
 
 import * as hamburgerActions from "../../actions/hamburgerActions";
+import * as authActions from "../../actions/authActions";
 import * as routes from "../../constants/routes";
 import { isAuthorized } from "../../utils";
 
@@ -19,6 +21,8 @@ const mainNavItems = [
   routes.STORIES,
   routes.CONTACT_US
 ]
+
+const cookies = new Cookies();
 
 class Hamburger extends Component {
   render() {
@@ -66,7 +70,7 @@ class Hamburger extends Component {
 
   selectAuthLink() {
     if (isAuthorized()) {
-      return <li><NavLink to={routes.SIGN_OUT.route} onClick={this.handleCloseButtonClick}>{routes.SIGN_OUT.name}</NavLink></li>
+      return <li><NavLink to={routes.SIGN_OUT.route} onClick={this.handleSignOutClick}>{routes.SIGN_OUT.name}</NavLink></li>
     }
 
     return <li><NavLink to={routes.SIGN_IN.route} onClick={this.handleCloseButtonClick}>{routes.SIGN_IN.name}</NavLink></li>
@@ -76,22 +80,34 @@ class Hamburger extends Component {
     this.props.hamburgerActions.closeHamburger();
     this.props.updateHamburgerState("closed");
   }
+
+  handleSignOutClick = (e) => {
+    e.preventDefault();
+
+    const user = cookies.get("ssid");
+
+    this.handleCloseButtonClick();
+    this.props.authActions.doSignOut(user);
+  }
 }
 
 Hamburger.propTypes = {
   hamburgerActions: propTypes.object,
-  hamburgerState: propTypes.object
+  hamburgerState: propTypes.object,
+  authActions: propTypes.object
 };
 
 const mapStateToProps = state => {
   return {
-    hamburgerState: state.hamburgerState
+    hamburgerState: state.hamburgerState,
+    auth: state.auth
   };
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    hamburgerActions: bindActionCreators(hamburgerActions, dispatch)
+    hamburgerActions: bindActionCreators(hamburgerActions, dispatch),
+    authActions: bindActionCreators(authActions, dispatch)
   }
 };
 
