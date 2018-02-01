@@ -5,6 +5,8 @@ nav.dashboard__navigation {
   left: 0;
   height: 100%;
   width: 220px;
+  transition: transform 200ms linear;
+  transform: translateX(-220px);
 }
 
 /* Top Container */
@@ -69,4 +71,10 @@ nav.dashboard__navigation {
 .dashboard__navigation_container > ul > li > a.active,
 .dashboard__navigation_container > ul > li > a:hover {
   color: #FF6561;
+}
+
+@media screen and (min-width: 768px) {
+  nav.dashboard__navigation {
+    transform: translateX(0);
+  }
 }

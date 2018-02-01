@@ -6,6 +6,7 @@ import propTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import Cookies from "universal-cookie";
+import { withRouter } from "react-router-dom";
 
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import { faTachometerAlt, faUsers, faHome, faSignOutAlt } from "@fortawesome/fontawesome-free-solid";
@@ -98,7 +99,7 @@ class NavigationAdmin extends Component {
 
       return (
         <li key={v.route}>
-          <NavLink to={v.route} activeClassName="active">
+          <NavLink exact to={v.route} activeClassName="active">
             <FontAwesomeIcon icon={icon} />
             <span>{v.name}</span>
           </NavLink>
@@ -129,7 +130,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(NavigationAdmin);
+)(NavigationAdmin));

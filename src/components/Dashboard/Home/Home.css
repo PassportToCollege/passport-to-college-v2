@@ -1,0 +1,15 @@
+.dashboard__home_container {
+  width: 100%;
+  transition: padding 200ms linear;
+}
+
+.dashboard__container {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+@media screen and (min-width: 768px) {
+  .dashboard__home_container {
+    padding-left: 220px;
+  }
+}
