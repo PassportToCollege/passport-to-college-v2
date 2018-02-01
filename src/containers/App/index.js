@@ -17,6 +17,7 @@ import SignIn from "../../components/Auth/SignIn";
 import Dashboard from "../../components/Dashboard/Home";
 import Applications from "../../components/Dashboard/Applications";
 import Users from "../../components/Dashboard/Users";
+import Profile from "../../components/Dashboard/Profile";
 
 class App extends Component {
   constructor(props) {
@@ -47,6 +48,7 @@ class App extends Component {
             <Route exact path={routes.DASHBOARD.route} render={props => this.defaultRouteMiddleware(props, Dashboard)}></Route>
             <Route exact path={routes.APPLICATIONS.route} render={props => this.defaultRouteMiddleware(props, Applications)}></Route>
             <Route exact path={routes.USERS.route} render={props => this.defaultRouteMiddleware(props, Users)}></Route>
+            <Route exact path={routes.PROFILE.route} render={props => this.defaultRouteMiddleware(props, Profile)}></Route>
           </div>
         </div>
       </Router>

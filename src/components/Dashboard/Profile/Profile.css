@@ -1,0 +1,114 @@
+.profile__container {
+  width: 100%;
+  transition: padding 200ms linear;
+}
+
+.profile__edit_button {
+  color: #333;
+  font-weight: 900;
+  font-family: "Muli", "Nunito", "Roboto", sans-serif;
+  cursor: pointer;
+}
+
+.profile__container .profile__50 {
+  width: 50%;
+  padding: 1em 0.75em;
+}
+
+.profile__container .profile__100 {
+  width: 100%;
+}
+
+.profile__container .profile__edit_header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(51,51,51, 0.2);
+}
+
+.profile__container .profile__edit_header h2 {
+  font-family: "Nunito", "Roboto", sans-serif;
+  font-weight: 400;
+}
+
+/* Header */
+.profile__container .profile__header {
+  width: 100%;
+  background-color: #FF6561;
+  border-bottom: 4em solid #FF443F;
+}
+
+.profile__header .profile__header_body {
+  padding: 47px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+/* Avatar */
+.profile__header_body .profile__avatar {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.profile__header_body .profile__avatar input[type="file"] {
+  opacity: 0;
+  max-width: 0;
+  max-height: 0;
+}
+
+.profile__header_body .profile__avatar .button__avatar_upload {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  color: white;
+  font-weight: bold;
+  text-transform: lowercase;
+  background-color: rgba(51,51,51, 0.85);
+  cursor: pointer;
+}
+
+/* Header Personal Info */
+
+.profile__header_body .profile__header_info {
+  padding: 1em 2.85em;
+}
+
+.profile__header_body .profile__header_info .profile__name {
+  color: white;
+  font-family: "Nunito", "Roboto", sans-serif;
+  font-size: 3em;
+  font-weight: 200;
+}
+
+.profile__header_body .profile__header_info > p {
+  margin-top: 0;
+  color: white;
+  font-family: "Muli", "Nunito", "Roboto", sans-serif;
+}
+
+/* Body */
+.profile__container .profile__body {
+  padding: 3em 2em;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+
+@media screen and (min-width: 768px) {
+  .profile__container {
+    padding-left: 220px;
+  }
+}

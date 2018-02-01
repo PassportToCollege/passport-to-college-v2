@@ -12,4 +12,4 @@ export const APPLY = { name: "Apply", route: "/apply" };
 export const DASHBOARD = { name: "Dashboard", route: "/admin/dashboard" }
 export const USERS = { name: "Users", route: "/admin/dashboard/users" }
 export const APPLICATIONS = { name: "Applications", route: "/admin/dashboard/applications" }
-export const EDIT_PROFILE = { name: "Edit Profile", route: "/admin/dashboard/profile/edit" }
+export const PROFILE = { name: "Profile", route: "/admin/dashboard/profile" }

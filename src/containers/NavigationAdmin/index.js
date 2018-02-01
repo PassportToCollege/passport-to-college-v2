@@ -42,7 +42,7 @@ class NavigationAdmin extends Component {
             <img src={this.props.avatar.url} alt="User Avatar" />
           </div>
           <h3>{this.state.username}</h3>
-          <Link to={routes.EDIT_PROFILE.route}>{routes.EDIT_PROFILE.name}</Link>
+          <Link to={routes.PROFILE.route}>view profile</Link>
         </div>
         <div className="dashboard__navigation_container">
           <ul>
