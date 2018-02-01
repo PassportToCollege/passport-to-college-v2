@@ -37,25 +37,21 @@ class App extends Component {
                         data-hamburger={this.state.hamburgerState}
                         style={main_bg}>
                         <Navigation updateHamburgerState={newState => { this.setState({ hamburgerState: newState }) }} />
-                        <Route 
-                            exact 
-                            path={routes.LANDING.route} 
+                        <Route exact path={routes.LANDING.route} 
                             render={props => <Home {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }}/>}
                         ></Route>
-                        <Route 
-                            exact 
-                            path={routes.SIGN_IN.route}
-                            render={props => {
-                                if(isAuthorized())
-                                    return <Redirect to="/"/>
-
-                                return <SignIn {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }} />
-                            }}
-                        ></Route>
+                        <Route exact path={routes.SIGN_IN.route} render={(props) => this.signInMiddleware(props)}></Route>
                     </div>
                 </div>
             </Router>
         );
+    }
+
+    signInMiddleware(props) {
+        if(isAuthorized())
+            return <Redirect to="/"/>
+
+        return <SignIn {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }} />
     }
 }
 

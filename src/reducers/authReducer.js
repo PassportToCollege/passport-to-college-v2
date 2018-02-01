@@ -5,7 +5,8 @@ import {
   SIGNED_IN,
   SIGN_OUT_AUTHORIZING,
   SIGN_OUT_FAILED,
-  SIGNED_OUT } from "../actions/actionTypes";
+  SIGNED_OUT, 
+  SIGN_IN_GETTING_USER} from "../actions/actionTypes";
 
 const auth = (state = initialState.user, action) => {
   switch(action.type) {
@@ -15,6 +16,12 @@ const auth = (state = initialState.user, action) => {
         isAuthorizing: true,
         hasFailed: false,
         user: action.user
+      });
+    case SIGN_IN_GETTING_USER:
+      return Object.assign({}, state, {
+        isAuthorizing: false,
+        hasFailed: false,
+        user: null
       });
     case SIGNED_IN:
       return Object.assign({}, state, {

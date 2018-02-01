@@ -32,12 +32,20 @@ if (!firebase.apps.length)
   firebase.initializeApp(config);
 
 const auth = firebase.auth();
+const db = firebase.database();
 
 export const signInInitiated = () => {
   return { 
     type: types.SIGN_IN_AUTHORIZING, 
     user: null 
   };
+}
+
+export const gettingSignedInUser = () => {
+  return {
+    type: types.SIGN_IN_GETTING_USER,
+    user: null
+  }
 }
 
 export const signInDone = user => {
@@ -83,14 +91,23 @@ export const doSignIn = (email, password) => {
 
     auth.signInWithEmailAndPassword(email, password)
       .then(user => {
-        // set cookie
-        cookies.set("ssid", user, { path: "/", maxAge: 60*60*24 });
+        dispatch(gettingSignedInUser());
 
-        dispatch(signInDone(user));
+        // get user
+        db.ref(`users/${user.uid}`)
+          .once("value")
+          .then(snapshot => {
+            let user = snapshot.val()
 
-        // redirect to homepage
-        // TODO: Redirect based on role
-        history.push("/");
+            // set cookie
+            cookies.set("ssid", user, { path: "/", maxAge: 60 * 60 * 24 });
+
+            dispatch(signInDone(user));
+
+            // redirect to homepage
+            // TODO: Redirect based on role
+            history.push("/");
+          })
       })
       .catch(error => {
         dispatch(signInFailed(error));
