@@ -11,7 +11,7 @@ import Cookies from "universal-cookie";
 import * as hamburgerActions from "../../actions/hamburgerActions";
 import * as authActions from "../../actions/authActions";
 import * as routes from "../../constants/routes";
-import { isAuthorized } from "../../utils";
+import { isAuthorized, isAdmin } from "../../utils";
 
 const mainNavItems = [
   routes.LANDING,
@@ -70,7 +70,13 @@ class Hamburger extends Component {
 
   selectAuthLink() {
     if (isAuthorized()) {
-      return <li><NavLink to={routes.SIGN_OUT.route} onClick={this.handleSignOutClick}>{routes.SIGN_OUT.name}</NavLink></li>
+      let links = [];
+
+      if(isAdmin)
+        links.push(<li key="dashboard"><NavLink to={routes.DASHBOARD.route} onClick={this.handleCloseButtonClick}>{routes.DASHBOARD.name}</NavLink></li>);
+      
+      links.push(<li key="sign-out"><NavLink to={routes.SIGN_OUT.route} onClick={this.handleSignOutClick}>{routes.SIGN_OUT.name}</NavLink></li>);
+      return links;
     }
 
     return <li><NavLink to={routes.SIGN_IN.route} onClick={this.handleCloseButtonClick}>{routes.SIGN_IN.name}</NavLink></li>

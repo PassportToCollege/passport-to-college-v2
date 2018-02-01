@@ -105,8 +105,11 @@ export const doSignIn = (email, password) => {
             dispatch(signInDone(user));
 
             // redirect to homepage
-            // TODO: Redirect based on role
-            history.push("/");
+            if(user.isAdmin) {
+              history.push("/admin/dashboard");
+            } else {
+              history.push("/");
+            }
           })
       })
       .catch(error => {

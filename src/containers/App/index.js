@@ -9,9 +9,12 @@ import { isAuthorized } from "../../utils";
 
 import Hamburger from "../Hamburger";
 import Navigation from "../Navigation";
+import NavigationAdmin from "../NavigationAdmin";
 
 import Home from "../../components/Home";
 import SignIn from "../../components/Auth/SignIn";
+
+import Dashboard from "../../components/Dashboard/Home";
 
 class App extends Component {
     constructor(props) {
@@ -31,20 +34,20 @@ class App extends Component {
         return (
             <Router history={history}>
                 <div className="app">
-                    <Hamburger updateHamburgerState={ newState => { this.setState({ hamburgerState: newState }) } }/>
-                    <div 
-                        className="app__main" 
-                        data-hamburger={this.state.hamburgerState}
-                        style={main_bg}>
-                        <Navigation updateHamburgerState={newState => { this.setState({ hamburgerState: newState }) }} />
-                        <Route exact path={routes.LANDING.route} 
-                            render={props => <Home {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }}/>}
-                        ></Route>
+                    {this.renderHamburger()}
+                    <div className="app__main" data-hamburger={this.state.hamburgerState} style={main_bg}>
+                        {this.selectNavigation()}
+                        <Route exact path={routes.LANDING.route} render={props => this.defaultRouteMiddleware(props, Home)}></Route>
                         <Route exact path={routes.SIGN_IN.route} render={(props) => this.signInMiddleware(props)}></Route>
+                        <Route exact path={routes.DASHBOARD.route} render={props => this.defaultRouteMiddleware(props, Dashboard)}></Route>
                     </div>
                 </div>
             </Router>
         );
+    }
+
+    defaultRouteMiddleware(props, Component) {
+        return <Component {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }} />
     }
 
     signInMiddleware(props) {
@@ -52,6 +55,18 @@ class App extends Component {
             return <Redirect to="/"/>
 
         return <SignIn {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }} />
+    }
+
+    renderHamburger() {
+        if (this.state.location.indexOf("dashboard") === -1)
+            return <Hamburger updateHamburgerState={newState => { this.setState({ hamburgerState: newState }) }} />
+    }
+
+    selectNavigation() {
+        if(this.state.location.indexOf("dashboard") > -1)
+            return <NavigationAdmin />
+        
+        return <Navigation updateHamburgerState={newState => { this.setState({ hamburgerState: newState }) }} />
     }
 }
 
