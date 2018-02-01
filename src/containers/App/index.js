@@ -1,10 +1,11 @@
 import './App.css';
 
 import React, { Component } from 'react';
-import { Route, Router } from "react-router-dom";
+import { Route, Router, Redirect } from "react-router-dom";
 
 import history from "../../constants/history";
 import * as routes from "../../constants/routes";
+import { isAuthorized } from "../../utils";
 
 import Hamburger from "../Hamburger";
 import Navigation from "../Navigation";
@@ -44,7 +45,12 @@ class App extends Component {
                         <Route 
                             exact 
                             path={routes.SIGN_IN.route}
-                            render={props => <SignIn {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }} />}
+                            render={props => {
+                                if(isAuthorized())
+                                    return <Redirect to="/"/>
+
+                                return <SignIn {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }} />
+                            }}
                         ></Route>
                     </div>
                 </div>
