@@ -1,4 +1,4 @@
 export default {
-  hamburgerState: "closed",
-  user: null
+  hamburgerState: { current: "closed" },
+  user: false
 }

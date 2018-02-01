@@ -5,8 +5,8 @@ const hamburgerState = (state = initialState.hamburgerState, action) => {
   switch(action.type) {
     case OPEN_HAMBURGER:
     case CLOSE_HAMBURGER:
-      return Object.assign({}, { previousHamburgerState: state }, {
-        hamburgerState: action.hamburgerState
+      return Object.assign({}, { previous: state.current }, {
+        current: action.hamburgerState
       });
     default:
       return state;

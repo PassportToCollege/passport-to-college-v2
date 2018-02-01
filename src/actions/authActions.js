@@ -1,16 +1,65 @@
 import * as types from "./actionTypes";
-import { auth } from "../firebase";
+import * as firebase from "firebase";
 
-export const doSignIn = (email, password) => {
-  auth.doSignInWithEmailAndPassword(email, password)
-    .then(user => {
-      return { type: types.SIGN_IN, user }
-    });
+var config = {};
+
+if (process.env.ENVIRONMENT === "production") {
+  config = {
+    apiKey: process.env.API_KEY,
+    authDomain: process.env.AUTH_DOMAIN,
+    databaseURL: process.env.DATABASE_URL,
+    projectId: process.env.PROJECT_ID,
+    storageBucket: process.env.STORAGE_BUCKET,
+    messagingSenderId: process.env.MESSAGING_SENDER_ID,
+  };
+} else {
+  config = {
+    apiKey: "AIzaSyB66B4bUvEVKl-ZMQYXo1gqXCUCvrm2z-w",
+    authDomain: "passport-to-college-dev.firebaseapp.com",
+    databaseURL: "https://passport-to-college-dev.firebaseio.com",
+    projectId: "passport-to-college-dev",
+    storageBucket: "passport-to-college-dev.appspot.com",
+    messagingSenderId: "907519699435"
+  };
 }
 
-export const doSignOut = () => {
-  auth.doSignOut()
-    .then(() => {
-      return { type: types.SIGN_OUT, user: null };
-    });
+if (!firebase.apps.length)
+  firebase.initializeApp(config);
+
+const auth = firebase.auth();
+
+export const signInInitiated = () => {
+  return { 
+    type: types.SIGN_IN_AUTHORIZING, 
+    user: null 
+  };
+}
+
+export const signInDone = user => {
+  return {
+    type: types.SIGNED_IN,
+    user
+  };
+}
+
+export const signInFailed = (error) => {
+  return {
+    type: types.SIGN_IN_FAILED,
+    error,
+    user: null
+  }
+}
+
+export const doSignIn = (email, password) => {
+  return function(dispatch) {
+    dispatch(signInInitiated());
+
+    auth.signInWithEmailAndPassword(email, password)
+      .then(user => {
+        dispatch(signInDone(user));
+      })
+      .catch(error => {
+        dispatch(signInFailed(error));
+      })
+  }
 }

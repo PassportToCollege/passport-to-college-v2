@@ -22,7 +22,7 @@ const mainNavItems = [
 class Hamburger extends Component {
   render() {
     return (
-      <div className="hamburger" data-active={this.props.hamburgerState.hamburgerState}>
+      <div className="hamburger" data-active={this.props.hamburgerState.current}>
         <div className="hamburger__close_space"
           onClick={this.handleCloseButtonClick}>
         </div>
@@ -36,9 +36,8 @@ class Hamburger extends Component {
             <ul>
               {mainNavItems.map((v, i) => {
                 return (
-                  <li>
-                    <NavLink
-                      key={v.route} 
+                  <li key={v.route}>
+                    <NavLink 
                       exact to={v.route} 
                       activeClassName="active" 
                       onClick={this.handleCloseButtonClick}>
@@ -52,7 +51,7 @@ class Hamburger extends Component {
           <div className="hamburger__other_nav">
             <ul>
               <li><NavLink to={routes.APPLY.route} onClick={this.handleCloseButtonClick}>{routes.APPLY.name}</NavLink></li>
-              <li><NavLink to={routes.LOGIN.route} onClick={this.handleCloseButtonClick}>{routes.LOGIN.name}</NavLink></li>
+              <li><NavLink to={routes.SIGN_IN.route} onClick={this.handleCloseButtonClick}>{routes.SIGN_IN.name}</NavLink></li>
             </ul>
           </div>
         </div>
@@ -72,7 +71,7 @@ class Hamburger extends Component {
 
 Hamburger.propTypes = {
   hamburgerActions: propTypes.object,
-  hamburgerState: propTypes.string
+  hamburgerState: propTypes.object
 };
 
 const mapStateToProps = state => {

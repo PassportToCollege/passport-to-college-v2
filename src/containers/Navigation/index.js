@@ -33,9 +33,8 @@ class Navigation extends Component {
           <ul>
             {mainNavItems.map((v, i) => {
               return (
-                <li>
+                <li key={v.route}>
                   <NavLink
-                    key={v.route}
                     exact to={v.route}
                     activeClassName="active"
                     onClick={this.handleCloseButtonClick}>
@@ -65,7 +64,7 @@ class Navigation extends Component {
 
 Navigation.propTypes = {
   hamburgerActions: propTypes.object,
-  hamburgerState: propTypes.string
+  hamburgerState: propTypes.object
 };
 
 const mapStateToProps = state => {
