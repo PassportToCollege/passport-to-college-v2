@@ -16,6 +16,8 @@ import * as avatarActions from "../../actions/avatarActions";
 import * as authActions from "../../actions/authActions";
 import * as routes from "../../constants/routes";
 
+const defAvatar = require("../../assets/images/default-gravatar.png");
+
 const cookies = new Cookies();
 
 class NavigationAdmin extends Component {
@@ -23,7 +25,8 @@ class NavigationAdmin extends Component {
     super(props);
 
     this.state = {
-      username: cookies.get("ssid").name.full
+      username: cookies.get("ssid").name.full,
+      gravatar: ""
     }
   }
 
@@ -37,7 +40,7 @@ class NavigationAdmin extends Component {
       <nav className="dashboard__navigation">
         <div className="dashboard__navigation__top">
           <div className="dashboard__navigation_avatar_container">
-            <img src={this.props.avatar.url} alt="User Avatar" />
+            <img src={this.state.gravatar} alt="User Avatar" />
           </div>
           <h3>{this.state.username}</h3>
           <Link to={routes.PROFILE.route}>view profile</Link>
@@ -64,6 +67,14 @@ class NavigationAdmin extends Component {
         </div>
       </nav>
     )
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.avatar.url && nextProps.avatar.url !== "")
+      this.setState({ gravatar: nextProps.avatar.url });
+
+    if (nextProps.avatar.url === "")
+      this.setState({ gravatar: defAvatar });
   }
 
   handleSignOutClick = (e) => {
