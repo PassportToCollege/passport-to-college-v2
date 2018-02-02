@@ -1,0 +1,10 @@
+.loading_text__container {
+  width: 100%;
+  padding: 1em 0;
+}
+
+.loading_text__container > span {
+  display: block;
+  border-radius: 10px;
+  margin-bottom: 1em;
+}

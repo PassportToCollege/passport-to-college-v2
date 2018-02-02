@@ -72,9 +72,9 @@ export const doSignIn = (email, password) => {
             let user = snapshot.val()
 
             // set cookie
-            cookies.set("ssid", user, { path: "/", maxAge: 60 * 60 * 24 });
+            cookies.set("ssid", user.uid, { path: "/", maxAge: 60 * 60 * 24 });
 
-            dispatch(signInDone(user));
+            dispatch(signInDone(user.uid));
 
             // redirect to homepage
             if(user.isAdmin) {

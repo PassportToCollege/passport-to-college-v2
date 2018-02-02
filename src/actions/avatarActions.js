@@ -28,12 +28,11 @@ export const avatarGetDone = avatar => {
   };
 };
 
-export const doAvatarGet = () => {
+export const doAvatarGet = (uid) => {
   return dispatch => {
     dispatch(avatarGetInitiated())
 
-    const user = cookies.get("ssid").uid;
-    const avatarRef = storage.ref("users/profile_images").child(`${user}.png`);
+    const avatarRef = storage.ref("users/profile_images").child(`${uid}.png`);
 
     avatarRef.getDownloadURL()
       .then(url => {

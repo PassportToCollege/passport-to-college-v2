@@ -54,12 +54,12 @@ class SignIn extends Component {
 
 SignIn.propTypes = {
   authActions: propTypes.object,
-  user: propTypes.object
+  activeUser: propTypes.object
 };
 
 const mapStateToProps = state => {
   return {
-    user: state.user
+    activeUser: state.activeUser
   }; 
 };
 

@@ -1,5 +1,6 @@
 export default {
   hamburgerState: { current: "closed" },
-  user: false,
+  activeUser: false,
+  user: {},
   avatar: { url: "" }
 }

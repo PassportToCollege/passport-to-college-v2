@@ -14,6 +14,7 @@ import { faWpforms } from "@fortawesome/fontawesome-free-brands";
 
 import * as avatarActions from "../../actions/avatarActions";
 import * as authActions from "../../actions/authActions";
+import * as userActions from "../../actions/userActions";
 import * as routes from "../../constants/routes";
 
 const defAvatar = require("../../assets/images/default-gravatar.png");
@@ -25,14 +26,18 @@ class NavigationAdmin extends Component {
     super(props);
 
     this.state = {
-      username: cookies.get("ssid").name.full,
+      username: "",
       gravatar: ""
     }
   }
 
   componentWillMount() {
+    let activeUser = cookies.get("ssid");
+
     // get user avatar
-    this.props.avatarActions.doAvatarGet();
+    this.props.avatarActions.doAvatarGet(activeUser);
+    // get active user
+    this.props.userActions.doUserGet(activeUser);
   }
 
   render() {
@@ -75,6 +80,9 @@ class NavigationAdmin extends Component {
 
     if (nextProps.avatar.url === "")
       this.setState({ gravatar: defAvatar });
+    
+    if(nextProps.user && nextProps.user.name)
+      this.setState({ username: nextProps.user.name.full });
   }
 
   handleSignOutClick = (e) => {
@@ -125,19 +133,23 @@ class NavigationAdmin extends Component {
 NavigationAdmin.propTypes = {
   avatarActions: propTypes.object,
   authActions: propTypes.object,
-  avatar: propTypes.object
+  avatar: propTypes.object,
+  userActions: propTypes.object,
+  user: propTypes.object
 };
 
 const mapStateToProps = state => {
   return {
-    avatar: state.avatar
+    avatar: state.avatar,
+    user: state.user
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     avatarActions: bindActionCreators(avatarActions, dispatch),
-    authActions: bindActionCreators(authActions, dispatch)
+    authActions: bindActionCreators(authActions, dispatch),
+    userActions: bindActionCreators(userActions, dispatch)
   };
 };
 

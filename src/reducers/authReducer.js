@@ -8,40 +8,40 @@ import {
   SIGNED_OUT, 
   SIGN_IN_GETTING_USER} from "../actions/actionTypes";
 
-const auth = (state = initialState.user, action) => {
+const auth = (state = initialState.activeUser, action) => {
   switch(action.type) {
     case SIGN_IN_AUTHORIZING:
     case SIGN_OUT_AUTHORIZING:
       return Object.assign({}, state, {
         isAuthorizing: true,
         hasFailed: false,
-        user: action.user
+        activeUser: action.user
       });
     case SIGN_IN_GETTING_USER:
       return Object.assign({}, state, {
         isAuthorizing: false,
         hasFailed: false,
-        user: null
+        activeUser: null
       });
     case SIGNED_IN:
       return Object.assign({}, state, {
         isAuthorizing: false,
         hasFailed: false,
-        user: action.user
+        activeUser: action.user
       });
     case SIGN_IN_FAILED:
     case SIGN_OUT_FAILED:
       return Object.assign({}, state, {
         hasFailed: true,
         isAuthorizing: false,
-        user: null,
+        activeUser: null,
         error: action.error
       });
     case SIGNED_OUT:
       return Object.assign({}, state, {
         isAuthorizing: false,
         hasFailed: false,
-        user: null
+        activeUser: null
       });
     default:
       return state;
