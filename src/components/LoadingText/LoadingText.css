@@ -3,8 +3,16 @@
   padding: 1em 0;
 }
 
+.loading_text__container.dashboard__navigation_username_loader {
+  padding: 0;
+}
+
 .loading_text__container > span {
-  display: block;
+  display: inline-block;
   border-radius: 10px;
   margin-bottom: 1em;
+}
+
+.loading_text__container.dashboard__navigation_username_loader > span {
+  margin-bottom: 0;
 }

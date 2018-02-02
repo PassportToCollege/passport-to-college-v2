@@ -11,6 +11,7 @@ import { withRouter } from "react-router-dom";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import { faTachometerAlt, faUsers, faHome, faSignOutAlt } from "@fortawesome/fontawesome-free-solid";
 import { faWpforms } from "@fortawesome/fontawesome-free-brands";
+import LoadingText from "../../components/LoadingText";
 
 import * as avatarActions from "../../actions/avatarActions";
 import * as authActions from "../../actions/authActions";
@@ -47,7 +48,19 @@ class NavigationAdmin extends Component {
           <div className="dashboard__navigation_avatar_container">
             <img src={this.state.gravatar} alt="User Avatar" />
           </div>
-          <h3>{this.state.username}</h3>
+          {
+            this.state.username === "" ?
+              <LoadingText options={{
+                class: "dashboard__navigation_username_loader",
+                bg: "transparent",
+                height: "8px",
+                lines: [
+                  { width: "50%", color: "#fff" }
+                ]
+              }} />
+            :
+              <h3>{this.state.username}</h3>
+          }
           <Link to={routes.PROFILE.route}>view profile</Link>
         </div>
         <div className="dashboard__navigation_container">
@@ -81,8 +94,8 @@ class NavigationAdmin extends Component {
     if (nextProps.avatar.url === "")
       this.setState({ gravatar: defAvatar });
     
-    if(nextProps.user && nextProps.user.name)
-      this.setState({ username: nextProps.user.name.full });
+    if (Object.keys(nextProps.user).length && !nextProps.user.isGetting)
+      this.setState({ username: nextProps.user.user.name.full });
   }
 
   handleSignOutClick = (e) => {
