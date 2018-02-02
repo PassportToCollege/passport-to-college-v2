@@ -5,6 +5,7 @@ import { storage } from "../utils/firebase";
 
 const cookies = new Cookies();
 
+// GET actions
 export const avatarGetInitiated = () => {
   return {
     type: types.AVATAR_GET_INITIATED,
@@ -40,6 +41,46 @@ export const doAvatarGet = () => {
       })
       .catch(error => {
         dispatch(avatarGetFailed(error));
+      })
+  }
+}
+
+// UPLOAD actions
+export const avatarUploadInitiated = () => {
+  return {
+    type: types.AVATAR_UPLOAD_INITIATED
+  };
+};
+
+export const avatarUploadFailed = error => {
+  return {
+    type: types.AVATAR_UPLOAD_FAILED,
+    error
+  };
+};
+
+export const avatarUploaded = () => {
+  return {
+    type: types.AVATAR_UPLOADED
+  }
+}
+
+export const doAvatarUpload = file => {
+  return dispatch => {
+    dispatch(avatarUploadInitiated());
+
+    const user = cookies.get("ssid").uid;
+    const avatarRef = storage.ref("users/profile_images").child(`${user}.png`);
+
+    avatarRef.put(file)
+      .then(() => {
+        dispatch(avatarUploaded());
+
+        // get new avatar
+        dispatch(doAvatarGet());
+      })
+      .catch(error => {
+        dispatch(avatarUploadFailed(error));
       })
   }
 }

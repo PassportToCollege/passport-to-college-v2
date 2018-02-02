@@ -52,6 +52,22 @@ class Profile extends Component {
             </div>
             {this.createAboutDataList()}
           </div>
+          <div className="profile__50">
+            <div className="profile__edit_header">
+              <h2>Roles</h2>
+              <span className="profile__edit_button">edit</span>
+            </div>
+            <UserInfoItem label = "staff?"
+            data = {
+              this.state.user.isStaff ?
+              this.state.user.role :
+              "you do not have a staff role" }/>
+            <UserInfoItem label = "student?"
+            data = {
+              this.state.user.isStudent ?
+              "you are a student" :
+              "you are not a student" }/>
+          </div>
         </div>
       </div>
     )
@@ -87,7 +103,9 @@ class Profile extends Component {
   }
 
   handleAvatarChange = (e) => {
-    console.log(e.target.files[0])
+    let newGravatar = e.target.files[0];
+
+    this.props.avatarActions.doAvatarUpload(newGravatar);
   }
 }
 
