@@ -19,7 +19,10 @@ class Profile extends Component {
 
     this.state = {
       gravatar: "",
-      user: cookies.get("ssid")
+      user: cookies.get("ssid"),
+      editingHeaderInfo: false,
+      editingAbout: false,
+      editingRoles: false
     };
   }
   render() {
@@ -38,9 +41,7 @@ class Profile extends Component {
               </button>
             </div>
             <div className="profile__header_info">
-              <span className="profile__edit_button">edit</span>
-              <h1 className="profile__name">{this.state.user.name.full}</h1>
-              <p>{this.state.user.email}</p>
+              {this.createHeaderInfo()}
             </div>
           </div>
         </div>
@@ -100,6 +101,35 @@ class Profile extends Component {
     return dt.map((v, i) => {
       return <UserInfoItem key={v.label} label={v.label} data={v.data} />
     });
+  }
+
+  createHeaderInfo = () => {
+    if(this.state.editingHeaderInfo) {
+      return (
+        <span>
+          <span className="profile__done_edit_button">done</span>
+          <span className="profile__cancel_edit_button" onClick={() => this.setState({ editingHeaderInfo: false })}>cancel</span>
+          <form>
+            <div className="form__input_container profile__input">
+              <label>name</label>
+              <input type="text" name="name" defaultValue={this.state.user.name.full} />
+            </div>
+            <div className="form__input_container profile__input">
+              <label>email</label>
+              <input type="text" name="email" defaultValue={this.state.user.email} />
+            </div>
+          </form>
+        </span>
+      );
+    }
+    
+    return (
+      <span>
+        <span className="profile__edit_button" onClick={() => this.setState({ editingHeaderInfo: true })}>edit</span>
+        <h1 className="profile__name">{this.state.user.name.full}</h1>
+        <p>{this.state.user.email}</p>
+      </span>
+    );
   }
 
   handleAvatarChange = (e) => {

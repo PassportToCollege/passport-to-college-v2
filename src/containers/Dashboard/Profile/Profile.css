@@ -3,11 +3,17 @@
   transition: padding 200ms linear;
 }
 
-.profile__edit_button {
+.profile__edit_button,
+.profile__cancel_edit_button,
+.profile__done_edit_button {
   color: #333;
   font-weight: 900;
   font-family: "Muli", "Nunito", "Roboto", sans-serif;
   cursor: pointer;
+}
+.profile__cancel_edit_button,
+.profile__done_edit_button {
+  margin-right: 1em;
 }
 
 .profile__container .profile__50 {
@@ -83,6 +89,7 @@
 
 .profile__header_body .profile__header_info {
   padding: 1em 2.85em;
+  min-width: 300px;
 }
 
 .profile__header_body .profile__header_info .profile__name {
@@ -92,7 +99,7 @@
   font-weight: 200;
 }
 
-.profile__header_body .profile__header_info > p {
+.profile__header_body .profile__header_info p {
   margin-top: 0;
   color: white;
   font-family: "Muli", "Nunito", "Roboto", sans-serif;

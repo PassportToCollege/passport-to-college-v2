@@ -43,6 +43,10 @@ a:focus {
   position: relative;
 }
 
+.form__input_container.profile__input {
+  padding: 1em 0;
+}
+
 .form__input_container > label {
   display: block;
   position: absolute;
@@ -52,6 +56,14 @@ a:focus {
   transition: transform 100ms linear;
   transform: translate(1em, -1.5em);
   text-transform: uppercase;
+}
+
+.form__input_container.profile__input > label {
+  font-size: 0.85em;
+  font-weight: bold;
+  color: white;
+  text-transform: lowercase;
+  transform: translate(0,-0.25em);
 }
 
 .form__input_container > input[type] {
@@ -69,6 +81,13 @@ a:focus {
   font-weight: 300;
 }
 
+.form__input_container.profile__input > input[type] {
+  font-size: 1em;
+  padding: 1em 0 0.5em;
+  border-width: 2px;
+  
+}
+
 .form__input_container > button[type] {
   background-color: #FF6561;
   outline: none;
@@ -84,6 +103,11 @@ a:focus {
 .form__input_container>input[type]:focus,
 .form__input_container>input[type]:valid {
   border-color: #FF6561;
+}
+
+.form__input_container.profile__input>input[type]:focus,
+.form__input_container.profile__input>input[type]:valid {
+  border-color: rgba(51, 51, 51, 0.5);
 }
 
 .form__input_container > input[type]:focus + label,
