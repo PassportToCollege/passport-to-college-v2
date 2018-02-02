@@ -1,6 +1,7 @@
 import "./Home.css";
 
 import React, { Component } from "react";
+import propTypes from "prop-types";
 
 class Dashboard extends Component {
   render() {
@@ -17,5 +18,9 @@ class Dashboard extends Component {
     this.props.updateLocation("dashboard home");
   }
 }
+
+Dashboard.propTypes = {
+  updateLocation: propTypes.func
+};
 
 export default Dashboard;

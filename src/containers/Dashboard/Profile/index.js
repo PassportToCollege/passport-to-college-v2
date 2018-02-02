@@ -8,6 +8,8 @@ import Cookies from "universal-cookie";
 
 import * as avatarActions from "../../../actions/avatarActions";
 
+import UserInfoItem from "../../../components/UserInfoItem";
+
 const cookies = new Cookies();
 const defAvatar = require("../../../assets/images/default-gravatar.png");
 
@@ -37,7 +39,7 @@ class Profile extends Component {
             </div>
             <div className="profile__header_info">
               <span className="profile__edit_button">edit</span>
-              <h1 className="profile__name">{Object.values(this.state.user.name).join(" ")}</h1>
+              <h1 className="profile__name">{this.state.user.name.full}</h1>
               <p>{this.state.user.email}</p>
             </div>
           </div>
@@ -48,6 +50,7 @@ class Profile extends Component {
               <h2>About</h2>
               <span className="profile__edit_button">edit</span>
             </div>
+            {this.createAboutDataList()}
           </div>
         </div>
       </div>
@@ -67,6 +70,20 @@ class Profile extends Component {
     
     if(nextProps.avatar.url === "")
       this.setState({ gravatar: defAvatar });
+  }
+
+  createAboutDataList() {
+    let { gender, address, phone, dob } = this.state.user;
+    let dt = [
+     { label: "gender", data: gender },
+     { label: "country", data: address.country },
+     { label: "phone", data: phone },
+     { label: "dob", data: dob }
+    ]
+
+    return dt.map((v, i) => {
+      return <UserInfoItem key={v.label} label={v.label} data={v.data} />
+    });
   }
 
   handleAvatarChange = (e) => {

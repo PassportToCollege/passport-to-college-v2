@@ -22,10 +22,8 @@ class NavigationAdmin extends Component {
   constructor(props) {
     super(props);
 
-    let username = [cookies.get("ssid").name.first, cookies.get("ssid").name.last].join(" ");
-
     this.state = {
-      username
+      username: cookies.get("ssid").name.full
     }
   }
 
@@ -95,6 +93,8 @@ class NavigationAdmin extends Component {
         case "/admin/dashboard/users":
           icon = faUsers;
           break;
+        default:
+          icon = "";
       }
 
       return (

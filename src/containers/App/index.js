@@ -11,13 +11,13 @@ import Hamburger from "../Hamburger";
 import Navigation from "../Navigation";
 import NavigationAdmin from "../NavigationAdmin";
 
-import Home from "../../components/Home";
-import SignIn from "../../components/Auth/SignIn";
+import Home from "../Home";
+import SignIn from "../Auth/SignIn";
 
-import Dashboard from "../../components/Dashboard/Home";
-import Applications from "../../components/Dashboard/Applications";
-import Users from "../../components/Dashboard/Users";
-import Profile from "../../components/Dashboard/Profile";
+import Dashboard from "../Dashboard/Home";
+import Applications from "..//Dashboard/Applications";
+import Users from "../Dashboard/Users";
+import Profile from "../Dashboard/Profile";
 
 class App extends Component {
   constructor(props) {
