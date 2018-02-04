@@ -1,5 +1,10 @@
+/*
+  Contains actions for the currently logged in user.
+*/
+
 import * as types from "./actionTypes";
-import { db } from "../utils/firebase";
+import firebase from "firebase";
+import { auth, db } from "../utils/firebase";
 
 // USER GET actions
 
@@ -25,22 +30,27 @@ export const userGetSuccessful = user => {
   };
 };
 
-export const doUserGet = uid => {
+export const doUserGet = () => {
   return dispatch => {
-    dispatch(userGetInitiated(uid));
-
-    db.ref(`/users/${uid}`)
-      .once("value")
-      .then(snapshot => {
-        if(snapshot.val()) {
-          dispatch(userGetSuccessful(snapshot.val()));
-        } else {
-          dispatch(userGetFailed(uid, `No user found with uid: ${uid}.`));
-        }
-      })
-      .catch(error => {
-        dispatch(userGetFailed(uid, error));
-      })
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        let uid = auth.currentUser.uid;
+        dispatch(userGetInitiated(uid));
+                
+        db.ref(`/users/${uid}`)
+          .once("value")
+          .then(snapshot => {
+            if(snapshot.val()) {
+              dispatch(userGetSuccessful(snapshot.val()));
+            } else {
+              dispatch(userGetFailed(uid, `No user found with uid: ${uid}.`));
+            }
+          })
+          .catch(error => {
+            dispatch(userGetFailed(uid, error));
+          })
+      }
+    });
   };
 };
 
@@ -71,21 +81,105 @@ export const userUpdated = (uid, data) => {
   };
 };
 
-export const doUserUpdate = (uid, data) => {
+export const reauthenticationInitiated = uid => {
+  return {
+    type: types.USER_REAUTHENTICATION_INITIATED,
+    user: uid
+  }
+}
+
+export const reauthenticationSuccess = uid => {
+  return {
+    type: types.USER_REAUTHENTICATED,
+    user: uid
+  }
+}
+
+export const reauthenticationFailed = (uid, error) => {
+  return {
+    type: types.USER_REAUTHENTICATION_FAILED,
+    user: uid,
+    error
+  }
+}
+
+export const authEmailUpdateInitiated = uid => {
+  return {
+    type: types.USER_AUTH_EMAIL_UPDATE_INITIATED,
+    user: uid
+  };
+}
+
+export const authEmailUpdated = uid => {
+  return {
+    type: types.USER_AUTH_EMAIL_UPDATED,
+    user: uid
+  };
+}
+
+export const authEmailUpdateFailed = (uid, error) => {
+  return {
+    type: types.USER_AUTH_EMAIL_UPDATE_FAILED,
+    user: uid,
+    error
+  };
+}
+
+export const doUserUpdate = (data) => {
+  let user = auth.currentUser;
+  let uid = user.uid;
+
   return dispatch => {
     dispatch(userUpdateInitiated(uid, data));
 
-    db.ref(`/users/${uid}`)
-      .update(data)
-      .then(() => {
-        dispatch(userUpdated(uid, data));
+    // update user auth email
+    if (data.email !== user.email) {
+      dispatch(reauthenticationInitiated(uid));
 
-        // dispatch user get to update props
-        // with new user data
-        dispatch(doUserGet(uid));
-      })
-      .catch(error => {
-        dispatch(userGetFailed(uid, data, error));
-      })
+      let credential = firebase.auth.EmailAuthProvider.credential(user.email, data.password);
+      user.reauthenticateWithCredential(credential)
+        .then(() => {
+          dispatch(reauthenticationSuccess(uid));
+          dispatch(authEmailUpdateInitiated(uid));
+
+          user.updateEmail(data.email)
+            .then(() => {
+              dispatch(authEmailUpdated(uid));
+
+              // update user in db
+              db.ref(`/users/${uid}`)
+                .update(data)
+                .then(() => {
+                  dispatch(userUpdated(uid, data));
+
+                  // dispatch user get to update props
+                  // with new user data
+                  return dispatch(doUserGet(uid));
+                })
+                .catch(error => {
+                  return dispatch(userGetFailed(uid, data, error));
+                })
+            })
+            .catch(error => {
+              return dispatch(userGetFailed(uid, data, error));
+            })
+        })
+        .catch(error => {
+          return dispatch(reauthenticationFailed(uid, error));
+        })
+      } else {
+        db.ref(`/users/${uid}`)
+          .update(data)
+          .then(() => {
+            dispatch(userUpdated(uid, data));
+
+            // dispatch user get to update props
+            // with new user data
+            return dispatch(doUserGet(uid));
+          })
+          .catch(error => {
+            return dispatch(userGetFailed(uid, data, error));
+          })
+      }
   };
 };

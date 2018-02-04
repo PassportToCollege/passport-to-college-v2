@@ -12,6 +12,8 @@ import * as userActions from "../../../actions/userActions";
 import UserInfoItem from "../../../components/UserInfoItem";
 import LoadingText from "../../../components/LoadingText";
 
+import { auth } from "../../../utils/firebase";
+
 const cookies = new Cookies();
 const defAvatar = require("../../../assets/images/default-gravatar.png");
 
@@ -21,10 +23,11 @@ class Profile extends Component {
 
     this.state = {
       gravatar: "",
-      user: this.props.user,
+      user: this.props.user.user,
       editingHeaderInfo: false,
       editingAbout: false,
-      editingRoles: false
+      editingRoles: false,
+      emailChanged: false
     };
   }
   render() {
@@ -74,9 +77,9 @@ class Profile extends Component {
 
     // get user avatar
     this.props.avatarActions.doAvatarGet(activeUser);
-
+    
     // get user data
-    this.props.userActions.doUserGet(activeUser);
+    this.props.userActions.doUserGet();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -143,16 +146,25 @@ class Profile extends Component {
       if(this.state.editingHeaderInfo) {
         return (
           <span>
-            <span className="profile__done_edit_button">done</span>
+            <span className="profile__done_edit_button" onClick={this.handleNameEmailUpdate}>done</span>
             <span className="profile__cancel_edit_button" onClick={() => this.setState({ editingHeaderInfo: false })}>cancel</span>
-            <form>
+            <form onSubmit={this.handleNameEmailUpdate}>
               <div className="form__input_container profile__input">
                 <label>name</label>
-                <input type="text" name="name" defaultValue={user.name.full} />
+                <input type="text" name="name" defaultValue={user.name.full} required 
+                  ref={input => this.nameInput = input} />
               </div>
               <div className="form__input_container profile__input">
                 <label>email</label>
-                <input type="text" name="email" defaultValue={user.email} />
+                <input type="text" name="email" defaultValue={user.email} required 
+                  ref={input => this.emailInput = input} 
+                  onChange={this.handleEmailInputChange}/>
+              </div>
+              <div className="form__input_container profile__input">
+                <label>password</label>
+                <input type="password" name="password" required
+                  ref={input => this.passwordInput = input}
+                  disabled={this.state.emailChanged ? null : "disabled"} />
               </div>
             </form>
           </span>
@@ -206,6 +218,31 @@ class Profile extends Component {
     let newGravatar = e.target.files[0];
 
     this.props.avatarActions.doAvatarUpload(newGravatar);
+  }
+
+  handleNameEmailUpdate = () => {
+    this.setState({ editingHeaderInfo: false });
+
+    this.props.userActions.doUserUpdate({
+      name: {
+        first: this.nameInput.value.split(" ")[0],
+        last: this.nameInput.value.split(" ").slice(1, 10).join(" "),
+        full: this.nameInput.value
+      },
+      email: this.emailInput.value,
+      password: this.state.emailChanged ? this.passwordInput.value : null
+    });
+  }
+
+  handleEmailInputChange = (e) => {
+    if(
+      e.target.value !== this.state.user.email ||
+      e.target.value !== auth.currentUser.email
+    ) {
+      this.setState({ emailChanged: true });
+    } else {
+      this.setState({ emailChanged: false });
+    }
   }
 }
 
