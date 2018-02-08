@@ -24,33 +24,35 @@ class Navigation extends Component {
   render() {
     return (
       <div className="navigation">
-        <div className="navigation__logo_container">
-          <Link to={routes.LANDING}>
-            <img src={logo} alt="Passport to College Logo" />
-          </Link>
-        </div>
-        <nav className="navigation__nav_container">
-          <ul>
-            {mainNavItems.map((v, i) => {
-              return (
-                <li key={v.route}>
-                  <NavLink
-                    exact to={v.route}
-                    activeClassName="active"
-                    onClick={this.handleCloseButtonClick}>
-                    {v.name}
-                  </NavLink>
-                </li>
-              )
-            })}            
-          </ul>
-        </nav>
-        <div 
-          className="navigation__hamburger"
-          onClick={this.handleHamburgerOpenClick}>
-          <span className="toggle toggle__top"></span>
-          <span className="toggle toggle__middle"></span>
-          <span className="toggle toggle__bottom"></span>
+        <div className="navigation__container">
+          <div className="navigation__logo_container">
+            <Link to={routes.LANDING}>
+              <img src={logo} alt="Passport to College Logo" />
+            </Link>
+          </div>
+          <nav className="navigation__nav_container">
+            <ul>
+              {mainNavItems.map((v, i) => {
+                return (
+                  <li key={v.route}>
+                    <NavLink
+                      exact to={v.route}
+                      activeClassName="active"
+                      onClick={this.handleCloseButtonClick}>
+                      {v.name}
+                    </NavLink>
+                  </li>
+                )
+              })}            
+            </ul>
+          </nav>
+          <div 
+            className="navigation__hamburger"
+            onClick={this.handleHamburgerOpenClick}>
+            <span className="toggle toggle__top"></span>
+            <span className="toggle toggle__middle"></span>
+            <span className="toggle toggle__bottom"></span>
+          </div>
         </div>
       </div>
     );

@@ -1,0 +1,12 @@
+.link__button {
+  display: inline-block;
+  background-color: transparent;
+  border: 3px solid white;
+  border-radius: 65px;
+  text-decoration: none;
+  color: white;
+  font-family: "Nunito", "Roboto", san-serif;
+  font-weight: 900;
+  font-size: 1.71428571em;
+  padding: 16px 45px;
+}
