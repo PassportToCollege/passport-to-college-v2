@@ -7,6 +7,8 @@ import propTypes from "prop-types";
 
 import * as authActions from "../../../actions/authActions"; 
 
+import { SignInForm } from "../../../components/Forms";
+
 class SignIn extends Component {
   constructor(props) {
     super(props);
@@ -19,19 +21,9 @@ class SignIn extends Component {
   render() {
     return (
       <div className="signin__container">
-        <form className="form signin__form" method="post" onSubmit={this.handleSignIn}>
-          <div className="form__input_container">
-            <input type="email" name="email" required onChange={this.updateEmail} />
-            <label>Email</label>
-          </div>
-          <div className="form__input_container">
-            <input type="password" name="password" required onChange={this.updatePassword} />
-            <label>Password</label>
-          </div>
-          <div className="form__input_container">
-            <button className="form__button" type="submit">Sign In</button>
-          </div>
-        </form>
+        <SignInForm handleSignIn={this.handleSignIn}
+          updateEmail={this.updateEmail}
+          updatePassword={this.updatePassword} />
       </div>
     )
   }
@@ -40,8 +32,8 @@ class SignIn extends Component {
     this.props.updateLocation("sign-in");
   }
 
-  updateEmail = (e) => { this.setState({ email: e.target.value }); }
-  updatePassword = (e) => { this.setState({ password: e.target.value }); }
+  updateEmail = (e) => this.setState({ email: e.target.value });
+  updatePassword = (e) => this.setState({ password: e.target.value });
 
   handleSignIn = (e) => {
     e.preventDefault();
