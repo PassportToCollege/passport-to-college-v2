@@ -1,5 +1,6 @@
 // initialize firebase
 import firebase from "firebase";
+import "firebase/firestore";
 
 var config = {};
 
@@ -27,5 +28,5 @@ if (!firebase.apps.length)
   firebase.initializeApp(config);
 
 export const auth = firebase.auth();
-export const db = firebase.database();
+export const db = firebase.firestore();
 export const storage = firebase.storage();

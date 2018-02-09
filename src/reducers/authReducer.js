@@ -6,7 +6,12 @@ import {
   SIGN_OUT_AUTHORIZING,
   SIGN_OUT_FAILED,
   SIGNED_OUT, 
-  SIGN_IN_GETTING_USER} from "../actions/actionTypes";
+  SIGN_IN_GETTING_USER,
+  ACCOUNT_CREATED,
+  ACCOUNT_CREATION_ADDING_TO_USER_DBS,
+  ACCOUNT_CREATION_ADDING_TO_USER_DBS_FAILED,
+  ACCOUNT_CREATION_FAILED,
+  ACCOUNT_CREATION_INITIATED } from "../actions/actionTypes";
 
 const auth = (state = initialState.activeUser, action) => {
   switch(action.type) {
@@ -42,6 +47,40 @@ const auth = (state = initialState.activeUser, action) => {
         isAuthorizing: false,
         hasFailed: false,
         activeUser: null
+      });
+    case ACCOUNT_CREATION_INITIATED:
+      return Object.assign({}, state, {
+        isCreating: true,
+        hasFailed: true,
+        data: action.data
+      });
+    case ACCOUNT_CREATION_FAILED:
+      return Object.assign({}, state, {
+        isCreating: false,
+        hasFailed: false,
+        data: action.data,
+        error: action.data
+      });
+    case ACCOUNT_CREATED:
+      return Object.assign({}, state, {
+        isCreating: false,
+        hasFailed: false,
+        data: action.data
+      });
+    case ACCOUNT_CREATION_ADDING_TO_USER_DBS:
+      return Object.assign({}, state, {
+        isCreating: true,
+        hasFailed: false,
+        isAddingToDbs: true,
+        data: action.data
+      });
+    case ACCOUNT_CREATION_ADDING_TO_USER_DBS_FAILED:
+      return Object.assign({}, state, {
+        isCreating: false,
+        hasFailed: true,
+        isAddingToDbs: false,
+        data: action.data,
+        error: action.error
       });
     default:
       return state;

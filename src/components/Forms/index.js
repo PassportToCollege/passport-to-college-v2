@@ -36,12 +36,16 @@ SignInForm.propTypes = {
 
 export const StartApplication = props => {
   return (
-    <form className="form signin__form" method="post" onSubmit={props.handleSignIn}>
+    <form className="form signin__form" method="post" onSubmit={props.handleAccountCreation}>
       {
         props.title ?
           <h2 className="form__title">{props.title}</h2> :
           null
       }
+      <div className="form__input_container">
+        <input type="text" name="name" required onChange={props.updateName} />
+        <label>Full Name</label>
+      </div>
       <div className="form__input_container">
         <input type="email" name="email" required onChange={props.updateEmail} />
         <label>Email</label>

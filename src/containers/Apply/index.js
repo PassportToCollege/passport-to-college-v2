@@ -1,10 +1,24 @@
 import "./Apply.css";
 
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import propTypes from "prop-types";
+
+import * as authActions from "../../actions/authActions";
 
 import { SignInForm, StartApplication } from "../../components/Forms";
 
 class Apply extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      email: "",
+      password: ""
+    }
+  }
+
   componentWillMount() {
     this.props.updateLocation("apply");
   }
@@ -21,7 +35,8 @@ class Apply extends Component {
 
         <StartApplication
           title="Start New Application"
-          handleSignIn={this.handleSignIn}
+          handleAccountCreation={this.handleAccountCreation}
+          updateName={this.updateName}
           updateEmail={this.updateEmail}
           updatePassword={this.updatePassword} />
       </div>
@@ -30,14 +45,40 @@ class Apply extends Component {
 
   updateEmail = (e) => this.setState({ email: e.target.value });
   updatePassword = (e) => this.setState({ password: e.target.value });
+  updateName = (e) => this.setState({ name: e.target.value });
 
-  handleSignIn = (e) => {
+  handleAccountCreation = (e) => {
     e.preventDefault();
 
-    const { email, password } = this.state;
+    const data = {
+      isApplicant: true,
+      email: this.state.email,
+      name: this.state.name,
+      password: this.state.password
+    };
 
-    this.props.authActions.doSignIn(email, password);
+    this.props.authActions.doAccountCreate(data);
   }
 }
 
-export default Apply;
+Apply.propTypes = {
+  authActions: propTypes.object,
+  updateLocation: propTypes.func
+};
+
+const mapStateToProps = state => {
+  return {
+    activeUser: state.activeUser
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    authActions: bindActionCreators(authActions, dispatch)
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Apply);

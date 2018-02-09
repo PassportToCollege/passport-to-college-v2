@@ -37,11 +37,12 @@ export const doUserGet = () => {
         let uid = auth.currentUser.uid;
         dispatch(userGetInitiated(uid));
                 
-        db.ref(`/users/${uid}`)
-          .once("value")
-          .then(snapshot => {
-            if(snapshot.val()) {
-              dispatch(userGetSuccessful(snapshot.val()));
+        db.collection("user")
+          .doc(uid)
+          .get()
+          .then(doc => {
+            if(doc.exists) {
+              dispatch(userGetSuccessful(doc.data()));
             } else {
               dispatch(userGetFailed(uid, `No user found with uid: ${uid}.`));
             }

@@ -5,6 +5,7 @@ import propTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import Cookies from "universal-cookie";
+import moment from "moment";
 
 import * as avatarActions from "../../../actions/avatarActions";
 import * as userActions from "../../../actions/userActions";
@@ -118,7 +119,7 @@ class Profile extends Component {
        { label: "gender", data: gender },
        { label: "country", data: address.country },
        { label: "phone", data: phone },
-       { label: "dob", data: dob }
+       { label: "dob", data: moment(dob).format("M/D/Y") }
       ]
   
       return dt.map((v, i) => {
