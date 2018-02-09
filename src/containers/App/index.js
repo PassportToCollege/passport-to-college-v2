@@ -18,6 +18,7 @@ import Dashboard from "../Dashboard/Home";
 import Applications from "..//Dashboard/Applications";
 import Users from "../Dashboard/Users";
 import Profile from "../Dashboard/Profile";
+import Apply from "../Apply";
 
 class App extends Component {
   constructor(props) {
@@ -31,7 +32,8 @@ class App extends Component {
 
   render() {
     let main_bg = {};
-    if(this.state.location === "sign-in") {
+    if(this.state.location === "sign-in" ||
+      this.state.location === "apply") {
       main_bg.backgroundColor = "#FF6561";
     } else if(this.state.location.indexOf("dashboard") > -1) {
       main_bg.backgroundColor = "#FFF";
@@ -49,6 +51,7 @@ class App extends Component {
             <Route exact path={routes.APPLICATIONS.route} render={props => this.defaultRouteMiddleware(props, Applications)}></Route>
             <Route exact path={routes.USERS.route} render={props => this.defaultRouteMiddleware(props, Users)}></Route>
             <Route exact path={routes.PROFILE.route} render={props => this.defaultRouteMiddleware(props, Profile)}></Route>
+            <Route exact path={routes.APPLY.route} render={props => this.defaultRouteMiddleware(props, Apply)}></Route>
           </div>
         </div>
       </Router>
