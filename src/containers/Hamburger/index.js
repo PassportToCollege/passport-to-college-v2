@@ -71,8 +71,8 @@ class Hamburger extends Component {
   selectAuthLink() {
     if (isAuthorized()) {
       let links = [];
-
-      if(isAdmin)
+      
+      if(isAdmin())
         links.push(<li key="dashboard"><NavLink to={routes.DASHBOARD.route} onClick={this.handleCloseButtonClick}>{routes.DASHBOARD.name}</NavLink></li>);
       
       links.push(<li key="sign-out"><NavLink to={routes.SIGN_OUT.route} onClick={this.handleSignOutClick}>{routes.SIGN_OUT.name}</NavLink></li>);

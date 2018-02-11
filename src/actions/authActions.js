@@ -54,7 +54,14 @@ export const doSignIn = (email, password) => {
               let user = doc.data();
 
               // set cookie
-              cookies.set("ssid", uid, { path: "/", maxAge: 60 * 60 * 24 });
+              const d = {
+                uid,
+                isAdmin: user.isAdmin || false,
+                isApplicant: user.isApplicant || false,
+                isStaff: user.isStaff || false,
+                isStudent: user.isStudent || false
+              };
+              cookies.set("ssid", d, { path: "/", maxAge: 60 * 60 * 24 });
               
               dispatch(signInDone(uid));
               

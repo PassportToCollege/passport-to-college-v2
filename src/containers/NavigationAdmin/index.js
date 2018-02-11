@@ -33,7 +33,7 @@ class NavigationAdmin extends Component {
   }
 
   componentWillMount() {
-    let activeUser = cookies.get("ssid");
+    let activeUser = cookies.get("ssid").uid;
 
     // get user avatar
     this.props.avatarActions.doAvatarGet(activeUser);

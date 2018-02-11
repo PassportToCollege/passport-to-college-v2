@@ -4,10 +4,17 @@ import React, { Component } from "react";
 import propTypes from "prop-types";
 
 class ApplicationPortal extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      applicationId: this.props.match.params.application_id
+    };
+  }
   render() {
     return (
       <div className="application_portal">
-        {this.props.match.application}
+        {this.state.applicationId}
       </div>
     )
   }
