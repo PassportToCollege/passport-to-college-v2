@@ -65,6 +65,14 @@ class Apply extends Component {
   updatePassword = (e) => this.setState({ password: e.target.value });
   updateName = (e) => this.setState({ name: e.target.value });
 
+  handleSignIn = (e) => {
+    e.preventDefault();
+
+    const { email, password } = this.state;
+
+    this.props.authActions.doSignIn(email, password);
+  }
+
   handleAccountCreation = (e) => {
     e.preventDefault();
 

@@ -43,22 +43,26 @@ export const doSignIn = (email, password) => {
       .then(user => {
         dispatch(gettingSignedInUser());
 
+        const uid = user.uid;
+
         // get user
         db.collection("user")
-          .doc(user.uid)
+          .doc(uid)
           .get()
           .then(doc => {
             if (doc.exists) {
               let user = doc.data();
 
               // set cookie
-              cookies.set("ssid", user.uid, { path: "/", maxAge: 60 * 60 * 24 });
+              cookies.set("ssid", uid, { path: "/", maxAge: 60 * 60 * 24 });
               
-              dispatch(signInDone(user.uid));
-
+              dispatch(signInDone(uid));
+              
               // redirect to homepage
               if (user.isAdmin) {
                 history.push("/admin/dashboard");
+              } else if (user.isApplicant) {
+                history.push(`/apply/p/${uid}`);
               } else {
                 history.push("/");
               }
@@ -200,6 +204,7 @@ export const doAccountCreate = (data) => {
         batch.commit()
           .then(() => {
             dispatch(accountCreated(data));
+            history.push(`/apply/p/${user.uid}`);
           })
           .catch(error => {
             console.log(error);
