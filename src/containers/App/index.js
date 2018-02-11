@@ -19,6 +19,7 @@ import Applications from "..//Dashboard/Applications";
 import Users from "../Dashboard/Users";
 import Profile from "../Dashboard/Profile";
 import Apply from "../Apply";
+import ApplicationPortal from "../Apply/Portal";
 
 class App extends Component {
   constructor(props) {
@@ -52,6 +53,7 @@ class App extends Component {
             <Route exact path={routes.USERS.route} render={props => this.defaultRouteMiddleware(props, Users)}></Route>
             <Route exact path={routes.PROFILE.route} render={props => this.defaultRouteMiddleware(props, Profile)}></Route>
             <Route exact path={routes.APPLY.route} render={props => this.defaultRouteMiddleware(props, Apply)}></Route>
+            <Route exact path={routes.APPLY_PORTAL.route} render={props => this.defaultRouteMiddleware(props, ApplicationPortal)}></Route>
           </div>
         </div>
       </Router>
