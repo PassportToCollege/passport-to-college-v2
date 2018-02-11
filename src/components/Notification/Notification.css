@@ -1,0 +1,28 @@
+.notification {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #333;
+  color: white;
+  padding: 0.5em 1.5em;
+  border-radius: 5px;
+  z-index: 99999;
+  position: fixed;
+  right: 3em;
+  bottom: 3em;
+}
+
+.notification.close {
+  transition: all 500ms linear 200ms;
+  opacity: 0;
+  z-index: -1;
+}
+
+.notification > p {
+  margin-right: 1em;
+}
+
+.notification > span {
+  cursor: pointer;
+}

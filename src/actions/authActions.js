@@ -212,3 +212,9 @@ export const doAccountCreate = (data) => {
       })
   };
 };
+
+export const removeAuthErrors = () => {
+  return {
+    type: types.REMOVE_AUTH_ERRORS
+  }
+}

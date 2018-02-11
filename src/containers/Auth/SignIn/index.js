@@ -8,6 +8,7 @@ import propTypes from "prop-types";
 import * as authActions from "../../../actions/authActions"; 
 
 import { SignInForm } from "../../../components/Forms";
+import Notification from "../../../components/Notification";
 
 class SignIn extends Component {
   constructor(props) {
@@ -15,7 +16,8 @@ class SignIn extends Component {
 
     this.state = {
       email: "",
-      password: ""
+      password: "",
+      hasError: false
     }
   }
   render() {
@@ -24,12 +26,26 @@ class SignIn extends Component {
         <SignInForm handleSignIn={this.handleSignIn}
           updateEmail={this.updateEmail}
           updatePassword={this.updatePassword} />
+        {
+          this.state.hasError ?
+            <Notification key={Math.random()} text={this.state.error} /> :
+            null
+        }
       </div>
     )
   }
 
   componentWillMount() {
     this.props.updateLocation("sign-in");
+  }
+
+  componentWillUnmount() {
+    this.props.authActions.removeAuthErrors();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.auth && nextProps.auth.hasFailed && nextProps.auth.error.message)
+      this.setState({ hasError: true, error: nextProps.auth.error.message });
   }
 
   updateEmail = (e) => this.setState({ email: e.target.value });
@@ -51,7 +67,8 @@ SignIn.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    activeUser: state.activeUser
+    activeUser: state.activeUser,
+    auth: state.auth
   }; 
 };
 

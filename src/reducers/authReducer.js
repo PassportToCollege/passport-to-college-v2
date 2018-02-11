@@ -1,5 +1,6 @@
 import initialState from "./initialState";
 import { 
+  REMOVE_AUTH_ERRORS,
   SIGN_IN_AUTHORIZING, 
   SIGN_IN_FAILED,
   SIGNED_IN,
@@ -15,6 +16,14 @@ import {
 
 const auth = (state = initialState.activeUser, action) => {
   switch(action.type) {
+    case REMOVE_AUTH_ERRORS:
+      return Object.assign({}, state, {
+        isAuthorizing: false,
+        hasFailed: false,
+        isCreating: false,
+        isAddingToDbs: false,
+        error: null
+      });
     case SIGN_IN_AUTHORIZING:
     case SIGN_OUT_AUTHORIZING:
       return Object.assign({}, state, {
@@ -51,15 +60,15 @@ const auth = (state = initialState.activeUser, action) => {
     case ACCOUNT_CREATION_INITIATED:
       return Object.assign({}, state, {
         isCreating: true,
-        hasFailed: true,
+        hasFailed: false,
         data: action.data
       });
     case ACCOUNT_CREATION_FAILED:
       return Object.assign({}, state, {
         isCreating: false,
-        hasFailed: false,
+        hasFailed: true,
         data: action.data,
-        error: action.data
+        error: action.error
       });
     case ACCOUNT_CREATED:
       return Object.assign({}, state, {
