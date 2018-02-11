@@ -25,7 +25,7 @@ export const userGetFailed = (uid, error) => {
 
 export const userGetSuccessful = user => {
   return {
-    type: types.USER_GET_FAILED,
+    type: types.USER_GET_SUCCESS,
     user
   };
 };

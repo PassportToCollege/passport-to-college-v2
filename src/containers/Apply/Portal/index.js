@@ -1,7 +1,12 @@
 import "./ApplicationPortal.css";
 
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
+
+import * as applicationActions from "../../../actions/applicationActions";
+import * as userActions from "../../../actions/userActions";
 
 class ApplicationPortal extends Component {
   constructor(props) {
@@ -20,13 +25,48 @@ class ApplicationPortal extends Component {
   }
 
   componentWillMount() {
-    this.props.updateLocation("apply");
+    this.props.updateLocation("application portal");
+    
+    // get user
+    this.props.userActions.doUserGet();
+
+    // get application
+    this.props.applicationActions.doApplicationGet(this.state.applicationId); 
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.application.hasGotten)
+      this.setState({ application: nextProps.application.application });
+    
+    if (nextProps.user.hasGotten)
+      this.setState({ user: nextProps.user.user });
   }
 }
 
 ApplicationPortal.propTypes = {
   updateLocation: propTypes.func,
-  match: propTypes.object
+  match: propTypes.object,
+  applicationActions: propTypes.object,
+  application: propTypes.object,
+  userActions: propTypes.object,
+  user: propTypes.object
 };
 
-export default ApplicationPortal;
+const mapStateToProps = state => {
+  return {
+    application: state.application,
+    user: state.user
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    applicationActions: bindActionCreators(applicationActions, dispatch),
+    userActions: bindActionCreators(userActions, dispatch)
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ApplicationPortal);

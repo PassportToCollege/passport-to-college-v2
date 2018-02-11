@@ -33,6 +33,7 @@ const user = (state = initialState.user, action) => {
       return Object.assign({}, state, {
         isGetting: false,
         hasFailed: false,
+        hasGotten: true,
         user: action.user,
       });
     case USER_REAUTHENTICATION_FAILED:

@@ -72,15 +72,20 @@ class App extends Component {
   }
 
   renderHamburger() {
-    if (this.state.location.indexOf("dashboard") === -1)
+    if (this.state.location.indexOf("dashboard") === -1 &&
+      this.state.location !== "application portal")
       return <Hamburger updateHamburgerState={newState => { this.setState({ hamburgerState: newState }) }} />
   }
 
   selectNavigation() {
-    if(this.state.location.indexOf("dashboard") > -1)
-      return <NavigationAdmin />
-    
-    return <Navigation updateHamburgerState={newState => { this.setState({ hamburgerState: newState }) }} />
+    if (this.state.location !== "application portal") {
+      if(this.state.location.indexOf("dashboard") > -1)
+        return <NavigationAdmin />
+      
+      return <Navigation updateHamburgerState={newState => { this.setState({ hamburgerState: newState }) }} />
+    }
+
+    return null;
   }
 }
 
