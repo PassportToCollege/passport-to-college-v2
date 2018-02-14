@@ -10,8 +10,17 @@ class Button extends Component {
   }
 
   render() {
+    let buttonStyles = Object.assign({}, this.props.styles);
+
+    if (this.props.solid) {
+      buttonStyles = Object.assign({}, buttonStyles, {
+        backgroundColor: "#FF6561",
+        color: "#fff"
+      });
+    }
+
     return (
-      <button type={this.props.type} onClick={this.handleClick} style={this.props.styles || {}}>
+      <button className="button" type={this.props.type} onClick={this.handleClick} style={buttonStyles}>
         {this.props.text}
       </button>
     )
