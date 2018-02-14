@@ -48,13 +48,13 @@ class App extends Component {
           <div className="app__main" data-hamburger={this.state.hamburgerState} style={main_bg}>
             {this.selectNavigation()}
             <Route exact path={routes.LANDING.route} render={props => this.defaultRouteMiddleware(props, Home)}></Route>
-            <Route exact path={routes.SIGN_IN.route} render={(props) => this.signInMiddleware(props)}></Route>
+            <Route path={routes.SIGN_IN.route} render={(props) => this.signInMiddleware(props)}></Route>
             <Route exact path={routes.DASHBOARD.route} render={props => this.defaultRouteMiddleware(props, Dashboard)}></Route>
-            <Route exact path={routes.APPLICATIONS.route} render={props => this.defaultRouteMiddleware(props, Applications)}></Route>
-            <Route exact path={routes.USERS.route} render={props => this.defaultRouteMiddleware(props, Users)}></Route>
-            <Route exact path={routes.PROFILE.route} render={props => this.defaultRouteMiddleware(props, Profile)}></Route>
+            <Route path={routes.APPLICATIONS.route} render={props => this.defaultRouteMiddleware(props, Applications)}></Route>
+            <Route path={routes.USERS.route} render={props => this.defaultRouteMiddleware(props, Users)}></Route>
+            <Route path={routes.PROFILE.route} render={props => this.defaultRouteMiddleware(props, Profile)}></Route>
             <Route exact path={routes.APPLY.route} render={props => this.defaultRouteMiddleware(props, Apply)}></Route>
-            <Route exact path={routes.APPLY_PORTAL.route} render={props => this.defaultRouteMiddleware(props, ApplicationPortal)}></Route>
+            <Route path={routes.APPLY_PORTAL.route} render={props => this.defaultRouteMiddleware(props, ApplicationPortal)}></Route>
           </div>
         </div>
       </Router>
