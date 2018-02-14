@@ -36,7 +36,8 @@ class App extends Component {
     if(this.state.location === "sign-in" ||
       this.state.location === "apply") {
       main_bg.backgroundColor = "#FF6561";
-    } else if(this.state.location.indexOf("dashboard") > -1) {
+    } else if(this.state.location.indexOf("dashboard") > -1 || 
+      this.state.location === "application portal") {
       main_bg.backgroundColor = "#FFF";
     }
 

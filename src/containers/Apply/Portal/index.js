@@ -8,6 +8,8 @@ import propTypes from "prop-types";
 import * as applicationActions from "../../../actions/applicationActions";
 import * as userActions from "../../../actions/userActions";
 
+import Button from "../../../components/Button";
+
 class ApplicationPortal extends Component {
   constructor(props) {
     super(props);
@@ -19,7 +21,13 @@ class ApplicationPortal extends Component {
   render() {
     return (
       <div className="application_portal">
-        {this.state.applicationId}
+        <header className="application__portal_header">
+          <h1>Student Application</h1>
+          <div className="application_portal__action_buttons">
+            <Button key="application-portal-previous" type="button" text="Previous" doClick={this.handlePreviousButtonClick} />
+            <Button key="application-portal-next" type="button" text="Next" doClick={this.handleNextButtonClick} />
+          </div>
+        </header>
       </div>
     )
   }
@@ -40,6 +48,15 @@ class ApplicationPortal extends Component {
     
     if (nextProps.user.hasGotten)
       this.setState({ user: nextProps.user.user });
+  }
+
+  handleNextButtonClick = () => {
+    console.log("clicked")
+  }
+
+  handlePreviousButtonClick = () => {
+    debugger;
+    console.log("clicked")
   }
 }
 
