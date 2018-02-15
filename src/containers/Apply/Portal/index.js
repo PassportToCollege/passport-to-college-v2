@@ -37,7 +37,7 @@ class ApplicationPortal extends Component {
           <div className="application__portal_sidebar">
             <ul className="application__sidebar">
               <li>
-                <NavLink exact to={this.props.match.url} activeClassName="active">Welcome</NavLink>
+                <NavLink to={this.props.match.url} activeClassName="active">Welcome</NavLink>
               </li>
               { this.createTaskList() }
             </ul>

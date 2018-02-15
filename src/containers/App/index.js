@@ -5,7 +5,7 @@ import { Route, Router, Redirect } from "react-router-dom";
 
 import history from "../../constants/history";
 import * as routes from "../../constants/routes";
-import { isAuthorized } from "../../utils";
+import { isAuthorized, isApplicant, activeUser } from "../../utils";
 
 import Hamburger from "../Hamburger";
 import Navigation from "../Navigation";
@@ -20,6 +20,7 @@ import Users from "../Dashboard/Users";
 import Profile from "../Dashboard/Profile";
 import Apply from "../Apply";
 import ApplicationPortal from "../Apply/Portal";
+import { applyMiddleware } from 'redux';
 
 class App extends Component {
   constructor(props) {
@@ -53,7 +54,7 @@ class App extends Component {
             <Route path={routes.APPLICATIONS.route} render={props => this.defaultRouteMiddleware(props, Applications)}></Route>
             <Route path={routes.USERS.route} render={props => this.defaultRouteMiddleware(props, Users)}></Route>
             <Route path={routes.PROFILE.route} render={props => this.defaultRouteMiddleware(props, Profile)}></Route>
-            <Route exact path={routes.APPLY.route} render={props => this.defaultRouteMiddleware(props, Apply)}></Route>
+            <Route exact path={routes.APPLY.route} render={props => this.applyLandingMiddleware(props, Apply)}></Route>
             <Route path={routes.APPLY_PORTAL.route} render={props => this.defaultRouteMiddleware(props, ApplicationPortal)}></Route>
           </div>
         </div>
@@ -70,6 +71,13 @@ class App extends Component {
       return <Redirect to="/"/>
 
     return <SignIn {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }} />
+  }
+
+  applyLandingMiddleware(props) {
+    if(isApplicant())
+      return <Redirect to={`/apply/p/${activeUser}`} />
+
+    return <Apply {...props} updateLocation={newLocation => { this.setState({ location: newLocation }); }} />
   }
 
   renderHamburger() {
