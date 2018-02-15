@@ -67,3 +67,62 @@ StartApplication.prototypes = {
   updateEmail: propTypes.func,
   updatePassword: propTypes.func
 };
+
+export const PersonalInformation = props => {
+  return (
+    <form className="form application_task__form application__personal_information">
+      <div className="form__input_container">
+        <input type="text" name="name" required 
+          onBlur={props.updateName} autoFocus 
+          defaultValue={props.user.name.full}
+          placeholder="John Doe" />
+        <label>Full Name</label>
+      </div>
+      <div className="form__input_container">
+        <input type="email" name="email" required 
+          onBlur={props.updateEmail} 
+          defaultValue={props.user.email}
+          placeholder="johndoe@jd.com" />
+        <label>Email</label>
+      </div>
+      <div className="form__input_container">
+        <input type="phone" name="phone" required 
+          onBlur={props.updatePhone} 
+          defaultValue={props.user.phone} 
+          placeholder="000-000-0000" />
+        <label>Phone</label>
+      </div>
+      <div className="form__input_container">
+        <select name="gender" onChange={props.updateGender}>
+          <option value="" defaultValue disabled>Choose One</option>
+          <option value="female">Female</option>
+          <option value="male">Male</option>
+        </select>
+        <label>Gender</label>
+      </div>
+      {/* TODO: Replace with custom date picker */}
+      <div className="form__input_container">
+        <input type="date" name="dob" required 
+          onBlur={props.updateDOB} 
+          defaultValue={props.user.dob} />
+        <label>Date of Birth</label>
+      </div>
+      {/* TODO: Replace with custom country picker */}
+      <div className="form__input_container">
+        <input type="text" name="country" required 
+          onBlur={props.updateCountry} 
+          defaultValue={props.user.address ? props.user.address.country : ""} />
+        <label>Country</label>
+      </div>
+    </form>
+  );
+};
+
+PersonalInformation.prototypes = {
+  updateName: propTypes.func,
+  updateEmail: propTypes.func,
+  updatePhone: propTypes.func,
+  updateGender: propTypes.func,
+  updateDOB: propTypes.func,
+  updateCountry: propTypes.func
+};

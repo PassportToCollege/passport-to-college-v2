@@ -43,3 +43,5 @@ export const doApplicationGet = user => {
       })
   }
 }
+
+// UPDATE actions

@@ -1,14 +1,23 @@
 import "./ApplicationTask.css";
 
 import React, { Component } from 'react';
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import propTypes from 'prop-types';
+
+import * as applicationActions from "../../../../actions/applicationActions";
+import * as userActions from "../../../../actions/userActions";
+
+import { PersonalInformation } from './../../../../components/Forms/index';
 
 class ApplicationTask extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      task: this.props.match.params.task
+      task: this.props.match.params.task,
+      user: {},
+      application: {}
     };
   }
 
@@ -22,6 +31,12 @@ class ApplicationTask extends Component {
 
     if (this.state.task !== nextProps.match.params.task)
       nextProps.setTask(nextProps.match.params.task);
+    
+    if (nextProps.user.hasGotten)
+      this.setState({ user: nextProps.user.user });
+
+    if (nextProps.application.hasGotten)
+      this.setState({ application: nextProps.application })
   }
 
   render() {
@@ -30,6 +45,18 @@ class ApplicationTask extends Component {
         return (
           <div className="application__portal_task personal__task">
             <h1>Personal Information</h1>
+            {
+              this.props.user.hasGotten ?
+              <PersonalInformation 
+                updateName={this.updateName}
+                updateEmail={this.updateEmail}
+                updateCountry={this.updateCountry}
+                updatePhone={this.updatePhone}
+                updateGender={this.updateGender}
+                updateDOB={this.updateDOB}
+                user={this.state.user} /> :
+              null
+            }
           </div>
         );
       case "profile-picture":
@@ -82,10 +109,36 @@ class ApplicationTask extends Component {
         )
     }
   }
+
+  updateName = (e) => {
+    console.log(e.target);
+  }
 }
 
 ApplicationTask.propTypes = {
-  setTask: propTypes.func
+  setTask: propTypes.func,
+  match: propTypes.object,
+  applicationActions: propTypes.object,
+  application: propTypes.object,
+  userActions: propTypes.object,
+  user: propTypes.object
 };
 
-export default ApplicationTask;
+const mapStateToProps = state => {
+  return {
+    user: state.user,
+    application: state.application
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    applicationActions: bindActionCreators(applicationActions, dispatch),
+    userActions: bindActionCreators(userActions, dispatch)
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ApplicationTask);

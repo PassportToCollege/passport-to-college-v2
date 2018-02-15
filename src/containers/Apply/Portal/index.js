@@ -63,9 +63,7 @@ class ApplicationPortal extends Component {
             <Route exact path={`${this.props.match.url}/:task`}
               render={props => {
                 return <ApplicationTask {...props} 
-                  setTask={this.setTask} 
-                  applicant={this.state.user}
-                  application={this.state.application} />
+                  setTask={this.setTask} />
               }}/>
             <Route exact path={this.props.match.url}
               render={this.renderWelcome}/>

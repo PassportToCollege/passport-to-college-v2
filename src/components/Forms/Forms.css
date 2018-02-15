@@ -1,8 +1,5 @@
-form.form {
+.form {
   background-color: white;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
-  border-radius: 1em;
-  padding: 2em 1.5em;
   margin: 0 0 1em;
   width: 600px;
   max-width: 100%;
@@ -12,18 +9,25 @@ form.form {
   padding: 0 0 0 3.5rem;
 }
 
-.form__input_container {
+/* Signin Form */
+.form.signin__form {
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+  padding: 2em 1.5em;
+  border-radius: 1em;
+}
+
+.form.signin__form .form__input_container {
   display: block;
   margin: 1em 0;
   padding: 2rem 3.5rem;
   position: relative;
 }
 
-.form__input_container.profile__input {
+.form.signin__form .form__input_container.profile__input {
   padding: 0;
 }
 
-.form__input_container>label {
+.form.signin__form .form__input_container>label {
   display: block;
   position: absolute;
   font-weight: 500;
@@ -34,7 +38,7 @@ form.form {
   text-transform: uppercase;
 }
 
-.form__input_container.profile__input>label {
+.form.signin__form .form__input_container.profile__input>label {
   font-size: 0.85em;
   font-weight: bold;
   color: white;
@@ -43,7 +47,7 @@ form.form {
   position: relative;
 }
 
-.form__input_container>input[type] {
+.form.signin__form .form__input_container>input[type] {
   display: block;
   width: 100%;
   background: transparent;
@@ -58,13 +62,13 @@ form.form {
   font-weight: 300;
 }
 
-.form__input_container.profile__input>input[type] {
+.form.signin__form .form__input_container.profile__input>input[type] {
   font-size: 1em;
   padding: 1em 0 0.5em;
   border-width: 2px;
 }
 
-.form__input_container>button[type] {
+.form.signin__form .form__input_container>button[type] {
   background-color: #FF6561;
   outline: none;
   border: none;
@@ -76,25 +80,67 @@ form.form {
   cursor: pointer;
 }
 
-.form__input_container>input[type]:focus,
-.form__input_container>input[type]:valid {
+.form.signin__form .form__input_container>input[type]:focus,
+.form.signin__form .form__input_container>input[type]:valid {
   border-color: #FF6561;
 }
 
-.form__input_container>input[type]:disabled {
+.form.signin__form .form__input_container>input[type]:disabled {
   cursor: not-allowed;
 }
 
-.form__input_container.profile__input>input[type]:focus,
-.form__input_container.profile__input>input[type]:valid {
+.form.signin__form .form__input_container.profile__input>input[type]:focus,
+.form.signin__form .form__input_container.profile__input>input[type]:valid {
   border-color: rgba(51, 51, 51, 0.5);
 }
 
-.form__input_container.profile__input>input[type]:disabled {
+.form.signin__form .form__input_container.profile__input>input[type]:disabled {
   background-color: #FF443F;
 }
 
-.form__input_container>input[type]:focus+label,
-.form__input_container>input[type]:valid+label {
+.form.signin__form .form__input_container>input[type]:focus+label,
+.form.signin__form .form__input_container>input[type]:valid+label {
   transform: translate(1em, -4.5em);
 }
+
+/* Application Task Forms */
+.form.application_task__form {
+  margin: 3em 0 2em;
+}
+
+.form.application_task__form .form__input_container {
+  width: 100%;
+  margin-bottom: 1em;
+}
+
+.form.application_task__form .form__input_container > label {
+  display: block;
+  font-size: 0.85em;
+  font-weight: bold;
+  margin-top: 0.95em;
+  opacity: 0.75;
+  font-family: "Muli",
+  "Nunito",
+  "Roboto",
+  sans-serif;
+}
+
+.form.application_task__form .form__input_container>input[type],
+.form.application_task__form .form__input_container>select {
+  width: 100%;
+  border: none;
+  outline: none;
+  border-bottom: 2px solid #333;
+  font-size: 1.02em;
+  padding: 0.75em;
+}
+
+.form.application_task__form .form__input_container>input[type]:focus,
+.form.application_task__form .form__input_container>select:focus {
+  border-bottom-color: #FF6561;
+}
+
+.form.application_task__form .form__input_container>select {
+  cursor: pointer;
+}
+
