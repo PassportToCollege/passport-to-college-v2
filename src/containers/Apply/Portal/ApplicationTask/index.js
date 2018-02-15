@@ -1,6 +1,7 @@
 import "./ApplicationTask.css";
 
 import React, { Component } from 'react';
+import propTypes from 'prop-types';
 
 class ApplicationTask extends Component {
   constructor(props) {
@@ -11,9 +12,16 @@ class ApplicationTask extends Component {
     };
   }
 
+  componentWillMount() {
+    this.props.setTask(this.state.task);
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.match && nextProps.match.params)
-      this.setState({ task: nextProps.match.params.task })
+      this.setState({ task: nextProps.match.params.task });
+
+    if (this.state.task !== nextProps.match.params.task)
+      nextProps.setTask(nextProps.match.params.task);
   }
 
   render() {
@@ -24,5 +32,9 @@ class ApplicationTask extends Component {
     )
   }
 }
+
+ApplicationTask.propTypes = {
+  setTask: propTypes.func
+};
 
 export default ApplicationTask;

@@ -12,6 +12,24 @@ import * as userActions from "../../../actions/userActions";
 import Button from "../../../components/Button";
 import ApplicationTask from './ApplicationTask';
 
+import history from "../../../constants/history";
+
+const tasks = [
+  "Personal",
+  "Profile Picture",
+  "Education",
+  "US Standardized Tests",
+  "National Tests",
+  "Miscellaneous",
+  "Essay",
+  "Review and Sign",
+  "Submit"
+];
+
+const formattedTasks = tasks.map(task => {
+  return task.toLowerCase().split(" ").join("-");
+});
+
 class ApplicationPortal extends Component {
   constructor(props) {
     super(props);
@@ -19,7 +37,9 @@ class ApplicationPortal extends Component {
     this.state = {
       applicationId: this.props.match.params.application_id,
       // TODO: update on task change
-      task: "welcome"
+      task: "welcome",
+      next: "personal",
+      previous: null
     };
   }
 
@@ -43,7 +63,10 @@ class ApplicationPortal extends Component {
             </ul>
           </div>
           <div className="application__portal_main">
-            <Route exact path={`${this.props.match.url}/:task`} component={ApplicationTask} />
+            <Route exact path={`${this.props.match.url}/:task`}
+              render={props => {
+                return <ApplicationTask {...props} setTask={this.setTask} />
+              }}/>
             <Route exact path={this.props.match.url}
               render={this.renderWelcome}/>
           </div>
@@ -71,27 +94,32 @@ class ApplicationPortal extends Component {
   }
 
   handleNextButtonClick = () => {
-    console.log("clicked")
+    let nextIndex = formattedTasks.indexOf(this.state.task) + 1;
+    let next = formattedTasks[nextIndex];
+
+    if (next)
+      history.push(`${this.props.match.url}/${next}`)
   }
 
   handlePreviousButtonClick = () => {
-    debugger;
-    console.log("clicked")
+    let previousIndex = formattedTasks.indexOf(this.state.task) - 1;
+
+    if (previousIndex >= 0) {
+      let previous = formattedTasks[previousIndex];
+  
+      if (previous) 
+        history.push(`${this.props.match.url}/${previous}`);
+    } else {
+      this.setState({ task: "welcome" });
+      history.push(this.props.match.url);
+    }
+  }
+
+  setTask = task => {
+    this.setState({ task });
   }
 
   createTaskList = () => {
-    const tasks = [
-      "Personal",
-      "Profile Picture",
-      "Education",
-      "US Standardized Tests",
-      "National Tests",
-      "Miscellaneous",
-      "Essay",
-      "Review and Sign",
-      "Submit"
-    ];
-
     return tasks.map(task => {
       return (
         <li key={task}>
@@ -123,7 +151,7 @@ class ApplicationPortal extends Component {
         <p>Your information is saved automatically, so do not worry about saving.</p>
         <p>
           Some sections contain <b>required fields</b>, 
-          these fields must be completed.Required fields are marked with an asterisk (<span class="type--required-symbol">*</span>).
+          these fields must be completed.Required fields are marked with an asterisk (<span className="type--required-symbol">*</span>).
           You will not be able to submit your application until you complete the required fields.
         </p>
       </div>
