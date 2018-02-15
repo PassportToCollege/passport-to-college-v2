@@ -36,10 +36,7 @@ class ApplicationPortal extends Component {
 
     this.state = {
       applicationId: this.props.match.params.application_id,
-      // TODO: update on task change
-      task: "welcome",
-      next: "personal",
-      previous: null
+      task: "welcome"
     };
   }
 
@@ -65,7 +62,10 @@ class ApplicationPortal extends Component {
           <div className="application__portal_main">
             <Route exact path={`${this.props.match.url}/:task`}
               render={props => {
-                return <ApplicationTask {...props} setTask={this.setTask} />
+                return <ApplicationTask {...props} 
+                  setTask={this.setTask} 
+                  applicant={this.state.user}
+                  application={this.state.application} />
               }}/>
             <Route exact path={this.props.match.url}
               render={this.renderWelcome}/>
