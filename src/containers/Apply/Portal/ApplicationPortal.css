@@ -33,7 +33,7 @@
 }
 
 .application__portal_body .application__portal_sidebar {
-  width: 280px;
+  min-width: 280px;
   height: 100%;
   padding: 3em 1.1625em 3em 2.2em;
   background-color: rgba(51,51,51,0.1);
@@ -45,9 +45,30 @@
   cursor: pointer;
   font-weight: 600;
   color: #333;
+  position: relative;
+}
+
+.application__portal_sidebar .application__sidebar>li>a:before {
+  content: "";
+  width: 2px;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: rgba(51,51,51,0.35);
+}
+
+.application__portal_sidebar .application__sidebar>li>a.active {
+  color: #FF6561;
+}
+
+.application__portal_sidebar .application__sidebar>li>a.active:before,
+.application__portal_sidebar .application__sidebar>li>a:hover:before {
+  background-color: #FF6561;
 }
 
 .application__portal_body .application__portal_main {
   height: 100%;
   flex-grow: 1;
+  padding: 2.1625em;
 }

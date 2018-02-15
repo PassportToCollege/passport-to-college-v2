@@ -1,0 +1,9 @@
+/* Welcome */
+.application__welcome {
+  max-width: 768px;
+}
+
+.application__welcome > p {
+  font-size: 1.15em;
+  line-height: 1.85;
+}

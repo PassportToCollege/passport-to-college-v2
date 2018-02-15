@@ -1,7 +1,7 @@
 import "./ApplicationPortal.css";
 
 import React, { Component } from "react";
-import { NavLink, Route } from "react-router-dom";
+import { NavLink, Route, Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
@@ -17,9 +17,12 @@ class ApplicationPortal extends Component {
     super(props);
 
     this.state = {
-      applicationId: this.props.match.params.application_id
+      applicationId: this.props.match.params.application_id,
+      // TODO: update on task change
+      task: "welcome"
     };
   }
+
   render() {
     return (
       <div className="application_portal">
@@ -31,18 +34,19 @@ class ApplicationPortal extends Component {
           </div>
         </header>
         <main className="application__portal_body">
-          <section className="application__portal_sidebar">
+          <div className="application__portal_sidebar">
             <ul className="application__sidebar">
+              <li>
+                <NavLink exact to={this.props.match.url} activeClassName="active">Welcome</NavLink>
+              </li>
               { this.createTaskList() }
             </ul>
-          </section>
-          <section className="application__portal_main">
+          </div>
+          <div className="application__portal_main">
             <Route exact path={`${this.props.match.url}/:task`} component={ApplicationTask} />
             <Route exact path={this.props.match.url}
-              render={() => {
-                return <p>Welcome</p>
-              }}/>
-          </section>
+              render={this.renderWelcome}/>
+          </div>
         </main>
       </div>
     )
@@ -97,6 +101,33 @@ class ApplicationPortal extends Component {
         </li>
       )
     });
+  }
+
+  renderWelcome = () => {
+    return (
+      <div className="application_task__container application__welcome">
+        <h1>Welcome</h1>
+        <p>
+          Our mission is to identify students from developing countries 
+          that are strong in Science, Technology, Engineering and Mathematics, <b>STEM</b>, 
+          who lack the resources to attend college/university. We therefore require that all applicants 
+          fill out an application to evaluate their eligibility. <b>Be honest in your answers as further 
+          eligibility data will be collected during the review process.</b>
+        </p>
+        <p>
+          We promise to keep all information and photos private. 
+          We will not repost them or use them outside the reviewing of your application.
+        </p>
+
+        <h2>Instructions</h2>
+        <p>Your information is saved automatically, so do not worry about saving.</p>
+        <p>
+          Some sections contain <b>required fields</b>, 
+          these fields must be completed.Required fields are marked with an asterisk (<span class="type--required-symbol">*</span>).
+          You will not be able to submit your application until you complete the required fields.
+        </p>
+      </div>
+    )
   }
 }
 
