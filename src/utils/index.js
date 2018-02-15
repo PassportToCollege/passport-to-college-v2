@@ -2,16 +2,27 @@ import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
 
-export const activeUser = cookies.get("ssid").uid;
+export const activeUser = () => {
+  if (isAuthorized())
+    return cookies.get("ssid").uid;
+
+  return null;
+}
 
 export const isAuthorized = () => {
   return !!cookies.get("ssid");
 }
 
 export const isAdmin = () => {
-  return cookies.get("ssid").isAdmin;
+  if (isAuthorized())
+    return cookies.get("ssid").isAdmin;
+  
+    return false;
 }
 
 export const isApplicant = () => {
-  return cookies.get("ssid").isApplicant;
+  if (isAuthorized())
+    return cookies.get("ssid").isApplicant;
+  
+    return false;
 }

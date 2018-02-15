@@ -1,7 +1,7 @@
 import "./ApplicationPortal.css";
 
 import React, { Component } from "react";
-import { NavLink, Route, Link } from "react-router-dom";
+import { NavLink, Route } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import propTypes from "prop-types";

@@ -20,7 +20,6 @@ import Users from "../Dashboard/Users";
 import Profile from "../Dashboard/Profile";
 import Apply from "../Apply";
 import ApplicationPortal from "../Apply/Portal";
-import { applyMiddleware } from 'redux';
 
 class App extends Component {
   constructor(props) {
@@ -55,7 +54,7 @@ class App extends Component {
             <Route path={routes.USERS.route} render={props => this.defaultRouteMiddleware(props, Users)}></Route>
             <Route path={routes.PROFILE.route} render={props => this.defaultRouteMiddleware(props, Profile)}></Route>
             <Route exact path={routes.APPLY.route} render={props => this.applyLandingMiddleware(props, Apply)}></Route>
-            <Route path={routes.APPLY_PORTAL.route} render={props => this.defaultRouteMiddleware(props, ApplicationPortal)}></Route>
+            <Route path={routes.APPLY_PORTAL.route} render={props => this.applicationPortalMiddleware(props, ApplicationPortal)}></Route>
           </div>
         </div>
       </Router>
@@ -75,9 +74,16 @@ class App extends Component {
 
   applyLandingMiddleware(props) {
     if(isApplicant())
-      return <Redirect to={`/apply/p/${activeUser}`} />
+      return <Redirect to={`/apply/p/${activeUser()}`} />
 
     return <Apply {...props} updateLocation={newLocation => { this.setState({ location: newLocation }); }} />
+  }
+
+  applicationPortalMiddleware(props) {
+    if (isApplicant())
+      return <ApplicationPortal {...props} updateLocation={newLocation => { this.setState({ location: newLocation }); }} />
+      
+    return <Redirect to="/apply/" />
   }
 
   renderHamburger() {
