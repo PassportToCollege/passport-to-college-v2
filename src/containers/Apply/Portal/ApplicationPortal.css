@@ -1,5 +1,6 @@
 .application_portal {
   margin: 0;
+  position: relative;
 }
 
 /* Header */

@@ -133,59 +133,92 @@ export const doUserUpdate = (data) => {
   return dispatch => {
     dispatch(userUpdateInitiated(uid, data));
 
-    // update user auth email
-    if (data.email && (data.email !== user.email)) {
-      dispatch(reauthenticationInitiated(uid));
+    db.collection("user")
+      .doc(uid)
+      .update(data)
+      .then(() => {
+        dispatch(userUpdated(uid, data));
 
-      let credential = firebase.auth.EmailAuthProvider.credential(user.email, data.password);
-      user.reauthenticateWithCredential(credential)
-        .then(() => {
-          dispatch(reauthenticationSuccess(uid));
-          dispatch(authEmailUpdateInitiated(uid));
-
-          user.updateEmail(data.email)
-            .then(() => {
-              dispatch(authEmailUpdated(uid));
-
-              // update user in db
-              db.collection("user")
-                .doc(uid)
-                .update(data)
-                .then(() => {
-                  dispatch(userUpdated(uid, data));
-
-                  // dispatch user get to update props
-                  // with new user data
-                  return dispatch(doUserGet(uid));
-                })
-                .catch(error => {
-                  return dispatch(userUpdateFailed(uid, data, error));
-                })
-            })
-            .catch(error => {
-              return dispatch(userUpdateFailed(uid, data, error));
-            })
-        })
-        .catch(error => {
-          return dispatch(reauthenticationFailed(uid, error));
-        })
-      } else {
-        db.collection("user")
-          .doc(uid)
-          .update(data)
-          .then(() => {
-            dispatch(userUpdated(uid, data));
-
-            // dispatch user get to update props
-            // with new user data
-            return dispatch(doUserGet(uid));
-          })
-          .catch(error => {
-            return dispatch(userUpdateFailed(uid, data, error));
-          })
-      }
+        // dispatch user get to update props
+        // with new user data
+        return dispatch(doUserGet(uid));
+      })
+      .catch(error => {
+        return dispatch(userUpdateFailed(uid, data, error));
+      })
   };
 };
+
+export const doUserEmailUpdate = email => {
+  let user = auth.currentUser;
+  let uid = user.uid;
+
+  return dispatch => {
+    dispatch(userUpdateInitiated(uid, {email}));
+    dispatch(authEmailUpdateInitiated(uid));
+
+    user.updateEmail(email)
+      .then(() => {
+        dispatch(authEmailUpdated(uid));
+
+        // update user in db
+        db.collection("user")
+          .doc(uid)
+          .update({ email })
+          .then(() => {
+            dispatch(userUpdated(uid, { email }));
+          })
+          .catch(error => {
+            console.log(error)
+            return dispatch(userUpdateFailed(uid, { email }, error));
+          })
+      })
+      .catch(error => {
+        console.log(error)
+        return dispatch(userUpdateFailed(uid, { email }, error));
+      })
+  }
+}
+
+export const doUserEmailUpdateWithReauthentication = (email, password) => {
+  let user = auth.currentUser;
+  let uid = user.uid;
+
+  return dispatch => {
+    dispatch(userUpdateInitiated(uid, {email}));
+
+    dispatch(reauthenticationInitiated(uid));
+
+    let credential = firebase.auth.EmailAuthProvider.credential(user.email, password);
+    user.reauthenticateWithCredential(credential)
+      .then(() => {
+        dispatch(reauthenticationSuccess(uid));
+        dispatch(authEmailUpdateInitiated(uid));
+
+        user.updateEmail(email)
+          .then(() => {
+            dispatch(authEmailUpdated(uid));
+
+            // update user in db
+            db.collection("user")
+              .doc(uid)
+              .update({email})
+              .then(() => {
+                dispatch(userUpdated(uid, {email}));
+              })
+              .catch(error => {
+                return dispatch(userUpdateFailed(uid, {email}, error));
+              })
+          })
+          .catch(error => {
+            return dispatch(userUpdateFailed(uid, {email}, error));
+          })
+      })
+      .catch(error => {
+        return dispatch(reauthenticationFailed(uid, error));
+      })
+  }
+}
 
 export const doUserUpdateWithoutGet = (data) => {
   let user = auth.currentUser;
@@ -194,48 +227,14 @@ export const doUserUpdateWithoutGet = (data) => {
   return dispatch => {
     dispatch(userUpdateInitiated(uid, data));
 
-    // update user auth email
-    if (data.email && (data.email !== user.email)) {
-      dispatch(reauthenticationInitiated(uid));
-
-      let credential = firebase.auth.EmailAuthProvider.credential(user.email, data.password);
-      user.reauthenticateWithCredential(credential)
-        .then(() => {
-          dispatch(reauthenticationSuccess(uid));
-          dispatch(authEmailUpdateInitiated(uid));
-
-          user.updateEmail(data.email)
-            .then(() => {
-              dispatch(authEmailUpdated(uid));
-
-              // update user in db
-              db.collection("user")
-                .doc(uid)
-                .update(data)
-                .then(() => {
-                  dispatch(userUpdated(uid, data));
-                })
-                .catch(error => {
-                  return dispatch(userUpdateFailed(uid, data, error));
-                })
-            })
-            .catch(error => {
-              return dispatch(userUpdateFailed(uid, data, error));
-            })
-        })
-        .catch(error => {
-          return dispatch(reauthenticationFailed(uid, error));
-        })
-    } else {
-      db.collection("user")
-        .doc(uid)
-        .update(data)
-        .then(() => {
-          dispatch(userUpdated(uid, data));
-        })
-        .catch(error => {
-          return dispatch(userUpdateFailed(uid, data, error));
-        })
-    }
+    db.collection("user")
+      .doc(uid)
+      .update(data)
+      .then(() => {
+        dispatch(userUpdated(uid, data));
+      })
+      .catch(error => {
+        return dispatch(userUpdateFailed(uid, data, error));
+      })
   };
 };

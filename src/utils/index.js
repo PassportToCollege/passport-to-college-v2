@@ -1,4 +1,5 @@
 import Cookies from "universal-cookie";
+import moment from "moment";
 
 const cookies = new Cookies();
 
@@ -25,4 +26,12 @@ export const isApplicant = () => {
     return cookies.get("ssid").isApplicant;
   
     return false;
+}
+
+export const sessionAge = () => {
+  const { createdAt } = cookies.get("ssid");
+  const end = moment(new Date());
+  const age = moment.duration(end.diff(createdAt));
+
+  return age.asHours();
 }

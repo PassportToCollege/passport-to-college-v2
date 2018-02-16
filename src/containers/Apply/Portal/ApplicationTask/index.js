@@ -7,8 +7,10 @@ import propTypes from 'prop-types';
 
 import * as applicationActions from "../../../../actions/applicationActions";
 import * as userActions from "../../../../actions/userActions";
+import { auth } from "../../../../utils/firebase";
 
 import { PersonalInformation } from './../../../../components/Forms/index';
+import { ReauthenticateModal } from "../../../../components/Modal";
 
 class ApplicationTask extends Component {
   constructor(props) {
@@ -18,7 +20,8 @@ class ApplicationTask extends Component {
       task: this.props.match.params.task,
       user: {},
       application: {},
-      uid: ""
+      uid: "",
+      email: ""
     };
   }
 
@@ -55,6 +58,12 @@ class ApplicationTask extends Component {
         return (
           <div className="application__portal_task personal__task">
             <h1>Personal Information</h1>
+            {
+              (this.props.user.hasFailed && this.props.user.error.code === "auth/requires-recent-login") ?
+              <ReauthenticateModal doAuthenticate={this.handleReauthenticate}/>
+                :
+              null
+            }
             {
               this.props.user.hasGotten ?
               <PersonalInformation 
@@ -115,6 +124,10 @@ class ApplicationTask extends Component {
     }
   }
 
+  handleReauthenticate = password => {
+    this.props.userActions.doUserEmailUpdateWithReauthentication(this.state.email, password);
+  }
+
   updateField = (e) => {
     let fieldName = e.target.name;
 
@@ -145,6 +158,17 @@ class ApplicationTask extends Component {
         }
 
         this.props.userActions.doUserUpdateWithoutGet(data);
+        break;
+      case "email":
+        let email = e.target.value;
+
+        // set email in state incase reauathentication is required
+        this.setState({ email });
+
+        if (email !== this.state.user.email) {
+          this.props.userActions.doUserEmailUpdate(email);
+        }
+
         break;
       default:
         console.log(fieldName);

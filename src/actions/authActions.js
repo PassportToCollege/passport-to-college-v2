@@ -59,7 +59,8 @@ export const doSignIn = (email, password) => {
                 isAdmin: user.isAdmin || false,
                 isApplicant: user.isApplicant || false,
                 isStaff: user.isStaff || false,
-                isStudent: user.isStudent || false
+                isStudent: user.isStudent || false,
+                createdAt: new Date()
               };
               cookies.set("ssid", d, { path: "/", maxAge: 60 * 60 * 24 });
               
