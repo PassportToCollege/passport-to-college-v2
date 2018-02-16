@@ -45,3 +45,23 @@ export const doApplicationGet = user => {
 }
 
 // UPDATE actions
+export const applicationUpdateInitiated = user => {
+  return {
+    type: types.APPLICATION_UPDATE_INITIATED,
+    user
+  };
+};
+
+export const applicationUpdated = application => {
+  return {
+    type: types.APPLICATION_UPDATED,
+    application
+  };
+};
+
+export const applicationUpdateFailed = (error, user) => {
+  return {
+    type: types.APPLICATION_UPDATE_FAILED,
+    error, user
+  };
+};

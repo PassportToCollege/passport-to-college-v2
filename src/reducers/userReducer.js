@@ -20,12 +20,14 @@ const user = (state = initialState.user, action) => {
       return Object.assign({}, state, {
         isGetting: true,
         hasFailed: false,
+        hasGotten: false,
         user: action.user,
       });
     case USER_GET_FAILED:
       return Object.assign({}, state, {
         isGetting: false,
         hasFailed: true,
+        hasGotten: false,
         user: action.user,
         error: action.error
       });

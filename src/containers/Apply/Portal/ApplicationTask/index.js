@@ -17,7 +17,8 @@ class ApplicationTask extends Component {
     this.state = {
       task: this.props.match.params.task,
       user: {},
-      application: {}
+      application: {},
+      uid: ""
     };
   }
 
@@ -31,12 +32,16 @@ class ApplicationTask extends Component {
 
     if (this.state.task !== nextProps.match.params.task)
       nextProps.setTask(nextProps.match.params.task);
-    
+
     if (nextProps.user.hasGotten)
       this.setState({ user: nextProps.user.user });
-
-    if (nextProps.application.hasGotten)
-      this.setState({ application: nextProps.application })
+    
+    if (nextProps.application.hasGotten) {
+      this.setState({ 
+        application: nextProps.application.application, 
+        uid: nextProps.application.user 
+      });
+    }
   }
 
   render() {
@@ -48,12 +53,12 @@ class ApplicationTask extends Component {
             {
               this.props.user.hasGotten ?
               <PersonalInformation 
-                updateName={this.updateName}
-                updateEmail={this.updateEmail}
-                updateCountry={this.updateCountry}
-                updatePhone={this.updatePhone}
-                updateGender={this.updateGender}
-                updateDOB={this.updateDOB}
+                updateName={this.updateField}
+                updateEmail={this.updateField}
+                updateCountry={this.updateField}
+                updatePhone={this.updateField}
+                updateGender={this.updateField}
+                updateDOB={this.updateField}
                 user={this.state.user} /> :
               null
             }
@@ -110,8 +115,41 @@ class ApplicationTask extends Component {
     }
   }
 
-  updateName = (e) => {
-    console.log(e.target);
+  updateField = (e) => {
+    let fieldName = e.target.name;
+
+    switch (fieldName) {
+      case "name":
+        let name = e.target.value;
+
+        // do nothign if name hasn't changed
+        if (name === this.state.user.name.full)
+          break;
+        
+        let data = {};
+        name = name.split(" ");
+
+        if (name.length > 2) {
+          data.name = {
+            first: name[0],
+            middle: name.slice(1, name.length - 1).join(" "),
+            last: name[name.length - 1],
+            full: [name[0], name[name.length - 1]].join(" ")
+          }
+        } else {
+          data.name = {
+            first: name[0],
+            last: name[1],
+            full: [name[0], name[1]].join(" ")
+          }
+        }
+
+        // update user
+        this.props.userActions.doUserUpdate(data);
+        break;
+      default:
+        console.log(fieldName);
+    }
   }
 }
 

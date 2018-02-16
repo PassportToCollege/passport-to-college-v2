@@ -134,7 +134,7 @@ export const doUserUpdate = (data) => {
     dispatch(userUpdateInitiated(uid, data));
 
     // update user auth email
-    if (data.email !== user.email) {
+    if (data.email && (data.email !== user.email)) {
       dispatch(reauthenticationInitiated(uid));
 
       let credential = firebase.auth.EmailAuthProvider.credential(user.email, data.password);
@@ -148,7 +148,8 @@ export const doUserUpdate = (data) => {
               dispatch(authEmailUpdated(uid));
 
               // update user in db
-              db.ref(`/users/${uid}`)
+              db.collection("user")
+                .doc(uid)
                 .update(data)
                 .then(() => {
                   dispatch(userUpdated(uid, data));
@@ -158,18 +159,19 @@ export const doUserUpdate = (data) => {
                   return dispatch(doUserGet(uid));
                 })
                 .catch(error => {
-                  return dispatch(userGetFailed(uid, data, error));
+                  return dispatch(userUpdateFailed(uid, data, error));
                 })
             })
             .catch(error => {
-              return dispatch(userGetFailed(uid, data, error));
+              return dispatch(userUpdateFailed(uid, data, error));
             })
         })
         .catch(error => {
           return dispatch(reauthenticationFailed(uid, error));
         })
       } else {
-        db.ref(`/users/${uid}`)
+        db.collection("user")
+          .doc(uid)
           .update(data)
           .then(() => {
             dispatch(userUpdated(uid, data));
@@ -179,7 +181,7 @@ export const doUserUpdate = (data) => {
             return dispatch(doUserGet(uid));
           })
           .catch(error => {
-            return dispatch(userGetFailed(uid, data, error));
+            return dispatch(userUpdateFailed(uid, data, error));
           })
       }
   };

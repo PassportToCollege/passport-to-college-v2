@@ -93,8 +93,7 @@ export const PersonalInformation = props => {
         <label>Phone</label>
       </div>
       <div className="form__input_container">
-        <select name="gender" onChange={props.updateGender}>
-          <option value="" defaultValue disabled>Choose One</option>
+        <select name="gender" onChange={props.updateGender} value={props.user.gender}>
           <option value="female">Female</option>
           <option value="male">Male</option>
         </select>
