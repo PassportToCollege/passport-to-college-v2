@@ -26,6 +26,11 @@ class ApplicationTask extends Component {
     this.props.setTask(this.state.task);
   }
 
+  componentWillUpdate(nextProps, nextState) {
+    if (this.state.task !== nextState.task)
+      this.props.userActions.doUserGet();
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.match && nextProps.match.params)
       this.setState({ task: nextProps.match.params.task });
@@ -53,13 +58,8 @@ class ApplicationTask extends Component {
             {
               this.props.user.hasGotten ?
               <PersonalInformation 
-                updateName={this.updateField}
-                updateEmail={this.updateField}
-                updateCountry={this.updateField}
-                updatePhone={this.updateField}
-                updateGender={this.updateField}
-                updateDOB={this.updateField}
-                user={this.state.user} /> :
+                updateField={this.updateField}
+                user={this.props.user.user} /> :
               null
             }
           </div>
@@ -125,7 +125,7 @@ class ApplicationTask extends Component {
         // do nothign if name hasn't changed
         if (name === this.state.user.name.full)
           break;
-        
+
         let data = {};
         name = name.split(" ");
 
@@ -137,15 +137,14 @@ class ApplicationTask extends Component {
             full: [name[0], name[name.length - 1]].join(" ")
           }
         } else {
-          data.name = {
+         data.name = {
             first: name[0],
             last: name[1],
             full: [name[0], name[1]].join(" ")
           }
         }
 
-        // update user
-        this.props.userActions.doUserUpdate(data);
+        this.props.userActions.doUserUpdateWithoutGet(data);
         break;
       default:
         console.log(fieldName);

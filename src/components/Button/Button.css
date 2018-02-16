@@ -9,3 +9,9 @@
   cursor: pointer;
   border-radius: 3px;
 }
+
+.button.button__solid {
+  color: #fff;
+  border: 2px solid #FF6561;
+  background-color: #FF6561;
+}

@@ -63,7 +63,9 @@ class ApplicationPortal extends Component {
             <Route exact path={`${this.props.match.url}/:task`}
               render={props => {
                 return <ApplicationTask {...props} 
-                  setTask={this.setTask} />
+                  setTask={this.setTask}
+                  user={this.state.user}
+                  application={this.state.application} />
               }}/>
             <Route exact path={this.props.match.url}
               render={this.renderWelcome}/>
@@ -146,7 +148,7 @@ class ApplicationPortal extends Component {
         </p>
 
         <h2>Instructions</h2>
-        <p>Your information is saved automatically, so do not worry about saving.</p>
+        <p>Your information is saved automatically. So don't worry about losing your information.</p>
         <p>
           Some sections contain <b>required fields</b>, 
           these fields must be completed.Required fields are marked with an asterisk (<span className="type--required-symbol">*</span>).
