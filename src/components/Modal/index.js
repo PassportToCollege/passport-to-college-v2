@@ -30,3 +30,7 @@ export const ReauthenticateModal = props => {
   )
 }
 
+ReauthenticateModal.propTypes = {
+  doAuthenticate: propTypes.func
+};
+
