@@ -170,8 +170,15 @@ class ApplicationTask extends Component {
         }
 
         break;
+      case "country":
+        this.props.userActions.doUserUpdateWithoutGet({ address: { country: e.target.value } });
+
+        break;
       default:
-        console.log(fieldName);
+        let defaultData = {};
+        defaultData[fieldName] = e.target.value;
+
+        this.props.userActions.doUserUpdateWithoutGet(defaultData);
     }
   }
 }

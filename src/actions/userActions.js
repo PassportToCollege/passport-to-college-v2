@@ -6,6 +6,8 @@ import * as types from "./actionTypes";
 import firebase from "firebase";
 import { auth, db } from "../utils/firebase";
 
+const Console = console;
+
 // USER GET actions
 
 export const userGetInitiated = uid => {
@@ -169,12 +171,12 @@ export const doUserEmailUpdate = email => {
             dispatch(userUpdated(uid, { email }));
           })
           .catch(error => {
-            console.log(error)
+            Console.log(error)
             return dispatch(userUpdateFailed(uid, { email }, error));
           })
       })
       .catch(error => {
-        console.log(error)
+        Console.log(error)
         return dispatch(userUpdateFailed(uid, { email }, error));
       })
   }
