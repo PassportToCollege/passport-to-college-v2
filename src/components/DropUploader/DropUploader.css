@@ -1,0 +1,37 @@
+.form.drop__uploader {
+  width: 100%;
+  background-color: #FFD889;
+  padding: 2em 1.525em;
+  margin-top: 2em;
+}
+
+.form.drop__uploader .drop__area {
+  background-color: #FFD889;
+  padding: 3em 0;
+  border: 4px dashed #FFCB61;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.form.drop__uploader .drop__area > svg {
+  font-size: 4em;
+  color: #FFB318;
+}
+
+.form.drop__uploader .drop__area>input[type="file"] {
+  max-width: 0;
+  max-height: 0;
+}
+
+.form.drop__uploader .drop__area>label {
+  margin: 1.5625em 0;
+  font-size: 1.45em;
+  color: #222;
+  font-family: "Muli",
+  "Nunito",
+  "Roboto",
+  sans-serif
+}

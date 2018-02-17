@@ -7,3 +7,35 @@
   font-size: 1.15em;
   line-height: 1.85;
 }
+
+.application__portal_task.profile_picture__task {
+  width: 600px;
+  max-width: 100%;
+}
+
+.application__portal_task.profile_picture__task .avatar__container {
+  width: 128px;
+  height: 128px;
+  border-radius: 128px;
+  overflow: hidden;
+  margin: 1em auto;
+}
+
+.application__portal_task.profile_picture__task .avatar__container > img {
+  max-width: 128px;
+}
+
+.application__portal_task.profile_picture__task .no__avatar {
+  width: 128px;
+  height: 128px;
+  border-radius: 128px;
+  padding: 2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: 4px solid #FFCB61;
+  color: #333;
+  text-align: center;
+  margin: 1em auto;
+}

@@ -7,10 +7,13 @@ import propTypes from 'prop-types';
 
 import * as applicationActions from "../../../../actions/applicationActions";
 import * as userActions from "../../../../actions/userActions";
+import * as avatarActions from "../../../../actions/avatarActions";
+
 import { auth } from "../../../../utils/firebase";
 
 import { PersonalInformation } from './../../../../components/Forms/index';
 import { ReauthenticateModal } from "../../../../components/Modal";
+import DropUploader from "../../../../components/DropUploader";
 
 class ApplicationTask extends Component {
   constructor(props) {
@@ -27,11 +30,20 @@ class ApplicationTask extends Component {
 
   componentWillMount() {
     this.props.setTask(this.state.task);
+
+    auth.onAuthStateChanged(user => {
+      if (user)
+        this.props.avatarActions.doAvatarGet(user.uid);
+    });
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if (this.state.task !== nextState.task)
+    if (this.state.task !== nextState.task) {
       this.props.userActions.doUserGet();
+
+      if (nextState.task === "profile-picture")
+        this.props.avatarActions.doAvatarGet(this.state.uid);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -77,6 +89,15 @@ class ApplicationTask extends Component {
         return (
           <div className="application__portal_task profile_picture__task">
             <h1>Profile Picture</h1>
+            {
+              this.props.avatar.url ?
+              <div className="avatar__container">
+                <img src={this.props.avatar.url} alt="Profile" />
+              </div>
+                :
+              <span className="no__avatar">No profile</span>
+            }
+            <DropUploader handleAvatarChange={this.handleAvatarChange} />
           </div>
         );
       case "education":
@@ -126,6 +147,12 @@ class ApplicationTask extends Component {
 
   handleReauthenticate = password => {
     this.props.userActions.doUserEmailUpdateWithReauthentication(this.state.email, password);
+  }
+
+  handleAvatarChange = e => {
+    let newGravatar = e.files[0];
+
+    this.props.avatarActions.doAvatarUpload(newGravatar);
   }
 
   updateField = (e) => {
@@ -194,6 +221,7 @@ ApplicationTask.propTypes = {
 
 const mapStateToProps = state => {
   return {
+    avatar: state.avatar,
     user: state.user,
     application: state.application
   };
@@ -202,7 +230,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     applicationActions: bindActionCreators(applicationActions, dispatch),
-    userActions: bindActionCreators(userActions, dispatch)
+    userActions: bindActionCreators(userActions, dispatch),
+    avatarActions: bindActionCreators(avatarActions, dispatch)
   };
 };
 
