@@ -19,10 +19,9 @@
   border-radius: 128px;
   overflow: hidden;
   margin: 1em auto;
-}
-
-.application__portal_task.profile_picture__task .avatar__container > img {
-  max-width: 128px;
+  background-position: center;
+  background-size: cover;
+  border: 2px solid #FFCB61;
 }
 
 .application__portal_task.profile_picture__task .no__avatar {

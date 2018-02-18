@@ -39,10 +39,8 @@ class ApplicationTask extends Component {
 
   componentWillUpdate(nextProps, nextState) {
     if (this.state.task !== nextState.task) {
-      this.props.userActions.doUserGet();
-
-      if (nextState.task === "profile-picture")
-        this.props.avatarActions.doAvatarGet(this.state.uid);
+      if (nextState.task !== "profile-picture")
+        this.props.userActions.doUserGet();
     }
   }
 
@@ -91,8 +89,7 @@ class ApplicationTask extends Component {
             <h1>Profile Picture</h1>
             {
               this.props.avatar.url ?
-              <div className="avatar__container">
-                <img src={this.props.avatar.url} alt="Profile" />
+              <div className="avatar__container" style={{ backgroundImage: `url(${this.props.avatar.url})` }}>
               </div>
                 :
               <span className="no__avatar">No profile</span>
