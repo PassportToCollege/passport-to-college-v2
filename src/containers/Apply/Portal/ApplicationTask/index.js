@@ -101,7 +101,12 @@ class ApplicationTask extends Component {
         return (
           <div className="application__portal_task education__task">
             <h1>Education Information</h1>
-            <EducationInformation />
+            {
+              this.props.application.hasGotten ?
+              <EducationInformation application={this.props.application} />
+                :
+              null
+            }
           </div>
         );
       case "us-standardized-tests":

@@ -104,11 +104,11 @@ export const PersonalInformation = props => {
   );
 };
 
-export const EducationInformation = props => {
+export const EducationInformation = ({ application }) => {
   return (
     <form className="form application_task__form application__education_information">
       <div className="form__input_container">
-        <select name="educationLevel" required>
+        <select name="educationLevel" required value={application.educationLevel}>
           <option value="no high school">Less than high school</option>
           <option value="high school">High school graduate</option>
           <option value="college no degree">Some college, no degree</option>
@@ -119,22 +119,26 @@ export const EducationInformation = props => {
         <label>What is the highest level of education you have completed?</label>
       </div>
       <div className="form__input_container">
-        <input type="text" name="lastSchool" required placeholder="Boat School of Hogwarts"/>
+        <input type="text" name="lastSchool" required 
+          placeholder="Boat School of Hogwarts"
+          defaultValue={application.lastSchool} />
         <label>What is the last school you attended?</label>
       </div>
       <div className="form__input_container">
-        <input type="number" name="gpa" required min="0" max="4.00" step="0.01" placeholder="3.88"/>
+        <input type="number" name="gpa" required min="0" max="4.00" 
+          step="0.01" placeholder="3.88"
+          defaultValue={application.gpa} />
         <label>What is grade point average (GPA) out of 4.00?</label>
       </div>
     </form>    
   )
 }
 
-export const USTest = props => {
+export const USTest = ({ application }) => {
   return (
     <form className="form application_task__form application__us_test">
       <div className="form__input_container">
-        <select name="usTest" required>
+        <select name="usTest" required value={application.usTest}>
           <option value="none">None</option>
           <option value="ACT">ACT</option>
           <option value="SAT">SAT</option>
@@ -144,7 +148,9 @@ export const USTest = props => {
         <span className="type__small type__block">If you have sat multiple tests, select the test with your highest score.</span> 
       </div>
       <div className="form__input_container">
-        <input type="number" required min="0" max="2400" placeholder="0" />
+        <input type="number" required min="0" max="2400" 
+          placeholder="0" name="score"
+          defaultValue={application.score} />
         <label>Score</label>
         <span className="type__small">Enter 0 if you selected 'None'.</span>
       </div>
@@ -152,11 +158,11 @@ export const USTest = props => {
   )
 }
 
-export const Miscellaneous = props => {
+export const Miscellaneous = ({ application }) => {
   return (
     <form className="form application_task__form application__misc">
       <div className="form__input_container">
-        <select id="income" name="income" required>
+        <select id="income" name="income" required value={application.income}>
           <option value="10000">Less than $10,000</option>
           <option value="34999">Less than $35,000 but more tha $10,000</option>
           <option value="49999">Less than $50,000 but more than $35,000</option>
@@ -170,7 +176,7 @@ export const Miscellaneous = props => {
         </label>
       </div>
       <div className="form__input_container">
-        <select id="interest" name="interest" required>
+        <select id="interest" name="interest" required value={application.interest}>
           <option value="business">Business</option>
           <option value="education">Education</option>
           <option value="humanities">Humanities</option>
@@ -182,10 +188,10 @@ export const Miscellaneous = props => {
         </label>
       </div>
       <div className="form__input_container">
-        <select id="workEthic" name="workEthic" required>
+        <select id="workEthic" name="workEthic" required value={application.workEthic}>
           <option value="below average">I love sleep</option>
           <option value="average">Average</option>
-          <option value="excellent" selected="selected">Grind all night</option>
+          <option value="excellent">Grind all night</option>
         </select>
         <label htmlFor="workEthic">
           Which of these categories best describe your work ethic? 
@@ -216,4 +222,16 @@ StartApplication.propTypes = {
 PersonalInformation.propTypes = {
   updateField: propTypes.func,
   user: propTypes.object
+};
+
+EducationInformation.propTypes = {
+  application: propTypes.object
+};
+
+USTest.propTypes = {
+  application: propTypes.object
+};
+
+Miscellaneous.propTypes = {
+  application: propTypes.object
 };
