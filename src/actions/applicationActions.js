@@ -45,23 +45,39 @@ export const doApplicationGet = user => {
 }
 
 // UPDATE actions
-export const applicationUpdateInitiated = user => {
+export const applicationUpdateInitiated = (user, data) => {
   return {
     type: types.APPLICATION_UPDATE_INITIATED,
-    user
+    user, data
   };
 };
 
-export const applicationUpdated = application => {
+export const applicationUpdated = (user, data) => {
   return {
     type: types.APPLICATION_UPDATED,
-    application
+    user, data
   };
 };
 
-export const applicationUpdateFailed = (error, user) => {
+export const applicationUpdateFailed = (error, user, data) => {
   return {
     type: types.APPLICATION_UPDATE_FAILED,
     error, user
+  };
+};
+
+export const doApplicationUpdateWithoutGet = (user, data) => {
+  return dispatch => {
+    dispatch(applicationUpdateInitiated(user, data));
+
+    db.collection("application")
+      .doc(user)
+      .update(data)
+      .then(() => {
+        dispatch(applicationUpdated(user, data));
+      })
+      .catch(error => {
+        dispatch(applicationUpdateFailed(error, user, data));
+      });
   };
 };

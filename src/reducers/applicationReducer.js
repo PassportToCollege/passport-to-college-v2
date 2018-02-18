@@ -32,6 +32,31 @@ const application = (state = initialState.application, action) => {
         hasGotten: true,
         application: action.application
       });
+    case APPLICATION_UPDATE_INITIATED:
+      return Object.assign({}, state, {
+        isUpdating: true,
+        hasUpdated: false,
+        hasFailed: false,
+        user: action.user,
+        data: action.data
+      });
+    case APPLICATION_UPDATED:
+      return Object.assign({}, state, {
+        isUpdating: false,
+        hasUpdated: true,
+        hasFailed: false,
+        user: action.user,
+        data: action.data
+      });
+    case APPLICATION_UPDATE_FAILED:
+      return Object.assign({}, state, {
+        isUpdating: false,
+        hasUpdated: false,
+        hasFailed: true,
+        user: action.user,
+        data: action.data,
+        error: action.error
+      });
     default:
       return state;
   }
