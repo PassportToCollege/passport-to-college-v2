@@ -11,7 +11,7 @@ import * as avatarActions from "../../../../actions/avatarActions";
 
 import { auth } from "../../../../utils/firebase";
 
-import { PersonalInformation, EducationInformation } from './../../../../components/Forms/index';
+import { PersonalInformation, EducationInformation, USTest, Miscellaneous } from './../../../../components/Forms/index';
 import { ReauthenticateModal } from "../../../../components/Modal";
 import DropUploader from "../../../../components/DropUploader";
 
@@ -108,6 +108,7 @@ class ApplicationTask extends Component {
         return (
           <div className="application__portal_task us_tests__task">
             <h1>US Standardized Tests</h1>
+            <USTest />
           </div>
         );
       case "national-tests":
@@ -120,6 +121,7 @@ class ApplicationTask extends Component {
         return (
           <div className="application__portal_task miscellaneous__task">
             <h1>Miscellaneous</h1>
+            <Miscellaneous />
           </div>
         );
       case "essay":

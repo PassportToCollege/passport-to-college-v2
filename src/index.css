@@ -18,3 +18,11 @@ body {
   background-color: #444;
   margin: 0;
 }
+
+.type__small {
+  font-size: 0.765em;
+}
+
+.type__block {
+  display: block;
+}

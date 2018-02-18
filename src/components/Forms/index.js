@@ -4,37 +4,31 @@ import React from "react";
 import propTypes from "prop-types";
 
 export const SignInForm = props => {
-    return (
-      <form className="form signin__form" method="post" onSubmit={props.handleSignIn}>
-        {
-          props.title ?
-          <h2 className="form__title">{props.title}</h2> :
-          null
-        }
-        <div className="form__input_container">
-          <input type="email" name="email" required onChange={props.updateEmail} />
-          <label>Email</label>
-        </div>
-        <div className="form__input_container">
-          <input type="password" name="password" required onChange={props.updatePassword} />
-          <label>Password</label>
-        </div>
-        <div className="form__input_container">
-          <button className="form__button" type="submit">{props.submitText || "Sign In"}</button>
-        </div>
-      </form>
-    );
+
+  return (
+    <form className="form signin__form" method="post" onSubmit={props.handleSignIn}>
+      {
+        props.title ?
+        <h2 className="form__title">{props.title}</h2> :
+        null
+      }
+      <div className="form__input_container">
+        <input type="email" name="email" required onChange={props.updateEmail} />
+        <label>Email</label>
+      </div>
+      <div className="form__input_container">
+        <input type="password" name="password" required onChange={props.updatePassword} />
+        <label>Password</label>
+      </div>
+      <div className="form__input_container">
+        <button className="form__button" type="submit">{props.submitText || "Sign In"}</button>
+      </div>
+    </form>
+  );
 }
 
-SignInForm.propTypes = {
-  title: propTypes.string,
-  submitText: propTypes.string,
-  handleSignIn: propTypes.func,
-  updateEmail: propTypes.func,
-  updatePassword: propTypes.func
-};
-
 export const StartApplication = props => {
+
   return (
     <form className="form signin__form" method="post" onSubmit={props.handleAccountCreation}>
       {
@@ -60,13 +54,6 @@ export const StartApplication = props => {
     </form>
   )
 }
-
-StartApplication.prototypes = {
-  title: propTypes.string,
-  handleSignIn: propTypes.func,
-  updateEmail: propTypes.func,
-  updatePassword: propTypes.func
-};
 
 export const PersonalInformation = props => {
   return (
@@ -117,11 +104,6 @@ export const PersonalInformation = props => {
   );
 };
 
-PersonalInformation.prototypes = {
-  updateField: propTypes.func,
-  user: propTypes.object
-};
-
 export const EducationInformation = props => {
   return (
     <form className="form application_task__form application__education_information">
@@ -147,3 +129,91 @@ export const EducationInformation = props => {
     </form>    
   )
 }
+
+export const USTest = props => {
+  return (
+    <form className="form application_task__form application__us_test">
+      <div className="form__input_container">
+        <select name="usTest" required>
+          <option value="none">None</option>
+          <option value="ACT">ACT</option>
+          <option value="SAT">SAT</option>
+        </select>
+        <label>Which U.S. standardized test have you taken?</label>
+        <span className="type__small type__block">Selecting none will not affect your application.</span>
+        <span className="type__small type__block">If you have sat multiple tests, select the test with your highest score.</span> 
+      </div>
+      <div className="form__input_container">
+        <input type="number" required min="0" max="2400" placeholder="0" />
+        <label>Score</label>
+        <span className="type__small">Enter 0 if you selected 'None'.</span>
+      </div>
+    </form>
+  )
+}
+
+export const Miscellaneous = props => {
+  return (
+    <form className="form application_task__form application__misc">
+      <div className="form__input_container">
+        <select id="income" name="income" required>
+          <option value="10000">Less than $10,000</option>
+          <option value="34999">Less than $35,000 but more tha $10,000</option>
+          <option value="49999">Less than $50,000 but more than $35,000</option>
+          <option value="74999">Less than $75,000 but more than $50,000</option>
+          <option value="99999">Less than $100,000 but more than $75,000</option>
+          <option value="149999">Less than $150,000 but more than $100,000</option>
+          <option value="150000">More than $150,000</option>
+        </select>
+        <label htmlFor="income">
+          Which of these categories best describe your family's combined annual income (USD)?
+        </label>
+      </div>
+      <div className="form__input_container">
+        <select id="interest" name="interest" required>
+          <option value="business">Business</option>
+          <option value="education">Education</option>
+          <option value="humanities">Humanities</option>
+          <option value="stem">STEM</option>
+          <option value="undecided">Undecided</option>
+        </select>
+        <label htmlFor="interest">
+          Which of these categories best describe the area of study you would like to pursue? 
+        </label>
+      </div>
+      <div className="form__input_container">
+        <select id="workEthic" name="workEthic" required>
+          <option value="below average">I love sleep</option>
+          <option value="average">Average</option>
+          <option value="excellent" selected="selected">Grind all night</option>
+        </select>
+        <label htmlFor="workEthic">
+          Which of these categories best describe your work ethic? 
+        </label>
+      </div>
+    </form>
+  )
+}
+
+// Proptypes
+SignInForm.propTypes = {
+  title: propTypes.string,
+  submitText: propTypes.string,
+  handleSignIn: propTypes.func,
+  updateEmail: propTypes.func,
+  updatePassword: propTypes.func
+};
+
+StartApplication.propTypes = {
+  title: propTypes.string,
+  handleSignIn: propTypes.func,
+  updateEmail: propTypes.func,
+  updatePassword: propTypes.func,
+  updateName: propTypes.func,
+  handleAccountCreation: propTypes.func
+};
+
+PersonalInformation.propTypes = {
+  updateField: propTypes.func,
+  user: propTypes.object
+};
