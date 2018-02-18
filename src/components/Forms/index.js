@@ -80,7 +80,8 @@ export const PersonalInformation = props => {
         <label>Phone</label>
       </div>
       <div className="form__input_container">
-        <select name="gender" onChange={props.updateField} value={props.user.gender}>
+        <select name="gender" onChange={props.updateField} defaultValue={props.user.gender}>
+          <option value="" disabled>Select One</option>
           <option value="female">Female</option>
           <option value="male">Male</option>
         </select>
@@ -104,16 +105,18 @@ export const PersonalInformation = props => {
   );
 };
 
-export const EducationInformation = ({ application }) => {
+export const EducationInformation = ({ application, updateApplicationField }) => {
   return (
     <form className="form application_task__form application__education_information">
       <div className="form__input_container">
-        <select name="educationLevel" required value={application.educationLevel}>
+        <select name="educationLevel" required defaultValue={application.application.educationLevel}
+          onChange={updateApplicationField}>
+          <option value="" disabled>Select One</option>
           <option value="no high school">Less than high school</option>
           <option value="high school">High school graduate</option>
           <option value="college no degree">Some college, no degree</option>
-          <option value="associate">Associate&quot;s degree</option>
-          <option value="bachelor">Bachelor&quot;s degree</option>
+          <option value="associate">Associate&apos;s degree</option>
+          <option value="bachelor">Bachelor&apos;s degree</option>
           <option value="graduate">Graduate or professional degree</option>
         </select>
         <label>What is the highest level of education you have completed?</label>
@@ -121,24 +124,28 @@ export const EducationInformation = ({ application }) => {
       <div className="form__input_container">
         <input type="text" name="lastSchool" required 
           placeholder="Boat School of Hogwarts"
-          defaultValue={application.lastSchool} />
+          defaultValue={application.application.lastSchool}
+          onBlur={updateApplicationField} />
         <label>What is the last school you attended?</label>
       </div>
       <div className="form__input_container">
         <input type="number" name="gpa" required min="0" max="4.00" 
           step="0.01" placeholder="3.88"
-          defaultValue={application.gpa} />
+          defaultValue={application.application.gpa}
+          onBlur={updateApplicationField} />
         <label>What is grade point average (GPA) out of 4.00?</label>
       </div>
     </form>    
   )
 }
 
-export const USTest = ({ application }) => {
+export const USTest = ({ application, updateApplicationField }) => {
   return (
     <form className="form application_task__form application__us_test">
       <div className="form__input_container">
-        <select name="usTest" required value={application.usTest}>
+        <select name="usTest" required defaultValue={application.application.usTest}
+          onChange={updateApplicationField}>
+          <option value="" disabled>Select One</option>
           <option value="none">None</option>
           <option value="ACT">ACT</option>
           <option value="SAT">SAT</option>
@@ -150,19 +157,22 @@ export const USTest = ({ application }) => {
       <div className="form__input_container">
         <input type="number" required min="0" max="2400" 
           placeholder="0" name="score"
-          defaultValue={application.score} />
+          defaultValue={application.application.score} 
+          onBlur={updateApplicationField}/>
         <label>Score</label>
-        <span className="type__small">Enter 0 if you selected 'None'.</span>
+        <span className="type__small">Enter 0 if you selected &apos;None.&apos;</span>
       </div>
     </form>
   )
 }
 
-export const Miscellaneous = ({ application }) => {
+export const Miscellaneous = ({ application, updateApplicationField }) => {
   return (
     <form className="form application_task__form application__misc">
       <div className="form__input_container">
-        <select id="income" name="income" required value={application.income}>
+        <select id="income" name="income" required defaultValue={application.application.income}
+          onChange={updateApplicationField}>
+          <option value="" disabled>Select One</option>
           <option value="10000">Less than $10,000</option>
           <option value="34999">Less than $35,000 but more tha $10,000</option>
           <option value="49999">Less than $50,000 but more than $35,000</option>
@@ -172,11 +182,13 @@ export const Miscellaneous = ({ application }) => {
           <option value="150000">More than $150,000</option>
         </select>
         <label htmlFor="income">
-          Which of these categories best describe your family's combined annual income (USD)?
+          Which of these categories best describe your family&apos;s combined annual income (USD)?
         </label>
       </div>
       <div className="form__input_container">
-        <select id="interest" name="interest" required value={application.interest}>
+        <select id="interest" name="interest" required defaultValue={application.application.interest}
+          onChange={updateApplicationField}>
+          <option value="" disabled>Select One</option>
           <option value="business">Business</option>
           <option value="education">Education</option>
           <option value="humanities">Humanities</option>
@@ -188,7 +200,9 @@ export const Miscellaneous = ({ application }) => {
         </label>
       </div>
       <div className="form__input_container">
-        <select id="workEthic" name="workEthic" required value={application.workEthic}>
+        <select id="workEthic" name="workEthic" required defaultValue={application.application.workEthic}
+          onChange={updateApplicationField}>
+          <option value="" disabled>Select One</option>
           <option value="below average">I love sleep</option>
           <option value="average">Average</option>
           <option value="excellent">Grind all night</option>
@@ -224,14 +238,7 @@ PersonalInformation.propTypes = {
   user: propTypes.object
 };
 
-EducationInformation.propTypes = {
-  application: propTypes.object
-};
-
-USTest.propTypes = {
-  application: propTypes.object
-};
-
-Miscellaneous.propTypes = {
-  application: propTypes.object
+EducationInformation.propTypes = USTest.propTypes = Miscellaneous.propTypes = {
+  application: propTypes.object,
+  updateApplicationField: propTypes.func
 };

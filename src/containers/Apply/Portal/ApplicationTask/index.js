@@ -39,6 +39,9 @@ class ApplicationTask extends Component {
 
   componentWillUpdate(nextProps, nextState) {
     if (this.state.task !== nextState.task) {
+      if (nextState.task !== "personal" || nextState.task !== "profile-picture")
+        this.props.applicationActions.doApplicationGet(this.props.application.user);
+        
       if (nextState.task !== "profile-picture")
         this.props.userActions.doUserGet();
     }
@@ -103,7 +106,8 @@ class ApplicationTask extends Component {
             <h1>Education Information</h1>
             {
               this.props.application.hasGotten ?
-              <EducationInformation application={this.props.application} />
+              <EducationInformation application={this.props.application} 
+                updateApplicationField={this.updateApplicationField} />
                 :
               null
             }
@@ -115,7 +119,8 @@ class ApplicationTask extends Component {
             <h1>US Standardized Tests</h1>
             {
               this.props.application.hasGotten ?
-                <USTest application={this.props.application} />
+                <USTest application={this.props.application} 
+                  updateApplicationField={this.updateApplicationField} />
                 :
               null
             }
@@ -133,7 +138,8 @@ class ApplicationTask extends Component {
             <h1>Miscellaneous</h1>
             {
               this.props.application.hasGotten ?
-              <Miscellaneous application={this.props.application}/>
+              <Miscellaneous application={this.props.application}
+                updateApplicationField={this.updateApplicationField} />
                 :
               null
             }
@@ -222,6 +228,13 @@ class ApplicationTask extends Component {
 
         this.props.userActions.doUserUpdateWithoutGet(defaultData);
     }
+  }
+
+  updateApplicationField = e => {
+    let data = {};
+    data[e.target.name] = e.target.value;
+
+    this.props.applicationActions.doApplicationUpdateWithoutGet(this.props.application.user, data);
   }
 }
 

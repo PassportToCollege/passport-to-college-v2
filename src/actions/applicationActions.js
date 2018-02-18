@@ -1,6 +1,8 @@
 import * as types from "./actionTypes";
 import { db } from "../utils/firebase";
 
+const Console = console;
+
 // GET actions
 export const applicationGetInitiated = user => {
   return {
@@ -38,7 +40,7 @@ export const doApplicationGet = user => {
         }
       })
       .catch(error => {
-        console.log(error);
+        Console.error(error);
         dispatch(applicationGetFailed(error, user));
       })
   }
@@ -62,7 +64,7 @@ export const applicationUpdated = (user, data) => {
 export const applicationUpdateFailed = (error, user, data) => {
   return {
     type: types.APPLICATION_UPDATE_FAILED,
-    error, user
+    error, user, data
   };
 };
 
@@ -77,6 +79,7 @@ export const doApplicationUpdateWithoutGet = (user, data) => {
         dispatch(applicationUpdated(user, data));
       })
       .catch(error => {
+        Console.error(error);
         dispatch(applicationUpdateFailed(error, user, data));
       });
   };
