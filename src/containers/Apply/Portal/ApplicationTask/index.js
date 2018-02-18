@@ -113,7 +113,12 @@ class ApplicationTask extends Component {
         return (
           <div className="application__portal_task us_tests__task">
             <h1>US Standardized Tests</h1>
-            <USTest />
+            {
+              this.props.application.hasGotten ?
+                <USTest application={this.props.application} />
+                :
+              null
+            }
           </div>
         );
       case "national-tests":
@@ -126,7 +131,12 @@ class ApplicationTask extends Component {
         return (
           <div className="application__portal_task miscellaneous__task">
             <h1>Miscellaneous</h1>
-            <Miscellaneous />
+            {
+              this.props.application.hasGotten ?
+              <Miscellaneous application={this.props.application}/>
+                :
+              null
+            }
           </div>
         );
       case "essay":
