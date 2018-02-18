@@ -76,7 +76,7 @@ export const doAvatarUpload = file => {
         dispatch(avatarUploaded());
 
         // get new avatar
-        dispatch(doAvatarGet());
+        dispatch(doAvatarGet(user));
       })
       .catch(error => {
         dispatch(avatarUploadFailed(error));

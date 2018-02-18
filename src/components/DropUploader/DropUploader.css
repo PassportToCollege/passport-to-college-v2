@@ -14,6 +14,11 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: border-width 200ms linear;
+}
+
+.form.drop__uploader .drop__area.item__enter {
+  border-width: 8px;
 }
 
 .form.drop__uploader .drop__area > svg {
