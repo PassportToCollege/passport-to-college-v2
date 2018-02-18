@@ -121,3 +121,29 @@ PersonalInformation.prototypes = {
   updateField: propTypes.func,
   user: propTypes.object
 };
+
+export const EducationInformation = props => {
+  return (
+    <form className="form application_task__form application__education_information">
+      <div className="form__input_container">
+        <select name="educationLevel" required>
+          <option value="no high school">Less than high school</option>
+          <option value="high school">High school graduate</option>
+          <option value="college no degree">Some college, no degree</option>
+          <option value="associate">Associate&quot;s degree</option>
+          <option value="bachelor">Bachelor&quot;s degree</option>
+          <option value="graduate">Graduate or professional degree</option>
+        </select>
+        <label>What is the highest level of education you have completed?</label>
+      </div>
+      <div className="form__input_container">
+        <input type="text" name="lastSchool" required placeholder="Boat School of Hogwarts"/>
+        <label>What is the last school you attended?</label>
+      </div>
+      <div className="form__input_container">
+        <input type="number" name="gpa" required min="0" max="4.00" step="0.01" placeholder="3.88"/>
+        <label>What is grade point average (GPA) out of 4.00?</label>
+      </div>
+    </form>    
+  )
+}
