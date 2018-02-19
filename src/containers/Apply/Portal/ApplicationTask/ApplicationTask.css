@@ -8,6 +8,7 @@
   line-height: 1.85;
 }
 
+/* Profile Picture */
 .application__portal_task.profile_picture__task {
   width: 600px;
   max-width: 100%;
@@ -37,4 +38,10 @@
   color: #333;
   text-align: center;
   margin: 1em auto;
+}
+
+/* National Tests */
+.application__portal_task.national_tests__task {
+  width: 600px;
+  max-width: 100%;
 }

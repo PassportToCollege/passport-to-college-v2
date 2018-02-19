@@ -16,6 +16,7 @@ import { ReauthenticateModal } from "../../../../components/Modal";
 import DropUploader from "../../../../components/DropUploader";
 import Button from "../../../../components/Button";
 import { AddNationalTest } from "../../../../components/Modal";
+import TestList from "../../../../components/TestList";
 
 class ApplicationTask extends Component {
   constructor(props) {
@@ -142,6 +143,12 @@ class ApplicationTask extends Component {
                 handleTestAdded={this.handleTestAdded} />
                 :
               null
+            }
+            {
+              this.props.application.hasGotten && Object.keys(this.state.application.tests).length ?
+              <TestList tests={this.state.application.tests} />
+                :
+              <p>No tests added.</p>
             }
           </div>
         );
