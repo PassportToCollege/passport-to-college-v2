@@ -194,7 +194,7 @@ class ApplicationTask extends Component {
     let fieldName = e.target.name;
 
     switch (fieldName) {
-      case "name":
+      case "name": {
         let name = e.target.value;
 
         // do nothign if name hasn't changed
@@ -221,7 +221,8 @@ class ApplicationTask extends Component {
 
         this.props.userActions.doUserUpdateWithoutGet(data);
         break;
-      case "email":
+      }
+      case "email": {
         let email = e.target.value;
 
         // set email in state incase reauathentication is required
@@ -232,15 +233,17 @@ class ApplicationTask extends Component {
         }
 
         break;
+      }
       case "country":
         this.props.userActions.doUserUpdateWithoutGet({ address: { country: e.target.value } });
 
         break;
-      default:
+      default: {
         let defaultData = {};
         defaultData[fieldName] = e.target.value;
 
         this.props.userActions.doUserUpdateWithoutGet(defaultData);
+      }
     }
   }
 
@@ -256,6 +259,8 @@ ApplicationTask.propTypes = {
   setTask: propTypes.func,
   match: propTypes.object,
   applicationActions: propTypes.object,
+  avatarActions: propTypes.object,
+  avatar: propTypes.object,
   application: propTypes.object,
   userActions: propTypes.object,
   user: propTypes.object

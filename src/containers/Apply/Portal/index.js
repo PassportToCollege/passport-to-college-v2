@@ -148,7 +148,7 @@ class ApplicationPortal extends Component {
         </p>
 
         <h2>Instructions</h2>
-        <p>Your information is saved automatically. So don't worry about losing your information.</p>
+        <p>Your information is saved automatically. So don&apos;t worry about losing your information.</p>
         <p>
           Some sections contain <b>required fields</b>, 
           these fields must be completed.Required fields are marked with an asterisk (<span className="type--required-symbol">*</span>).
