@@ -32,7 +32,7 @@ export const ReauthenticateModal = props => {
   )
 }
 
-export const AddNationalTest = ({ doClose }) => {
+export const AddNationalTest = ({ doClose, handleInputChange, handleTestAdded }) => {
   const closeModal = () => {
     this.modalContainer.classList.add("close");
 
@@ -40,12 +40,24 @@ export const AddNationalTest = ({ doClose }) => {
       doClose();
   }
 
+  const addTest = () => {
+    if ("function" === typeof handleTestAdded)
+      handleTestAdded();
+    
+    closeModal();
+  }
+
+  const inputChanged = e => {
+    if ("function" === typeof handleInputChange)
+      handleInputChange(e);
+  }
+
   return (
     <div className="modal__container modal__add_national_test"
       ref={div => this.modalContainer = div}>
       <div className="modal__bg" onClick={closeModal}></div>
       <div className="modal__content">
-        <NationalTest />
+        <NationalTest handleTestAdded={addTest} handleInputChange={inputChanged} />
       </div>
     </div>
   )
@@ -57,6 +69,8 @@ ReauthenticateModal.propTypes = {
 };
 
 AddNationalTest.propTypes = {
-  doClose: propTypes.func
+  doClose: propTypes.func,
+  handleInputChange: propTypes.func,
+  handleTestAdded: propTypes.func
 };
 

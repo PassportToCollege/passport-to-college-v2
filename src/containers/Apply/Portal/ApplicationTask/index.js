@@ -27,7 +27,8 @@ class ApplicationTask extends Component {
       application: {},
       uid: "",
       email: "",
-      isAddingTest: false
+      isAddingTest: false,
+      addTestModal: {}
     };
   }
 
@@ -136,8 +137,9 @@ class ApplicationTask extends Component {
             <Button type="button" text="Add New Test" doClick={this.handleAddTestClick} />
             {
               this.state.isAddingTest ?
-              <AddNationalTest key={Math.random()} 
-                doClose={this.handleTestModalClose} />
+              <AddNationalTest doClose={this.handleTestModalClose}
+                handleInputChange={this.handleTestModalInputChange}
+                handleTestAdded={this.handleTestAdded} />
                 :
               null
             }
@@ -178,7 +180,21 @@ class ApplicationTask extends Component {
   }
 
   handleAddTestClick = () => this.setState({ isAddingTest: true });
-  handleTestModalClose = () => this.setState({ isAddingTest: false });
+  handleTestModalClose = () => this.setState({ isAddingTest: false, addTestModal: {} });
+  handleTestModalInputChange = e => {
+    const target = e.target;
+    const value = target.value;
+    const name = target.name;
+    const newData = Object.assign({}, this.state.addTestModal, {
+      [name]: value
+    });
+
+    this.setState({ addTestModal: newData });
+  }
+
+  handleTestAdded = () => {
+    console.log(this.state.addTestModal);
+  }
 
   handleReauthenticate = password => {
     this.props.userActions.doUserEmailUpdateWithReauthentication(this.state.email, password);

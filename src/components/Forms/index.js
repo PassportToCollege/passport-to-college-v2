@@ -217,35 +217,54 @@ export const Miscellaneous = ({ application, updateApplicationField }) => {
   )
 }
 
-export const NationalTest = () => {
+export const NationalTest = ({ handleTestAdded, handleInputChange }) => {
+  const inputChanged = e => {
+    if ("function" === typeof handleInputChange)
+      handleInputChange(e);
+  }
+
+  const formSubmitted = e => {
+    e.preventDefault();
+
+    if ("function" === typeof handleTestAdded)
+      handleTestAdded();
+  }
+
   return (
-    <form className="form application_task__form application__national_test">
+    <form className="form application_task__form application__national_test"
+      onSubmit={formSubmitted}>
       <h2>Add a new national test</h2>
       <div className="form__input_container">
-        <input type="text" name="country" required placeholder="Jamaica"/>
+        <input type="text" name="country" required placeholder="Jamaica"
+          onBlur={inputChanged}/>
         <label>Country</label>
       </div>
       <div className="form__input_container">
-        <input type="text" name="board" required placeholder="CXC" />
+        <input type="text" name="board" required placeholder="CXC"
+          onBlur={inputChanged} />
         <label>Examination Board</label>
       </div>
       <div className="form__input_container">
-        <input type="text" name="examination" required placeholder="CAPE" />
+        <input type="text" name="examination" required placeholder="CAPE"
+          onBlur={inputChanged} />
         <label>Examination</label>
       </div>
       <div className="form__input_container">
-        <input type="text" name="subject" required placeholder="Mathematics" />
+        <input type="text" name="subject" required placeholder="Mathematics"
+          onBlur={inputChanged} />
         <label>Subject</label>
       </div>
       <div className="form__input_container">
         <input type="number" name="year" required 
           placeholder={new Date().getFullYear() - 5} 
-          min={new Date().getFullYear() - 5} 
-          max={new Date().getFullYear()} />
+          min="2000"
+          max={new Date().getFullYear()}
+          onBlur={inputChanged} />
         <label>Year</label>
       </div>
       <div className="form__input_container">
-        <input type="number" name="grade" required placeholder="1" />
+        <input type="number" name="grade" required placeholder="1"
+          onBlur={inputChanged} />
         <label>Grade (Number)</label>
       </div>
       <Button type="submit" text="add" solid/>
@@ -279,4 +298,9 @@ PersonalInformation.propTypes = {
 EducationInformation.propTypes = USTest.propTypes = Miscellaneous.propTypes = {
   application: propTypes.object,
   updateApplicationField: propTypes.func
+};
+
+NationalTest.propTypes = {
+  handleTestAdded: propTypes.func,
+  handleInputChange: propTypes.func
 };
