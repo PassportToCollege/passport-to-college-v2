@@ -84,3 +84,23 @@ export const doApplicationUpdateWithoutGet = (user, data) => {
       });
   };
 };
+
+export const doApplicationUpdate = (user, data) => {
+  return dispatch => {
+    dispatch(applicationUpdateInitiated(user, data));
+
+    db.collection("application")
+      .doc(user)
+      .update(data)
+      .then(() => {
+        dispatch(applicationUpdated(user, data));
+
+        // get application
+        doApplicationGet(user);
+      })
+      .catch(error => {
+        Console.error(error);
+        dispatch(applicationUpdateFailed(error, user, data));
+      });
+  };
+};

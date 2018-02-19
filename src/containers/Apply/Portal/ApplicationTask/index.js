@@ -193,7 +193,14 @@ class ApplicationTask extends Component {
   }
 
   handleTestAdded = () => {
-    console.log(this.state.addTestModal);
+    const modalData =  this.state.addTestModal;
+    const key = modalData.subject.toLowerCase().split(" ").join("-");
+
+    const newTest = Object.assign({}, this.state.application.tests, {
+      [key] : modalData
+    });
+
+    this.props.applicationActions.doApplicationUpdate(this.state.uid, { tests: newTest });
   }
 
   handleReauthenticate = password => {
