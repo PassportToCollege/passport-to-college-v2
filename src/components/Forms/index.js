@@ -3,6 +3,8 @@ import "./Forms.css";
 import React from "react";
 import propTypes from "prop-types";
 
+import Button from "../Button";
+
 export const SignInForm = props => {
 
   return (
@@ -218,7 +220,35 @@ export const Miscellaneous = ({ application, updateApplicationField }) => {
 export const NationalTest = () => {
   return (
     <form className="form application_task__form application__national_test">
-    
+      <h2>Add a new national test</h2>
+      <div className="form__input_container">
+        <input type="text" name="country" required placeholder="Jamaica"/>
+        <label>Country</label>
+      </div>
+      <div className="form__input_container">
+        <input type="text" name="board" required placeholder="CXC" />
+        <label>Examination Board</label>
+      </div>
+      <div className="form__input_container">
+        <input type="text" name="examination" required placeholder="CAPE" />
+        <label>Examination</label>
+      </div>
+      <div className="form__input_container">
+        <input type="text" name="subject" required placeholder="Mathematics" />
+        <label>Subject</label>
+      </div>
+      <div className="form__input_container">
+        <input type="number" name="year" required 
+          placeholder={new Date().getFullYear() - 5} 
+          min={new Date().getFullYear() - 5} 
+          max={new Date().getFullYear()} />
+        <label>Year</label>
+      </div>
+      <div className="form__input_container">
+        <input type="number" name="grade" required placeholder="1" />
+        <label>Grade (Number)</label>
+      </div>
+      <Button type="submit" text="add" solid/>
     </form>
   )
 }
