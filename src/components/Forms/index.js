@@ -215,6 +215,14 @@ export const Miscellaneous = ({ application, updateApplicationField }) => {
   )
 }
 
+export const NationalTest = () => {
+  return (
+    <form className="form application_task__form application__national_test">
+    
+    </form>
+  )
+}
+
 // Proptypes
 SignInForm.propTypes = {
   title: propTypes.string,

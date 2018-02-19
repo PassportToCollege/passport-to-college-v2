@@ -14,6 +14,8 @@ import { auth } from "../../../../utils/firebase";
 import { PersonalInformation, EducationInformation, USTest, Miscellaneous } from './../../../../components/Forms/index';
 import { ReauthenticateModal } from "../../../../components/Modal";
 import DropUploader from "../../../../components/DropUploader";
+import Button from "../../../../components/Button";
+import { AddNationalTest } from "../../../../components/Modal";
 
 class ApplicationTask extends Component {
   constructor(props) {
@@ -24,7 +26,8 @@ class ApplicationTask extends Component {
       user: {},
       application: {},
       uid: "",
-      email: ""
+      email: "",
+      isAddingTest: false
     };
   }
 
@@ -130,6 +133,14 @@ class ApplicationTask extends Component {
         return (
           <div className="application__portal_task national_tests__task">
             <h1>National Tests</h1>
+            <Button type="button" text="Add New Test" doClick={this.handleAddTestClick} />
+            {
+              this.state.isAddingTest ?
+              <AddNationalTest key={Math.random()} 
+                doClose={this.handleTestModalClose} />
+                :
+              null
+            }
           </div>
         );
       case "miscellaneous":
@@ -165,6 +176,9 @@ class ApplicationTask extends Component {
         )
     }
   }
+
+  handleAddTestClick = () => this.setState({ isAddingTest: true });
+  handleTestModalClose = () => this.setState({ isAddingTest: false });
 
   handleReauthenticate = password => {
     this.props.userActions.doUserEmailUpdateWithReauthentication(this.state.email, password);

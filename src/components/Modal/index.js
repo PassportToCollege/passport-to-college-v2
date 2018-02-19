@@ -3,6 +3,8 @@ import "./Modal.css";
 import React from "react";
 import propTypes from "prop-types";
 
+import { NationalTest } from "../Forms";
+
 export const ReauthenticateModal = props => {
   const closeModal = () => {
     this.modal.classList.add("close");
@@ -30,7 +32,31 @@ export const ReauthenticateModal = props => {
   )
 }
 
+export const AddNationalTest = ({ doClose }) => {
+  const closeModal = () => {
+    this.modalContainer.classList.add("close");
+
+    if ("function" === typeof doClose)
+      doClose();
+  }
+
+  return (
+    <div className="modal__container modal__add_national_test"
+      ref={div => this.modalContainer = div}>
+      <div className="modal__bg" onClick={closeModal}></div>
+      <div className="modal__content">
+        <NationalTest />
+      </div>
+    </div>
+  )
+}
+
+// Proptypes
 ReauthenticateModal.propTypes = {
   doAuthenticate: propTypes.func
+};
+
+AddNationalTest.propTypes = {
+  doClose: propTypes.func
 };
 
