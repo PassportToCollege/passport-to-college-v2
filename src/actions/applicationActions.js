@@ -1,3 +1,5 @@
+import firebase from "firebase";
+
 import * as types from "./actionTypes";
 import { db } from "../utils/firebase";
 
@@ -104,3 +106,44 @@ export const doApplicationUpdate = (user, data) => {
       });
   };
 };
+
+export const applicationTestDeleteInitiated = (user, test) => {
+  return {
+    type: types.APPLICATION_TEST_DELETE_INITIATED,
+    user, test
+  };
+};
+
+export const applicationTestDeleted = (user, test) => {
+  return {
+    type: types.APPLICATION_TEST_DELETED,
+    user, test
+  };
+};
+
+export const applicationTestDeleteFailed = (error, user, test) => {
+  return {
+    type: types.APPLICATION_TEST_DELETE_FAILED,
+    user, test, error
+  };
+};
+
+export const doTestDelete = (user, test) => {
+  return dispatch => {
+    dispatch(applicationTestDeleteInitiated(user, test));
+
+    db.collection("application")
+      .doc(user)
+      .update({[`tests.${test}`]: firebase.firestore.FieldValue.delete()})
+      .then(() => {
+        dispatch(applicationTestDeleted(user, test));
+
+        // get application
+        doApplicationGet(user);
+      })
+      .catch(error => {
+        Console.log(error);
+        dispatch(applicationTestDeleteFailed(error, user, test));
+      })
+  }
+}

@@ -3,7 +3,15 @@ import "./Test.css";
 import React from "react";
 import propTypes from "prop-types";
 
-const Test = ({ test }) => {
+import FontAwesomeIcon from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/fontawesome-free-solid";
+
+const Test = ({ test, handleDelete }) => {
+  const deleteTest = () => {
+    if ("function" === typeof handleDelete)
+      handleDelete(test.subject.toLowerCase().split(" ").join("-"));
+  }
+
   return (
     <div className="test">
       <div className="test__board_exam">
@@ -15,12 +23,16 @@ const Test = ({ test }) => {
         <span className="test__country">{test.country}</span>
         <span className="test__year">{test.year}</span>
       </div>
+      <div className="test__delete" onClick={deleteTest}>
+        <FontAwesomeIcon icon={faTrash} />
+      </div>
     </div>
   )
 }
 
 Test.propTypes = {
   test: propTypes.object,
-}
+  handleDelete: propTypes.func
+};
 
 export default Test;

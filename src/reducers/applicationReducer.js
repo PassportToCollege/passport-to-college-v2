@@ -5,7 +5,10 @@ import {
   APPLICATION_GET_SUCCESS,
   APPLICATION_UPDATE_FAILED,
   APPLICATION_UPDATE_INITIATED,
-  APPLICATION_UPDATED
+  APPLICATION_UPDATED,
+  APPLICATION_TEST_DELETE_FAILED,
+  APPLICATION_TEST_DELETE_INITIATED,
+  APPLICATION_TEST_DELETED
 } from "../actions/actionTypes";
 
 const application = (state = initialState.application, action) => {
@@ -56,6 +59,31 @@ const application = (state = initialState.application, action) => {
         user: action.user,
         data: action.data,
         error: action.error
+      });
+    case APPLICATION_TEST_DELETE_INITIATED:
+      return Object.assign({}, state, {
+        isDeleting: true,
+        hasDeleted: false,
+        hasFailed: false,
+        user: action.user,
+        test: action.test
+      });
+    case APPLICATION_TEST_DELETE_FAILED:
+      return Object.assign({}, state, {
+        isDeleting: false,
+        hasDeleted: false,
+        hasFailed: true,
+        user: action.user,
+        test: action.test,
+        error: action.error
+      });
+    case APPLICATION_TEST_DELETED:
+      return Object.assign({}, state, {
+        isDeleting: false,
+        hasDeleted: true,
+        hasFailed: false,
+        user: action.user,
+        test: action.test
       });
     default:
       return state;

@@ -30,3 +30,16 @@
   font-weight: bold;
   font-family: "Nunito", "Roboto", sans-serif;
 }
+
+/* Delete button */
+.test .test__delete {
+  position: absolute;
+  right: 1.25em;
+  top: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  color: tomato;
+  font-size: 1.5em;
+  cursor: pointer;
+}

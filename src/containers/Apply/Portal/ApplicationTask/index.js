@@ -146,7 +146,8 @@ class ApplicationTask extends Component {
             }
             {
               this.props.application.hasGotten && Object.keys(this.state.application.tests).length ?
-              <TestList tests={this.state.application.tests} />
+              <TestList tests={this.state.application.tests}
+                handleDelete={this.handleTestDelete} />
                 :
               <p>No tests added.</p>
             }
@@ -208,6 +209,10 @@ class ApplicationTask extends Component {
     });
 
     this.props.applicationActions.doApplicationUpdate(this.state.uid, { tests: newTest });
+  }
+
+  handleTestDelete = test => {
+    this.props.applicationActions.doTestDelete(this.state.uid, test);
   }
 
   handleReauthenticate = password => {
