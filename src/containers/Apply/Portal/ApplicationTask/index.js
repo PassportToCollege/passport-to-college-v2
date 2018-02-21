@@ -10,6 +10,7 @@ import * as userActions from "../../../../actions/userActions";
 import * as avatarActions from "../../../../actions/avatarActions";
 
 import { auth } from "../../../../utils/firebase";
+import { getTestKey } from "../../../../utils";
 
 import { PersonalInformation, EducationInformation, USTest, Miscellaneous } from './../../../../components/Forms/index';
 import { ReauthenticateModal } from "../../../../components/Modal";
@@ -213,9 +214,7 @@ class ApplicationTask extends Component {
 
   handleTestAdded = () => {
     const modalData =  this.state.addTestModal;
-    let key = modalData.subject.toLowerCase().replace(/\s/g, "-");
-    key += `-${modalData.board.toLowerCase().replace(/\s/g, "-")}`;
-    key += `-${modalData.examination.toLowerCase().replace(/\s/g, "-")}`;
+    const key = getTestKey(modalData);
 
     const tests = Object.assign({}, this.state.application.tests, {
       [key] : modalData

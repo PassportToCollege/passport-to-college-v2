@@ -35,3 +35,11 @@ export const sessionAge = () => {
 
   return age.asHours();
 }
+
+export const getTestKey = test => {
+  let key = test.subject.toLowerCase().replace(/\s/g, "-");
+  key += `-${test.board.toLowerCase().replace(/\s/g, "-")}`;
+  key += `-${test.examination.toLowerCase().replace(/\s/g, "-")}`;
+
+  return key;
+}

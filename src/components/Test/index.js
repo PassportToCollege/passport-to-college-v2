@@ -2,19 +2,15 @@ import "./Test.css";
 
 import React from "react";
 import propTypes from "prop-types";
-
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/fontawesome-free-solid";
 
+import { getTestKey } from "../../utils";
+
 const Test = ({ test, handleDelete }) => {
   const deleteTest = () => {
-    if ("function" === typeof handleDelete) {
-      let key = test.subject.toLowerCase().replace(/\s/g, "-");
-      key += `-${test.board.toLowerCase().replace(/\s/g, "-")}`;
-      key += `-${test.examination.toLowerCase().replace(/\s/g, "-")}`;
-      
-      handleDelete(key);
-    }
+    if ("function" === typeof handleDelete)
+      handleDelete(getTestKey(test));
   }
 
   return (
