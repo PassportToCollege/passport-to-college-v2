@@ -18,6 +18,7 @@ import DropUploader from "../../../../components/DropUploader";
 import Button from "../../../../components/Button";
 import { AddNationalTest } from "../../../../components/Modal";
 import TestList from "../../../../components/TestList";
+import WYSIWYGEditor from "../../../../components/Editor";
 
 class ApplicationTask extends Component {
   constructor(props) {
@@ -170,6 +171,7 @@ class ApplicationTask extends Component {
         return (
           <div className="application__portal_task essay__task">
             <h1>Essay</h1>
+            <WYSIWYGEditor />
           </div>
         );
       case "review-and-sign":
