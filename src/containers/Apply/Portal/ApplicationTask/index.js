@@ -30,7 +30,7 @@ class ApplicationTask extends Component {
       email: "",
       isAddingTest: false,
       addTestModal: {},
-      hasChanged: false
+      hasChanged: false // flag to tell if user changed any fields so new application is fetched on component update
     };
   }
 

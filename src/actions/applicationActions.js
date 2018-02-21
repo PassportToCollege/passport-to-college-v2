@@ -98,7 +98,7 @@ export const doApplicationUpdate = (user, data) => {
         dispatch(applicationUpdated(user, data));
 
         // get application
-        doApplicationGet(user);
+        dispatch(doApplicationGet(user));
       })
       .catch(error => {
         Console.error(error);
@@ -139,7 +139,7 @@ export const doTestDelete = (user, test) => {
         dispatch(applicationTestDeleted(user, test));
 
         // get application
-        doApplicationGet(user);
+        dispatch(doApplicationGet(user));
       })
       .catch(error => {
         Console.log(error);
