@@ -2,7 +2,7 @@ import "./Editor.css";
 
 import React, { Component } from "react";
 import propTypes from "prop-types";
-import { Editor, EditorState, RichUtils, convertToRaw, convertFromRaw, ContentState } from "draft-js";
+import { Editor, EditorState, RichUtils, convertToRaw, convertFromRaw } from "draft-js";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import { faBold, faItalic, faUnderline, faRedoAlt, faUndoAlt } from "@fortawesome/fontawesome-free-solid";
 
@@ -18,10 +18,6 @@ class WYSIWYGEditor extends Component {
       isUnderline: false,
       isItalic: false
     };
-  }
-
-  componentWillMount() {
-    this.setState({ editorState: EditorState.moveFocusToEnd(this.state.editorState) });
   }
 
   componentWillReceiveProps(nextProps) {
