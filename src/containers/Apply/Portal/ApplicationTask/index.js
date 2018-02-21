@@ -171,7 +171,13 @@ class ApplicationTask extends Component {
         return (
           <div className="application__portal_task essay__task">
             <h1>Essay</h1>
-            <WYSIWYGEditor />
+            {
+              this.props.application.hasGotten ?
+                <WYSIWYGEditor saveButton handleSave={this.handleEssaySave} 
+                  content={this.state.application.essay} />
+              :
+                <WYSIWYGEditor saveButton handleSave={this.handleEssaySave} />
+            }
           </div>
         );
       case "review-and-sign":
@@ -239,6 +245,11 @@ class ApplicationTask extends Component {
     let newGravatar = e.files[0];
 
     this.props.avatarActions.doAvatarUpload(newGravatar);
+  }
+
+  handleEssaySave = html => {
+    this.props.applicationActions.doApplicationUpdate(this.state.uid, { essay: html });
+    this.setState({ hasChanged: true });
   }
 
   updateField = (e) => {

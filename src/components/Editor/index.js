@@ -2,9 +2,11 @@ import "./Editor.css";
 
 import React, { Component } from "react";
 import propTypes from "prop-types";
-import { Editor, EditorState, RichUtils } from "draft-js";
+import { Editor, EditorState, RichUtils, convertToRaw, convertFromRaw, ContentState } from "draft-js";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import { faBold, faItalic, faUnderline, faRedoAlt, faUndoAlt } from "@fortawesome/fontawesome-free-solid";
+
+import Button from "../Button";
 
 class WYSIWYGEditor extends Component {
   constructor(props) {
@@ -16,6 +18,17 @@ class WYSIWYGEditor extends Component {
       isUnderline: false,
       isItalic: false
     };
+  }
+
+  componentWillMount() {
+    this.setState({ editorState: EditorState.moveFocusToEnd(this.state.editorState) });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.content && nextProps.content.blocks) {
+      const content = convertFromRaw(nextProps.content);
+      this.setState({ editorState: EditorState.createWithContent(content) })
+    }
   }
 
   render() {
@@ -43,6 +56,12 @@ class WYSIWYGEditor extends Component {
           <span className="editor__control" title="Redo">
             <FontAwesomeIcon icon={faRedoAlt} />
           </span>
+          {
+            this.props.saveButton ?
+              <Button type="button" text="Save" solid doClick={this._handleSave}/>
+              :
+              null
+          }
         </div>
         <div className="editor__editor">
           <Editor editorState={this.state.editorState} 
@@ -55,6 +74,10 @@ class WYSIWYGEditor extends Component {
 
   onChange = editorState => {
     this.setState({ editorState });
+  }
+
+  _handleSave = () => {
+    this.props.handleSave(convertToRaw(this.state.editorState.getCurrentContent()));
   }
 
   toggleBold = () => {
@@ -98,7 +121,10 @@ class WYSIWYGEditor extends Component {
 }
 
 WYSIWYGEditor.propTypes = {
-  getContent: propTypes.func
+  getContent: propTypes.func,
+  saveButton: propTypes.bool,
+  handleSave: propTypes.func,
+  content: propTypes.object
 };
 
 export default WYSIWYGEditor;

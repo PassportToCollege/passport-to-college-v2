@@ -31,7 +31,8 @@ Button.propTypes = {
   styles: propTypes.object,
   type: propTypes.string,
   doClick: propTypes.func,
-  text: propTypes.string
+  text: propTypes.string,
+  solid: propTypes.bool
 };
 
 export default Button;
