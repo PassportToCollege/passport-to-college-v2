@@ -7,7 +7,7 @@ const LinkButton = props => {
   props = props || {};
 
   return (
-    <a href={props.target} className="link__button">
+    <a href={props.target} className={`link__button ${props.classes || ""}`}>
       {props.text}
     </a>
   )
@@ -15,7 +15,8 @@ const LinkButton = props => {
 
 LinkButton.propTypes = {
   target: propTypes.string,
-  text: propTypes.string
+  text: propTypes.string,
+  classes: propTypes.string
 };
 
 export default LinkButton;

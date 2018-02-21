@@ -10,6 +10,7 @@ import * as applicationActions from "../../../actions/applicationActions";
 import * as userActions from "../../../actions/userActions";
 
 import Button from "../../../components/Button";
+import LinkButton from "../../../components/LinkButton";
 import ApplicationTask from './ApplicationTask';
 
 import history from "../../../constants/history";
@@ -70,6 +71,7 @@ class ApplicationPortal extends Component {
             <Route exact path={this.props.match.url}
               render={this.renderWelcome}/>
           </div>
+          <LinkButton target="/#/" text="Home"/>
         </main>
       </div>
     )
