@@ -8,8 +8,13 @@ import { faTrash } from "@fortawesome/fontawesome-free-solid";
 
 const Test = ({ test, handleDelete }) => {
   const deleteTest = () => {
-    if ("function" === typeof handleDelete)
-      handleDelete(test.subject.toLowerCase().split(" ").join("-"));
+    if ("function" === typeof handleDelete) {
+      let key = test.subject.toLowerCase().replace(/\s/g, "-");
+      key += `-${test.board.toLowerCase().replace(/\s/g, "-")}`;
+      key += `-${test.examination.toLowerCase().replace(/\s/g, "-")}`;
+      
+      handleDelete(key);
+    }
   }
 
   return (

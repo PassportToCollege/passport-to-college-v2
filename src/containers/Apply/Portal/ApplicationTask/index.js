@@ -24,12 +24,13 @@ class ApplicationTask extends Component {
 
     this.state = {
       task: this.props.match.params.task,
-      user: {},
-      application: {},
+      user: this.props.user.user,
+      application: this.props.application.application,
       uid: "",
       email: "",
       isAddingTest: false,
-      addTestModal: {}
+      addTestModal: {},
+      hasChanged: false
     };
   }
 
@@ -43,12 +44,14 @@ class ApplicationTask extends Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if (this.state.task !== nextState.task) {
+    if (this.state.task !== nextState.task && this.state.hasChanged) {
       if (nextState.task !== "personal" || nextState.task !== "profile-picture")
         this.props.applicationActions.doApplicationGet(this.props.application.user);
         
       if (nextState.task !== "profile-picture")
         this.props.userActions.doUserGet();
+      
+      this.setState({ hasChanged: false });
     }
   }
 
@@ -145,11 +148,7 @@ class ApplicationTask extends Component {
               null
             }
             {
-              this.props.application.hasGotten && Object.keys(this.state.application.tests).length ?
-              <TestList tests={this.state.application.tests}
-                handleDelete={this.handleTestDelete} />
-                :
-              <p>No tests added.</p>
+              this.renderTestList()
             }
           </div>
         );
@@ -187,6 +186,18 @@ class ApplicationTask extends Component {
     }
   }
 
+  renderTestList = () => {
+    if (this.props.application.hasGotten &&
+      Object.keys(this.state.application.tests).length > 0) {
+      return (
+        <TestList tests={this.state.application.tests}
+          handleDelete={this.handleTestDelete} />
+      )
+    }
+
+    return <p>No tests added.</p>
+  }
+
   handleAddTestClick = () => this.setState({ isAddingTest: true });
   handleTestModalClose = () => this.setState({ isAddingTest: false, addTestModal: {} });
   handleTestModalInputChange = e => {
@@ -202,17 +213,21 @@ class ApplicationTask extends Component {
 
   handleTestAdded = () => {
     const modalData =  this.state.addTestModal;
-    const key = modalData.subject.toLowerCase().split(" ").join("-");
+    let key = modalData.subject.toLowerCase().replace(/\s/g, "-");
+    key += `-${modalData.board.toLowerCase().replace(/\s/g, "-")}`;
+    key += `-${modalData.examination.toLowerCase().replace(/\s/g, "-")}`;
 
-    const newTest = Object.assign({}, this.state.application.tests, {
+    const tests = Object.assign({}, this.state.application.tests, {
       [key] : modalData
     });
 
-    this.props.applicationActions.doApplicationUpdate(this.state.uid, { tests: newTest });
+    this.props.applicationActions.doApplicationUpdate(this.state.uid, { tests });
+    this.setState({ hasChanged: true });
   }
 
   handleTestDelete = test => {
     this.props.applicationActions.doTestDelete(this.state.uid, test);
+    this.setState({ hasChanged: true });
   }
 
   handleReauthenticate = password => {
@@ -280,6 +295,8 @@ class ApplicationTask extends Component {
         this.props.userActions.doUserUpdateWithoutGet(defaultData);
       }
     }
+
+    this.setState({ hasChanged: true });
   }
 
   updateApplicationField = e => {
@@ -287,6 +304,7 @@ class ApplicationTask extends Component {
     data[e.target.name] = e.target.value;
 
     this.props.applicationActions.doApplicationUpdateWithoutGet(this.props.application.user, data);
+    this.setState({ hasChanged: true });
   }
 }
 
