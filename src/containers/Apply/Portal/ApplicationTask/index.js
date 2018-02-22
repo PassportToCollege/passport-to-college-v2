@@ -165,6 +165,10 @@ class ApplicationTask extends Component {
               These are the tests your country require students to sit in their final years of 
               high school. e.g. <i>CSEC, CAPE, etc.</i>
             </p>
+            <p className="application_task__instructions">
+              If you have not taken an exam but are registered to take said exam, provide the year
+              you will take the exam and 0 as the grade.
+            </p>
             <Button type="button" text="Add Test" solid doClick={this.handleAddTestClick} />
             {
               this.state.isAddingTest ?

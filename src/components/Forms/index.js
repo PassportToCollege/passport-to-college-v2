@@ -235,6 +235,14 @@ export const NationalTest = ({ handleTestAdded, handleInputChange }) => {
       onSubmit={formSubmitted}>
       <h2>Add a new national test</h2>
       <div className="form__input_container">
+        <select name="hasTaken" required defaultValue="" onChange={inputChanged}>
+          <option value="" disabled>Select One</option>
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </select>
+        <label>Have you already taken this test?</label>
+      </div>
+      <div className="form__input_container">
         <input type="text" name="country" required placeholder="Jamaica"
           onBlur={inputChanged}/>
         <label>Country</label>
