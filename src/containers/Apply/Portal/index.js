@@ -71,7 +71,7 @@ class ApplicationPortal extends Component {
             <Route exact path={this.props.match.url}
               render={this.renderWelcome}/>
           </div>
-          <LinkButton target="/#/" text="Home"/>
+          {/* <LinkButton target="/#/" text="Home"/> */}
         </main>
       </div>
     )

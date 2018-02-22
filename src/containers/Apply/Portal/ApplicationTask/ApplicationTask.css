@@ -1,3 +1,16 @@
+/* Heading and Instructions */
+.application__portal_task .application_task__heading {
+  margin-bottom: 0;
+}
+
+.application__portal_task .application_task__instructions {
+  font-family: "Muli", "Nunito", "Roboto", sans-serif;
+  opacity: 0.65;
+  font-weight: lighter;
+  margin: 0 0 1em;
+  max-width: 600px;
+}
+
 /* Welcome */
 .application__welcome {
   max-width: 768px;
@@ -19,7 +32,7 @@
   height: 128px;
   border-radius: 128px;
   overflow: hidden;
-  margin: 1em auto;
+  margin: 3em auto;
   background-position: center;
   background-size: cover;
   border: 2px solid #FFCB61;

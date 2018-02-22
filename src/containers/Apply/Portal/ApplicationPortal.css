@@ -28,7 +28,8 @@
   width: 100%;
   height: calc(100vh - 96px);
   flex-direction: row;
-  align-items: center;
+  flex-wrap: nowrap;
+  align-items: flex-start;
   justify-content: center;
   overflow: hidden;
 }
@@ -70,6 +71,7 @@
 
 .application__portal_body .application__portal_main {
   height: 100%;
-  flex-grow: 1;
+  flex: 1 1 auto;
   padding: 2.1625em;
+  overflow-y: auto;
 }

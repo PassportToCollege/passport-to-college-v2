@@ -80,7 +80,10 @@ class ApplicationTask extends Component {
       case "personal":
         return (
           <div className="application__portal_task personal__task">
-            <h1>Personal Information</h1>
+            <h1 className="application_task__heading">Personal Information</h1>
+            <p className="application_task__instructions">
+              Please provide personal information below.
+            </p>
             {
               (this.props.user.hasFailed && this.props.user.error.code === "auth/requires-recent-login") ?
               <ReauthenticateModal doAuthenticate={this.handleReauthenticate}/>
@@ -99,7 +102,10 @@ class ApplicationTask extends Component {
       case "profile-picture":
         return (
           <div className="application__portal_task profile_picture__task">
-            <h1>Profile Picture</h1>
+            <h1 className="application_task__heading">Profile Picture</h1>
+            <p className="application_task__instructions">
+              Upload a profile picture below.
+            </p>
             {
               this.props.avatar.url ?
               <div className="avatar__container" style={{ backgroundImage: `url(${this.props.avatar.url})` }}>
@@ -113,7 +119,10 @@ class ApplicationTask extends Component {
       case "education":
         return (
           <div className="application__portal_task education__task">
-            <h1>Education Information</h1>
+            <h1 className="application_task__heading">Education Information</h1>
+            <p className="application_task__instructions">
+              Please provide information about your education below.
+            </p>
             {
               this.props.application.hasGotten ?
               <EducationInformation application={this.props.application} 
@@ -126,7 +135,18 @@ class ApplicationTask extends Component {
       case "us-standardized-tests":
         return (
           <div className="application__portal_task us_tests__task">
-            <h1>US Standardized Tests</h1>
+            <h1 className="application_task__heading">US Standardized Tests</h1>
+            <p className="application_task__instructions">
+              Please provide information on whether you have taken the U.S. Scholastic Aptitude Test (SAT) 
+              or American College Test (ACT). These tests are required for admission to most 
+              U.S. college/university programs and, even though they are not required for the acceptance of 
+              your application to Passport to College, we would like to have this information. 
+              If you have not taken either test, select <i>None</i> and a score of <i>0</i>. 
+              Again, not having taken either of these test will not affect your Passport to College application.
+            </p>
+            <p className="application_task__instructions">
+              If you have done both tests provide your highest score.
+            </p>
             {
               this.props.application.hasGotten ?
                 <USTest application={this.props.application} 
@@ -139,8 +159,13 @@ class ApplicationTask extends Component {
       case "national-tests":
         return (
           <div className="application__portal_task national_tests__task">
-            <h1>National Tests</h1>
-            <Button type="button" text="Add New Test" doClick={this.handleAddTestClick} />
+            <h1 className="application_task__heading">National Tests</h1>
+            <p className="application_task__instructions">
+              Please list all the country specific standardized tests you will or have taken. 
+              These are the tests your country require students to sit in their final years of 
+              high school. e.g. <i>CSEC, CAPE, etc.</i>
+            </p>
+            <Button type="button" text="Add Test" solid doClick={this.handleAddTestClick} />
             {
               this.state.isAddingTest ?
               <AddNationalTest doClose={this.handleTestModalClose}
@@ -157,7 +182,12 @@ class ApplicationTask extends Component {
       case "miscellaneous":
         return (
           <div className="application__portal_task miscellaneous__task">
-            <h1>Miscellaneous</h1>
+            <h1 className="application_task__heading">Miscellaneous</h1>
+            <p className="application_task__instructions">
+              Please provide information about your family&apos;s income,
+              the area you are interested in studying and how you would
+              describe your work ethic.
+            </p>
             {
               this.props.application.hasGotten ?
               <Miscellaneous application={this.props.application}
@@ -170,7 +200,15 @@ class ApplicationTask extends Component {
       case "essay":
         return (
           <div className="application__portal_task essay__task">
-            <h1>Essay</h1>
+            <h1 className="application_task__heading">Essay</h1>
+            <p className="application_task__instructions">
+              Please write an essay about yourself; your longterm life goals, things you have accomplished,
+              and struggles you&apos;ve had to overcome gain your education.
+            </p>
+            <p className="application_task__instructions">
+              You essay should be at least <b>300 words</b> and free of spelling and grammatical errors. Feel free
+              to have a teacher review your essay before submitting your application.
+            </p>
             {
               this.props.application.hasGotten ?
                 <WYSIWYGEditor saveButton handleSave={this.handleEssaySave} 
@@ -183,19 +221,27 @@ class ApplicationTask extends Component {
       case "review":
         return (
           <div className="application__portal_task review__task">
-            <h1>Review</h1>
+            <h1 className="application_task__heading">Review</h1>
+            <p className="application_task__instructions">
+              Please review you application below before submitting it for consideration.
+              Once you submit your application you will not be able to make changes to it, so 
+              ensure all the informatino you provide is accurate and correct.
+            </p>
           </div>
         );
       default:
         return (
           <div className="application__portal_task default_task">
-            <h1>Submit Application</h1>
+            <h1 className="application_task__heading">Submit Application</h1>
           </div>
         )
     }
   }
 
   renderTestList = () => {
+    if (this.props.application.isGetting)
+      return <p>Looking for your tests</p>
+
     if (this.props.application.hasGotten &&
       Object.keys(this.state.application.tests).length > 0) {
       return (
