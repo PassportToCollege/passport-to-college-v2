@@ -23,7 +23,7 @@ const tasks = [
   "National Tests",
   "Miscellaneous",
   "Essay",
-  "Review and Sign",
+  "Review",
   "Submit"
 ];
 

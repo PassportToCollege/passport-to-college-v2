@@ -116,11 +116,16 @@ class WYSIWYGEditor extends Component {
   }
 }
 
+WYSIWYGEditor.defaultProps = {
+  limit: 1000
+};
+
 WYSIWYGEditor.propTypes = {
   getContent: propTypes.func,
   saveButton: propTypes.bool,
   handleSave: propTypes.func,
-  content: propTypes.object
+  content: propTypes.object,
+  limit: propTypes.number
 };
 
 export default WYSIWYGEditor;

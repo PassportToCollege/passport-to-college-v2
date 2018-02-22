@@ -180,10 +180,10 @@ class ApplicationTask extends Component {
             }
           </div>
         );
-      case "review-and-sign":
+      case "review":
         return (
           <div className="application__portal_task review__task">
-            <h1>Review and Sign</h1>
+            <h1>Review</h1>
           </div>
         );
       default:
