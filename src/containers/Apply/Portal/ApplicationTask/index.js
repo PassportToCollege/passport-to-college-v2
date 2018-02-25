@@ -243,19 +243,30 @@ class ApplicationTask extends Component {
             { name: "gpa", value: `${application.gpa}/4.00` }
           ];
 
+          const dataUSTests = [
+            { name: "test", value: application.usTest },
+            { name: "score", value: application.score }
+          ];
+
           return (
             <div className="application__portal_task review__task">
               <h1 className="application_task__heading">Review</h1>
               <p className="application_task__instructions">
                 Please review you application below before submitting it for consideration.
                 Once you submit your application you will not be able to make changes to it, so 
-                ensure all the informatino you provide is accurate and correct.
+                ensure all the information you provide is accurate and correct.
               </p>
               <ReviewBlock heading="Personal" editLink={this.props.match.path.replace(":task", "personal")}
                   items={dataPersonal} />
               
               <ReviewBlock heading="Education" editLink={this.props.match.path.replace(":task", "education")}
                 items={dataEducation} />
+              
+              <ReviewBlock heading="U.S. Standardized Tests" editLink={this.props.match.path.replace(":task", "us-standardized-tests")}
+                items={dataUSTests} />
+              
+              <ReviewBlock heading="National Tests" editLink={this.props.match.path.replace(":task", "national-tests")} renderFromFunc
+                renderFunc={this.renderTestList} />
             </div>
           );
         }

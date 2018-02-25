@@ -13,14 +13,23 @@ const ReviewBlock = props => {
       </div>
       <div className="review_block__main">
         {
-          props.items.map(item => {
-            return (
-              <div key={item.name} className="review_block__item">
-                <span className="review_block__name type__bold">{item.name}</span>
-                <span className="review_block__value">{item.value}</span>
-              </div>
-            )
-          })
+          props.items && props.items.length > 0 ?
+            props.items.map(item => {
+              return (
+                <div key={item.name} className="review_block__item">
+                  <span className="review_block__name type__bold">{item.name}</span>
+                  <span className="review_block__value">{item.value}</span>
+                </div>
+              )
+            })
+          :
+            null
+        }
+        {
+          props.renderFromFunc && "function" === typeof props.renderFunc ?
+            props.renderFunc()
+          :
+            null
         }
       </div>
     </div>
@@ -30,7 +39,9 @@ const ReviewBlock = props => {
 ReviewBlock.propTypes = {
   heading: propTypes.string,
   editLink: propTypes.string,
-  items: propTypes.array
+  items: propTypes.array,
+  renderFromFunc: propTypes.bool,
+  renderFunc: propTypes.func
 };
 
 export default ReviewBlock;
