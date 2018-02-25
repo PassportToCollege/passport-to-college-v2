@@ -12,8 +12,10 @@ class WYSIWYGEditor extends Component {
   constructor(props) {
     super(props);
 
+    const content = convertFromRaw(props.content);
+
     this.state = {
-      editorState: EditorState.createEmpty(),
+      editorState: content.length ? EditorState.createWithContent(content) : EditorState.createEmpty(),
       isBold: false,
       isUnderline: false,
       isItalic: false

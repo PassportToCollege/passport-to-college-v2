@@ -53,8 +53,12 @@
   margin: 1em auto;
 }
 
-.application__portal_task.national_tests__task,
-.application__portal_task.review__task {
+.application__portal_task.national_tests__task {
   width: 600px;
+  max-width: 100%;
+}
+
+.application__portal_task.review__task {
+  width: 768px;
   max-width: 100%;
 }
