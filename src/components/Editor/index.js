@@ -30,39 +30,45 @@ class WYSIWYGEditor extends Component {
   render() {
     return (
       <div className="editor__container">
-        <div className="editor__controls">
-          <span className="editor__control" title="Bold" 
-            data-active={this.state.isBold ? "yes" : null}
-            onClick={this.toggleBold}>
-            <FontAwesomeIcon icon={faBold} />
-          </span>
-          <span className="editor__control" title="Italic" 
-            data-active={this.state.isItalic ? "yes" : null}
-            onClick={this.toggleItalic}>
-            <FontAwesomeIcon icon={faItalic} />
-          </span>
-          <span className="editor__control" title="Underline" 
-            data-active={this.state.isUnderline ? "yes" : null}
-            onClick={this.toggleUnderline}>
-            <FontAwesomeIcon icon={faUnderline} />
-          </span>
-          <span className="editor__control" title="Undo">
-            <FontAwesomeIcon icon={faUndoAlt} />
-          </span>
-          <span className="editor__control" title="Redo">
-            <FontAwesomeIcon icon={faRedoAlt} />
-          </span>
-          {
-            this.props.saveButton ?
-              <Button type="button" text="Save" solid doClick={this._handleSave}/>
-              :
-              null
-          }
-        </div>
+        {
+          this.props.readonly ?
+            null
+          :
+            <div className="editor__controls">
+              <span className="editor__control" title="Bold" 
+                data-active={this.state.isBold ? "yes" : null}
+                onClick={this.toggleBold}>
+                <FontAwesomeIcon icon={faBold} />
+              </span>
+              <span className="editor__control" title="Italic" 
+                data-active={this.state.isItalic ? "yes" : null}
+                onClick={this.toggleItalic}>
+                <FontAwesomeIcon icon={faItalic} />
+              </span>
+              <span className="editor__control" title="Underline" 
+                data-active={this.state.isUnderline ? "yes" : null}
+                onClick={this.toggleUnderline}>
+                <FontAwesomeIcon icon={faUnderline} />
+              </span>
+              <span className="editor__control" title="Undo">
+                <FontAwesomeIcon icon={faUndoAlt} />
+              </span>
+              <span className="editor__control" title="Redo">
+                <FontAwesomeIcon icon={faRedoAlt} />
+              </span>
+              {
+                this.props.saveButton ?
+                  <Button type="button" text="Save" solid doClick={this._handleSave}/>
+                  :
+                  null
+              }
+            </div>
+        }
         <div className="editor__editor">
           <Editor editorState={this.state.editorState} 
             onChange={this.onChange}
-            handleKeyCommand={this.handleKeyCommand} />
+            handleKeyCommand={this.handleKeyCommand}
+            readOnly={this.props.readonly} />
         </div>
       </div>
     )
@@ -125,7 +131,8 @@ WYSIWYGEditor.propTypes = {
   saveButton: propTypes.bool,
   handleSave: propTypes.func,
   content: propTypes.object,
-  limit: propTypes.number
+  limit: propTypes.number,
+  readonly: propTypes.bool
 };
 
 export default WYSIWYGEditor;

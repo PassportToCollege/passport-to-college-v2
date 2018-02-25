@@ -275,6 +275,9 @@ class ApplicationTask extends Component {
                 renderFunc={this.renderTestList} />
               
               <ReviewBlock heading="Miscellaneous" editLink={this.props.match.path.replace(":task", "miscellaneous")} items={dataMisc} />
+
+              <ReviewBlock heading="Essay" editLink={this.props.match.path.replace(":task", "essay")} renderFromFunc
+                renderFunc={this.renderReadOnlyEssay} />
             </div>
           );
         }
@@ -330,6 +333,12 @@ class ApplicationTask extends Component {
           </div>
         )
     }
+  }
+
+  renderReadOnlyEssay = () => {
+    return (
+      <WYSIWYGEditor readonly content={this.state.application.essay} />
+    )
   }
 
   renderTestList = () => {
