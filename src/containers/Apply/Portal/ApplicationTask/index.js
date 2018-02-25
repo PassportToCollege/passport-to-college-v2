@@ -227,6 +227,7 @@ class ApplicationTask extends Component {
       case "review":
         if (this.props.user.hasGotten && this.props.application.hasGotten) {
           let { user, application } = this.state;
+
           const dataPersonal = [
             { name: "name", value: user.name.full },
             { name: "email", value: user.email },
@@ -234,6 +235,12 @@ class ApplicationTask extends Component {
             { name: "gender", value: user.gender },
             { name: "dob", value: user.dob },
             { name: "country", value: user.address.country }
+          ];
+
+          const dataEducation = [
+            { name: "highest education level", value: application.educationLevel },
+            { name: "last school", value: application.lastSchool },
+            { name: "gpa", value: `${application.gpa}/4.00` }
           ];
 
           return (
@@ -244,8 +251,11 @@ class ApplicationTask extends Component {
                 Once you submit your application you will not be able to make changes to it, so 
                 ensure all the informatino you provide is accurate and correct.
               </p>
-              <ReviewBlock heading="Personal Information" editLink={this.props.match.path.replace(":task", "personal")}
-                          items={dataPersonal} />
+              <ReviewBlock heading="Personal" editLink={this.props.match.path.replace(":task", "personal")}
+                  items={dataPersonal} />
+              
+              <ReviewBlock heading="Education" editLink={this.props.match.path.replace(":task", "education")}
+                items={dataEducation} />
             </div>
           );
         }
@@ -270,7 +280,26 @@ class ApplicationTask extends Component {
                 { color: "rgba(51,51,51,0.2)", width: "80%" },
                 { color: "rgba(51,51,51,0.4)", width: "50%" },
                 { color: "rgba(51,51,51,0.2)", width: "80%" },
-                { color: "rgba(51,51,51,0.4)", width: "50%" }
+                { color: "rgba(51,51,51,0.4)", width: "50%" },
+                { color: "rgba(51,51,51,0.2)", width: "80%" },
+                { color: "rgba(51,51,51,0.4)", width: "50%" },
+                { color: "rgba(51,51,51,0.2)", width: "80%" },
+                { color: "rgba(51,51,51,0.4)", width: "50%" },
+                { color: "rgba(51,51,51,0.2)", width: "80%" }
+              ]
+            }} />
+
+            <LoadingText options={{
+              class: "review_block__loading",
+              bg: "transparent",
+              height: "10px",
+              lines: [
+                { color: "rgba(51,51,51,0.4)", width: "50%" },
+                { color: "rgba(51,51,51,0.2)", width: "80%" },
+                { color: "rgba(51,51,51,0.4)", width: "50%" },
+                { color: "rgba(51,51,51,0.2)", width: "80%" },
+                { color: "rgba(51,51,51,0.4)", width: "50%" },
+                { color: "rgba(51,51,51,0.2)", width: "80%" }
               ]
             }} />
           </div>
