@@ -25,3 +25,14 @@
 .review_block .test_list {
   margin: 0;
 }
+
+.review_block .avatar__container {
+  width: 128px;
+  height: 128px;
+  border-radius: 128px;
+  overflow: hidden;
+  margin: 3em auto;
+  background-position: center;
+  background-size: cover;
+  border: 2px solid #FFCB61;
+}

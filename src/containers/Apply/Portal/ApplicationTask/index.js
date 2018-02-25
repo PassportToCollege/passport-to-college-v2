@@ -263,8 +263,11 @@ class ApplicationTask extends Component {
                 ensure all the information you provide is accurate and correct.
               </p>
               <ReviewBlock heading="Personal" editLink={this.props.match.path.replace(":task", "personal")}
-                  items={dataPersonal} />
+                items={dataPersonal} />
               
+              <ReviewBlock heading="Profile Picture" editLink={this.props.match.path.replace(":task", "profile-picture")}
+                renderImage imageUrl={this.props.avatar.url} />
+
               <ReviewBlock heading="Education" editLink={this.props.match.path.replace(":task", "education")}
                 items={dataEducation} />
               

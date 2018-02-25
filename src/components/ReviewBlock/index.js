@@ -31,6 +31,13 @@ const ReviewBlock = props => {
           :
             null
         }
+        {
+          props.renderImage ?
+            <div className="avatar__container" style={{ backgroundImage: `url(${props.imageUrl})` }}>
+            </div>
+          :
+            null
+        }
       </div>
     </div>
   )
@@ -41,7 +48,9 @@ ReviewBlock.propTypes = {
   editLink: propTypes.string,
   items: propTypes.array,
   renderFromFunc: propTypes.bool,
-  renderFunc: propTypes.func
+  renderFunc: propTypes.func,
+  renderImage: propTypes.bool,
+  imageUrl: propTypes.string
 };
 
 export default ReviewBlock;
