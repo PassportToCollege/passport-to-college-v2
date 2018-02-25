@@ -26,3 +26,7 @@ body {
 .type__block {
   display: block;
 }
+
+.type__bold {
+  font-weight: bold;
+}

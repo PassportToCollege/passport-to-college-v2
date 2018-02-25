@@ -1,0 +1,22 @@
+.review_block {
+  margin: 2em 0 1em;
+}
+
+.review_block .review_block__header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.review_block .review_block__header > a {
+  color: #FF6561;
+  font-weight: bold;
+  font-size: 0.85em;
+}
+
+.review_block .review_block__main .review_block__name {
+  display: inline-block;
+  min-width: 150px;
+  margin: 0 0 1em;
+}

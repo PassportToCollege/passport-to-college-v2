@@ -19,6 +19,8 @@ import Button from "../../../../components/Button";
 import { AddNationalTest } from "../../../../components/Modal";
 import TestList from "../../../../components/TestList";
 import WYSIWYGEditor from "../../../../components/Editor";
+import ReviewBlock from "../../../../components/ReviewBlock";
+import LoadingText from "../../../../components/LoadingText";
 
 class ApplicationTask extends Component {
   constructor(props) {
@@ -223,14 +225,54 @@ class ApplicationTask extends Component {
           </div>
         );
       case "review":
+        if (this.props.user.hasGotten && this.props.application.hasGotten) {
+          let { user, application } = this.state;
+          const dataPersonal = [
+            { name: "name", value: user.name.full },
+            { name: "email", value: user.email },
+            { name: "phone", value: user.phone },
+            { name: "gender", value: user.gender },
+            { name: "dob", value: user.dob },
+            { name: "country", value: user.address.country }
+          ];
+
+          return (
+            <div className="application__portal_task review__task">
+              <h1 className="application_task__heading">Review</h1>
+              <p className="application_task__instructions">
+                Please review you application below before submitting it for consideration.
+                Once you submit your application you will not be able to make changes to it, so 
+                ensure all the informatino you provide is accurate and correct.
+              </p>
+              <ReviewBlock heading="Personal Information" editLink={this.props.match.path.replace(":task", "personal")}
+                          items={dataPersonal} />
+            </div>
+          );
+        }
+
         return (
           <div className="application__portal_task review__task">
             <h1 className="application_task__heading">Review</h1>
             <p className="application_task__instructions">
               Please review you application below before submitting it for consideration.
-              Once you submit your application you will not be able to make changes to it, so 
+              Once you submit your application you will not be able to make changes to it, so
               ensure all the informatino you provide is accurate and correct.
             </p>
+            
+            <LoadingText options={{
+              class: "review_block__loading",
+              bg: "transparent",
+              height: "10px",
+              lines: [
+                { color: "rgba(51,51,51,0.4)", width: "50%" },
+                { color: "rgba(51,51,51,0.2)", width: "80%" },
+                { color: "rgba(51,51,51,0.4)", width: "50%" },
+                { color: "rgba(51,51,51,0.2)", width: "80%" },
+                { color: "rgba(51,51,51,0.4)", width: "50%" },
+                { color: "rgba(51,51,51,0.2)", width: "80%" },
+                { color: "rgba(51,51,51,0.4)", width: "50%" }
+              ]
+            }} />
           </div>
         );
       default:
