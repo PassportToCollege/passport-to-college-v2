@@ -248,6 +248,12 @@ class ApplicationTask extends Component {
             { name: "score", value: application.score }
           ];
 
+          const dataMisc = [
+            { name: "family income", value: application.income },
+            { name: "interest", value: application.interest },
+            { name: "work ethic", value: application.workEthic }
+          ];
+
           return (
             <div className="application__portal_task review__task">
               <h1 className="application_task__heading">Review</h1>
@@ -267,6 +273,8 @@ class ApplicationTask extends Component {
               
               <ReviewBlock heading="National Tests" editLink={this.props.match.path.replace(":task", "national-tests")} renderFromFunc
                 renderFunc={this.renderTestList} />
+              
+              <ReviewBlock heading="Miscellaneous" editLink={this.props.match.path.replace(":task", "miscellaneous")} items={dataMisc} />
             </div>
           );
         }
