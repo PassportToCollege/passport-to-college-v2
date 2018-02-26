@@ -29,6 +29,7 @@ class ApplicationTask extends Component {
       task: this.props.match.params.task,
       user: this.props.user.user,
       application: this.props.application.application,
+      avatar: this.props.avatar,
       uid: "",
       email: "",
       isAddingTest: false,
@@ -69,6 +70,9 @@ class ApplicationTask extends Component {
         uid: nextProps.application.user 
       });
     }
+
+    if (nextProps.avatar.hasGotten)
+      this.setState({ avatar: nextProps.avatar });
   }
 
   render() {
@@ -103,11 +107,22 @@ class ApplicationTask extends Component {
               Upload a profile picture below.
             </p>
             {
-              this.props.avatar.url ?
-              <div className="avatar__container" style={{ backgroundImage: `url(${this.props.avatar.url})` }}>
-              </div>
+              this.props.avatar.isGetting ?
+                <span className="no__avatar">Fetching...</span>
+              :
+                null
+            }
+            {
+              this.props.avatar.hasGotten && this.props.avatar.url ?
+                <div className="avatar__container" style={{ backgroundImage: `url(${this.props.avatar.url})` }}></div>
                 :
-              <span className="no__avatar">No profile</span>
+               null
+            }
+            {
+              this.props.avatar.hasGotten && !this.props.avatar.url.length ?
+                <span className="no__avatar">Fetching...</span>
+              :
+                null
             }
             <DropUploader handleAvatarChange={this.handleAvatarChange} />
           </div>

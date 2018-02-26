@@ -40,13 +40,12 @@ class ApplicationPortal extends Component {
       applicationId: this.props.match.params.application_id,
       task: "welcome",
       isComplete: {
-        welcome: true,
         personal: false,
         education: false,
+        "profile-picture": false,
         "us-standardized-tests": false,
         "national-tests": false,
-        miscellaneous: false,
-        review: false
+        miscellaneous: false
       }
     };
   }
@@ -104,18 +103,40 @@ class ApplicationPortal extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.application.hasGotten) {
       const { application } = nextProps.application;
+      let { isComplete } = this.state;
+
       this.setState({ application });
 
       if ((application.educationLevel && application.educationLevel.length) &&
         (application.gpa && application.gpa.length) &&
         (application.lastSchool && application.lastSchool.length)) {
-        let { isComplete } = this.state;
         isComplete = Object.assign({}, isComplete, {
           education: true
         });
-
-        this.setState({ isComplete });
       }
+
+      if ((application.usTest && application.usTest.length) &&
+        (application.score && application.score.length)) {
+        isComplete = Object.assign({}, isComplete, {
+          "us-standardized-tests": true
+        });
+      }
+
+      if (application.tests && Object.keys(application.tests).length) {
+        isComplete = Object.assign({}, isComplete, {
+          "national-tests": true
+        });
+      }
+
+      if ((application.income && application.income.length) &&
+        (application.interest && application.interest.length) &&
+        (application.workEthic && application.workEthic.length)) {
+        isComplete = Object.assign({}, isComplete, {
+          "miscellaneous": true
+        });
+      }
+
+      this.setState({ isComplete });
     }
     
     if (nextProps.user.hasGotten) {
@@ -135,6 +156,19 @@ class ApplicationPortal extends Component {
 
         this.setState({ isComplete });
         }
+    }
+
+    if (nextProps.avatar.hasGotten) {
+      const { url } = nextProps.avatar;
+
+      if (url.length) {
+        let { isComplete } = this.state;
+        isComplete = Object.assign({}, isComplete, {
+          "profile-picture": true
+        });
+
+        this.setState({ isComplete });
+      }
     }
   }
 
