@@ -8,6 +8,7 @@ import propTypes from "prop-types";
 
 import * as applicationActions from "../../../actions/applicationActions";
 import * as userActions from "../../../actions/userActions";
+import * as avatarActions from "../../../actions/avatarActions";
 
 import Button from "../../../components/Button";
 import LinkButton from "../../../components/LinkButton";
@@ -64,7 +65,7 @@ class ApplicationPortal extends Component {
           <div className="application__portal_sidebar">
             <ul className="application__sidebar">
               <li>
-                <NavLink to={this.props.match.url} activeClassName="active" className="complete">Welcome</NavLink>
+                <NavLink exact to={this.props.match.url}>Welcome</NavLink>
               </li>
               { this.createTaskList() }
             </ul>
@@ -75,7 +76,8 @@ class ApplicationPortal extends Component {
                 return <ApplicationTask {...props} 
                   setTask={this.setTask}
                   user={this.state.user}
-                  application={this.state.application} />
+                  application={this.state.application} 
+                  avatar={this.props.avatar} />
               }}/>
             <Route exact path={this.props.match.url}
               render={this.renderWelcome}/>
@@ -93,7 +95,10 @@ class ApplicationPortal extends Component {
     this.props.userActions.doUserGet();
 
     // get application
-    this.props.applicationActions.doApplicationGet(this.state.applicationId); 
+    this.props.applicationActions.doApplicationGet(this.state.applicationId);
+
+    // get profile picture
+    this.props.avatarActions.doAvatarGet(this.state.applicationId);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -207,20 +212,24 @@ ApplicationPortal.propTypes = {
   applicationActions: propTypes.object,
   application: propTypes.object,
   userActions: propTypes.object,
-  user: propTypes.object
+  user: propTypes.object,
+  avatarActions: propTypes.object,
+  avatar: propTypes.object
 };
 
 const mapStateToProps = state => {
   return {
     application: state.application,
-    user: state.user
+    user: state.user,
+    avatar: state.avatar
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     applicationActions: bindActionCreators(applicationActions, dispatch),
-    userActions: bindActionCreators(userActions, dispatch)
+    userActions: bindActionCreators(userActions, dispatch),
+    avatarActions: bindActionCreators(avatarActions, dispatch)
   };
 };
 

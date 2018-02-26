@@ -64,6 +64,9 @@
 .application__portal_sidebar .application__sidebar>li>a.complete {
   color: #FF6561;
 }
+.application__portal_sidebar .application__sidebar>li>a.complete {
+  text-decoration: line-through;
+}
 
 .application__portal_sidebar .application__sidebar>li>a.active:before,
 .application__portal_sidebar .application__sidebar>li>a.complete::before,

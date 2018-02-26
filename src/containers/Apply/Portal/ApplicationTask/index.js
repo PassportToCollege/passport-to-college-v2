@@ -9,7 +9,6 @@ import * as applicationActions from "../../../../actions/applicationActions";
 import * as userActions from "../../../../actions/userActions";
 import * as avatarActions from "../../../../actions/avatarActions";
 
-import { auth } from "../../../../utils/firebase";
 import { getTestKey } from "../../../../utils";
 
 import { PersonalInformation, EducationInformation, USTest, Miscellaneous } from './../../../../components/Forms/index';
@@ -40,11 +39,6 @@ class ApplicationTask extends Component {
 
   componentWillMount() {
     this.props.setTask(this.state.task);
-
-    auth.onAuthStateChanged(user => {
-      if (user)
-        this.props.avatarActions.doAvatarGet(user.uid);
-    });
   }
 
   componentWillUpdate(nextProps, nextState) {
