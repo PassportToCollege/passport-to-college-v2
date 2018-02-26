@@ -99,23 +99,38 @@ class ApplicationPortal extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.application.hasGotten) {
       const { application } = nextProps.application;
-
       this.setState({ application });
 
       if ((application.educationLevel && application.educationLevel.length) &&
         (application.gpa && application.gpa.length) &&
         (application.lastSchool && application.lastSchool.length)) {
-          let { isComplete } = this.state;
-          isComplete = Object.assign({}, isComplete, {
-            education: true
-          });
+        let { isComplete } = this.state;
+        isComplete = Object.assign({}, isComplete, {
+          education: true
+        });
 
-          this.setState({ isComplete });
-        }
+        this.setState({ isComplete });
+      }
     }
     
-    if (nextProps.user.hasGotten)
-      this.setState({ user: nextProps.user.user });
+    if (nextProps.user.hasGotten) {
+      const { user } = nextProps.user;
+      this.setState({ user });
+
+      if ((user.name && user.name.first && user.name.last) &&
+        (user.email && user.email.length) &&
+        (user.address && user.address.country.length) &&
+        (user.dob && user.dob.length) &&
+        (user.gender && user.gender.length) &&
+        (user.phone && user.phone.length)) {
+        let { isComplete } = this.state;
+        isComplete = Object.assign({}, isComplete, {
+          personal: true
+        });
+
+        this.setState({ isComplete });
+        }
+    }
   }
 
   handleNextButtonClick = () => {
