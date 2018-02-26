@@ -37,7 +37,16 @@ class ApplicationPortal extends Component {
 
     this.state = {
       applicationId: this.props.match.params.application_id,
-      task: "welcome"
+      task: "welcome",
+      isComplete: {
+        welcome: true,
+        personal: false,
+        education: false,
+        "us-standardized-tests": false,
+        "national-tests": false,
+        miscellaneous: false,
+        review: false
+      }
     };
   }
 
@@ -55,7 +64,7 @@ class ApplicationPortal extends Component {
           <div className="application__portal_sidebar">
             <ul className="application__sidebar">
               <li>
-                <NavLink to={this.props.match.url} activeClassName="active">Welcome</NavLink>
+                <NavLink to={this.props.match.url} activeClassName="active" className="complete">Welcome</NavLink>
               </li>
               { this.createTaskList() }
             </ul>
@@ -88,8 +97,22 @@ class ApplicationPortal extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.application.hasGotten)
-      this.setState({ application: nextProps.application.application });
+    if (nextProps.application.hasGotten) {
+      const { application } = nextProps.application;
+
+      this.setState({ application });
+
+      if ((application.educationLevel && application.educationLevel.length) &&
+        (application.gpa && application.gpa.length) &&
+        (application.lastSchool && application.lastSchool.length)) {
+          let { isComplete } = this.state;
+          isComplete = Object.assign({}, isComplete, {
+            education: true
+          });
+
+          this.setState({ isComplete });
+        }
+    }
     
     if (nextProps.user.hasGotten)
       this.setState({ user: nextProps.user.user });
@@ -123,9 +146,11 @@ class ApplicationPortal extends Component {
 
   createTaskList = () => {
     return tasks.map(task => {
+      let formattedTask = task.toLowerCase().split(" ").join("-");
       return (
         <li key={task}>
-          <NavLink exact to={`${this.props.match.url}/${task.toLowerCase().split(" ").join("-")}`} activeClassName="active">
+          <NavLink exact to={`${this.props.match.url}/${formattedTask}`} activeClassName="active"
+            className={this.state.isComplete[formattedTask] === true ? "complete" : null}>
             {task}
           </NavLink>
         </li>
