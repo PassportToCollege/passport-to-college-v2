@@ -100,7 +100,8 @@ class ApplicationTask extends Component {
               this.props.user.hasGotten ?
               <PersonalInformation 
                 updateField={this.updateField}
-                user={this.props.user.user} /> :
+                user={this.props.user.user} 
+                disabled={this.state.application.wasSubmitted} /> :
               null
             }
           </div>
@@ -130,7 +131,7 @@ class ApplicationTask extends Component {
               :
                 null
             }
-            <DropUploader handleAvatarChange={this.handleAvatarChange} />
+            <DropUploader handleAvatarChange={this.handleAvatarChange} disabled={this.state.application.wasSubmitted}/>
           </div>
         );
       case "education":
@@ -143,7 +144,8 @@ class ApplicationTask extends Component {
             {
               this.props.application.hasGotten ?
               <EducationInformation application={this.props.application} 
-                updateApplicationField={this.updateApplicationField} />
+                updateApplicationField={this.updateApplicationField}
+                disabled={this.state.application.wasSubmitted} />
                 :
               null
             }
@@ -167,7 +169,8 @@ class ApplicationTask extends Component {
             {
               this.props.application.hasGotten ?
                 <USTest application={this.props.application} 
-                  updateApplicationField={this.updateApplicationField} />
+                  updateApplicationField={this.updateApplicationField} 
+                  disabled={this.state.application.wasSubmitted} />
                 :
               null
             }
@@ -186,12 +189,13 @@ class ApplicationTask extends Component {
               If you have not taken an exam but are registered to take said exam, provide the year
               you will take the exam and 0 as the grade.
             </p>
-            <Button type="button" text="Add Test" solid doClick={this.handleAddTestClick} />
+            <Button type="button" text="Add Test" solid doClick={this.handleAddTestClick} disabled={this.state.application.wasSubmitted} />
             {
               this.state.isAddingTest ?
               <AddNationalTest doClose={this.handleTestModalClose}
                 handleInputChange={this.handleTestModalInputChange}
-                handleTestAdded={this.handleTestAdded} />
+                handleTestAdded={this.handleTestAdded} 
+                disabled={this.state.application.wasSubmitted}/>
                 :
               null
             }
@@ -212,7 +216,8 @@ class ApplicationTask extends Component {
             {
               this.props.application.hasGotten ?
               <Miscellaneous application={this.props.application}
-                updateApplicationField={this.updateApplicationField} />
+                updateApplicationField={this.updateApplicationField} 
+                disabled={this.state.application.wasSubmitted}/>
                 :
               null
             }
@@ -233,7 +238,8 @@ class ApplicationTask extends Component {
             {
               this.props.application.hasGotten ?
                 <WYSIWYGEditor saveButton handleSave={this.handleEssaySave} 
-                  content={this.state.application.essay} />
+                  content={this.state.application.essay} 
+                  readonly={this.state.application.wasSubmitted} />
               :
                 <span>Getting editor...</span>
             }
