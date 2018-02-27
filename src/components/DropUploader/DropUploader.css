@@ -40,3 +40,17 @@
   "Roboto",
   sans-serif
 }
+
+.form.drop__uploader.disabled {
+  background-color: rgba(51, 51, 51, 0.15);
+}
+
+.form.drop__uploader fieldset:disabled .drop__area {
+  background-color: rgba(51,51,51,0.15);
+  border: 4px dashed rgba(51, 51, 51, 0.25);
+  cursor: auto;
+}
+
+.form.drop__uploader fieldset:disabled .drop__area > svg {
+  color: rgba(51, 51, 51, 0.25);
+}

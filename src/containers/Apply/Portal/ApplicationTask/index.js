@@ -131,7 +131,12 @@ class ApplicationTask extends Component {
               :
                 null
             }
-            <DropUploader handleAvatarChange={this.handleAvatarChange} disabled={this.state.application.wasSubmitted}/>
+            {
+              this.props.application.hasGotten ?
+                <DropUploader handleAvatarChange={this.handleAvatarChange} disabled={this.state.application.wasSubmitted}/>
+              :
+                null
+            }
           </div>
         );
       case "education":
