@@ -74,13 +74,10 @@ export const doSignIn = (email, password) => {
               } else {
                 history.push("/");
               }
-            } else {
-              console.log("no user data found.");
             }
           })
         })
         .catch(error => {
-          console.log(error)
           dispatch(signInFailed(error));
       })
   };
@@ -215,12 +212,10 @@ export const doAccountCreate = (data) => {
             history.push(`/apply/p/${user.uid}`);
           })
           .catch(error => {
-            console.log(error);
             dispatch(addingDataToUserDbsFailed(data, error));
           })
       })
       .catch(error => {
-        console.log(error);
         dispatch(accountCreationFailed(data, error));
       })
   };
