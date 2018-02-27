@@ -15,6 +15,7 @@ import LinkButton from "../../../components/LinkButton";
 import ApplicationTask from './ApplicationTask';
 
 import history from "../../../constants/history";
+import { getWordCount } from "../../../utils";
 
 const tasks = [
   "Personal",
@@ -45,7 +46,8 @@ class ApplicationPortal extends Component {
         "profile-picture": false,
         "us-standardized-tests": false,
         "national-tests": false,
-        miscellaneous: false
+        miscellaneous: false,
+        essay: false
       }
     };
   }
@@ -133,6 +135,13 @@ class ApplicationPortal extends Component {
         (application.workEthic && application.workEthic.length)) {
         isComplete = Object.assign({}, isComplete, {
           "miscellaneous": true
+        });
+      }
+
+      if (application.essay && application.essay.blocks && 
+        application.essay.blocks.length && getWordCount(application.essay.blocks) >= 300) {
+        isComplete = Object.assign({}, isComplete, {
+          essay: true
         });
       }
 
