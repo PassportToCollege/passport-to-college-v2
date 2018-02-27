@@ -37,7 +37,8 @@ class ApplicationTask extends Component {
       isAddingTest: false,
       addTestModal: {},
       hasChanged: false, // flag to tell if user changed any fields so new application is fetched on component update
-      complete: this.props.complete
+      complete: this.props.complete,
+      notificationClosed: false
     };
   }
 
@@ -373,8 +374,9 @@ class ApplicationTask extends Component {
                 </p>
             }
             {
-              this.props.application.hasUpdated ?
-                <Notification text="Application submitted! Check your email for confirmation." />
+              this.props.application.hasUpdated && !this.state.notificationClosed ?
+                <Notification text="Application submitted! Check your email for confirmation."
+                  doClose={this.handleNotificationClose} />
               :
                 null
             }
@@ -466,6 +468,10 @@ class ApplicationTask extends Component {
     const wasSubmitted = true;
 
     this.props.applicationActions.doApplicationUpdate(this.state.uid, { submittedOn, wasSubmitted });
+  }
+
+  handleNotificationClose = () => {
+    this.setState({ notificationClosed: true });
   }
 
   updateField = (e) => {

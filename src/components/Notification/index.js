@@ -8,6 +8,9 @@ import { faTimes } from "@fortawesome/fontawesome-free-solid";
 const Notification = props => {
   const closeNotification = () => {
     this.notification.classList.add("close");
+
+    if (props.doClose && "function" === typeof props.doClose)
+      props.doClose();
   }
 
   return (
@@ -18,8 +21,9 @@ const Notification = props => {
   )
 }
 
-Notification.prototypes = {
-  text: propTypes.string
+Notification.propTypes = {
+  text: propTypes.string,
+  doClose: propTypes.func
 };
 
 export default Notification;
