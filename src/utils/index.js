@@ -8,25 +8,25 @@ export const activeUser = () => {
     return cookies.get("ssid").uid;
 
   return null;
-}
+};
 
 export const isAuthorized = () => {
   return !!cookies.get("ssid");
-}
+};
 
 export const isAdmin = () => {
   if (isAuthorized())
     return cookies.get("ssid").isAdmin;
   
     return false;
-}
+};
 
 export const isApplicant = () => {
   if (isAuthorized())
     return cookies.get("ssid").isApplicant;
   
     return false;
-}
+};
 
 export const sessionAge = () => {
   const { createdAt } = cookies.get("ssid");
@@ -34,7 +34,7 @@ export const sessionAge = () => {
   const age = moment.duration(end.diff(createdAt));
 
   return age.asHours();
-}
+};
 
 export const getTestKey = test => {
   let key = test.subject.toLowerCase().replace(/\s/g, "-");
@@ -42,4 +42,21 @@ export const getTestKey = test => {
   key += `-${test.examination.toLowerCase().replace(/\s/g, "-")}`;
 
   return key;
-}
+};
+
+export const getWordCount = blocks => {
+  let count = 0;
+
+  if (blocks.length) {
+    blocks.map(block => {
+      let { text } = block;
+      text = text.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, "")
+        .replace(/\s{2,}/g, " ")
+        .split(" ");
+
+      count += text.length;
+    });
+  }
+
+  return count;
+};

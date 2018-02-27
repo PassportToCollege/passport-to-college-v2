@@ -229,7 +229,7 @@ class ApplicationTask extends Component {
                 <WYSIWYGEditor saveButton handleSave={this.handleEssaySave} 
                   content={this.state.application.essay} />
               :
-                <WYSIWYGEditor saveButton handleSave={this.handleEssaySave} />
+                <span>Getting editor...</span>
             }
           </div>
         );

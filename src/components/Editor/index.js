@@ -6,6 +6,8 @@ import { Editor, EditorState, RichUtils, convertToRaw, convertFromRaw } from "dr
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import { faBold, faItalic, faUnderline, faRedoAlt, faUndoAlt } from "@fortawesome/fontawesome-free-solid";
 
+import { getWordCount } from "../../utils";
+
 import Button from "../Button";
 
 class WYSIWYGEditor extends Component {
@@ -13,12 +15,14 @@ class WYSIWYGEditor extends Component {
     super(props);
 
     const content = convertFromRaw(props.content);
+    const { blocks } = props.content;
 
     this.state = {
       editorState: content.length ? EditorState.createWithContent(content) : EditorState.createEmpty(),
       isBold: false,
       isUnderline: false,
-      isItalic: false
+      isItalic: false,
+      words: getWordCount(blocks)
     };
   }
 
@@ -64,6 +68,7 @@ class WYSIWYGEditor extends Component {
                   :
                   null
               }
+              <span className="editor__word_count">{this.state.words} { this.state.words === 1 ? "word" : "words" }</span>
             </div>
         }
         <div className="editor__editor">
@@ -78,6 +83,9 @@ class WYSIWYGEditor extends Component {
 
   onChange = editorState => {
     this.setState({ editorState });
+    
+    let content = convertToRaw(editorState.getCurrentContent());
+    this.setState({ words: getWordCount(content.blocks) });
   }
 
   _handleSave = () => {
