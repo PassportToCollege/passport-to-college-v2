@@ -95,7 +95,7 @@ class Apply extends Component {
 Apply.propTypes = {
   authActions: propTypes.object,
   updateLocation: propTypes.func,
-  auth: propTypes.object
+  auth: propTypes.oneOfType([propTypes.bool, propTypes.object])
 };
 
 const mapStateToProps = state => {

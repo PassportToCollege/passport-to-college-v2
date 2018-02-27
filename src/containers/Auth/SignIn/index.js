@@ -69,7 +69,7 @@ SignIn.propTypes = {
   authActions: propTypes.object,
   activeUser: propTypes.object,
   updateLocation: propTypes.func,
-  auth: propTypes.object
+  auth: propTypes.oneOfType([propTypes.bool, propTypes.object])
 };
 
 const mapStateToProps = state => {
