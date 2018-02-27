@@ -372,7 +372,7 @@ class ApplicationTask extends Component {
           <div className="application__portal_task default_task">
             <h1 className="application_task__heading">Submit Application</h1>
             {
-              this.applicationComplete(this.state) ?
+              this.applicationComplete(this.state) && !this.state.application.wasSubmitted ?
                 <span>
                   <p className="application_task__instructions type__margin_top">
                     Congratulations!
@@ -390,11 +390,27 @@ class ApplicationTask extends Component {
                   <Button type="button" solid text="Submit Application" doClick={this.handleApplicationSubmit} />
                 </span>
               :
-                <p className="application_task__instructions">
+                null
+            }
+            {
+              this.props.application.hasGotten && !this.applicationComplete(this.state) && !this.state.application.wasSubmitted ?
+                <p className="application_task__instructions type__margin_top">
                   Your application is not complete. Ensure that you have
                   provided all required information before attempting
                   to submit your application.
                 </p>
+              :
+                null
+            }
+            {
+              this.props.application.hasGotten && this.props.user.hasGotten && this.state.application.wasSubmitted ?
+                <p className="application_task__instructions type__margin_top">
+                  Your application has been submitted for review.
+                  We will be in touch with you through the email address
+                  (<b>{this.state.user.email}</b>) you provided.
+                </p>
+              :
+                null
             }
             {
               this.props.application.hasUpdated && !this.state.notificationClosed ?
