@@ -293,24 +293,32 @@ class ApplicationTask extends Component {
                 ensure all the information you provide is accurate and correct.
               </p>
               <ReviewBlock heading="Personal" editLink={this.props.match.path.replace(":task", "personal")}
-                items={dataPersonal} />
+                items={dataPersonal} 
+                canEdit={!this.state.application.wasSubmitted} />
               
               <ReviewBlock heading="Profile Picture" editLink={this.props.match.path.replace(":task", "profile-picture")}
-                renderImage imageUrl={this.props.avatar.url} />
+                renderImage imageUrl={this.props.avatar.url}
+                canEdit={!this.state.application.wasSubmitted} />
 
               <ReviewBlock heading="Education" editLink={this.props.match.path.replace(":task", "education")}
-                items={dataEducation} />
+                items={dataEducation} 
+                canEdit={!this.state.application.wasSubmitted}/>
               
               <ReviewBlock heading="U.S. Standardized Tests" editLink={this.props.match.path.replace(":task", "us-standardized-tests")}
-                items={dataUSTests} />
+                items={dataUSTests} 
+                canEdit={!this.state.application.wasSubmitted}/>
               
               <ReviewBlock heading="National Tests" editLink={this.props.match.path.replace(":task", "national-tests")} renderFromFunc
-                renderFunc={this.renderTestList} />
+                renderFunc={this.renderTestList}
+                canEdit={!this.state.application.wasSubmitted} />
               
-              <ReviewBlock heading="Miscellaneous" editLink={this.props.match.path.replace(":task", "miscellaneous")} items={dataMisc} />
+              <ReviewBlock heading="Miscellaneous" editLink={this.props.match.path.replace(":task", "miscellaneous")} 
+                items={dataMisc} 
+                canEdit={!this.state.application.wasSubmitted}/>
 
               <ReviewBlock heading="Essay" editLink={this.props.match.path.replace(":task", "essay")} renderFromFunc
-                renderFunc={this.renderReadOnlyEssay} />
+                renderFunc={this.renderReadOnlyEssay} 
+                canEdit={!this.state.application.wasSubmitted}/>
             </div>
           );
         }

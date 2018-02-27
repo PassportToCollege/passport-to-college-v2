@@ -9,7 +9,12 @@ const ReviewBlock = props => {
     <div className="review_block">
       <div className="review_block__header">
         <h2>{props.heading}</h2>
-        <Link to={props.editLink}>edit</Link>
+        {
+          props.canEdit ?
+            <Link to={props.editLink}>edit</Link>
+          :
+            null
+        }
       </div>
       <div className="review_block__main">
         {
@@ -50,7 +55,8 @@ ReviewBlock.propTypes = {
   renderFromFunc: propTypes.bool,
   renderFunc: propTypes.func,
   renderImage: propTypes.bool,
-  imageUrl: propTypes.string
+  imageUrl: propTypes.string,
+  canEdit: propTypes.bool
 };
 
 export default ReviewBlock;
