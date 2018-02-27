@@ -26,10 +26,6 @@ a:focus {
   transition: transform 250ms linear 100ms;
 }
 
-.app__main[data-hamburger="closed"] {
-  transform: scale(1); 
-}
-
 .app__main[data-hamburger="open"] {
   transform: scale(0.75);
 }

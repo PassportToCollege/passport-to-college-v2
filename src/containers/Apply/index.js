@@ -44,7 +44,8 @@ class Apply extends Component {
           submitText="Continue"
           handleSignIn={this.handleSignIn}
           updateEmail={this.updateEmail}
-          updatePassword={this.updatePassword} />
+          updatePassword={this.updatePassword} 
+          authError={this.state.hasError}/>
 
         <StartApplication
           title="Start New Application"
@@ -88,7 +89,7 @@ class Apply extends Component {
   }
 
   handleNotificationClose = () => {
-    this.setState({ notificationClosed: true });
+    this.setState({ notificationClosed: true, hasError: false });
   }
 }
 

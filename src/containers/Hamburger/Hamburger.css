@@ -9,7 +9,7 @@
 
 .hamburger[data-active="closed"] {
   transition: z-index 200ms linear 200ms;
-  z-index: 0;
+  z-index: -1;
 }
 
 .hamburger[data-active="open"] {
