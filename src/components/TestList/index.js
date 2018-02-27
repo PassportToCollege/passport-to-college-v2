@@ -7,7 +7,7 @@ import { getTestKey } from "../../utils";
 
 import Test from "../Test";
 
-const TestList = ({ tests, handleDelete }) => {
+const TestList = ({ tests, handleDelete, disabled }) => {
 
   const deleteTest = test => {
     if ("function" === typeof handleDelete)
@@ -20,7 +20,8 @@ const TestList = ({ tests, handleDelete }) => {
         <Test 
           key={getTestKey(tests[test])} 
           test={tests[test]}
-          handleDelete={deleteTest} />
+          handleDelete={deleteTest}
+          disabled={disabled} />
       )
     });
   }
@@ -34,7 +35,8 @@ const TestList = ({ tests, handleDelete }) => {
 
 TestList.propTypes = {
   tests: propTypes.object,
-  handleDelete: propTypes.func
+  handleDelete: propTypes.func,
+  disabled: propTypes.bool
 };
 
 export default TestList;

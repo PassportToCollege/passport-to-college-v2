@@ -204,8 +204,7 @@ class ApplicationTask extends Component {
               this.state.isAddingTest ?
               <AddNationalTest doClose={this.handleTestModalClose}
                 handleInputChange={this.handleTestModalInputChange}
-                handleTestAdded={this.handleTestAdded} 
-                disabled={this.state.application.wasSubmitted}/>
+                handleTestAdded={this.handleTestAdded} />
                 :
               null
             }
@@ -427,7 +426,8 @@ class ApplicationTask extends Component {
       Object.keys(this.state.application.tests).length > 0) {
       return (
         <TestList tests={this.state.application.tests}
-          handleDelete={this.handleTestDelete} />
+          handleDelete={this.handleTestDelete}
+          disabled={this.state.application.wasSubmitted} />
       )
     }
 

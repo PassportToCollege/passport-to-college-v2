@@ -7,7 +7,7 @@ import { faTrash } from "@fortawesome/fontawesome-free-solid";
 
 import { getTestKey } from "../../utils";
 
-const Test = ({ test, handleDelete }) => {
+const Test = ({ test, handleDelete, disabled }) => {
   const deleteTest = () => {
     if ("function" === typeof handleDelete)
       handleDelete(getTestKey(test));
@@ -24,16 +24,22 @@ const Test = ({ test, handleDelete }) => {
         <span className="test__country">{test.country}</span>
         <span className="test__year">{test.year}</span>
       </div>
-      <div className="test__delete" onClick={deleteTest}>
-        <FontAwesomeIcon icon={faTrash} />
-      </div>
+      {
+        !disabled ?
+          <div className="test__delete" onClick={deleteTest}>
+            <FontAwesomeIcon icon={faTrash} />
+          </div>
+        :
+          null
+      }
     </div>
   )
 }
 
 Test.propTypes = {
   test: propTypes.object,
-  handleDelete: propTypes.func
+  handleDelete: propTypes.func,
+  disabled: propTypes.bool
 };
 
 export default Test;
