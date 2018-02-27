@@ -10,3 +10,30 @@
   font-size: 1.71428571em;
   padding: 16px 45px;
 }
+
+.link__button.icon {
+  font-size: 1.125em;
+  padding: 1em;
+  border-radius: 50%;
+  width: 3.525em;
+  height: 3.525em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.link__button.fixed {
+  position: fixed;
+}
+
+.link__button.fixed__right {
+  right: 3em;
+}
+
+.link__button.fixed__bottom {
+  bottom: 3em;
+}
+
+.link__button.solid {
+  background-color: #FF6561;
+}

@@ -84,7 +84,7 @@ class ApplicationPortal extends Component {
             <Route exact path={this.props.match.url}
               render={this.renderWelcome}/>
           </div>
-          {/* <LinkButton target="/#/" text="Home"/> */}
+          <LinkButton target="/#/" classes="fixed fixed__bottom fixed__right round solid icon" icon="faHome"/>
         </main>
       </div>
     )
