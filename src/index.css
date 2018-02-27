@@ -30,3 +30,7 @@ body {
 .type__bold {
   font-weight: bold;
 }
+
+.type__margin_top {
+  margin-top: 1em !important;
+}

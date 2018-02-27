@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import propTypes from 'prop-types';
+import moment from "moment";
 
 import * as applicationActions from "../../../../actions/applicationActions";
 import * as userActions from "../../../../actions/userActions";
@@ -34,7 +35,8 @@ class ApplicationTask extends Component {
       email: "",
       isAddingTest: false,
       addTestModal: {},
-      hasChanged: false // flag to tell if user changed any fields so new application is fetched on component update
+      hasChanged: false, // flag to tell if user changed any fields so new application is fetched on component update
+      complete: this.props.complete
     };
   }
 
@@ -73,6 +75,8 @@ class ApplicationTask extends Component {
 
     if (nextProps.avatar.hasGotten)
       this.setState({ avatar: nextProps.avatar });
+    
+    this.setState({ complete: nextProps.complete });
   }
 
   render() {
@@ -342,9 +346,46 @@ class ApplicationTask extends Component {
         return (
           <div className="application__portal_task default_task">
             <h1 className="application_task__heading">Submit Application</h1>
+            {
+              this.applicationComplete(this.state) ?
+                <span>
+                  <p className="application_task__instructions type__margin_top">
+                    Congratulations!
+                  </p>
+                  <p className="application_task__instructions">
+                    You&apos;ve provided all the required information
+                    and you can now submit your application.
+                  </p>
+                  <p className="application_task__instructions">
+                    Ensure that you review the information you provided because you will not
+                    be able to make changes once you submit your application. If you feel like you&apos;ve
+                    given accurate and correct information click the button below to submit your
+                    application for review.
+                  </p>
+                  <Button type="button" solid text="Submit Application" doClick={this.handleApplicationSubmit} />
+                </span>
+              :
+                <p className="application_task__instructions">
+                  Your application is not complete. Ensure that you have
+                  provided all required information before attempting
+                  to submit your application.
+                </p>
+            }
           </div>
         )
     }
+  }
+
+  applicationComplete = state => {
+    const { complete } = state;
+    let keys = Object.keys(complete);
+
+    for(let i = 0; i < keys.length; i++) {
+      if (!complete[keys[i]])
+        return false;
+    }
+
+    return true;
   }
 
   renderReadOnlyEssay = () => {
@@ -411,6 +452,13 @@ class ApplicationTask extends Component {
   handleEssaySave = html => {
     this.props.applicationActions.doApplicationUpdate(this.state.uid, { essay: html });
     this.setState({ hasChanged: true });
+  }
+
+  handleApplicationSubmit = () => {
+    const submittedOn = moment().format("Y-m-d");
+    const wasSubmitted = true;
+
+    this.props.applicationActions.doApplicationUpdate(this.state.uid, { submittedOn, wasSubmitted });
   }
 
   updateField = (e) => {
@@ -489,7 +537,8 @@ ApplicationTask.propTypes = {
   avatar: propTypes.object,
   application: propTypes.object,
   userActions: propTypes.object,
-  user: propTypes.object
+  user: propTypes.object,
+  complete: propTypes.object
 };
 
 const mapStateToProps = state => {
