@@ -21,6 +21,7 @@ import TestList from "../../../../components/TestList";
 import WYSIWYGEditor from "../../../../components/Editor";
 import ReviewBlock from "../../../../components/ReviewBlock";
 import LoadingText from "../../../../components/LoadingText";
+import Notification from "../../../../components/Notification";
 
 class ApplicationTask extends Component {
   constructor(props) {
@@ -370,6 +371,12 @@ class ApplicationTask extends Component {
                   provided all required information before attempting
                   to submit your application.
                 </p>
+            }
+            {
+              this.props.application.hasUpdated ?
+                <Notification text="Application submitted! Check your email for confirmation." />
+              :
+                null
             }
           </div>
         )
