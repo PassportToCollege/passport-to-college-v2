@@ -19,8 +19,18 @@ class Button extends Component {
       });
     }
 
+    if (this.props.disabled) {
+      buttonStyles = Object.assign({}, buttonStyles, {
+        backgroundColor: "#999",
+        borderColor: "#999",
+        cursor: "auto"
+      });
+    }
+
     return (
-      <button className="button" type={this.props.type} onClick={this.handleClick} style={buttonStyles}>
+      <button className="button" type={this.props.type} onClick={this.handleClick} 
+        style={buttonStyles}
+        disabled={this.props.disabled}>
         {this.props.text}
       </button>
     )
@@ -32,7 +42,8 @@ Button.propTypes = {
   type: propTypes.string,
   doClick: propTypes.func,
   text: propTypes.string,
-  solid: propTypes.bool
+  solid: propTypes.bool,
+  disabled: propTypes.bool
 };
 
 export default Button;

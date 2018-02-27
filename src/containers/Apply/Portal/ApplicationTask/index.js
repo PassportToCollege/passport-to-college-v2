@@ -194,7 +194,12 @@ class ApplicationTask extends Component {
               If you have not taken an exam but are registered to take said exam, provide the year
               you will take the exam and 0 as the grade.
             </p>
-            <Button type="button" text="Add Test" solid doClick={this.handleAddTestClick} disabled={this.state.application.wasSubmitted} />
+            {
+              this.props.application.hasGotten ?
+                <Button type="button" text="Add Test" solid doClick={this.handleAddTestClick} disabled={this.state.application.wasSubmitted} />
+              :
+                null
+            }
             {
               this.state.isAddingTest ?
               <AddNationalTest doClose={this.handleTestModalClose}
