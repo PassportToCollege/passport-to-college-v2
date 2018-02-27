@@ -56,7 +56,7 @@ class ApplicationPortal extends Component {
     return (
       <div className="application_portal">
         <header className="application__portal_header">
-          <h1>Student Application</h1>
+          <h1>Student Application Portal</h1>
           <div className="application_portal__action_buttons">
             <Button key="application-portal-previous" type="button" text="Previous" doClick={this.handlePreviousButtonClick} />
             <Button key="application-portal-next" type="button" text="Next" doClick={this.handleNextButtonClick} solid={true}/>
