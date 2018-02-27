@@ -22,6 +22,14 @@
   border-radius: 1em;
 }
 
+.form.signin__form .form__reset_password {
+  color: #333;
+  padding: 0 3.5rem 2rem 0;
+  display: block;
+  text-align: right;
+  font: normal bold 1em "Nunito", "Roboto", san-serif;
+}
+
 .form.signin__form .form__input_container {
   display: block;
   margin: 1em 0;

@@ -26,7 +26,8 @@ class SignIn extends Component {
       <div className="signin__container">
         <SignInForm handleSignIn={this.handleSignIn}
           updateEmail={this.updateEmail}
-          updatePassword={this.updatePassword} />
+          updatePassword={this.updatePassword} 
+          authError={this.state.hasError} />
         {
           this.state.hasError ?
             <Notification doClose={this.handleNotificationClose} text={this.state.error} /> :
@@ -61,7 +62,7 @@ class SignIn extends Component {
   }
 
   handleNotificationClose = () => {
-    this.setState({ notificationClosed: true });
+    this.setState({ notificationClosed: true, hasError: false });
   }
 }
 

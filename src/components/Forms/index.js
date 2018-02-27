@@ -1,32 +1,53 @@
 import "./Forms.css";
 
-import React from "react";
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import propTypes from "prop-types";
 
 import Button from "../Button";
 
-export const SignInForm = props => {
+export class SignInForm extends Component {
+  constructor(props) {
+    super(props);
 
-  return (
-    <form className="form signin__form" method="post" onSubmit={props.handleSignIn}>
-      {
-        props.title ?
-        <h2 className="form__title">{props.title}</h2> :
-        null
-      }
-      <div className="form__input_container">
-        <input type="email" name="email" required onChange={props.updateEmail} />
-        <label>Email</label>
-      </div>
-      <div className="form__input_container">
-        <input type="password" name="password" required onChange={props.updatePassword} />
-        <label>Password</label>
-      </div>
-      <div className="form__input_container">
-        <button className="form__button" type="submit">{props.submitText || "Sign In"}</button>
-      </div>
-    </form>
-  );
+    this.state = {
+      tries: 0
+    };
+  }
+
+  render() {
+    return (
+      <form className="form signin__form" method="post" onSubmit={this.props.handleSignIn}>
+        {
+          this.props.title ?
+          <h2 className="form__title">{this.props.title}</h2> :
+          null
+        }
+        <div className="form__input_container">
+          <input type="email" name="email" required onChange={this.props.updateEmail} />
+          <label>Email</label>
+        </div>
+        <div className="form__input_container">
+          <input type="password" name="password" required onChange={this.props.updatePassword} />
+          <label>Password</label>
+        </div>
+        <div className="form__input_container">
+          <button className="form__button" type="submit">{this.props.submitText || "Sign In"}</button>
+        </div>
+        {
+          this.state.tries > 0 ?
+            <Link to="/auth/reset-password" className="form__reset_password">Trouble signing in?</Link>
+          :
+            null
+        }
+      </form>
+    );
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.authError === true)
+      this.setState({ tries: this.state.tries + 1 })
+  }
 }
 
 export const StartApplication = props => {
@@ -294,7 +315,8 @@ SignInForm.propTypes = {
   submitText: propTypes.string,
   handleSignIn: propTypes.func,
   updateEmail: propTypes.func,
-  updatePassword: propTypes.func
+  updatePassword: propTypes.func,
+  authError: propTypes.bool
 };
 
 StartApplication.propTypes = {
