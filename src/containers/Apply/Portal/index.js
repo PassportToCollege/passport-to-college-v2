@@ -78,7 +78,8 @@ class ApplicationPortal extends Component {
                   setTask={this.setTask}
                   user={this.state.user}
                   application={this.state.application} 
-                  avatar={this.props.avatar} />
+                  avatar={this.props.avatar} 
+                  complete={this.state.isComplete} />
               }}/>
             <Route exact path={this.props.match.url}
               render={this.renderWelcome}/>
