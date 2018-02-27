@@ -17,7 +17,8 @@ class SignIn extends Component {
     this.state = {
       email: "",
       password: "",
-      hasError: false
+      hasError: false,
+      notificationClosed: false
     }
   }
   render() {
@@ -28,7 +29,7 @@ class SignIn extends Component {
           updatePassword={this.updatePassword} />
         {
           this.state.hasError ?
-            <Notification key={Math.random()} text={this.state.error} /> :
+            <Notification doClose={this.handleNotificationClose} text={this.state.error} /> :
             null
         }
       </div>
@@ -58,11 +59,17 @@ class SignIn extends Component {
 
     this.props.authActions.doSignIn(email, password);
   }
+
+  handleNotificationClose = () => {
+    this.setState({ notificationClosed: true });
+  }
 }
 
 SignIn.propTypes = {
   authActions: propTypes.object,
-  activeUser: propTypes.object
+  activeUser: propTypes.object,
+  updateLocation: propTypes.func,
+  auth: propTypes.object
 };
 
 const mapStateToProps = state => {

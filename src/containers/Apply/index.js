@@ -18,7 +18,8 @@ class Apply extends Component {
       email: "",
       password: "",
       hasError: false,
-      error: ""
+      error: "",
+      notificationClosed: false
     }
   }
 
@@ -53,8 +54,8 @@ class Apply extends Component {
           updatePassword={this.updatePassword} />
 
         {
-          this.state.hasError ?
-          <Notification key={Math.random()} text={this.state.error} /> :
+          this.state.hasError && !this.state.notificationClosed?
+          <Notification doClose={this.handleNotificationClose} text={this.state.error} /> :
           null
         }
       </div>
@@ -85,11 +86,16 @@ class Apply extends Component {
 
     this.props.authActions.doAccountCreate(data);
   }
+
+  handleNotificationClose = () => {
+    this.setState({ notificationClosed: true });
+  }
 }
 
 Apply.propTypes = {
   authActions: propTypes.object,
-  updateLocation: propTypes.func
+  updateLocation: propTypes.func,
+  auth: propTypes.object
 };
 
 const mapStateToProps = state => {
