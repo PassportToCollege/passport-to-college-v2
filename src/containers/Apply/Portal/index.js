@@ -1,7 +1,7 @@
 import "./ApplicationPortal.css";
 
 import React, { Component } from "react";
-import { NavLink, Route } from "react-router-dom";
+import { NavLink, Route, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
@@ -16,7 +16,6 @@ import LinkButton from "../../../components/LinkButton";
 import ApplicationTask from './ApplicationTask';
 import Notification from "../../../components/Notification";
 
-import history from "../../../constants/history";
 import { getWordCount } from "../../../utils";
 
 const tasks = [
@@ -110,7 +109,7 @@ class ApplicationPortal extends Component {
             <Route exact path={this.props.match.url}
               render={this.renderWelcome}/>
           </div>
-          <LinkButton target="/#/" classes="fixed fixed__bottom fixed__right round solid icon" icon="faHome"/>
+          <LinkButton target="/" classes="fixed fixed__bottom fixed__right round solid icon" icon="faHome"/>
         </main>
       </div>
     )
@@ -219,7 +218,7 @@ class ApplicationPortal extends Component {
     let next = formattedTasks[nextIndex];
 
     if (next)
-      history.push(`${this.props.match.url}/${next}`)
+      this.props.history.push(`${this.props.match.url}/${next}`)
   }
 
   handlePreviousButtonClick = () => {
@@ -229,10 +228,10 @@ class ApplicationPortal extends Component {
       let previous = formattedTasks[previousIndex];
   
       if (previous) 
-        history.push(`${this.props.match.url}/${previous}`);
+        this.props.history.push(`${this.props.match.url}/${previous}`);
     } else {
       this.setState({ task: "welcome" });
-      history.push(this.props.match.url);
+      this.props.history.push(this.props.match.url);
     }
   }
 
@@ -303,7 +302,8 @@ ApplicationPortal.propTypes = {
   userActions: propTypes.object,
   user: propTypes.object,
   avatarActions: propTypes.object,
-  avatar: propTypes.object
+  avatar: propTypes.object,
+  history: propTypes.object
 };
 
 const mapStateToProps = state => {
@@ -324,7 +324,9 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ApplicationPortal);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(ApplicationPortal)
+);

@@ -3,8 +3,6 @@ import * as types from "./actionTypes";
 import { auth, db } from "../utils/firebase";
 import Cookies from "universal-cookie";
 
-import history from "../constants/history";
-
 const cookies = new Cookies();
 const EMAIL_API = process.env.REACT_APP_EMAIL_API;
 
@@ -68,15 +66,6 @@ export const doSignIn = (email, password) => {
               cookies.set("ssid", d, { path: "/", maxAge: 60 * 60 * 24 });
               
               dispatch(signInDone(uid));
-              
-              // redirect to homepage
-              if (user.isAdmin) {
-                history.push("/admin/dashboard");
-              } else if (user.isApplicant) {
-                history.push(`/apply/p/${uid}`);
-              } else {
-                history.push("/");
-              }
             }
           })
         })
@@ -119,9 +108,6 @@ export const doSignOut = user => {
         cookies.remove("ssid", { path: "/" });
 
         dispatch(signOutDone());
-
-        // redirect to homepage
-        history.push("/");
       })
       .catch(error => {
         dispatch(signOutFailed(error));

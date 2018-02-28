@@ -19,5 +19,5 @@ export const APPLY_PORTAL = { name: "Application Portal", route: "/apply/p/:appl
 // Auth Routes
 export const SIGN_IN = { name: "Sign In", route: "/auth/sign-in" };
 export const SIGN_OUT = { name: "Sign Out", route: "/auth/sign-out" };
-export const CONFIRM_EMAIL_ADDRESS = { name: "Confirm Email Address", route: "/auth/confirm-email-address" };
+export const CONFIRM_EMAIL_ADDRESS = { name: "Confirm Email Address", route: "/auth/confirm-email-address/:uid" };
 export const RESET_PASSWORD = { name: "Reset Password", route: "/auth/reset-password" };

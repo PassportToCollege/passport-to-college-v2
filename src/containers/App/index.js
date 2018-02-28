@@ -1,9 +1,8 @@
 import './App.css';
 
 import React, { Component } from 'react';
-import { Route, Router, Redirect } from "react-router-dom";
+import { Route, BrowserRouter, Redirect } from "react-router-dom";
 
-import history from "../../constants/history";
 import * as routes from "../../constants/routes";
 import { isAuthorized, isApplicant, activeUser } from "../../utils";
 
@@ -14,6 +13,7 @@ import NavigationAdmin from "../NavigationAdmin";
 import Home from "../Home";
 import SignIn from "../Auth/SignIn";
 import ResetPassword from "../Auth/ResetPassword";
+import ConfirmEmail from "../Auth/ConfirmEmail";
 
 import Dashboard from "../Dashboard/Home";
 import Applications from "..//Dashboard/Applications";
@@ -44,7 +44,7 @@ class App extends Component {
     }
 
     return (
-      <Router history={history}>
+      <BrowserRouter>
         <div className="app">
           {this.renderHamburger()}
           <div className="app__main" data-hamburger={this.state.hamburgerState} style={main_bg}>
@@ -52,6 +52,7 @@ class App extends Component {
             <Route exact path={routes.LANDING.route} render={props => this.defaultRouteMiddleware(props, Home)}></Route>
             <Route path={routes.SIGN_IN.route} render={(props) => this.authMiddleware(props, SignIn)}></Route>
             <Route path={routes.RESET_PASSWORD.route} render={(props) => this.authMiddleware(props, ResetPassword)}></Route>
+            <Route path={routes.CONFIRM_EMAIL_ADDRESS.route} render={(props) => this.defaultRouteMiddleware(props, ConfirmEmail)}></Route>
             <Route exact path={routes.DASHBOARD.route} render={props => this.defaultRouteMiddleware(props, Dashboard)}></Route>
             <Route path={routes.APPLICATIONS.route} render={props => this.defaultRouteMiddleware(props, Applications)}></Route>
             <Route path={routes.USERS.route} render={props => this.defaultRouteMiddleware(props, Users)}></Route>
@@ -60,7 +61,7 @@ class App extends Component {
             <Route path={routes.APPLY_PORTAL.route} render={props => this.applicationPortalMiddleware(props, ApplicationPortal)}></Route>
           </div>
         </div>
-      </Router>
+      </BrowserRouter>
     );
   }
 
