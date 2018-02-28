@@ -257,33 +257,36 @@ class ApplicationTask extends Component {
       case "review":
         if (this.props.user.hasGotten && this.props.application.hasGotten) {
           let { user, application } = this.state;
+          let dataPersonal, dataEducation, dataUSTests, dataMisc;
 
-          const dataPersonal = [
-            { name: "name", value: user.name.full },
-            { name: "email", value: user.email },
-            { name: "phone", value: user.phone },
-            { name: "gender", value: user.gender },
-            { name: "dob", value: user.dob },
-            { name: "country", value: user.address.country }
-          ];
-
-          const dataEducation = [
-            { name: "highest education level", value: application.educationLevel },
-            { name: "last school", value: application.lastSchool },
-            { name: "gpa", value: `${application.gpa}/4.00` }
-          ];
-
-          const dataUSTests = [
-            { name: "test", value: application.usTest },
-            { name: "score", value: application.score }
-          ];
-
-          const dataMisc = [
-            { name: "family income", value: application.income },
-            { name: "interest", value: application.interest },
-            { name: "work ethic", value: application.workEthic }
-          ];
-
+          if (this.applicationComplete(this.state)) {
+            dataPersonal = [
+              { name: "name", value: user.name.full },
+              { name: "email", value: user.email },
+              { name: "phone", value: user.phone },
+              { name: "gender", value: user.gender },
+              { name: "dob", value: user.dob },
+              { name: "country", value: user.address.country }
+            ];
+  
+            dataEducation = [
+              { name: "highest education level", value: application.educationLevel },
+              { name: "last school", value: application.lastSchool },
+              { name: "gpa", value: `${application.gpa}/4.00` }
+            ];
+  
+            dataUSTests = [
+              { name: "test", value: application.usTest },
+              { name: "score", value: application.score }
+            ];
+  
+            dataMisc = [
+              { name: "family income", value: application.income },
+              { name: "interest", value: application.interest },
+              { name: "work ethic", value: application.workEthic }
+            ];
+          }
+         
           return (
             <div className="application__portal_task review__task">
               <h1 className="application_task__heading">Review</h1>
@@ -292,33 +295,43 @@ class ApplicationTask extends Component {
                 Once you submit your application you will not be able to make changes to it, so 
                 ensure all the information you provide is accurate and correct.
               </p>
-              <ReviewBlock heading="Personal" editLink={this.props.match.path.replace(":task", "personal")}
-                items={dataPersonal} 
-                canEdit={!this.state.application.wasSubmitted} />
-              
-              <ReviewBlock heading="Profile Picture" editLink={this.props.match.path.replace(":task", "profile-picture")}
-                renderImage imageUrl={this.props.avatar.url}
-                canEdit={!this.state.application.wasSubmitted} />
+              {
+                !this.applicationComplete(this.state) ?
+                  <p className="application_task__instructions type__margin_top">
+                    Your application is not complete. Ensure that you have
+                    provided all required information before reviewing your application.
+                  </p>
+                  :
+                  <div className="review_blocks">
+                    <ReviewBlock heading="Personal" editLink={this.props.match.path.replace(":task", "personal")}
+                      items={dataPersonal}
+                      canEdit={!this.state.application.wasSubmitted} />
 
-              <ReviewBlock heading="Education" editLink={this.props.match.path.replace(":task", "education")}
-                items={dataEducation} 
-                canEdit={!this.state.application.wasSubmitted}/>
-              
-              <ReviewBlock heading="U.S. Standardized Tests" editLink={this.props.match.path.replace(":task", "us-standardized-tests")}
-                items={dataUSTests} 
-                canEdit={!this.state.application.wasSubmitted}/>
-              
-              <ReviewBlock heading="National Tests" editLink={this.props.match.path.replace(":task", "national-tests")} renderFromFunc
-                renderFunc={this.renderTestList}
-                canEdit={!this.state.application.wasSubmitted} />
-              
-              <ReviewBlock heading="Miscellaneous" editLink={this.props.match.path.replace(":task", "miscellaneous")} 
-                items={dataMisc} 
-                canEdit={!this.state.application.wasSubmitted}/>
+                    <ReviewBlock heading="Profile Picture" editLink={this.props.match.path.replace(":task", "profile-picture")}
+                      renderImage imageUrl={this.props.avatar.url}
+                      canEdit={!this.state.application.wasSubmitted} />
 
-              <ReviewBlock heading="Essay" editLink={this.props.match.path.replace(":task", "essay")} renderFromFunc
-                renderFunc={this.renderReadOnlyEssay} 
-                canEdit={!this.state.application.wasSubmitted}/>
+                    <ReviewBlock heading="Education" editLink={this.props.match.path.replace(":task", "education")}
+                      items={dataEducation}
+                      canEdit={!this.state.application.wasSubmitted} />
+
+                    <ReviewBlock heading="U.S. Standardized Tests" editLink={this.props.match.path.replace(":task", "us-standardized-tests")}
+                      items={dataUSTests}
+                      canEdit={!this.state.application.wasSubmitted} />
+
+                    <ReviewBlock heading="National Tests" editLink={this.props.match.path.replace(":task", "national-tests")} renderFromFunc
+                      renderFunc={this.renderTestList}
+                      canEdit={!this.state.application.wasSubmitted} />
+
+                    <ReviewBlock heading="Miscellaneous" editLink={this.props.match.path.replace(":task", "miscellaneous")}
+                      items={dataMisc}
+                      canEdit={!this.state.application.wasSubmitted} />
+
+                    <ReviewBlock heading="Essay" editLink={this.props.match.path.replace(":task", "essay")} renderFromFunc
+                      renderFunc={this.renderReadOnlyEssay}
+                      canEdit={!this.state.application.wasSubmitted} />
+                  </div>
+              }
             </div>
           );
         }
