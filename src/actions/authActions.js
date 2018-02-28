@@ -238,7 +238,7 @@ export const doAccountCreate = (data) => {
             dispatch(sendEmailConfirmationEmailInitated(data.email));
 
             // send email with api
-            axios.get(`${EMAIL_API}/s/confirm-email/${user.uid}`)
+            axios.get(`${EMAIL_API}/s/welcome/${user.uid}`)
               .then(() => {
                 dispatch(sendEmailConfirmationEmailSent(data.email));
               })

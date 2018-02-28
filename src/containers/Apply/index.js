@@ -97,6 +97,9 @@ class Apply extends Component {
     };
 
     this.props.authActions.doAccountCreate(data);
+
+    // reset form
+    e.target.reset();
   }
 
   handleNotificationClose = () => {
