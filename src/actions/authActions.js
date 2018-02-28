@@ -199,7 +199,8 @@ export const doAccountCreate = (data) => {
           isAdmin: data.isAdmin || false,
           isApplicant: data.isApplicant || false,
           isStudent: data.isStudent || false,
-          isStaff: data.isStaff || false
+          isStaff: data.isStaff || false,
+          emailConfirmed: false
         };
 
         let name = data.name.split(" ");
@@ -300,3 +301,19 @@ export const doResetPasswordEmailSend = email => {
 
   }
 }
+
+// @SEND EMAIL CONFIRMATION
+export const doSendEmailConfirmation = (uid, email) => {
+  return dispatch => {
+    dispatch(sendEmailConfirmationEmailInitated(email));
+
+    // send email with api
+    axios.get(`${EMAIL_API}/s/confirm-email/${uid}`)
+      .then(() => {
+        dispatch(sendEmailConfirmationEmailSent(email));
+      })
+      .catch(error => {
+        dispatch(sendEmailConfirmationEmailFailed(error, email));
+      });
+  };
+};

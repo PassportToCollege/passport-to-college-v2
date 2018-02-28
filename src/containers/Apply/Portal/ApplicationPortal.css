@@ -83,4 +83,20 @@
   flex: 1 1 auto;
   padding: 2.1625em;
   overflow-y: auto;
+  position: relative;
+}
+
+.application__portal_body .application__portal_main .notification__email_confirmation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 0.85em 1.125em;
+  background-color: #FFCB61;
+  color: white;
+}
+
+.application__portal_main .notification__email_confirmation .email_confirmation__link {
+  font-weight: bold;
+  cursor: pointer;
 }

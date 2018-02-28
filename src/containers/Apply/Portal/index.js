@@ -9,10 +9,12 @@ import propTypes from "prop-types";
 import * as applicationActions from "../../../actions/applicationActions";
 import * as userActions from "../../../actions/userActions";
 import * as avatarActions from "../../../actions/avatarActions";
+import * as authActions from "../../../actions/authActions";
 
 import Button from "../../../components/Button";
 import LinkButton from "../../../components/LinkButton";
 import ApplicationTask from './ApplicationTask';
+import Notification from "../../../components/Notification";
 
 import history from "../../../constants/history";
 import { getWordCount } from "../../../utils";
@@ -48,7 +50,10 @@ class ApplicationPortal extends Component {
         "national-tests": false,
         miscellaneous: false,
         essay: false
-      }
+      },
+      hasError: false,
+      hasSent: false,
+      notificationClosed: false
     };
   }
 
@@ -72,6 +77,27 @@ class ApplicationPortal extends Component {
             </ul>
           </div>
           <div className="application__portal_main">
+            {
+              this.props.user.hasGotten && this.state.user.emailConfirmed !== true ?
+                <div className="notification__email_confirmation">
+                  <span>You have not confirmed your email address.</span>
+                  <span className="email_confirmation__link" onClick={this.resendEmailConfirmation}> Resend confirmation email.</span>
+                </div>
+              :
+                null
+            }
+            {
+              this.state.hasError && !this.state.notificationClosed ?
+                <Notification doClose={this.handleNotificationClose} text={this.state.error} /> :
+                null
+            }
+            {
+              this.state.hasSent && !this.state.notificationClosed ?
+                <Notification doClose={this.handleNotificationClose}
+                  text="Email sent! Check your email address." />
+                :
+                null
+            }
             <Route exact path={`${this.props.match.url}/:task`}
               render={props => {
                 return <ApplicationTask {...props} 
@@ -180,6 +206,12 @@ class ApplicationPortal extends Component {
         this.setState({ isComplete });
       }
     }
+
+    if (nextProps.auth && nextProps.auth.hasFailed && nextProps.auth.error.message)
+      this.setState({ hasError: true, error: nextProps.auth.error.message });
+
+    if (nextProps.auth && nextProps.auth.hasSent)
+      this.setState({ hasSent: true });
   }
 
   handleNextButtonClick = () => {
@@ -248,11 +280,24 @@ class ApplicationPortal extends Component {
       </div>
     )
   }
+
+  resendEmailConfirmation = () => {
+    const { email } = this.state.user;
+    const { applicationId } = this.state;
+
+    this.props.authActions.doSendEmailConfirmation(applicationId, email);
+  }
+
+  handleNotificationClose = () => {
+    this.setState({ notificationClosed: true, hasError: false, hasSent: false });
+  }
 }
 
 ApplicationPortal.propTypes = {
   updateLocation: propTypes.func,
   match: propTypes.object,
+  authActions: propTypes.object,
+  auth: propTypes.oneOfType([propTypes.bool, propTypes.object]),
   applicationActions: propTypes.object,
   application: propTypes.object,
   userActions: propTypes.object,
@@ -265,7 +310,8 @@ const mapStateToProps = state => {
   return {
     application: state.application,
     user: state.user,
-    avatar: state.avatar
+    avatar: state.avatar,
+    auth: state.auth
   };
 };
 
@@ -273,7 +319,8 @@ const mapDispatchToProps = dispatch => {
   return {
     applicationActions: bindActionCreators(applicationActions, dispatch),
     userActions: bindActionCreators(userActions, dispatch),
-    avatarActions: bindActionCreators(avatarActions, dispatch)
+    avatarActions: bindActionCreators(avatarActions, dispatch),
+    authActions: bindActionCreators(authActions, dispatch)
   };
 };
 
