@@ -15,7 +15,10 @@ import {
   ACCOUNT_CREATION_INITIATED, 
   RESET_PASSWORD_EMAIL_INITIATED,
   RESET_PASSWORD_EMAIL_SENT,
-  RESET_PASSWORD_EMAIL_FAILED} from "../actions/actionTypes";
+  RESET_PASSWORD_EMAIL_FAILED,
+  EMAIL_CONFIRMATION_SEND_INITIATED,
+  EMAIL_CONFIRMATION_SENT,
+  EMAIL_CONFIRMATION_SEND_FAILED} from "../actions/actionTypes";
 
 const auth = (state = initialState.activeUser, action) => {
   switch(action.type) {
@@ -95,6 +98,7 @@ const auth = (state = initialState.activeUser, action) => {
         error: action.error
       });
     case RESET_PASSWORD_EMAIL_INITIATED:
+    case EMAIL_CONFIRMATION_SEND_INITIATED:
       return Object.assign({}, state, {
         isSending: true,
         hasSent: false,
@@ -102,6 +106,7 @@ const auth = (state = initialState.activeUser, action) => {
         email: action.email
       });
     case RESET_PASSWORD_EMAIL_SENT:
+    case EMAIL_CONFIRMATION_SENT:
       return Object.assign({}, state, {
         isSending: false,
         hasSent: true,
@@ -109,6 +114,7 @@ const auth = (state = initialState.activeUser, action) => {
         email: action.email
       });
     case RESET_PASSWORD_EMAIL_FAILED:
+    case EMAIL_CONFIRMATION_SEND_FAILED:
       return Object.assign({}, state, {
         isSending: false,
         hasSent: false,

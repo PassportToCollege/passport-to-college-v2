@@ -74,7 +74,7 @@ export class ResetPasswordForm extends Component {
 export const StartApplication = props => {
 
   return (
-    <form className="form signin__form" method="post" onSubmit={props.handleAccountCreation}>
+    <form className="form auth__form start_application__form" method="post" onSubmit={props.handleAccountCreation}>
       {
         props.title ?
           <h2 className="form__title">{props.title}</h2> :
@@ -125,7 +125,7 @@ export const PersonalInformation = props => {
           <label>Phone</label>
         </div>
         <div className="form__input_container">
-          <select name="gender" onChange={props.updateField} defaultValue={props.user.gender}>
+          <select name="gender" onChange={props.updateField} defaultValue={props.user.gender || ""}>
             <option value="" disabled>Select One</option>
             <option value="female">Female</option>
             <option value="male">Male</option>
@@ -143,7 +143,8 @@ export const PersonalInformation = props => {
         <div className="form__input_container">
           <input type="text" name="country" required 
             onBlur={props.updateField} 
-            defaultValue={props.user.address ? props.user.address.country : ""} />
+            defaultValue={props.user.address ? props.user.address.country : ""} 
+            placeholder="Jamaica" />
           <label>Country</label>
         </div>
       </fieldset>
@@ -156,7 +157,7 @@ export const EducationInformation = ({ application, updateApplicationField, disa
     <form className="form application_task__form application__education_information">
       <fieldset disabled={disabled === true ? "disabled" : null}>
         <div className="form__input_container">
-          <select name="educationLevel" required defaultValue={application.application.educationLevel}
+          <select name="educationLevel" required defaultValue={application.application.educationLevel || ""}
             onChange={updateApplicationField}>
             <option value="" disabled>Select One</option>
             <option value="no high school">Less than high school</option>
@@ -192,7 +193,7 @@ export const USTest = ({ application, updateApplicationField, disabled }) => {
     <form className="form application_task__form application__us_test">
       <fieldset disabled={disabled === true ? "disabled" : null}>
         <div className="form__input_container">
-          <select name="usTest" required defaultValue={application.application.usTest}
+          <select name="usTest" required defaultValue={application.application.usTest || ""}
             onChange={updateApplicationField}>
             <option value="" disabled>Select One</option>
             <option value="none">None</option>
@@ -221,7 +222,7 @@ export const Miscellaneous = ({ application, updateApplicationField, disabled })
     <form className="form application_task__form application__misc">
       <fieldset disabled={disabled === true ? "disabled" : null}>
         <div className="form__input_container">
-          <select id="income" name="income" required defaultValue={application.application.income}
+          <select id="income" name="income" required defaultValue={application.application.income || ""}
             onChange={updateApplicationField}>
             <option value="" disabled>Select One</option>
             <option value="10000">Less than $10,000</option>
@@ -237,7 +238,7 @@ export const Miscellaneous = ({ application, updateApplicationField, disabled })
           </label>
         </div>
         <div className="form__input_container">
-          <select id="interest" name="interest" required defaultValue={application.application.interest}
+          <select id="interest" name="interest" required defaultValue={application.application.interest || ""}
             onChange={updateApplicationField}>
             <option value="" disabled>Select One</option>
             <option value="business">Business</option>
@@ -251,7 +252,7 @@ export const Miscellaneous = ({ application, updateApplicationField, disabled })
           </label>
         </div>
         <div className="form__input_container">
-          <select id="workEthic" name="workEthic" required defaultValue={application.application.workEthic}
+          <select id="workEthic" name="workEthic" required defaultValue={application.application.workEthic || ""}
             onChange={updateApplicationField}>
             <option value="" disabled>Select One</option>
             <option value="below average">I love sleep</option>

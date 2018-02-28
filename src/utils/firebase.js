@@ -2,26 +2,13 @@
 import firebase from "firebase";
 import "firebase/firestore";
 
-var config = {};
-
-if (process.env.ENVIRONMENT === "production") {
-  config = {
-    apiKey: process.env.API_KEY,
-    authDomain: process.env.AUTH_DOMAIN,
-    databaseURL: process.env.DATABASE_URL,
-    projectId: process.env.PROJECT_ID,
-    storageBucket: process.env.STORAGE_BUCKET,
-    messagingSenderId: process.env.MESSAGING_SENDER_ID,
-  };
-} else {
-  config = {
-    apiKey: "AIzaSyB66B4bUvEVKl-ZMQYXo1gqXCUCvrm2z-w",
-    authDomain: "passport-to-college-dev.firebaseapp.com",
-    databaseURL: "https://passport-to-college-dev.firebaseio.com",
-    projectId: "passport-to-college-dev",
-    storageBucket: "passport-to-college-dev.appspot.com",
-    messagingSenderId: "907519699435"
-  };
+const config = {
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
 }
 
 if (!firebase.apps.length)

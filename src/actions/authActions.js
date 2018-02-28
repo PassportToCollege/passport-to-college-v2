@@ -1,3 +1,4 @@
+import axios from "axios";
 import * as types from "./actionTypes";
 import { auth, db } from "../utils/firebase";
 import Cookies from "universal-cookie";
@@ -5,6 +6,7 @@ import Cookies from "universal-cookie";
 import history from "../constants/history";
 
 const cookies = new Cookies();
+const EMAIL_API = process.env.REACT_APP_EMAIL_API;
 
 // @SIGN IN
 export const signInInitiated = () => {
@@ -164,6 +166,27 @@ export const addingDataToUserDbsFailed = data => {
   };
 }
 
+export const sendEmailConfirmationEmailInitated = email => {
+  return {
+    type: types.EMAIL_CONFIRMATION_SEND_INITIATED,
+    email
+  };
+};
+
+export const sendEmailConfirmationEmailSent = email => {
+  return {
+    type: types.EMAIL_CONFIRMATION_SENT,
+    email
+  };
+};
+
+export const sendEmailConfirmationEmailFailed = (error, email) => {
+  return {
+    type: types.EMAIL_CONFIRMATION_SEND_FAILED,
+    email, error
+  };
+};
+
 export const doAccountCreate = (data) => {
   return dispatch => {
     dispatch(accountCreationInitialized(data));
@@ -212,7 +235,16 @@ export const doAccountCreate = (data) => {
         batch.commit()
           .then(() => {
             dispatch(accountCreated(data));
-            history.push(`/apply/p/${user.uid}`);
+            dispatch(sendEmailConfirmationEmailInitated(data.email));
+
+            // send email with api
+            axios.get(`${EMAIL_API}/s/confirm-email/${user.uid}`)
+              .then(() => {
+                dispatch(sendEmailConfirmationEmailSent(data.email));
+              })
+              .catch(error => {
+                dispatch(sendEmailConfirmationEmailFailed(error, data.email));
+              })
           })
           .catch(error => {
             dispatch(addingDataToUserDbsFailed(data, error));

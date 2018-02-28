@@ -19,7 +19,8 @@ class Apply extends Component {
       password: "",
       hasError: false,
       error: "",
-      notificationClosed: false
+      notificationClosed: false,
+      hasSent: false
     }
   }
 
@@ -33,7 +34,10 @@ class Apply extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth && nextProps.auth.hasFailed && nextProps.auth.error.message)
-      this.setState({ hasError: true, error: nextProps.auth.error.message });
+      this.setState({ hasError: true, error: nextProps.auth.error.message, notificationClosed: false });
+    
+    if (nextProps.auth && nextProps.auth.hasSent)
+      this.setState({ hasSent: true, notificationClosed: false });
   }
 
   render() {
@@ -42,7 +46,7 @@ class Apply extends Component {
         <SignInForm 
           title="Continue Application"
           submitText="Continue"
-          handleSignIn={this.handleSignIn}
+          handleSubmit={this.handleSignIn}
           updateEmail={this.updateEmail}
           updatePassword={this.updatePassword} 
           authError={this.state.hasError}/>
@@ -58,6 +62,13 @@ class Apply extends Component {
           this.state.hasError && !this.state.notificationClosed?
           <Notification doClose={this.handleNotificationClose} text={this.state.error} /> :
           null
+        }
+        {
+          this.state.hasSent && !this.state.notificationClosed ?
+            <Notification doClose={this.handleNotificationClose}
+              text="Account created! Sign in using the Continue Application form." />
+            :
+            null
         }
       </div>
     )
@@ -89,7 +100,7 @@ class Apply extends Component {
   }
 
   handleNotificationClose = () => {
-    this.setState({ notificationClosed: true, hasError: false });
+    this.setState({ notificationClosed: true, hasError: false, hasSent: false });
   }
 }
 

@@ -126,8 +126,8 @@ class ApplicationTask extends Component {
                null
             }
             {
-              this.props.avatar.hasGotten && !this.props.avatar.url.length ?
-                <span className="no__avatar">Fetching...</span>
+              this.props.avatar.hasFailed && this.props.avatar.error.code === "storage/object-not-found" ?
+                <span className="no__avatar">No profile image</span>
               :
                 null
             }
