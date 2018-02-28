@@ -290,11 +290,6 @@ class ApplicationTask extends Component {
           return (
             <div className="application__portal_task review__task">
               <h1 className="application_task__heading">Review</h1>
-              <p className="application_task__instructions">
-                Please review you application below before submitting it for consideration.
-                Once you submit your application you will not be able to make changes to it, so 
-                ensure all the information you provide is accurate and correct.
-              </p>
               {
                 !this.applicationComplete(this.state) ?
                   <p className="application_task__instructions type__margin_top">
@@ -303,6 +298,11 @@ class ApplicationTask extends Component {
                   </p>
                   :
                   <div className="review_blocks">
+                    <p className="application_task__instructions">
+                      Please review you application below before submitting it for consideration.
+                      Once you submit your application you will not be able to make changes to it, so
+                      ensure all the information you provide is accurate and correct.
+                    </p>
                     <ReviewBlock heading="Personal" editLink={this.props.match.path.replace(":task", "personal")}
                       items={dataPersonal}
                       canEdit={!this.state.application.wasSubmitted} />
@@ -338,13 +338,7 @@ class ApplicationTask extends Component {
 
         return (
           <div className="application__portal_task review__task">
-            <h1 className="application_task__heading">Review</h1>
-            <p className="application_task__instructions">
-              Please review you application below before submitting it for consideration.
-              Once you submit your application you will not be able to make changes to it, so
-              ensure all the informatino you provide is accurate and correct.
-            </p>
-            
+            <h1 className="application_task__heading">Review</h1>            
             <LoadingText options={{
               class: "review_block__loading",
               bg: "transparent",
