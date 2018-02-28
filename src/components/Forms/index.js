@@ -17,7 +17,7 @@ export class SignInForm extends Component {
 
   render() {
     return (
-      <form className="form signin__form" method="post" onSubmit={this.props.handleSignIn}>
+      <form className="form auth__form signin__form" method="post" onSubmit={this.props.handleSubmit}>
         {
           this.props.title ?
           <h2 className="form__title">{this.props.title}</h2> :
@@ -47,6 +47,27 @@ export class SignInForm extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.authError === true)
       this.setState({ tries: this.state.tries + 1 })
+  }
+}
+
+export class ResetPasswordForm extends Component {
+  render() {
+    return (
+      <form className="form auth__form reset__form" method="post" onSubmit={this.props.handleSubmit}>
+        {
+          this.props.title ?
+            <h2 className="form__title">{this.props.title}</h2> :
+            null
+        }
+        <div className="form__input_container">
+          <input type="email" name="email" required onChange={this.props.updateEmail} />
+          <label>Email</label>
+        </div>
+        <div className="form__input_container">
+          <button className="form__button" type="submit">{this.props.submitText || "Reset"}</button>
+        </div>
+      </form>
+    );
   }
 }
 
@@ -310,10 +331,10 @@ export const NationalTest = ({ handleTestAdded, handleInputChange }) => {
 }
 
 // Proptypes
-SignInForm.propTypes = {
+SignInForm.propTypes = ResetPasswordForm.propTypes = {
   title: propTypes.string,
   submitText: propTypes.string,
-  handleSignIn: propTypes.func,
+  handleSubmit: propTypes.func,
   updateEmail: propTypes.func,
   updatePassword: propTypes.func,
   authError: propTypes.bool

@@ -12,7 +12,10 @@ import {
   ACCOUNT_CREATION_ADDING_TO_USER_DBS,
   ACCOUNT_CREATION_ADDING_TO_USER_DBS_FAILED,
   ACCOUNT_CREATION_FAILED,
-  ACCOUNT_CREATION_INITIATED } from "../actions/actionTypes";
+  ACCOUNT_CREATION_INITIATED, 
+  RESET_PASSWORD_EMAIL_INITIATED,
+  RESET_PASSWORD_EMAIL_SENT,
+  RESET_PASSWORD_EMAIL_FAILED} from "../actions/actionTypes";
 
 const auth = (state = initialState.activeUser, action) => {
   switch(action.type) {
@@ -89,6 +92,28 @@ const auth = (state = initialState.activeUser, action) => {
         hasFailed: true,
         isAddingToDbs: false,
         data: action.data,
+        error: action.error
+      });
+    case RESET_PASSWORD_EMAIL_INITIATED:
+      return Object.assign({}, state, {
+        isSending: true,
+        hasSent: false,
+        hasFailed: false,
+        email: action.email
+      });
+    case RESET_PASSWORD_EMAIL_SENT:
+      return Object.assign({}, state, {
+        isSending: false,
+        hasSent: true,
+        hasFailed: false,
+        email: action.email
+      });
+    case RESET_PASSWORD_EMAIL_FAILED:
+      return Object.assign({}, state, {
+        isSending: false,
+        hasSent: false,
+        hasFailed: true,
+        email: action.email,
         error: action.error
       });
     default:

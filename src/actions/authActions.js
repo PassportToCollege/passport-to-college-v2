@@ -6,6 +6,7 @@ import history from "../constants/history";
 
 const cookies = new Cookies();
 
+// @SIGN IN
 export const signInInitiated = () => {
   return { 
     type: types.SIGN_IN_AUTHORIZING, 
@@ -83,6 +84,7 @@ export const doSignIn = (email, password) => {
   };
 };
 
+// @SIGN OUT
 export const signOutInitiated = user => {
   return {
     type: types.SIGN_OUT_AUTHORIZING,
@@ -125,6 +127,7 @@ export const doSignOut = user => {
   };
 };
 
+// @ACCOUNT CREATION
 export const accountCreationInitialized = data => {
   return {
     type: types.ACCOUNT_CREATION_INITIATED,
@@ -221,8 +224,47 @@ export const doAccountCreate = (data) => {
   };
 };
 
+// @REMOVE ERRORS
 export const removeAuthErrors = () => {
   return {
     type: types.REMOVE_AUTH_ERRORS
+  }
+}
+
+// @SEND RESET PASSWORD EMAIL
+export const resetPasswordEmailSendInitiated = email => {
+  return {
+    type: types.RESET_PASSWORD_EMAIL_INITIATED,
+    email
+  };
+};
+
+export const resetPasswordEmailSendFailed = (error, email) => {
+  return {
+    type: types.RESET_PASSWORD_EMAIL_FAILED,
+    email, error
+  };
+};
+
+export const resetPasswordEmailSent = email => {
+  return {
+    type: types.RESET_PASSWORD_EMAIL_SENT,
+    email
+  };
+};
+
+export const doResetPasswordEmailSend = email => {
+  return dispatch => {
+    dispatch(resetPasswordEmailSendInitiated(email));
+
+    // send password reset email
+    auth.sendPasswordResetEmail(email)
+      .then(() => {
+        dispatch(resetPasswordEmailSent(email));
+      })
+      .catch(error => {
+        dispatch(resetPasswordEmailSendFailed(error, email));
+      });
+
   }
 }

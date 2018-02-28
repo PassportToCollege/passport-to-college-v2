@@ -15,14 +15,14 @@
   padding: 0 0 0 3.5rem;
 }
 
-/* Signin Form */
-.form.signin__form {
+/* Auth Forms */
+.form.auth__form {
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
   padding: 2em 1.5em;
   border-radius: 1em;
 }
 
-.form.signin__form .form__reset_password {
+.form.auth__form .form__reset_password {
   color: #333;
   padding: 0 3.5rem 2rem 0;
   display: block;
@@ -30,18 +30,18 @@
   font: normal bold 1em "Nunito", "Roboto", san-serif;
 }
 
-.form.signin__form .form__input_container {
+.form.auth__form .form__input_container {
   display: block;
   margin: 1em 0;
   padding: 2rem 3.5rem;
   position: relative;
 }
 
-.form.signin__form .form__input_container.profile__input {
+.form.auth__form .form__input_container.profile__input {
   padding: 0;
 }
 
-.form.signin__form .form__input_container>label {
+.form.auth__form .form__input_container>label {
   display: block;
   position: absolute;
   font-weight: 500;
@@ -52,7 +52,7 @@
   text-transform: uppercase;
 }
 
-.form.signin__form .form__input_container.profile__input>label {
+.form.auth__form .form__input_container.profile__input>label {
   font-size: 0.85em;
   font-weight: bold;
   color: white;
@@ -61,7 +61,7 @@
   position: relative;
 }
 
-.form.signin__form .form__input_container>input[type] {
+.form.auth__form .form__input_container>input[type] {
   display: block;
   width: 100%;
   background: transparent;
@@ -76,13 +76,13 @@
   font-weight: 300;
 }
 
-.form.signin__form .form__input_container.profile__input>input[type] {
+.form.auth__form .form__input_container.profile__input>input[type] {
   font-size: 1em;
   padding: 1em 0 0.5em;
   border-width: 2px;
 }
 
-.form.signin__form .form__input_container>button[type] {
+.form.auth__form .form__input_container>button[type] {
   background-color: #FF6561;
   outline: none;
   border: none;
@@ -94,26 +94,26 @@
   cursor: pointer;
 }
 
-.form.signin__form .form__input_container>input[type]:focus,
-.form.signin__form .form__input_container>input[type]:valid {
+.form.auth__form .form__input_container>input[type]:focus,
+.form.auth__form .form__input_container>input[type]:valid {
   border-color: #FF6561;
 }
 
-.form.signin__form .form__input_container>input[type]:disabled {
+.form.auth__form .form__input_container>input[type]:disabled {
   cursor: not-allowed;
 }
 
-.form.signin__form .form__input_container.profile__input>input[type]:focus,
-.form.signin__form .form__input_container.profile__input>input[type]:valid {
+.form.auth__form .form__input_container.profile__input>input[type]:focus,
+.form.auth__form .form__input_container.profile__input>input[type]:valid {
   border-color: rgba(51, 51, 51, 0.5);
 }
 
-.form.signin__form .form__input_container.profile__input>input[type]:disabled {
+.form.auth__form .form__input_container.profile__input>input[type]:disabled {
   background-color: #FF443F;
 }
 
-.form.signin__form .form__input_container>input[type]:focus+label,
-.form.signin__form .form__input_container>input[type]:valid+label {
+.form.auth__form .form__input_container>input[type]:focus+label,
+.form.auth__form .form__input_container>input[type]:valid+label {
   transform: translate(1em, -4.5em);
 }
 

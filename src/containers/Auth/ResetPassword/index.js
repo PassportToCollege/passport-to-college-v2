@@ -1,44 +1,29 @@
-import "./SignIn.css";
+import "./ResetPassword.css";
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import React, { Component } from "react";
 import propTypes from "prop-types";
 
-import * as authActions from "../../../actions/authActions"; 
+import * as authActions from "../../../actions/authActions";
 
-import { SignInForm } from "../../../components/Forms";
+import { ResetPasswordForm } from "../../../components/Forms";
 import Notification from "../../../components/Notification";
 
-class SignIn extends Component {
+class ResetPassword extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       email: "",
-      password: "",
       hasError: false,
+      hasSent: false,
       notificationClosed: false
-    }
-  }
-  render() {
-    return (
-      <div className="signin__container">
-        <SignInForm handleSubmit={this.handleSignIn}
-          updateEmail={this.updateEmail}
-          updatePassword={this.updatePassword} 
-          authError={this.state.hasError} />
-        {
-          this.state.hasError ?
-            <Notification doClose={this.handleNotificationClose} text={this.state.error} /> :
-            null
-        }
-      </div>
-    )
+    };
   }
 
   componentWillMount() {
-    this.props.updateLocation("sign-in");
+    this.props.updateLocation("reset");
   }
 
   componentWillUnmount() {
@@ -48,17 +33,41 @@ class SignIn extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth && nextProps.auth.hasFailed && nextProps.auth.error.message)
       this.setState({ hasError: true, error: nextProps.auth.error.message });
+    
+    if (nextProps.auth && nextProps.auth.hasSent)
+      this.setState({ hasSent: true });
+  }
+
+  render() {
+    return (
+      <div className="reset__container">
+        <ResetPasswordForm handleSubmit={this.handleSubmit}
+          updateEmail={this.updateEmail}
+          authError={this.state.hasError} 
+          title="Provide your email to reset your password"/>
+        {
+          this.state.hasError ?
+            <Notification doClose={this.handleNotificationClose} text={this.state.error} /> :
+            null
+        }
+        {
+          this.state.hasSent ?
+            <Notification doClose={this.handleNotificationClose} 
+              text={`Reset email sent to ${this.state.email}. Check your email.`} /> :
+            null
+        }
+      </div>
+    )
   }
 
   updateEmail = (e) => this.setState({ email: e.target.value });
-  updatePassword = (e) => this.setState({ password: e.target.value });
 
-  handleSignIn = (e) => {
+  handleSubmit = (e) => {
     e.preventDefault();
 
-    const {email, password } = this.state;
+    const { email } = this.state;
 
-    this.props.authActions.doSignIn(email, password);
+    this.props.authActions.doResetPasswordEmailSend(email);
   }
 
   handleNotificationClose = () => {
@@ -66,18 +75,16 @@ class SignIn extends Component {
   }
 }
 
-SignIn.propTypes = {
+ResetPassword.propTypes = {
   authActions: propTypes.object,
-  activeUser: propTypes.object,
   updateLocation: propTypes.func,
   auth: propTypes.oneOfType([propTypes.bool, propTypes.object])
 };
 
 const mapStateToProps = state => {
   return {
-    activeUser: state.activeUser,
     auth: state.auth
-  }; 
+  };
 };
 
 const mapDispatchToProps = dispatch => {
@@ -89,4 +96,4 @@ const mapDispatchToProps = dispatch => {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps)(SignIn);
+  mapDispatchToProps)(ResetPassword);

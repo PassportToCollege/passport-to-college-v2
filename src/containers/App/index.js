@@ -13,6 +13,7 @@ import NavigationAdmin from "../NavigationAdmin";
 
 import Home from "../Home";
 import SignIn from "../Auth/SignIn";
+import ResetPassword from "../Auth/ResetPassword";
 
 import Dashboard from "../Dashboard/Home";
 import Applications from "..//Dashboard/Applications";
@@ -34,7 +35,8 @@ class App extends Component {
   render() {
     let main_bg = {};
     if(this.state.location === "sign-in" ||
-      this.state.location === "apply") {
+      this.state.location === "apply" ||
+      this.state.location === "reset") {
       main_bg.backgroundColor = "#FF6561";
     } else if(this.state.location.indexOf("dashboard") > -1 || 
       this.state.location === "application portal") {
@@ -48,7 +50,8 @@ class App extends Component {
           <div className="app__main" data-hamburger={this.state.hamburgerState} style={main_bg}>
             {this.selectNavigation()}
             <Route exact path={routes.LANDING.route} render={props => this.defaultRouteMiddleware(props, Home)}></Route>
-            <Route path={routes.SIGN_IN.route} render={(props) => this.signInMiddleware(props)}></Route>
+            <Route path={routes.SIGN_IN.route} render={(props) => this.authMiddleware(props, SignIn)}></Route>
+            <Route path={routes.RESET_PASSWORD.route} render={(props) => this.authMiddleware(props, ResetPassword)}></Route>
             <Route exact path={routes.DASHBOARD.route} render={props => this.defaultRouteMiddleware(props, Dashboard)}></Route>
             <Route path={routes.APPLICATIONS.route} render={props => this.defaultRouteMiddleware(props, Applications)}></Route>
             <Route path={routes.USERS.route} render={props => this.defaultRouteMiddleware(props, Users)}></Route>
@@ -65,11 +68,11 @@ class App extends Component {
     return <Component {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }} />
   }
 
-  signInMiddleware(props) {
+  authMiddleware(props, Component) {
     if(isAuthorized())
       return <Redirect to="/"/>
 
-    return <SignIn {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }} />
+    return <Component {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }} />
   }
 
   applyLandingMiddleware(props) {
