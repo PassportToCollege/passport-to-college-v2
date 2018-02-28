@@ -14,15 +14,20 @@ class WYSIWYGEditor extends Component {
   constructor(props) {
     super(props);
 
-    const content = convertFromRaw(props.content);
-    const { blocks } = props.content;
+    let content = [];
+    let blocks = [];
+
+    if ("object" === typeof props.content) {
+      blocks = props.content.blocks;
+      content = convertFromRaw(props.content);
+    }
 
     this.state = {
       editorState: content.length ? EditorState.createWithContent(content) : EditorState.createEmpty(),
       isBold: false,
       isUnderline: false,
       isItalic: false,
-      words: getWordCount(blocks)
+      words: content.length ? getWordCount(blocks) : 0
     };
   }
 

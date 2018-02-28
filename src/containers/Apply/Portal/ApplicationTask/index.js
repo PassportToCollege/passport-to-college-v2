@@ -452,6 +452,7 @@ class ApplicationTask extends Component {
       return <p>Looking for your tests</p>
 
     if (this.props.application.hasGotten &&
+      this.props.application.tests &&
       Object.keys(this.state.application.tests).length > 0) {
       return (
         <TestList tests={this.state.application.tests}
