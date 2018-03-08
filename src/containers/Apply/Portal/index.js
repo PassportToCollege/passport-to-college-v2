@@ -219,6 +219,11 @@ class ApplicationPortal extends Component {
 
     if (next)
       this.props.history.push(`${this.props.match.url}/${next}`)
+    
+    if (nextIndex >= formattedTasks.length) {
+      this.setState({ task: "welcome" });
+      this.props.history.push(this.props.match.url);
+    }
   }
 
   handlePreviousButtonClick = () => {
@@ -233,6 +238,9 @@ class ApplicationPortal extends Component {
       this.setState({ task: "welcome" });
       this.props.history.push(this.props.match.url);
     }
+
+    if (this.state.task === "welcome")
+      this.props.history.push(`${this.props.match.url}/submit`);
   }
 
   setTask = task => {
