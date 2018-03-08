@@ -29,3 +29,9 @@ a:focus {
 .app__main[data-hamburger="open"] {
   transform: scale(0.75);
 }
+
+.app__main > .app__body {
+  padding-top: 125px;
+  position: relative;
+  min-height: calc(100vh - 125px);
+}

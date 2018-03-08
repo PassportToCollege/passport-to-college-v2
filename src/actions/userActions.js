@@ -128,9 +128,9 @@ export const authEmailUpdateFailed = (uid, error) => {
   };
 }
 
-export const doUserUpdate = (data) => {
+export const doUserUpdate = (data, uid) => {
   let user = auth.currentUser;
-  let uid = user.uid;
+  uid = uid || user.uid;
 
   return dispatch => {
     dispatch(userUpdateInitiated(uid, data));
@@ -222,9 +222,9 @@ export const doUserEmailUpdateWithReauthentication = (email, password) => {
   }
 }
 
-export const doUserUpdateWithoutGet = (data) => {
+export const doUserUpdateWithoutGet = (data, uid) => {
   let user = auth.currentUser;
-  let uid = user.uid;
+  uid = uid || user.uid;
 
   return dispatch => {
     dispatch(userUpdateInitiated(uid, data));

@@ -34,3 +34,8 @@ body {
 .type__margin_top {
   margin-top: 1em !important;
 }
+
+/* Resets */
+.reset__body_top_padding {
+  margin-top: -125px;
+}

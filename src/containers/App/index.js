@@ -34,13 +34,20 @@ class App extends Component {
 
   render() {
     let main_bg = {};
+    let bodyStyles = {};
     if(this.state.location === "sign-in" ||
       this.state.location === "apply" ||
-      this.state.location === "reset") {
+      this.state.location === "reset" ||
+      this.state.location === "confirm-email") {
       main_bg.backgroundColor = "#FF6561";
     } else if(this.state.location.indexOf("dashboard") > -1 || 
       this.state.location === "application portal") {
       main_bg.backgroundColor = "#FFF";
+      bodyStyles = {
+        paddingTop: "0",
+        minHeight: "100vh",
+        position: "static"
+      };
     }
 
     return (
@@ -49,16 +56,18 @@ class App extends Component {
           {this.renderHamburger()}
           <div className="app__main" data-hamburger={this.state.hamburgerState} style={main_bg}>
             {this.selectNavigation()}
-            <Route exact path={routes.LANDING.route} render={props => this.defaultRouteMiddleware(props, Home)}></Route>
-            <Route path={routes.SIGN_IN.route} render={(props) => this.authMiddleware(props, SignIn)}></Route>
-            <Route path={routes.RESET_PASSWORD.route} render={(props) => this.authMiddleware(props, ResetPassword)}></Route>
-            <Route path={routes.CONFIRM_EMAIL_ADDRESS.route} render={(props) => this.defaultRouteMiddleware(props, ConfirmEmail)}></Route>
-            <Route exact path={routes.DASHBOARD.route} render={props => this.defaultRouteMiddleware(props, Dashboard)}></Route>
-            <Route path={routes.APPLICATIONS.route} render={props => this.defaultRouteMiddleware(props, Applications)}></Route>
-            <Route path={routes.USERS.route} render={props => this.defaultRouteMiddleware(props, Users)}></Route>
-            <Route path={routes.PROFILE.route} render={props => this.defaultRouteMiddleware(props, Profile)}></Route>
-            <Route exact path={routes.APPLY.route} render={props => this.applyLandingMiddleware(props, Apply)}></Route>
-            <Route path={routes.APPLY_PORTAL.route} render={props => this.applicationPortalMiddleware(props, ApplicationPortal)}></Route>
+            <div className="app__body" style={bodyStyles}>
+              <Route exact path={routes.LANDING.route} render={props => this.defaultRouteMiddleware(props, Home)}></Route>
+              <Route path={routes.SIGN_IN.route} render={(props) => this.authMiddleware(props, SignIn)}></Route>
+              <Route path={routes.RESET_PASSWORD.route} render={(props) => this.authMiddleware(props, ResetPassword)}></Route>
+              <Route path={routes.CONFIRM_EMAIL_ADDRESS.route} render={(props) => this.defaultRouteMiddleware(props, ConfirmEmail)}></Route>
+              <Route exact path={routes.DASHBOARD.route} render={props => this.defaultRouteMiddleware(props, Dashboard)}></Route>
+              <Route path={routes.APPLICATIONS.route} render={props => this.defaultRouteMiddleware(props, Applications)}></Route>
+              <Route path={routes.USERS.route} render={props => this.defaultRouteMiddleware(props, Users)}></Route>
+              <Route path={routes.PROFILE.route} render={props => this.defaultRouteMiddleware(props, Profile)}></Route>
+              <Route exact path={routes.APPLY.route} render={props => this.applyLandingMiddleware(props, Apply)}></Route>
+              <Route path={routes.APPLY_PORTAL.route} render={props => this.applicationPortalMiddleware(props, ApplicationPortal)}></Route>
+            </div>
           </div>
         </div>
       </BrowserRouter>

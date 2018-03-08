@@ -10,7 +10,7 @@ const headerBg = require("../../assets/images/home__header__bg.jpg");
 class Home extends Component {
   render() {
     return (
-      <div className="home__container">
+      <div className="home__container reset__body_top_padding">
         <ParallaxHeader height="100vh"
           bgImage={headerBg}
           overlayColor="#53D1D7"
