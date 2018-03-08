@@ -1,5 +1,6 @@
 import "./SignIn.css";
 
+import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import React, { Component } from "react";
@@ -48,6 +49,18 @@ class SignIn extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth && nextProps.auth.hasFailed && nextProps.auth.error.message)
       this.setState({ hasError: true, error: nextProps.auth.error.message });
+    
+    if (nextProps.auth && nextProps.auth.hasAuthorized === true) {
+      const { activeUser } = nextProps.auth;
+
+      if (activeUser.isAdmin) {
+        this.props.history.push("/admin/dashboard");
+      } else if (activeUser.isApplicant) {
+        this.props.history.push(`/apply/p/${activeUser.uid}`);
+      } else {
+        this.props.history.push("/");
+      }
+    }
   }
 
   updateEmail = (e) => this.setState({ email: e.target.value });
@@ -70,7 +83,8 @@ SignIn.propTypes = {
   authActions: propTypes.object,
   activeUser: propTypes.object,
   updateLocation: propTypes.func,
-  auth: propTypes.oneOfType([propTypes.bool, propTypes.object])
+  auth: propTypes.oneOfType([propTypes.bool, propTypes.object]),
+  history: propTypes.object
 };
 
 const mapStateToProps = state => {
@@ -87,6 +101,8 @@ const mapDispatchToProps = dispatch => {
 };
 
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps)(SignIn);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps)(SignIn)
+);

@@ -34,18 +34,21 @@ const auth = (state = initialState.activeUser, action) => {
     case SIGN_OUT_AUTHORIZING:
       return Object.assign({}, state, {
         isAuthorizing: true,
+        hasAuthorized: false,
         hasFailed: false,
         activeUser: action.user
       });
     case SIGN_IN_GETTING_USER:
       return Object.assign({}, state, {
         isAuthorizing: false,
+        hasAuthorized: false,
         hasFailed: false,
         activeUser: null
       });
     case SIGNED_IN:
       return Object.assign({}, state, {
         isAuthorizing: false,
+        hasAuthorized: true,
         hasFailed: false,
         activeUser: action.user
       });
@@ -54,24 +57,28 @@ const auth = (state = initialState.activeUser, action) => {
       return Object.assign({}, state, {
         hasFailed: true,
         isAuthorizing: false,
+        hasAuthorized: false,
         activeUser: null,
         error: action.error
       });
     case SIGNED_OUT:
       return Object.assign({}, state, {
         isAuthorizing: false,
+        hasSignedOut: true,
         hasFailed: false,
         activeUser: null
       });
     case ACCOUNT_CREATION_INITIATED:
       return Object.assign({}, state, {
         isCreating: true,
+        hasCreated: false,
         hasFailed: false,
         data: action.data
       });
     case ACCOUNT_CREATION_FAILED:
       return Object.assign({}, state, {
         isCreating: false,
+        hasCreated: false,
         hasFailed: true,
         data: action.data,
         error: action.error
@@ -79,6 +86,7 @@ const auth = (state = initialState.activeUser, action) => {
     case ACCOUNT_CREATED:
       return Object.assign({}, state, {
         isCreating: false,
+        hasCreated: true,
         hasFailed: false,
         data: action.data
       });

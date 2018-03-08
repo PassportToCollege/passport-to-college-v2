@@ -38,6 +38,18 @@ class Apply extends Component {
     
     if (nextProps.auth && nextProps.auth.hasSent)
       this.setState({ hasSent: true, notificationClosed: false });
+
+    if (nextProps.auth && nextProps.auth.hasAuthorized === true) {
+      const { activeUser } = nextProps.auth;
+
+      if (activeUser.isApplicant) {
+        this.props.history.push(`/apply/p/${activeUser.uid}`);
+      } else if (activeUser.isAdmin) {
+        this.props.history.push("/admin/dashboard");
+      } else {
+        this.props.history.push("/");
+      }
+    }
   }
 
   render() {
@@ -110,7 +122,8 @@ class Apply extends Component {
 Apply.propTypes = {
   authActions: propTypes.object,
   updateLocation: propTypes.func,
-  auth: propTypes.oneOfType([propTypes.bool, propTypes.object])
+  auth: propTypes.oneOfType([propTypes.bool, propTypes.object]),
+  history: propTypes.object
 };
 
 const mapStateToProps = state => {

@@ -65,7 +65,8 @@ export const doSignIn = (email, password) => {
               };
               cookies.set("ssid", d, { path: "/", maxAge: 60 * 60 * 24 });
               
-              dispatch(signInDone(uid));
+              user.uid = uid;
+              dispatch(signInDone(user));
             }
           })
         })
