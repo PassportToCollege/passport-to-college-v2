@@ -61,10 +61,10 @@ class App extends Component {
               <Route path={routes.SIGN_IN.route} render={(props) => this.authMiddleware(props, SignIn)}></Route>
               <Route path={routes.RESET_PASSWORD.route} render={(props) => this.authMiddleware(props, ResetPassword)}></Route>
               <Route path={routes.CONFIRM_EMAIL_ADDRESS.route} render={(props) => this.defaultRouteMiddleware(props, ConfirmEmail)}></Route>
-              <Route exact path={routes.DASHBOARD.route} render={props => this.defaultRouteMiddleware(props, Dashboard)}></Route>
-              <Route path={routes.APPLICATIONS.route} render={props => this.defaultRouteMiddleware(props, Applications)}></Route>
-              <Route path={routes.USERS.route} render={props => this.defaultRouteMiddleware(props, Users)}></Route>
-              <Route path={routes.PROFILE.route} render={props => this.defaultRouteMiddleware(props, Profile)}></Route>
+              <Route exact path={routes.DASHBOARD.route} render={props => this.protectedMiddleware(props, Dashboard)}></Route>
+              <Route path={routes.APPLICATIONS.route} render={props => this.protectedMiddleware(props, Applications)}></Route>
+              <Route path={routes.USERS.route} render={props => this.protectedMiddleware(props, Users)}></Route>
+              <Route path={routes.PROFILE.route} render={props => this.protectedMiddleware(props, Profile)}></Route>
               <Route exact path={routes.APPLY.route} render={props => this.applyLandingMiddleware(props, Apply)}></Route>
               <Route path={routes.APPLY_PORTAL.route} render={props => this.applicationPortalMiddleware(props, ApplicationPortal)}></Route>
             </div>
@@ -81,6 +81,13 @@ class App extends Component {
   authMiddleware(props, Component) {
     if(isAuthorized())
       return <Redirect to="/"/>
+
+    return <Component {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }} />
+  }
+
+  protectedMiddleware(props, Component) {
+    if (!isAuthorized())
+      return <Redirect to="/" />
 
     return <Component {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }} />
   }

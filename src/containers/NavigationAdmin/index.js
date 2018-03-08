@@ -103,6 +103,7 @@ class NavigationAdmin extends Component {
 
     const user = cookies.get("ssid");
     this.props.authActions.doSignOut(user);
+    this.props.history.push("/")
   }
 
   renderMainNavElements = () => {
@@ -148,7 +149,8 @@ NavigationAdmin.propTypes = {
   authActions: propTypes.object,
   avatar: propTypes.object,
   userActions: propTypes.object,
-  user: propTypes.object
+  user: propTypes.object,
+  history: propTypes.object
 };
 
 const mapStateToProps = state => {

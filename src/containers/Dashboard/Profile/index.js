@@ -77,7 +77,7 @@ class Profile extends Component {
     this.props.updateLocation("dashboard profile");
 
     // get user avatar
-    this.props.avatarActions.doAvatarGet(activeUser);
+    this.props.avatarActions.doAvatarGet(activeUser.uid);
     
     // get user data
     this.props.userActions.doUserGet();
@@ -251,7 +251,8 @@ Profile.propTypes = {
   avatarActions: propTypes.object,
   avatar: propTypes.object,
   user: propTypes.object,
-  userActions: propTypes.object
+  userActions: propTypes.object,
+  updateLocation: propTypes.func
 };
 
 const mapStateToProps = state => {
