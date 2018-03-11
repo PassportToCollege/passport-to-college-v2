@@ -8,7 +8,13 @@ import {
   APPLICATION_UPDATED,
   APPLICATION_TEST_DELETE_FAILED,
   APPLICATION_TEST_DELETE_INITIATED,
-  APPLICATION_TEST_DELETED
+  APPLICATION_TEST_DELETED,
+  APPLICATION_SUBMIT_INITIATED,
+  APPLICATION_SUBMIT_FAILED,
+  APPLICATION_SUBMITTED,
+  APPLICATION_SUBMITTED_EMAIL_INITIATED,
+  APPLICATION_SUBMITTED_EMAIL_SENT,
+  APPLICATION_SUBMITTED_EMAIL_FAILED
 } from "../actions/actionTypes";
 
 const application = (state = initialState.application, action) => {
@@ -84,6 +90,53 @@ const application = (state = initialState.application, action) => {
         hasFailed: false,
         user: action.user,
         test: action.test
+      });
+    case APPLICATION_SUBMIT_INITIATED:
+      return Object.assign({}, state, {
+        isUpdating: true,
+        hasUpdated: false,
+        hasFailed: false,
+        user: action.user,
+        date: action.date
+      });
+    case APPLICATION_SUBMIT_FAILED:
+      return Object.assign({}, state, {
+        isUpdating: false,
+        hasUpdated: false,
+        hasFailed: true,
+        user: action.user,
+        date: action.date,
+        error: action.error
+      });
+    case APPLICATION_SUBMITTED:
+      return Object.assign({}, state, {
+        isUpdating: false,
+        hasUpdated: true,
+        hasFailed: false,
+        user: action.user,
+        date: action.date
+      });
+    case APPLICATION_SUBMITTED_EMAIL_INITIATED:
+      return Object.assign({}, state, {
+        isSending: true,
+        hasSent: false,
+        emailHasFailed: false,
+        user: action.user
+      });
+    case APPLICATION_SUBMITTED_EMAIL_SENT:
+      return Object.assign({}, state, {
+        isSending: false,
+        hasSent: true,
+        emailHasFailed: false,
+        user: action.user
+      });
+    case APPLICATION_SUBMITTED_EMAIL_FAILED:
+      return Object.assign({}, state, {
+        isSending: false,
+        hasSent: false,
+        emailHasFailed: true,
+        user: action.user,
+        error: action.error
       });
     default:
       return state;

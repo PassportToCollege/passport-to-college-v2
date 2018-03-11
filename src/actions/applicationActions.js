@@ -207,7 +207,9 @@ export const doApplicationSubmit = (user, date) => {
         wasSubmitted: true
       })
       .then(() => {
+        dispatch(applicationSubmitted(user, date));
         dispatch(sendSubmittedEmailInitated(user));
+        
         const sendToApplicant = () => {
           return axios.get(`${EMAIL_API}/s/application-submitted/${user}`);
         }
