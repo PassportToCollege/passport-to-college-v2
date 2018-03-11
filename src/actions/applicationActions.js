@@ -1,9 +1,11 @@
 import firebase from "firebase";
+import axios from "axios";
 
 import * as types from "./actionTypes";
 import { db } from "../utils/firebase";
 
 const Console = console;
+const EMAIL_API = process.env.REACT_APP_EMAIL_API;
 
 // GET actions
 export const applicationGetInitiated = user => {
@@ -145,5 +147,86 @@ export const doTestDelete = (user, test) => {
         Console.log(error);
         dispatch(applicationTestDeleteFailed(error, user, test));
       })
+  }
+}
+
+export const applicationSubmitInitiated = (user, date) => {
+  return {
+    type: types.APPLICATION_SUBMIT_INITIATED,
+    user,
+    date
+  };
+};
+
+export const applicationSubmitted = (user, date) => {
+  return {
+    type: types.APPLICATION_SUBMITTED,
+    user,
+    date
+  };
+};
+
+export const applicationSubmitFailed = (error, user, date) => {
+  return {
+    type: types.APPLICATION_SUBMIT_FAILED,
+    user,
+    date,
+    error
+  };
+};
+
+export const sendSubmittedEmailInitated = user => {
+  return {
+    type: types.APPLICATION_SUBMITTED_EMAIL_INITIATED,
+    user
+  };
+};
+
+export const sendSubmittedEmailSent = user => {
+  return {
+    type: types.APPLICATION_SUBMITTED_EMAIL_SENT,
+    user
+  };
+};
+
+export const sendSubmittedEmailFailed = (error, user) => {
+  return {
+    type: types.APPLICATION_SUBMITTED_EMAIL_FAILED,
+    user, error
+  };
+};
+
+export const doApplicationSubmit = (user, date) => {
+  return dispatch => {
+    dispatch(applicationSubmitInitiated(user, date));
+
+    db.collection("application")
+      .doc(user)
+      .update({
+        submitedOn: date,
+        wasSubmitted: true
+      })
+      .then(() => {
+        dispatch(sendSubmittedEmailInitated(user));
+        const sendToApplicant = () => {
+          return axios.get(`${EMAIL_API}/s/application-submitted/${user}`);
+        }
+
+        const sendToAdmins = () => {
+          return axios.get(`${EMAIL_API}/s/application-received/${user}`);
+        }
+
+        axios.all([sendToApplicant(), sendToAdmins()])
+          .then(() => {
+            dispatch(sendSubmittedEmailSent(user));
+          })
+          .catch(error => {
+            dispatch(sendSubmittedEmailFailed(error, user));
+          });
+      })
+      .catch(error => {
+        Console.error(error);
+        dispatch(applicationSubmitFailed(error, user, date));
+      });
   }
 }

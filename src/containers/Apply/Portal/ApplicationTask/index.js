@@ -525,6 +525,7 @@ class ApplicationTask extends Component {
     this.props.applicationActions.doApplicationUpdate(this.state.uid, { submittedOn, wasSubmitted });
 
     // TODO: Send emails to admins and applicant
+    this.props.applicationActions.doSendSubmissionEmails(this.state.uid);
   }
 
   handleNotificationClose = () => {
