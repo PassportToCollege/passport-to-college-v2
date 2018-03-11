@@ -62,11 +62,12 @@ class Navigation extends Component {
     this.props.hamburgerActions.openHamburger();
     this.props.updateHamburgerState("open");
   }
-};
+}
 
 Navigation.propTypes = {
   hamburgerActions: propTypes.object,
-  hamburgerState: propTypes.object
+  hamburgerState: propTypes.object,
+  updateHamburgerState: propTypes.func
 };
 
 const mapStateToProps = state => {

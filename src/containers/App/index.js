@@ -103,7 +103,7 @@ class App extends Component {
   renderHamburger() {
     if (this.state.location.indexOf("dashboard") === -1 &&
       this.state.location !== "application portal")
-      return <Hamburger updateHamburgerState={newState => { this.setState({ hamburgerState: newState }) }} />
+      return <Hamburger updateHamburgerState={newState => this.setState({ hamburgerState: newState })} />
   }
 
   selectNavigation() {
@@ -111,7 +111,8 @@ class App extends Component {
       if(this.state.location.indexOf("dashboard") > -1)
         return null;
       
-      this.renderHamburger();
+      return <Navigation 
+        updateHamburgerState={newState => this.setState({ hamburgerState: newState})}/>
     }
 
     return null;
