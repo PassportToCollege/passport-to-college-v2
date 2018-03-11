@@ -425,7 +425,9 @@ class ApplicationTask extends Component {
                 null
             }
             {
-              this.props.application.hasUpdated && !this.state.notificationClosed ?
+              this.props.application.hasUpdated && 
+              !this.state.notificationClosed &&
+              this.state.application.wasSubmitted ?
                 <Notification text="Application submitted! Check your email for confirmation."
                   doClose={this.handleNotificationClose} />
               :

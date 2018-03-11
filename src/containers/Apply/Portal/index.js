@@ -215,15 +215,11 @@ class ApplicationPortal extends Component {
         });
       }
 
-      this.setState({ isComplete, user }, () => {
-        this.setState({ checkingCompleteness: false });
-      });
+      this.setState({ user });
     }
 
     if (nextProps.avatar.hasGotten) {
       const { url } = nextProps.avatar;
-
-      this.setState({ checkingCompleteness: true });
 
       if (url.length) {
         isComplete = Object.assign({}, isComplete, {
@@ -236,7 +232,9 @@ class ApplicationPortal extends Component {
       }
     }
 
-    if (nextProps.avatar.hasGotten && nextProps.application.hasGotten && nextProps.user.hasGotten)
+    if ((nextProps.avatar.hasGotten || nextProps.avatar.hasFailed) && 
+      nextProps.application.hasGotten && 
+      nextProps.user.hasGotten)
       this.setState({ isComplete });
 
     if (nextProps.auth && nextProps.auth.hasFailed && nextProps.auth.error.message)
