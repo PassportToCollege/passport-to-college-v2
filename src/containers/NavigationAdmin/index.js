@@ -137,7 +137,7 @@ class NavigationAdmin extends Component {
       }
 
       return (
-        <li key={v.route}>
+        <li key={i}>
           <NavLink exact to={v.route} activeClassName="active">
             <FontAwesomeIcon icon={icon} />
             <span>{v.name}</span>

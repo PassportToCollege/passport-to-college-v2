@@ -121,7 +121,7 @@ class Profile extends Component {
       ]
   
       return dt.map((v, i) => {
-        return <UserInfoItem key={v.label} label={v.label} data={v.data} />
+        return <UserInfoItem key={i} label={v.label} data={v.data} />
       });
     }
   }
