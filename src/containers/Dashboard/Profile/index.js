@@ -73,8 +73,6 @@ class Profile extends Component {
 
   componentWillMount() {
     let activeUser = cookies.get("ssid");
-  
-    this.props.updateLocation("dashboard profile");
 
     // get user avatar
     this.props.avatarActions.doAvatarGet(activeUser.uid);

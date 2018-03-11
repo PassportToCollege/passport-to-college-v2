@@ -10,10 +10,6 @@ class Users extends Component {
       </div>
     )
   }
-
-  componentWillMount() {
-    this.props.updateLocation("dashboard users");
-  }
 }
 
 export default Users;

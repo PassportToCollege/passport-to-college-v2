@@ -9,7 +9,7 @@ import Cookies from "universal-cookie";
 import { withRouter } from "react-router-dom";
 
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
-import { faTachometerAlt, faUsers, faHome, faSignOutAlt } from "@fortawesome/fontawesome-free-solid";
+import { faTachometerAlt, faUsers, faUser, faHome, faSignOutAlt } from "@fortawesome/fontawesome-free-solid";
 import { faWpforms } from "@fortawesome/fontawesome-free-brands";
 import LoadingText from "../../components/LoadingText";
 
@@ -67,8 +67,14 @@ class NavigationAdmin extends Component {
           <ul>
             {this.renderMainNavElements()}
           </ul>
-          <hr/>
+          <hr />
           <ul>
+            <li>
+              <NavLink exact to={routes.PROFILE.route}>
+                <FontAwesomeIcon icon={faUser} />
+                <span>profile</span>
+              </NavLink>
+            </li>
             <li>
               <NavLink exact to={routes.LANDING.route}>
                 <FontAwesomeIcon icon={faHome}/>

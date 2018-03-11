@@ -8,17 +8,13 @@ import { isAuthorized, isApplicant, activeUser } from "../../utils";
 
 import Hamburger from "../Hamburger";
 import Navigation from "../Navigation";
-import NavigationAdmin from "../NavigationAdmin";
 
 import Home from "../Home";
 import SignIn from "../Auth/SignIn";
 import ResetPassword from "../Auth/ResetPassword";
 import ConfirmEmail from "../Auth/ConfirmEmail";
 
-import Dashboard from "../Dashboard/Home";
-import Applications from "..//Dashboard/Applications";
-import Users from "../Dashboard/Users";
-import Profile from "../Dashboard/Profile";
+import Dashboard from "../Dashboard";
 import Apply from "../Apply";
 import ApplicationPortal from "../Apply/Portal";
 
@@ -33,16 +29,17 @@ class App extends Component {
   }
 
   render() {
-    let main_bg = {};
+    let mainBg = {};
     let bodyStyles = {};
+
     if(this.state.location === "sign-in" ||
       this.state.location === "apply" ||
       this.state.location === "reset" ||
       this.state.location === "confirm-email") {
-      main_bg.backgroundColor = "#FF6561";
+      mainBg.backgroundColor = "#FF6561";
     } else if(this.state.location.indexOf("dashboard") > -1 || 
       this.state.location === "application portal") {
-      main_bg.backgroundColor = "#FFF";
+      mainBg.backgroundColor = "#FFF";
       bodyStyles = {
         paddingTop: "0",
         minHeight: "100vh",
@@ -54,17 +51,14 @@ class App extends Component {
       <BrowserRouter>
         <div className="app">
           {this.renderHamburger()}
-          <div className="app__main" data-hamburger={this.state.hamburgerState} style={main_bg}>
+          <div className="app__main" data-hamburger={this.state.hamburgerState} style={mainBg}>
             {this.selectNavigation()}
             <div className="app__body" style={bodyStyles}>
               <Route exact path={routes.LANDING.route} render={props => this.defaultRouteMiddleware(props, Home)}></Route>
               <Route path={routes.SIGN_IN.route} render={(props) => this.authMiddleware(props, SignIn)}></Route>
               <Route path={routes.RESET_PASSWORD.route} render={(props) => this.authMiddleware(props, ResetPassword)}></Route>
               <Route path={routes.CONFIRM_EMAIL_ADDRESS.route} render={(props) => this.defaultRouteMiddleware(props, ConfirmEmail)}></Route>
-              <Route exact path={routes.DASHBOARD.route} render={props => this.protectedMiddleware(props, Dashboard)}></Route>
-              <Route path={routes.APPLICATIONS.route} render={props => this.protectedMiddleware(props, Applications)}></Route>
-              <Route path={routes.USERS.route} render={props => this.protectedMiddleware(props, Users)}></Route>
-              <Route path={routes.PROFILE.route} render={props => this.protectedMiddleware(props, Profile)}></Route>
+              <Route path={routes.DASHBOARD.route} render={props => this.protectedMiddleware(props, Dashboard)}></Route>
               <Route exact path={routes.APPLY.route} render={props => this.applyLandingMiddleware(props, Apply)}></Route>
               <Route path={routes.APPLY_PORTAL.route} render={props => this.applicationPortalMiddleware(props, ApplicationPortal)}></Route>
             </div>
@@ -87,7 +81,7 @@ class App extends Component {
 
   protectedMiddleware(props, Component) {
     if (!isAuthorized())
-      return <Redirect to="/" />
+      return <Redirect to="/auth/sign-in" />
 
     return <Component {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }} />
   }
@@ -115,9 +109,9 @@ class App extends Component {
   selectNavigation() {
     if (this.state.location !== "application portal") {
       if(this.state.location.indexOf("dashboard") > -1)
-        return <NavigationAdmin />
+        return null;
       
-      return <Navigation updateHamburgerState={newState => { this.setState({ hamburgerState: newState }) }} />
+      this.renderHamburger();
     }
 
     return null;

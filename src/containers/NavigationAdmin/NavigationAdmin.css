@@ -46,7 +46,7 @@ nav.dashboard__navigation {
 
 /* Navs */
 .dashboard__navigation_container {
-  padding: 2em 0.5em;
+  padding: 2em 0;
 }
 
 .dashboard__navigation_container hr {

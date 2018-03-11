@@ -10,10 +10,6 @@ class Applications extends Component {
       </div>
     )
   }
-
-  componentWillMount() {
-    this.props.updateLocation("dashboard applications");
-  }
 }
 
 export default Applications;
