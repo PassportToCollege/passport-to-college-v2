@@ -221,8 +221,12 @@ export const doApplicationSubmit = (user, date) => {
         axios.all([sendToApplicant(), sendToAdmins()])
           .then(() => {
             dispatch(sendSubmittedEmailSent(user));
+
+            // get application
+            dispatch(doApplicationGet(user));
           })
           .catch(error => {
+            Console.error(error);
             dispatch(sendSubmittedEmailFailed(error, user));
           });
       })

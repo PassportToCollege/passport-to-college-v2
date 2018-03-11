@@ -93,16 +93,16 @@ const application = (state = initialState.application, action) => {
       });
     case APPLICATION_SUBMIT_INITIATED:
       return Object.assign({}, state, {
-        isUpdating: true,
-        hasUpdated: false,
+        isSubmitting: true,
+        hasSubmitted: false,
         hasFailed: false,
         user: action.user,
         date: action.date
       });
     case APPLICATION_SUBMIT_FAILED:
       return Object.assign({}, state, {
-        isUpdating: false,
-        hasUpdated: false,
+        isSubmitting: false,
+        hasSubmitted: false,
         hasFailed: true,
         user: action.user,
         date: action.date,
@@ -110,8 +110,8 @@ const application = (state = initialState.application, action) => {
       });
     case APPLICATION_SUBMITTED:
       return Object.assign({}, state, {
-        isUpdating: false,
-        hasUpdated: true,
+        isSubmitting: false,
+        hasSubmitted: true,
         hasFailed: false,
         user: action.user,
         date: action.date

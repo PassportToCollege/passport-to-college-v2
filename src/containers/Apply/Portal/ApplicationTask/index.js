@@ -398,7 +398,10 @@ class ApplicationTask extends Component {
                   <Button type="button" solid text="Submit Application" doClick={this.handleApplicationSubmit} />
                 </span>
               :
-                null
+                this.props.application.isGetting ?
+                  <p className="application_task__instructions type__margin_top">Checking your application for completeness....</p>
+                :
+                  null
             }
             {
               this.props.application.hasGotten && 
@@ -425,10 +428,18 @@ class ApplicationTask extends Component {
                 null
             }
             {
-              this.props.application.hasUpdated && 
-              !this.state.notificationClosed &&
-              this.state.application.wasSubmitted ?
+              this.props.application.hasSubmitted &&
+              this.props.application.hasSent &&
+              !this.state.notificationClosed ?
                 <Notification text="Application submitted! Check your email for confirmation."
+                  doClose={this.handleNotificationClose} />
+              :
+                null
+            }
+            {
+              this.props.application.hasSubmitted &&
+              this.props.application.emailHasFailed ?
+                <Notification text="Application submitted! We will be in touch."
                   doClose={this.handleNotificationClose} />
               :
                 null
@@ -520,12 +531,7 @@ class ApplicationTask extends Component {
 
   handleApplicationSubmit = () => {
     const submittedOn = moment().format("Y-m-d");
-    const wasSubmitted = true;
-
-    this.props.applicationActions.doApplicationUpdate(this.state.uid, { submittedOn, wasSubmitted });
-
-    // TODO: Send emails to admins and applicant
-    this.props.applicationActions.doSendSubmissionEmails(this.state.uid);
+    this.props.applicationActions.doApplicationSubmit(this.state.uid, submittedOn);
   }
 
   handleNotificationClose = () => {

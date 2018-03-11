@@ -55,6 +55,7 @@ export const getWordCount = blocks => {
         .split(" ");
 
       count += text.length;
+      return count;
     });
   }
 
