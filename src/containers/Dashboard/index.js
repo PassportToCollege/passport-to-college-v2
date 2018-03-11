@@ -7,6 +7,7 @@ import propTypes from "prop-types";
 import * as routes from "../../constants/routes";
 
 import NavigationAdmin from "../NavigationAdmin";
+import SearchBar from "../SearchBar";
 import Applications from "..//Dashboard/Applications";
 import Users from "../Dashboard/Users";
 import Profile from "../Dashboard/Profile";
@@ -22,6 +23,7 @@ export default class Dashboard extends Component {
       <div className="dashboard">
         <NavigationAdmin />
         <div className="dashboard__main">
+          <SearchBar />
           <Route exact path={this.props.match.url} 
             render={this.renderDashboard}></Route>
           <Route path={routes.APPLICATIONS.route} component={Applications}></Route>
