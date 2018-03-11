@@ -28,7 +28,7 @@ const avatar = (state = initialState.avatar, action) => {
     case AVATAR_GET_DONE:
       return Object.assign({}, state, {
         isGetting: false,
-        hasFailed: true,
+        hasFailed: false,
         hasGotten: true,
         url: action.avatar
       });

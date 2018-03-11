@@ -72,7 +72,11 @@ class ApplicationPortal extends Component {
               <li>
                 <NavLink exact to={this.props.match.url}>Welcome</NavLink>
               </li>
-              { this.createTaskList() }
+              { 
+                this.props.application.hasGotten && this.props.user.hasGotten ?
+                  this.createTaskList() :
+                  null
+              }
             </ul>
           </div>
           <div className="application__portal_main">
@@ -129,17 +133,20 @@ class ApplicationPortal extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    let { isComplete } = this.state;
+
     if (nextProps.application.hasGotten) {
       const { application } = nextProps.application;
-      let { isComplete } = this.state;
-
-      this.setState({ application });
 
       if ((application.educationLevel && application.educationLevel.length) &&
         (application.gpa && application.gpa.length) &&
         (application.lastSchool && application.lastSchool.length)) {
         isComplete = Object.assign({}, isComplete, {
           education: true
+        });
+      } else {
+        isComplete = Object.assign({}, isComplete, {
+          education: false
         });
       }
 
@@ -148,11 +155,19 @@ class ApplicationPortal extends Component {
         isComplete = Object.assign({}, isComplete, {
           "us-standardized-tests": true
         });
+      } else {
+        isComplete = Object.assign({}, isComplete, {
+          "us-standardized-tests": false
+        });
       }
 
       if (application.tests && Object.keys(application.tests).length) {
         isComplete = Object.assign({}, isComplete, {
           "national-tests": true
+        });
+      } else {
+        isComplete = Object.assign({}, isComplete, {
+          "national-tests": false
         });
       }
 
@@ -162,6 +177,10 @@ class ApplicationPortal extends Component {
         isComplete = Object.assign({}, isComplete, {
           "miscellaneous": true
         });
+      } else {
+        isComplete = Object.assign({}, isComplete, {
+          "miscellaneous": false
+        });
       }
 
       if (application.essay && application.essay.blocks && 
@@ -169,14 +188,17 @@ class ApplicationPortal extends Component {
         isComplete = Object.assign({}, isComplete, {
           essay: true
         });
+      } else {
+        isComplete = Object.assign({}, isComplete, {
+          essay: false
+        });
       }
 
-      this.setState({ isComplete });
+      this.setState({ application });
     }
     
     if (nextProps.user.hasGotten) {
       const { user } = nextProps.user;
-      this.setState({ user });
 
       if ((user.name && user.name.first && user.name.last) &&
         (user.email && user.email.length) &&
@@ -184,27 +206,38 @@ class ApplicationPortal extends Component {
         (user.dob && user.dob.length) &&
         (user.gender && user.gender.length) &&
         (user.phone && user.phone.length)) {
-        let { isComplete } = this.state;
         isComplete = Object.assign({}, isComplete, {
           personal: true
         });
+      } else {
+        isComplete = Object.assign({}, isComplete, {
+          personal: false
+        });
+      }
 
-        this.setState({ isComplete });
-        }
+      this.setState({ isComplete, user }, () => {
+        this.setState({ checkingCompleteness: false });
+      });
     }
 
     if (nextProps.avatar.hasGotten) {
       const { url } = nextProps.avatar;
 
+      this.setState({ checkingCompleteness: true });
+
       if (url.length) {
-        let { isComplete } = this.state;
         isComplete = Object.assign({}, isComplete, {
           "profile-picture": true
         });
-
-        this.setState({ isComplete });
+      } else {
+        isComplete = Object.assign({}, isComplete, {
+          "profile-picture": false
+        });
       }
     }
+
+    if (nextProps.avatar.hasGotten && nextProps.application.hasGotten && nextProps.user.hasGotten)
+      this.setState({ isComplete });
 
     if (nextProps.auth && nextProps.auth.hasFailed && nextProps.auth.error.message)
       this.setState({ hasError: true, error: nextProps.auth.error.message });

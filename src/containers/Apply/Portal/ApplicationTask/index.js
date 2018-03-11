@@ -459,7 +459,7 @@ class ApplicationTask extends Component {
       return <p>Looking for your tests</p>
 
     if (this.props.application.hasGotten &&
-      this.props.application.tests &&
+      this.state.application.tests &&
       Object.keys(this.state.application.tests).length > 0) {
       return (
         <TestList tests={this.state.application.tests}
@@ -521,6 +521,8 @@ class ApplicationTask extends Component {
     const wasSubmitted = true;
 
     this.props.applicationActions.doApplicationUpdate(this.state.uid, { submittedOn, wasSubmitted });
+
+    // TODO: Send emails to admins and applicant
   }
 
   handleNotificationClose = () => {
