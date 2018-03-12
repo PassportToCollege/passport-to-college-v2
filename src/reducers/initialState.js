@@ -3,5 +3,6 @@ export default {
   activeUser: false,
   user: {},
   avatar: { url: "" },
-  application: {}
+  application: {},
+  applications: {}
 }

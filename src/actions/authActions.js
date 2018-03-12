@@ -213,10 +213,10 @@ export const doAccountCreate = (data) => {
         batch.set(userRef, userData);
 
         if (data.isApplicant)
-          batch.set(db.collection("application").doc(user.uid), {});
+          batch.set(db.collection("application").doc(user.uid), { user: userRef });
         
         if (data.isStudent)
-          batch.set(db.collection("student").doc(user.uid), {});
+          batch.set(db.collection("student").doc(user.uid), { user: userRef });
 
         dispatch(addingDataToUserDbs(data));
 

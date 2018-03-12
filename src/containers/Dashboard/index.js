@@ -36,8 +36,10 @@ export default class Dashboard extends Component {
 
   renderDashboard() {
     return (
-      <div className="dashboard__home">
-        home
+      <div className="dashboard__home dashboard__main">
+        <div className="dashboard__welcome">
+          home
+        </div>
       </div>
     )
   }
