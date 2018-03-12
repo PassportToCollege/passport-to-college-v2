@@ -5,13 +5,15 @@ import auth from "./authReducer";
 import avatar from "./avatarReducer";
 import user from "./userReducer";
 import application from "./applicationReducer";
+import applications from "./applicationsReducer";
 
 const rootReducer = combineReducers({
   hamburgerState,
   auth,
   avatar,
   user,
-  application
+  application,
+  applications
 });
 
 export default rootReducer;
