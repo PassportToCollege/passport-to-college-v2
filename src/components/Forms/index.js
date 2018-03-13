@@ -3,6 +3,7 @@ import "./Forms.css";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import propTypes from "prop-types";
+import moment from "moment";
 
 import Button from "../Button";
 
@@ -136,7 +137,7 @@ export const PersonalInformation = props => {
         <div className="form__input_container">
           <input type="date" name="dob" required 
             onBlur={props.updateField} 
-            defaultValue={props.user.dob} />
+            defaultValue={moment.utc(props.user.dob).format("Y-MM-DD")} />
           <label>Date of Birth</label>
         </div>
         {/* TODO: Replace with custom country picker */}

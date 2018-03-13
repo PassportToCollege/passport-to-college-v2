@@ -199,11 +199,11 @@ class ApplicationPortal extends Component {
     
     if (nextProps.user.hasGotten) {
       const { user } = nextProps.user;
-
+      
       if ((user.name && user.name.first && user.name.last) &&
         (user.email && user.email.length) &&
         (user.address && user.address.country.length) &&
-        (user.dob && user.dob.length) &&
+        (user.dob && "number" === typeof user.dob) &&
         (user.gender && user.gender.length) &&
         (user.phone && user.phone.length)) {
         isComplete = Object.assign({}, isComplete, {

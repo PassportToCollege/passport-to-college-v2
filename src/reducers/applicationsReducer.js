@@ -20,7 +20,7 @@ const applications = (state = initialState.applications, action) => {
         hasFailed: false,
         hasGotten: true,
         page: action.page,
-        applications: action.application
+        applications: action.applications
       });
     case APPLICATION_SUBMIT_FAILED:
       return Object.assign({}, state, {

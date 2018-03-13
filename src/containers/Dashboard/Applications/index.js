@@ -9,6 +9,14 @@ import { queryToObject } from "../../../utils";
 import * as applicationsActions from "../../../actions/applicationsActions";
 
 class Applications extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      applications: this.props.applications.applications
+    };
+  }
+
   render() {
     return (
       <div className="dashboard__container application__container">
@@ -27,11 +35,16 @@ class Applications extends Component {
       this.props.applicationsActions.doApplicationsGet(1);
     }
   }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.applications.hasGotten)
+      this.setState({ applications: nextProps.applications })
+  }
 }
 
 Applications.propTypes = {
   applicationsActions: propTypes.object,
-  applications: propTypes.array,
+  applications: propTypes.oneOfType([propTypes.object, propTypes.array]),
   location: propTypes.object
 };
 

@@ -182,6 +182,7 @@ export const doAccountCreate = (data) => {
       .then(user => {
         // create user data object
         let userData = {
+          uid: user.uid,
           email: data.email,
           isAdmin: data.isAdmin || false,
           isApplicant: data.isApplicant || false,
@@ -212,11 +213,20 @@ export const doAccountCreate = (data) => {
 
         batch.set(userRef, userData);
 
-        if (data.isApplicant)
-          batch.set(db.collection("application").doc(user.uid), { user: userRef });
+        if (data.isApplicant) {
+          batch.set(db.collection("application").doc(user.uid), {
+            uid: user.uid, 
+            user: userRef, 
+            startedOn: new Date() 
+          });
+        }
         
-        if (data.isStudent)
-          batch.set(db.collection("student").doc(user.uid), { user: userRef });
+        if (data.isStudent) {
+          batch.set(db.collection("student").doc(user.uid), {
+            uid: user.uid, 
+            user: userRef 
+          });
+        }
 
         dispatch(addingDataToUserDbs(data));
 
@@ -229,6 +239,11 @@ export const doAccountCreate = (data) => {
             axios.get(`${EMAIL_API}/s/welcome/${user.uid}`)
               .then(() => {
                 dispatch(sendEmailConfirmationEmailSent(data.email));
+
+                // sign user in after 2 seconds
+                setTimeout(() => {
+                  dispatch(doSignIn(data.email, data.password));
+                }, 2000);
               })
               .catch(error => {
                 dispatch(sendEmailConfirmationEmailFailed(error, data.email));

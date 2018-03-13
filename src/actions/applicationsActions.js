@@ -31,12 +31,14 @@ export const doApplicationsGet = page => {
 
     if (page === 1) {
       db.collection("application")
-        .orderBy("submittedOn")
+        .orderBy("startedOn")
         .limit(50)
         .get()
         .then(snapshots => {
-          const data = [];
+          if (snapshots.empty)
+            return dispatch(applicationsGetDone(page, { empty: true }));
 
+          const data = [];
           snapshots.forEach(snapshot => {
             data.push(snapshot.data());
           });
@@ -61,6 +63,9 @@ export const doApplicationsGet = page => {
             .limit(50)
             .get()
             .then(snapshots => {
+              if (snapshots.empty)
+                return dispatch(applicationsGetDone(page, { empty: true }));
+                
               const data = [];
 
               snapshots.forEach(snapshot => {

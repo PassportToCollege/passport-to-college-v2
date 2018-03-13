@@ -586,7 +586,7 @@ class ApplicationTask extends Component {
 
         break;
       case "dob":
-        this.props.userActions.doUserUpdateWithoutGet({ dob: new Date(e.target.value) });
+        this.props.userActions.doUserUpdateWithoutGet({ dob: new Date(e.target.value).getTime() });
 
         break;
       default: {
