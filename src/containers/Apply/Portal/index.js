@@ -10,6 +10,7 @@ import * as applicationActions from "../../../actions/applicationActions";
 import * as userActions from "../../../actions/userActions";
 import * as avatarActions from "../../../actions/avatarActions";
 import * as authActions from "../../../actions/authActions";
+import * as routes from "../../../constants/routes";
 
 import Button from "../../../components/Button";
 import LinkButton from "../../../components/LinkButton";
@@ -77,6 +78,11 @@ class ApplicationPortal extends Component {
                   this.createTaskList() :
                   null
               }
+              <li className="application__portal_sign_out">
+                <NavLink to={routes.SIGN_OUT.route} onClick={this.handleSignOutClick}>
+                  <span>sign out</span>
+                </NavLink>
+              </li>
             </ul>
           </div>
           <div className="application__portal_main">
@@ -328,6 +334,13 @@ class ApplicationPortal extends Component {
 
   handleNotificationClose = () => {
     this.setState({ notificationClosed: true, hasError: false, hasSent: false });
+  }
+
+  handleSignOutClick = (e) => {
+    e.preventDefault();
+
+    this.props.authActions.doSignOut(this.state.user);
+    this.props.history.push("/")
   }
 }
 

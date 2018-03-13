@@ -78,6 +78,20 @@
   background-color: #FF6561;
 }
 
+.application__portal_sidebar .application__sidebar > li.application__portal_sign_out {
+  position: absolute;
+  bottom: 3em;
+}
+
+.application__portal_sidebar .application__sidebar>li.application__portal_sign_out>a {
+  color: #333;
+  text-transform: capitalize;
+}
+
+.application__portal_sidebar .application__sidebar>li.application__portal_sign_out>a::before {
+  display: none;
+}
+
 .application__portal_body .application__portal_main {
   height: 100%;
   flex: 1 1 auto;
