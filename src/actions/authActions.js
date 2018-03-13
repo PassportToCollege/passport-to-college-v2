@@ -3,6 +3,8 @@ import * as types from "./actionTypes";
 import { auth, db } from "../utils/firebase";
 import Cookies from "universal-cookie";
 
+import { doStatUpdate } from "./statsActions";
+
 const cookies = new Cookies();
 const EMAIL_API = process.env.REACT_APP_EMAIL_API;
 
@@ -212,8 +214,17 @@ export const doAccountCreate = (data) => {
         let userRef = db.collection("user").doc(user.uid);
 
         batch.set(userRef, userData);
+        doStatUpdate("users", "total", "+");
+
+        if (data.isAdmin)
+          doStatUpdate("users", "admins", "+");
+        
+        if (data.isStaff)
+          doStatUpdate("users", "staff", "+");
 
         if (data.isApplicant) {
+          doStatUpdate("users", "applicants", "+");
+          doStatUpdate("applications", "pending", "+");
           batch.set(db.collection("application").doc(user.uid), {
             uid: user.uid, 
             user: userRef, 
@@ -222,6 +233,7 @@ export const doAccountCreate = (data) => {
         }
         
         if (data.isStudent) {
+          doStatUpdate("users", "students", "+");
           batch.set(db.collection("student").doc(user.uid), {
             uid: user.uid, 
             user: userRef 
