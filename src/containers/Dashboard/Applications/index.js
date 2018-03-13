@@ -21,7 +21,7 @@ class Applications extends Component {
     return (
       <div className="dashboard__container applications__container">
         <header>
-          <h2>Applications</h2>
+          <h1>Applications</h1>
         </header>
         application
       </div>

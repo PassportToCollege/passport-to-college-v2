@@ -1,3 +1,16 @@
 .applications__container {
   padding: 4em 3.5em;
 }
+
+/* Header */
+.applications__container header {
+  position: relative;
+  padding: 1em 0;
+}
+
+.applications__container header > h1 {
+  font-family: "Muli", "Nunito", "Roboto", sans-serif;
+  font-weight: lighter;
+  margin: 0;
+  color: rgb(58, 58, 58);
+}
