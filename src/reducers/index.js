@@ -6,6 +6,7 @@ import avatar from "./avatarReducer";
 import user from "./userReducer";
 import application from "./applicationReducer";
 import applications from "./applicationsReducer";
+import stats from "./statsReducer";
 
 const rootReducer = combineReducers({
   hamburgerState,
@@ -13,7 +14,8 @@ const rootReducer = combineReducers({
   avatar,
   user,
   application,
-  applications
+  applications,
+  stats
 });
 
 export default rootReducer;

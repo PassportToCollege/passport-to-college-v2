@@ -4,5 +4,6 @@ export default {
   user: {},
   avatar: { url: "" },
   application: {},
-  applications: []
+  applications: [],
+  stats: {}
 }
