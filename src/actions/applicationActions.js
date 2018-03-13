@@ -204,7 +204,8 @@ export const doApplicationSubmit = (user, date) => {
       .doc(user)
       .update({
         submitedOn: date,
-        wasSubmitted: true
+        wasSubmitted: true,
+        state: "pending"
       })
       .then(() => {
         dispatch(applicationSubmitted(user, date));

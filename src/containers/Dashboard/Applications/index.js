@@ -19,7 +19,10 @@ class Applications extends Component {
 
   render() {
     return (
-      <div className="dashboard__container application__container">
+      <div className="dashboard__container applications__container">
+        <header>
+          <h2>Applications</h2>
+        </header>
         application
       </div>
     )
@@ -27,13 +30,10 @@ class Applications extends Component {
 
   componentWillMount() {
     const { search } = this.props.location;
+    const page = queryToObject(search) || 1;
 
-    if (search.length) {
-      const { page } = queryToObject(search);
-      this.props.applicationsActions.doApplicationsGet(parseInt(page, 10));
-    } else {
-      this.props.applicationsActions.doApplicationsGet(1);
-    }
+    this.props.applicationsActions.doApplicationsGet(parseInt(page, 10));
+    this.setState({ page });
   }
 
   componentWillReceiveProps(nextProps) {

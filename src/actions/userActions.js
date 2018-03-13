@@ -38,20 +38,20 @@ export const doUserGet = () => {
       if (user) {
         let uid = auth.currentUser.uid;
         dispatch(userGetInitiated(uid));
-                
+
         db.collection("user")
           .doc(uid)
           .get()
           .then(doc => {
-            if(doc.exists) {
-              dispatch(userGetSuccessful(doc.data()));
-            } else {
-              dispatch(userGetFailed(uid, `No user found with uid: ${uid}.`));
-            }
-          })
-          .catch(error => {
-            dispatch(userGetFailed(uid, error));
-          })
+              if(doc.exists) {
+                dispatch(userGetSuccessful(doc.data()));
+              } else {
+                dispatch(userGetFailed(uid, `No user found with uid: ${uid}.`));
+              }
+            })
+            .catch(error => {
+              dispatch(userGetFailed(uid, error));
+            })
       }
     });
   };

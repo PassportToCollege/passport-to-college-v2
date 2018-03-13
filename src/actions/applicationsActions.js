@@ -31,7 +31,7 @@ export const doApplicationsGet = page => {
 
     if (page === 1) {
       db.collection("application")
-        .orderBy("startedOn")
+        .orderBy("startedOn", "desc")
         .limit(50)
         .get()
         .then(snapshots => {

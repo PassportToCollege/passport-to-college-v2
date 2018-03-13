@@ -1,6 +1,13 @@
+.dashboard {
+  width: 100%;
+  min-height: 100vh;
+}
+
 .dashboard__main {
   width: 100%;
+  min-height: 100vh;
   transition: padding 200ms linear;
+  background-color: rgba(244, 247, 249, 1);
 }
 
 .dashboard__container {

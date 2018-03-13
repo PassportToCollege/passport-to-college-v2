@@ -103,7 +103,7 @@ class ApplicationPortal extends Component {
             {
               this.state.hasSent && !this.state.notificationClosed ?
                 <Notification doClose={this.handleNotificationClose}
-                  text="Email sent! Check your email address." />
+                  text="Check your email address, we sent you a message." />
                 :
                 null
             }

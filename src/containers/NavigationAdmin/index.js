@@ -38,7 +38,7 @@ class NavigationAdmin extends Component {
     // get user avatar
     this.props.avatarActions.doAvatarGet(activeUser);
     // get active user
-    this.props.userActions.doUserGet(activeUser);
+    this.props.userActions.doUserGet();
   }
 
   render() {
@@ -94,13 +94,13 @@ class NavigationAdmin extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.avatar.url && nextProps.avatar.url !== "")
+    if (nextProps.avatar.hasGotten && nextProps.avatar.url !== "") {
       this.setState({ gravatar: nextProps.avatar.url });
-
-    if (nextProps.avatar.url === "")
+    } else {
       this.setState({ gravatar: defAvatar });
+    }
     
-    if (Object.keys(nextProps.user).length && !nextProps.user.isGetting)
+    if (nextProps.user.hasGotten)
       this.setState({ username: nextProps.user.user.name.full });
   }
 

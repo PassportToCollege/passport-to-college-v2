@@ -78,7 +78,7 @@ class Apply extends Component {
         {
           this.state.hasSent && !this.state.notificationClosed ?
             <Notification doClose={this.handleNotificationClose}
-              text="Account created! Sign in using the Continue Application form." />
+              text="Account created! You will be signed in automatically." />
             :
             null
         }
