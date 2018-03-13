@@ -83,3 +83,63 @@ export const doUserStatsGet = () => {
       })
   }
 }
+
+// UPDATE actions
+export const statUpdateInitiated = (doc, stat, op) => {
+  return {
+    type: types.STATS_UPDATE_INITIATED,
+    doc,
+    stat,
+    operation: op
+  };
+};
+
+export const statUpdated = (doc, stat, op) => {
+  return {
+    type: types.STATS_UPDATE_INITIATED,
+    doc,
+    stat,
+    operation: op
+  };
+};
+
+export const statUpdateFailed = (error, doc, stat, op) => {
+  return {
+    type: types.STATS_UPDATE_INITIATED,
+    doc,
+    stat,
+    operation: op,
+    error
+  };
+};
+
+export const doStatUpdate = (doc, stat, op) => {
+  return dispatch => {
+    if (op !== "-" || op !== "+")
+      return dispatch(statUpdateFailed({ error: "operation not recognized" }, stat, op));
+    
+    const statRef = db.collection("stats").doc(doc);
+
+    return db.runTransaction(transaction => {
+      return transaction.get(statRef)
+        .then(doc => {
+          const data = doc.data();
+          let stat = data[stat];
+
+          if (op === "-") {
+            stat -= 1;
+          } else {
+            stat += 1;
+          }
+
+          transaction.update(statRef, { [stat]: stat });
+        })
+    }).then(() => {
+      dispatch(statUpdated(doc, stat, op));
+    })
+    .catch(error => {
+      Console.log(error);
+      dispatch(statUpdateFailed(error, stat, op));
+    });
+  }
+}
