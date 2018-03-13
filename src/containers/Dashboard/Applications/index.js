@@ -6,7 +6,7 @@ import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
 
 import { queryToObject } from "../../../utils";
-import * as applicationsActions from "../../../actions/applicationsActions";
+import * as usersActions from "../../../actions/usersActions";
 import * as statsActions from "../../../actions/statsActions";
 
 class Applications extends Component {
@@ -14,7 +14,7 @@ class Applications extends Component {
     super(props);
 
     this.state = {
-      applications: this.props.applications.applications
+      users: this.props.users.users
     };
   }
 
@@ -29,13 +29,27 @@ class Applications extends Component {
               Showing 
               <b> {this.state.stats.total} </b> 
               out of 
-              <b> {this.state.applications.length} </b>
+              <b> {this.state.users.length} </b>
               applications
             </span> :
             null
           }
         </header>
-        application
+        <div className="applications__main">
+          <table className="table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>name</th>
+                <th>email</th>
+                <th>phone</th>
+              </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+          </table>
+        </div>
       </div>
     )
   }
@@ -44,15 +58,15 @@ class Applications extends Component {
     const { search } = this.props.location;
     const page = queryToObject(search) || 1;
 
-    this.props.applicationsActions.doApplicationsGet(parseInt(page, 10));
+    this.props.usersActions.doUsersGet(parseInt(page, 10), "applicants");
     this.setState({ page });
 
     this.props.statsActions.doApplicationStatsGet();
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.applications.hasGotten)
-      this.setState({ applications: nextProps.applications.applications });
+    if (nextProps.users.hasGotten)
+      this.setState({ users: nextProps.users.users });
 
     if (nextProps.stats.hasGotten)
       this.setState({ stats: nextProps.stats.stats });
@@ -60,8 +74,8 @@ class Applications extends Component {
 }
 
 Applications.propTypes = {
-  applicationsActions: propTypes.object,
-  applications: propTypes.oneOfType([propTypes.object, propTypes.array]),
+  usersActions: propTypes.object,
+  users: propTypes.object,
   location: propTypes.object,
   statsActions: propTypes.object,
   stats: propTypes.object
@@ -69,14 +83,14 @@ Applications.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    applications: state.applications,
+    users: state.users,
     stats: state.stats
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    applicationsActions: bindActionCreators(applicationsActions, dispatch),
+    usersActions: bindActionCreators(usersActions, dispatch),
     statsActions: bindActionCreators(statsActions, dispatch)
   };
 };
