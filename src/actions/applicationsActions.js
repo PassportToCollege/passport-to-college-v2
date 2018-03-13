@@ -30,7 +30,7 @@ export const doApplicationsGet = page => {
     dispatch(applicationsGetInitiated(page));
 
     if (page === 1) {
-      return db.collection("application")
+      db.collection("application")
         .orderBy("submittedOn")
         .limit(50)
         .get()
@@ -48,7 +48,7 @@ export const doApplicationsGet = page => {
           dispatch(applicationsGetFailed(error, page));
         })
     } else {
-      return db.collection("application")
+      db.collection("application")
         .orderBy("submittedOn")
         .limit((page - 1) * 50)
         .get()

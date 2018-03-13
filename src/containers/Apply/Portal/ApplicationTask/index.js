@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import propTypes from 'prop-types';
-import moment from "moment";
 
 import * as applicationActions from "../../../../actions/applicationActions";
 import * as userActions from "../../../../actions/userActions";
@@ -530,7 +529,7 @@ class ApplicationTask extends Component {
   }
 
   handleApplicationSubmit = () => {
-    const submittedOn = moment().format("Y-m-d");
+    const submittedOn = new Date();
     this.props.applicationActions.doApplicationSubmit(this.state.uid, submittedOn);
   }
 
@@ -584,6 +583,10 @@ class ApplicationTask extends Component {
       }
       case "country":
         this.props.userActions.doUserUpdateWithoutGet({ address: { country: e.target.value } });
+
+        break;
+      case "dob":
+        this.props.userActions.doUserUpdateWithoutGet({ dob: new Date(e.target.value) });
 
         break;
       default: {

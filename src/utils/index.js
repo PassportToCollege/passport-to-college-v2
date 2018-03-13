@@ -61,3 +61,17 @@ export const getWordCount = blocks => {
 
   return count;
 };
+
+export const queryToObject = query => {
+  query = query.replace("?", "")
+    .split("&");
+
+  let output = {};
+
+  query.map(q => {
+    q = q.split("=");
+    output[q[0]] = q[1];
+  });
+
+  return output;
+}
