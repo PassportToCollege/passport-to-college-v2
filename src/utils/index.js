@@ -72,6 +72,8 @@ export const queryToObject = query => {
     query.map(q => {
       q = q.split("=");
       output[q[0]] = q[1];
+
+      return q;
     });
   
     return output;
