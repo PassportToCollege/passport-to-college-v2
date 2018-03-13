@@ -33,7 +33,6 @@ class Applications extends Component {
               applications
             </span> :
             null
-
           }
         </header>
         application
