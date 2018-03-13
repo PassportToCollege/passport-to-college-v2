@@ -124,15 +124,15 @@ export const doStatUpdate = (doc, stat, op) => {
       return transaction.get(statRef)
         .then(doc => {
           const data = doc.data();
-          let stat = data[stat];
+          let newStat = data[stat];
 
           if (op === "-") {
-            stat -= 1;
+            newStat -= 1;
           } else {
-            stat += 1;
+            newStat += 1;
           }
 
-          transaction.update(statRef, { [stat]: stat });
+          transaction.update(statRef, { [stat]: newStat });
         })
     }).then(() => {
       dispatch(statUpdated(doc, stat, op));
