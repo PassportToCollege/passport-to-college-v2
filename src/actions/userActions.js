@@ -39,7 +39,7 @@ export const doUserGet = () => {
         let uid = auth.currentUser.uid;
         dispatch(userGetInitiated(uid));
 
-        db.collection("user")
+        db.collection("users")
           .doc(uid)
           .get()
           .then(doc => {
@@ -135,7 +135,7 @@ export const doUserUpdate = (data, uid) => {
   return dispatch => {
     dispatch(userUpdateInitiated(uid, data));
 
-    db.collection("user")
+    db.collection("users")
       .doc(uid)
       .update(data)
       .then(() => {
@@ -164,7 +164,7 @@ export const doUserEmailUpdate = email => {
         dispatch(authEmailUpdated(uid));
 
         // update user in db
-        db.collection("user")
+        db.collection("users")
           .doc(uid)
           .update({ email })
           .then(() => {
@@ -202,7 +202,7 @@ export const doUserEmailUpdateWithReauthentication = (email, password) => {
             dispatch(authEmailUpdated(uid));
 
             // update user in db
-            db.collection("user")
+            db.collection("users")
               .doc(uid)
               .update({email})
               .then(() => {
@@ -229,7 +229,7 @@ export const doUserUpdateWithoutGet = (data, uid) => {
   return dispatch => {
     dispatch(userUpdateInitiated(uid, data));
 
-    db.collection("user")
+    db.collection("users")
       .doc(uid)
       .update(data)
       .then(() => {

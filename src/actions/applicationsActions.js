@@ -30,7 +30,7 @@ export const doApplicationsGet = page => {
     dispatch(applicationsGetInitiated(page));
 
     if (page === 1) {
-      db.collection("application")
+      db.collection("applications")
         .orderBy("startedOn", "desc")
         .limit(50)
         .get()
@@ -50,14 +50,14 @@ export const doApplicationsGet = page => {
           dispatch(applicationsGetFailed(error, page));
         })
     } else {
-      db.collection("application")
+      db.collection("applications")
         .orderBy("submittedOn")
         .limit((page - 1) * 50)
         .get()
         .then(tempSnapshots => {
           const lastVisible = tempSnapshots.docs[tempSnapshots.docs.length - 1];
 
-          db.collection("application")
+          db.collection("applications")
             .orderBy("submittedOn")
             .startAfter(lastVisible)
             .limit(50)

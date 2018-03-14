@@ -56,7 +56,7 @@ export const doUsersGet = (page, userType) => {
 
     if (page === 1) {
       if (type === "all") {
-        return db.collection("user")
+        return db.collection("users")
           .orderBy("name.last")
           .limit(50)
           .get()
@@ -76,7 +76,7 @@ export const doUsersGet = (page, userType) => {
             dispatch(usersGetFailed(error, page, userType));
           });
       } else {
-        return db.collection("user")
+        return db.collection("users")
           .where(type, "==", true)
           .orderBy("name.last")
           .limit(50)
@@ -99,14 +99,14 @@ export const doUsersGet = (page, userType) => {
       }
     } else {
       if (type === "all") {
-        return db.collection("user")
+        return db.collection("users")
           .orderBy("name.last")
           .limit((page - 1) * 50)
           .get()
           .then(tempSnapshots => {
             const lastVisible = tempSnapshots.docs[tempSnapshots.docs.length - 1];
 
-            return db.collection("user")
+            return db.collection("users")
               .orderBy("name.last")
               .startAfter(lastVisible)
               .limit(50)
@@ -132,7 +132,7 @@ export const doUsersGet = (page, userType) => {
             dispatch(usersGetFailed(error, page, userType));
           });
       } else {
-        return db.collection("user")
+        return db.collection("users")
           .where(type, "==", true)
           .orderBy("name.last")
           .limit((page - 1) * 50)
@@ -140,7 +140,7 @@ export const doUsersGet = (page, userType) => {
           .then(tempSnapshots => {
             const lastVisible = tempSnapshots.docs[tempSnapshots.docs.length - 1];
 
-            return db.collection("user")
+            return db.collection("users")
               .where(type, "==", true)
               .orderBy("name.last")
               .startAfter(lastVisible)

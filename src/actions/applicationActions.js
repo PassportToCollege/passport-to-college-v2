@@ -33,7 +33,7 @@ export const doApplicationGet = user => {
   return dispatch => {
     dispatch(applicationGetInitiated(user));
 
-    db.collection("application")
+    db.collection("applications")
       .doc(user)
       .get()
       .then(doc => {
@@ -76,7 +76,7 @@ export const doApplicationUpdateWithoutGet = (user, data) => {
   return dispatch => {
     dispatch(applicationUpdateInitiated(user, data));
 
-    db.collection("application")
+    db.collection("applications")
       .doc(user)
       .update(data)
       .then(() => {
@@ -93,7 +93,7 @@ export const doApplicationUpdate = (user, data) => {
   return dispatch => {
     dispatch(applicationUpdateInitiated(user, data));
 
-    db.collection("application")
+    db.collection("applications")
       .doc(user)
       .update(data)
       .then(() => {
@@ -134,7 +134,7 @@ export const doTestDelete = (user, test) => {
   return dispatch => {
     dispatch(applicationTestDeleteInitiated(user, test));
 
-    db.collection("application")
+    db.collection("applications")
       .doc(user)
       .update({[`tests.${test}`]: firebase.firestore.FieldValue.delete()})
       .then(() => {
@@ -200,7 +200,7 @@ export const doApplicationSubmit = (user, date) => {
   return dispatch => {
     dispatch(applicationSubmitInitiated(user, date));
 
-    db.collection("application")
+    db.collection("applications")
       .doc(user)
       .update({
         submitedOn: date,
