@@ -83,6 +83,8 @@ class Application extends Component {
                 render={props => {
                   return (
                     <ApplicationSection {...props}
+                      applicationId={this.props.match.params.application_id}
+                      section="information"
                       application={this.props.application} />
                   )
                 }}>
@@ -95,7 +97,7 @@ class Application extends Component {
                       render={props => {
                         return (
                           <ApplicationSection {...props}
-                            section={section.name}
+                            section={section.name.toLowerCase()}
                             application={this.props.application} />
                         )
                       }}>
