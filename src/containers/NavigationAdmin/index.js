@@ -12,6 +12,7 @@ import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import { faTachometerAlt, faUsers, faUser, faHome, faSignOutAlt } from "@fortawesome/fontawesome-free-solid";
 import { faWpforms } from "@fortawesome/fontawesome-free-brands";
 import LoadingText from "../../components/LoadingText";
+import Loader from "../../components/Loader";
 
 import * as avatarActions from "../../actions/avatarActions";
 import * as authActions from "../../actions/authActions";
@@ -46,7 +47,12 @@ class NavigationAdmin extends Component {
       <nav className="dashboard__navigation">
         <div className="dashboard__navigation__top">
           <div className="dashboard__navigation_avatar_container">
-            <img src={this.state.gravatar} alt="User Avatar" />
+            {
+              this.props.avatar.hasGotten && this.state.gravatar ?
+              <img src={this.state.gravatar} alt="User Avatar" />
+              :
+              <Loader />
+            }
           </div>
           {
             this.state.username === "" ?
@@ -138,7 +144,8 @@ class NavigationAdmin extends Component {
 
       return (
         <li key={i}>
-          <NavLink exact to={v.route} activeClassName="active">
+          <NavLink exact={v.name === "Dashboard" ? true : false}
+            to={v.route} activeClassName="active">
             <FontAwesomeIcon icon={icon} />
             <span>{v.name}</span>
           </NavLink>

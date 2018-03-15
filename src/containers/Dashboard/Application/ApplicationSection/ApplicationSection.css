@@ -2,12 +2,23 @@
   padding: 2em 0;
 }
 
+.application__section > div > div > h2 {
+  margin-top: 0;
+  font-family: "Nunito", "Roboto", sans-serif;
+  font-weight: 400;
+}
+
+.application__section > div > div:not(:first-child) {
+  margin-top: 2em;
+}
+
 /* Information Section */
 .application__section.information__section {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .application__section.information__section > div {
@@ -19,7 +30,7 @@
 .application__section.information__section > div > div {
   padding: 2em;
   border: 1px solid rgba(26, 25, 25, 0.15);
-  border-radius: 5px;
+  border-radius: 3px;
 }
 
 .application__section.information__section .application__profile_picture {
