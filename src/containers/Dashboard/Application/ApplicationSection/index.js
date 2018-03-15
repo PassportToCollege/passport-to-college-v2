@@ -7,6 +7,8 @@ import propTypes from "prop-types";
 
 import * as avatarActions from "../../../../actions/avatarActions";
 
+import Loader from "../../../../components/Loader";
+
 class ApplicationSection extends Component {
   constructor(props) {
     super(props);
@@ -39,7 +41,7 @@ class ApplicationSection extends Component {
                   this.props.avatar.hasGotten && this.state.profilePicture ?
                     <img src={this.state.profilePicture} alt="profile" />
                   :
-                    <p>Fetching profile picture...</p>
+                    <Loader />
                 }
               </div>
             </div>
