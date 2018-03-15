@@ -1,11 +1,12 @@
 import "./Application.css";
 
 import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
+import { withRouter, NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
 
+import { VIEW_APPLICATION_SECTIONS } from "../../../constants/routes";
 import * as applicationActions from "../../../actions/applicationActions";
 
 import Button from "../../../components/Button";
@@ -53,6 +54,28 @@ class Application extends Component {
                   ]
                 }} />
             }
+            <ul className="application__sections">
+              <li>
+                <NavLink exact
+                  to={this.props.match.url}
+                  activeClassName="active">
+                  Information
+                </NavLink>
+              </li>
+              {
+                VIEW_APPLICATION_SECTIONS.map(section => {
+                  return (
+                    <li key={section.route}>
+                      <NavLink exact 
+                        to={`${this.props.match.url}${section.route}`} 
+                        activeClassName="active">
+                        {section.name}
+                      </NavLink>
+                    </li>
+                  )
+                })
+              }
+            </ul>
           </header>
           <div className="application__main">
 

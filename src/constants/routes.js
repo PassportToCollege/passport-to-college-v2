@@ -11,6 +11,11 @@ export const DASHBOARD = { name: "Dashboard", route: "/admin/dashboard" };
 export const USERS = { name: "Users", route: "/admin/dashboard/users" };
 export const APPLICATIONS = { name: "Applications", route: "/admin/dashboard/applications" };
 export const VIEW_APPLICATION = { name: "View Application", route: "/admin/dashboard/applications/view/:application_id" };
+export const VIEW_APPLICATION_SECTIONS = [
+  { name: "Tests", route: "/tests" },
+  { name: "Essay", route: "/essay" },
+  { name: "Decide", route: "/decide" }
+];
 export const PROFILE = { name: "Profile", route: "/admin/dashboard/profile" };
 
 // Student Application Routes
