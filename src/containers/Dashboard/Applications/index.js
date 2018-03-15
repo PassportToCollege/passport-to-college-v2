@@ -1,6 +1,7 @@
 import "./Applications.css";
 
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
@@ -52,11 +53,22 @@ class Applications extends Component {
                     return (
                       <tr key={application.uid}>
                         <td>
-                          <span className="application__state_indicator"
+                          <span className="applications__state_indicator"
                             data-state={application.state}></span>
                         </td>
-                        <td>{application.user.name.full}</td>
-                        <td>{application.user.email}</td>
+                        <td>
+                          <Link className="applications__name" 
+                            to={`/admin/dashboard/applications/v/${application.uid}`}>
+                            {application.user.name.full}
+                          </Link>
+                          <span>{application.user.address.country}</span>
+                        </td>
+                        <td>
+                          {/* TODO: clicking should open send email modal */}
+                          <span className="applications__email"> 
+                            {application.user.email}
+                          </span>
+                        </td>
                         <td>{application.user.phone}</td>
                       </tr>
                     )
@@ -94,7 +106,8 @@ Applications.propTypes = {
   applications: propTypes.object,
   location: propTypes.object,
   statsActions: propTypes.object,
-  stats: propTypes.object
+  stats: propTypes.object,
+  history: propTypes.object
 };
 
 const mapStateToProps = state => {
