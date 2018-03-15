@@ -13,6 +13,10 @@
   margin-bottom: 1em;
 }
 
+.loading_text__container.block__lines > span {
+  display: block;
+}
+
 .loading_text__container.dashboard__navigation_username_loader > span {
   margin-bottom: 0;
 }

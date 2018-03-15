@@ -34,7 +34,7 @@ const LoadingText = props => {
   )
 }
 
-LoadingText.propsTypes = {
+LoadingText.propTypes = {
   options: propTypes.object
 };
 

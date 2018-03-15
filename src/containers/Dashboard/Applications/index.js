@@ -15,7 +15,8 @@ class Applications extends Component {
     super(props);
 
     this.state = {
-      applications: this.props.applications.applications
+      applications: props.applications.applications,
+      stats: props.stats.stats
     };
   }
 
@@ -25,7 +26,7 @@ class Applications extends Component {
         <header>
           <h1>Applications</h1>
           {
-            this.props.stats.hasGotten && this.state.stats ?
+            this.props.stats.hasGotten && this.state.stats?
             <span className="applications__stats">
               Showing 
               <b> {this.state.stats.applications.total} </b> 
@@ -88,7 +89,7 @@ class Applications extends Component {
 
     this.props.applicationsActions.doApplicationsGet(parseInt(page, 10));
     this.setState({ page });
-
+  
     this.props.statsActions.doStatsGet();
   }
 
