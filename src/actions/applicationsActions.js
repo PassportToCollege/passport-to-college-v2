@@ -51,14 +51,14 @@ export const doApplicationsGet = page => {
         })
     } else {
       db.collection("applications")
-        .orderBy("submittedOn")
+        .orderBy("startedOn", "desc")
         .limit((page - 1) * 50)
         .get()
         .then(tempSnapshots => {
           const lastVisible = tempSnapshots.docs[tempSnapshots.docs.length - 1];
 
           db.collection("applications")
-            .orderBy("submittedOn")
+            .orderBy("startedOn", "desc")
             .startAfter(lastVisible)
             .limit(50)
             .get()

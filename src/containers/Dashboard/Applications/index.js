@@ -6,7 +6,7 @@ import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
 
 import { queryToObject } from "../../../utils";
-import * as usersActions from "../../../actions/usersActions";
+import * as applicationsActions from "../../../actions/applicationsActions";
 import * as statsActions from "../../../actions/statsActions";
 
 class Applications extends Component {
@@ -14,7 +14,7 @@ class Applications extends Component {
     super(props);
 
     this.state = {
-      users: this.props.users.users
+      applications: this.props.applications.applications
     };
   }
 
@@ -27,16 +27,16 @@ class Applications extends Component {
             this.props.stats.hasGotten ?
             <span className="applications__stats">
               Showing 
-              <b> {this.state.stats.total} </b> 
+              <b> {this.state.stats.applications.total} </b> 
               out of 
-              <b> {this.state.users.length} </b>
+              <b> {this.state.applications.length} </b>
               applications
             </span> :
             null
           }
         </header>
         <div className="applications__main">
-          <table className="table">
+          <table className="table table__default" cellSpacing="0">
             <thead>
               <tr>
                 <th></th>
@@ -46,7 +46,23 @@ class Applications extends Component {
               </tr>
             </thead>
             <tbody>
-
+              {
+                this.props.applications.hasGotten ?
+                  this.state.applications.map(application => {
+                    return (
+                      <tr key={application.uid}>
+                        <td>
+                          <span className="application__state_indicator"
+                            data-state={application.state}></span>
+                        </td>
+                        <td>{application.user.name.full}</td>
+                        <td>{application.user.email}</td>
+                        <td>{application.user.phone}</td>
+                      </tr>
+                    )
+                  }) :
+                  null
+              }
             </tbody>
           </table>
         </div>
@@ -58,15 +74,15 @@ class Applications extends Component {
     const { search } = this.props.location;
     const page = queryToObject(search) || 1;
 
-    this.props.usersActions.doUsersGet(parseInt(page, 10), "applicants");
+    this.props.applicationsActions.doApplicationsGet(parseInt(page, 10));
     this.setState({ page });
 
-    this.props.statsActions.doApplicationStatsGet();
+    this.props.statsActions.doStatsGet();
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.users.hasGotten)
-      this.setState({ users: nextProps.users.users });
+    if (nextProps.applications.hasGotten)
+      this.setState({ applications: nextProps.applications.applications });
 
     if (nextProps.stats.hasGotten)
       this.setState({ stats: nextProps.stats.stats });
@@ -74,8 +90,8 @@ class Applications extends Component {
 }
 
 Applications.propTypes = {
-  usersActions: propTypes.object,
-  users: propTypes.object,
+  applicationsActions: propTypes.object,
+  applications: propTypes.object,
   location: propTypes.object,
   statsActions: propTypes.object,
   stats: propTypes.object
@@ -83,14 +99,14 @@ Applications.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    users: state.users,
+    applications: state.applications,
     stats: state.stats
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    usersActions: bindActionCreators(usersActions, dispatch),
+    applicationsActions: bindActionCreators(applicationsActions, dispatch),
     statsActions: bindActionCreators(statsActions, dispatch)
   };
 };

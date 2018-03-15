@@ -87,7 +87,7 @@ class ApplicationPortal extends Component {
           </div>
           <div className="application__portal_main">
             {
-              this.props.user.hasGotten && this.state.user.emailConfirmed !== true ?
+              this.props.user.hasGotten && this.props.user.user.emailConfirmed !== true ?
                 <div className="notification__email_confirmation">
                   <span>You have not confirmed your email address.</span>
                   <span className="email_confirmation__link" onClick={this.resendEmailConfirmation}> Resend confirmation email.</span>

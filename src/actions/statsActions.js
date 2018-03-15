@@ -24,12 +24,12 @@ export const getStatsFailed = error => {
   };
 };
 
-export const doApplicationStatsGet = () => {
+export const doStatsGet = () => {
   return dispatch => {
     dispatch(getInitiated());
 
     db.collection("stats")
-      .doc("applications")
+      .doc("all")
       .get()
       .then(doc => {
         if (doc.exists)

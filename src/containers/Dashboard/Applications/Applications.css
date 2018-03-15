@@ -2,6 +2,15 @@
   padding: 4em 3.5em;
 }
 
+.application__state_indicator {
+  display: block;
+  margin: 0 auto;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: rgb(58, 58, 58);
+}
+
 /* Header */
 .applications__container header {
   position: relative;
@@ -20,3 +29,4 @@
   font-size: 0.85em;
   font-family: "Nunito", "Roboto", sans-serif;
 }
+
