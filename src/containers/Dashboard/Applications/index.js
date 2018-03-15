@@ -25,7 +25,7 @@ class Applications extends Component {
         <header>
           <h1>Applications</h1>
           {
-            this.props.stats.hasGotten ?
+            this.props.stats.hasGotten && this.state.stats ?
             <span className="applications__stats">
               Showing 
               <b> {this.state.stats.applications.total} </b> 
@@ -58,7 +58,7 @@ class Applications extends Component {
                         </td>
                         <td>
                           <Link className="applications__name" 
-                            to={`/admin/dashboard/applications/v/${application.uid}`}>
+                            to={`/admin/dashboard/applications/view/${application.uid}`}>
                             {application.user.name.full}
                           </Link>
                           <span>{application.user.address.country}</span>

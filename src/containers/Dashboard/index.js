@@ -8,9 +8,10 @@ import * as routes from "../../constants/routes";
 
 import NavigationAdmin from "../NavigationAdmin";
 import SearchBar from "../SearchBar";
-import Applications from "..//Dashboard/Applications";
-import Users from "../Dashboard/Users";
-import Profile from "../Dashboard/Profile";
+import Applications from "./Applications";
+import Users from "./Users";
+import Profile from "./Profile";
+import Application from "./Application";
 
 export default class Dashboard extends Component {
 
@@ -26,9 +27,10 @@ export default class Dashboard extends Component {
           <SearchBar />
           <Route exact path={this.props.match.url} 
             render={this.renderDashboard}></Route>
-          <Route path={routes.APPLICATIONS.route} component={Applications}></Route>
+          <Route exact path={routes.APPLICATIONS.route} component={Applications}></Route>
           <Route path={routes.USERS.route} component={Users}></Route>
           <Route path={routes.PROFILE.route} component={Profile}></Route>
+          <Route path={routes.VIEW_APPLICATION.route} component={Application}></Route>
         </div>
       </div>
     )
@@ -36,7 +38,7 @@ export default class Dashboard extends Component {
 
   renderDashboard() {
     return (
-      <div className="dashboard__home dashboard__main">
+      <div className="dashboard__container dashboard__home">
         <div className="dashboard__welcome">
           home
         </div>
