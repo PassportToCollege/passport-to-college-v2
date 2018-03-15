@@ -326,6 +326,7 @@ class ApplicationPortal extends Component {
   }
 
   resendEmailConfirmation = () => {
+    this.setState({ hasSent: false });
     const { email } = this.state.user;
     const { applicationId } = this.state;
 
