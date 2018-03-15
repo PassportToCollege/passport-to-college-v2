@@ -1,0 +1,31 @@
+.application__section {
+  padding: 2em 0;
+}
+
+/* Information Section */
+.application__section.information__section {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.application__section.information__section > div {
+  max-width: 500px;
+  padding: 2em 0;
+  flex: 1 0 auto;
+}
+
+.application__section.information__section > div > div {
+  padding: 2em;
+  border: 1px solid rgba(26, 25, 25, 0.15);
+  border-radius: 5px;
+}
+
+.application__section.information__section .application__profile_picture {
+  text-align: center;
+}
+
+.application__section.information__section .application__profile_picture > img {
+  max-width: 200px;
+}

@@ -29,8 +29,20 @@ class ApplicationSection extends Component {
       case "information":
       default:
         return (
-          <div className="application__section">
-            {this.props.section}
+          <div className="application__section information__section">
+            <div className="application__section_left">
+              
+            </div>
+            <div className="application__section_right">
+              <div className="application__profile_picture">
+                {
+                  this.props.avatar.hasGotten && this.state.profilePicture ?
+                    <img src={this.state.profilePicture} alt="profile" />
+                  :
+                    <p>Fetching profile picture...</p>
+                }
+              </div>
+            </div>
           </div>
         )
     }

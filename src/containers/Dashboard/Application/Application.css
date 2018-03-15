@@ -16,7 +16,7 @@
 
 .application__container > header .application__sections {
   margin-top: 2.5em;
-  border-bottom: 2px solid rgba(26, 25, 25, 0.25);
+  border-bottom: 1px solid rgba(26, 25, 25, 0.15);
 }
 
 .application__container > header .application__sections > li {
@@ -42,7 +42,7 @@
    width: 100%;
    height: 2px;
    left: 0;
-   bottom: -2px;
+   bottom: -1px;
    transition: background-color 200ms linear;
 }
 
