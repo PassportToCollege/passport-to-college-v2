@@ -1,7 +1,7 @@
 import "./Application.css";
 
 import React, { Component } from "react";
-import { withRouter, NavLink } from "react-router-dom";
+import { withRouter, NavLink, Route } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
@@ -9,6 +9,7 @@ import propTypes from "prop-types";
 import { VIEW_APPLICATION_SECTIONS } from "../../../constants/routes";
 import * as applicationActions from "../../../actions/applicationActions";
 
+import ApplicationSection from "./ApplicationSection";
 import Button from "../../../components/Button";
 import LoadingText from "../../../components/LoadingText";
 
@@ -78,7 +79,30 @@ class Application extends Component {
             </ul>
           </header>
           <div className="application__main">
-
+              <Route exact path={this.props.match.url}
+                render={props => {
+                  return (
+                    <ApplicationSection {...props}
+                      application={this.props.application} />
+                  )
+                }}>
+              </Route>
+              {
+                VIEW_APPLICATION_SECTIONS.map(section => {
+                  return (
+                    <Route key={section.route} exact 
+                      path={`${this.props.match.url}${section.route}`}
+                      render={props => {
+                        return (
+                          <ApplicationSection {...props}
+                            section={section.name}
+                            application={this.props.application} />
+                        )
+                      }}>
+                    </Route>
+                  )
+                })
+              }
           </div>
         </div> 
       </div>
