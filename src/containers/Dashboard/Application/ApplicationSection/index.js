@@ -6,7 +6,7 @@ import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
 import moment from "moment";
 
-import * as avatarActions from "../../../../actions/avatarActions";
+// import * as avatarActions from "../../../../actions/avatarActions";
 
 import AnnotatedList from "../../../../components/AnnotatedList";
 import LoadingText from "../../../../components/LoadingText";
@@ -20,7 +20,7 @@ class ApplicationSection extends Component {
       applicationId: props.applicationId,
       section: props.section,
       application: props.application.application,
-      profilePicture: props.avatar.url
+      // profilePicture: props.avatar.url
     };
   }
 
@@ -90,14 +90,14 @@ class ApplicationSection extends Component {
               </div>
             </div>
             <div className="application__section_right">
-              <div className="application__profile_picture">
+              {/* <div className="application__profile_picture">
                 {
                   this.props.avatar.hasGotten && this.state.profilePicture ?
                     <img src={this.state.profilePicture} alt="profile" />
                   :
                     <Loader />
                 }
-              </div>
+              </div> */}
               <div className="application__misc">
                 <h2>Miscellaneous</h2>
                 {
@@ -149,8 +149,8 @@ class ApplicationSection extends Component {
   }
 
   componentWillMount() {
-    if (this.state.section === "information")
-      this.props.avatarActions.doAvatarGet(this.state.applicationId);
+    // if (this.state.section === "information")
+    //   this.props.avatarActions.doAvatarGet(this.state.applicationId);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -160,8 +160,8 @@ class ApplicationSection extends Component {
     if (nextProps.application.hasGotten)
       this.setState({ application: nextProps.application.application });
     
-    if (nextProps.avatar.hasGotten)
-      this.setState({ profilePicture: nextProps.avatar.url });
+    // if (nextProps.avatar.hasGotten)
+    //   this.setState({ profilePicture: nextProps.avatar.url });
   }
 }
 
@@ -169,19 +169,19 @@ ApplicationSection.propTypes = {
   applicationId: propTypes.string,
   section: propTypes.string,
   application: propTypes.object,
-  avatarActions: propTypes.object,
-  avatar: propTypes.object
+  // avatarActions: propTypes.object,
+  // avatar: propTypes.object
 };
 
 const mapStateToProps = state => {
   return {
-    avatar: state.avatar
+    // avatar: state.avatar
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    avatarActions: bindActionCreators(avatarActions, dispatch)
+    // avatarActions: bindActionCreators(avatarActions, dispatch)
   };
 };
 

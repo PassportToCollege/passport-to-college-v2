@@ -1,23 +1,23 @@
 import initialState from "./initialState";
 import {
-  AVATAR_GET_DONE,
-  AVATAR_GET_FAILED,
-  AVATAR_GET_INITIATED,
-  AVATAR_UPLOAD_FAILED,
-  AVATAR_UPLOADED,
-  AVATAR_UPLOAD_INITIATED
+  USER_PROFILE_PICTURE_GET_DONE,
+  USER_PROFILE_PICTURE_GET_FAILED,
+  USER_PROFILE_PICTURE_GET_INITIATED,
+  USER_PROFILE_PICTURE_UPLOAD_FAILED,
+  USER_PROFILE_PICTURE_UPLOADED,
+  USER_PROFILE_PICTURE_UPLOAD_INITIATED
 } from "../actions/actionTypes";
 
-const avatar = (state = initialState.avatar, action) => {
+const avatar = (state = initialState.userProfilePicture, action) => {
   switch(action.type) {
-    case AVATAR_GET_INITIATED:
+    case USER_PROFILE_PICTURE_GET_INITIATED:
       return Object.assign({}, state, {
         isGetting: true,
         hasFailed: false,
         hasGotten: false,
         url: action.avatar
       });
-    case AVATAR_GET_FAILED:
+    case USER_PROFILE_PICTURE_GET_FAILED:
       return Object.assign({}, state, {
         isGetting: false,
         hasFailed: true,
@@ -25,26 +25,26 @@ const avatar = (state = initialState.avatar, action) => {
         error: action.error,
         url: action.avatar
       });
-    case AVATAR_GET_DONE:
+    case USER_PROFILE_PICTURE_GET_DONE:
       return Object.assign({}, state, {
         isGetting: false,
         hasFailed: false,
         hasGotten: true,
         url: action.avatar
       });
-    case AVATAR_UPLOAD_INITIATED:
+    case USER_PROFILE_PICTURE_UPLOAD_INITIATED:
       return Object.assign({}, state, {
         isUploading: true,
         hasUploaded: false,
         hasFailed: false
       });
-    case AVATAR_UPLOAD_FAILED:
+    case USER_PROFILE_PICTURE_UPLOAD_FAILED:
       return Object.assign({}, state, {
         isUploading: false,
         hasUploaded: false,
         hasFailed: true
       });
-    case AVATAR_UPLOADED:
+    case USER_PROFILE_PICTURE_UPLOADED:
       return Object.assign({}, state, {
         isUploading: false,
         hasUploaded: true,

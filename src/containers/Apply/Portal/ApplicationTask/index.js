@@ -7,7 +7,7 @@ import propTypes from 'prop-types';
 
 import * as applicationActions from "../../../../actions/applicationActions";
 import * as userActions from "../../../../actions/userActions";
-import * as avatarActions from "../../../../actions/avatarActions";
+import * as userProfilePictureActions from "../../../../actions/userProfilePictureActions";
 
 import { getTestKey } from "../../../../utils";
 
@@ -30,7 +30,7 @@ class ApplicationTask extends Component {
       task: this.props.match.params.task,
       user: this.props.user.user,
       application: this.props.application.application,
-      avatar: this.props.avatar,
+      profilePicture: this.props.profilePicture,
       uid: "",
       email: "",
       isAddingTest: false,
@@ -72,8 +72,8 @@ class ApplicationTask extends Component {
       });
     }
 
-    if (nextProps.avatar.hasGotten)
-      this.setState({ avatar: nextProps.avatar });
+    if (nextProps.profilePicture.hasGotten)
+      this.setState({ profilePicture: nextProps.profilePicture });
     
     this.setState({ complete: nextProps.complete });
   }
@@ -111,19 +111,19 @@ class ApplicationTask extends Component {
               Upload a profile picture below.
             </p>
             {
-              this.props.avatar.isGetting ?
+              this.props.profilePicture.isGetting ?
                 <span className="no__avatar">Fetching...</span>
               :
                 null
             }
             {
-              this.props.avatar.hasGotten && this.props.avatar.url ?
-                <div className="avatar__container" style={{ backgroundImage: `url(${this.props.avatar.url})` }}></div>
+              this.props.profilePicture.hasGotten && this.props.profilePicture.url ?
+                <div className="avatar__container" style={{ backgroundImage: `url(${this.props.profilePicture.url})` }}></div>
                 :
                null
             }
             {
-              this.props.avatar.hasFailed && this.props.avatar.error.code === "storage/object-not-found" ?
+              this.props.profilePicture.hasFailed && this.props.profilePicture.error.code === "storage/object-not-found" ?
                 <span className="no__avatar">No profile image</span>
               :
                 null
@@ -305,7 +305,7 @@ class ApplicationTask extends Component {
                       canEdit={!this.state.application.wasSubmitted} />
 
                     <ReviewBlock heading="Profile Picture" editLink={this.props.match.path.replace(":task", "profile-picture")}
-                      renderImage imageUrl={this.props.avatar.url}
+                      renderImage imageUrl={this.props.profilePicture.url}
                       canEdit={!this.state.application.wasSubmitted} />
 
                     <ReviewBlock heading="Education" editLink={this.props.match.path.replace(":task", "education")}
@@ -518,7 +518,7 @@ class ApplicationTask extends Component {
   handleAvatarChange = e => {
     let newGravatar = e.files[0];
 
-    this.props.avatarActions.doAvatarUpload(newGravatar);
+    this.props.userProfilePictureActions.doAvatarUpload(newGravatar);
   }
 
   handleEssaySave = html => {
@@ -611,8 +611,8 @@ ApplicationTask.propTypes = {
   setTask: propTypes.func,
   match: propTypes.object,
   applicationActions: propTypes.object,
-  avatarActions: propTypes.object,
-  avatar: propTypes.object,
+  userProfilePictureActions: propTypes.object,
+  profilePicture: propTypes.object,
   application: propTypes.object,
   userActions: propTypes.object,
   user: propTypes.object,
@@ -621,7 +621,7 @@ ApplicationTask.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    avatar: state.avatar,
+    profilePicture: state.userProfilePicture,
     user: state.user,
     application: state.application
   };
@@ -631,7 +631,7 @@ const mapDispatchToProps = dispatch => {
   return {
     applicationActions: bindActionCreators(applicationActions, dispatch),
     userActions: bindActionCreators(userActions, dispatch),
-    avatarActions: bindActionCreators(avatarActions, dispatch)
+    userProfilePictureActions: bindActionCreators(userProfilePictureActions, dispatch)
   };
 };
 

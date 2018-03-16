@@ -4,10 +4,9 @@ import React, { Component } from "react";
 import propTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import Cookies from "universal-cookie";
 import moment from "moment";
 
-import * as avatarActions from "../../../actions/avatarActions";
+import * as userProfilePictureActions from "../../../actions/userProfilePictureActions";
 import * as userActions from "../../../actions/userActions";
 
 import UserInfoItem from "../../../components/UserInfoItem";
@@ -15,7 +14,6 @@ import LoadingText from "../../../components/LoadingText";
 
 import { auth } from "../../../utils/firebase";
 
-const cookies = new Cookies();
 const defAvatar = require("../../../assets/images/default-gravatar.png");
 
 class Profile extends Component {
@@ -23,7 +21,7 @@ class Profile extends Component {
     super(props);
 
     this.state = {
-      gravatar: "",
+      profilePicture: this.props.profilePicture.url,
       user: this.props.user.user,
       editingHeaderInfo: false,
       editingAbout: false,
@@ -36,7 +34,7 @@ class Profile extends Component {
       <div className="profile__container">
         <div className="profile__header">
           <div className="dashboard__container profile__header_body">
-            <div className="profile__avatar" style={{ backgroundImage: 'url(' + this.state.gravatar + ')' }}>
+            <div className="profile__avatar" style={{ backgroundImage: 'url(' + this.state.profilePicture + ')' }}>
               <form action="/profile_image" method="post" encType="multipart/form-data">
                 <input type="file" name="avatar" accept="image/*" 
                   ref={input => this.avatartInput = input}
@@ -72,21 +70,19 @@ class Profile extends Component {
   }
 
   componentWillMount() {
-    let activeUser = cookies.get("ssid");
-
     // get user avatar
-    this.props.avatarActions.doAvatarGet(activeUser.uid);
+    this.props.userProfilePictureActions.doAvatarGet();
     
     // get user data
     this.props.userActions.doUserGet();
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.avatar.url && nextProps.avatar.url !== "")
-      this.setState({ gravatar: nextProps.avatar.url });
+    if (nextProps.profilePicture.url && nextProps.profilePicture.url !== "")
+      this.setState({ profilePicture: nextProps.profilePicture.url });
     
-    if(nextProps.avatar.url === "")
-      this.setState({ gravatar: defAvatar });
+    if (nextProps.profilePicture.url === "")
+      this.setState({ profilePicture: defAvatar });
     
     if(Object.keys(nextProps.user).length && !nextProps.user.isGetting)
       this.setState({ user: nextProps.user.user });
@@ -216,7 +212,7 @@ class Profile extends Component {
   handleAvatarChange = (e) => {
     let newGravatar = e.target.files[0];
 
-    this.props.avatarActions.doAvatarUpload(newGravatar);
+    this.props.userProfilePictureActions.doAvatarUpload(newGravatar);
   }
 
   handleNameEmailUpdate = () => {
@@ -246,8 +242,8 @@ class Profile extends Component {
 }
 
 Profile.propTypes = {
-  avatarActions: propTypes.object,
-  avatar: propTypes.object,
+  userProfilePictureActions: propTypes.object,
+  profilePicture: propTypes.object,
   user: propTypes.object,
   userActions: propTypes.object,
   updateLocation: propTypes.func
@@ -255,14 +251,14 @@ Profile.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    avatar: state.avatar,
+    profilePicture: state.userProfilePicture,
     user: state.user
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    avatarActions: bindActionCreators(avatarActions, dispatch),
+    userProfilePictureActions: bindActionCreators(userProfilePictureActions, dispatch),
     userActions: bindActionCreators(userActions, dispatch)
   };
 };

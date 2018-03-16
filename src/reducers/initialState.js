@@ -3,7 +3,7 @@ export default {
   activeUser: false,
   user: {},
   users: {},
-  avatar: { url: "" },
+  userProfilePicture: { url: "" },
   application: {},
   applications: {},
   stats: {}

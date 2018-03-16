@@ -14,7 +14,7 @@ import { faWpforms } from "@fortawesome/fontawesome-free-brands";
 import LoadingText from "../../components/LoadingText";
 import Loader from "../../components/Loader";
 
-import * as avatarActions from "../../actions/avatarActions";
+import * as userProfilePictureActions from "../../actions/userProfilePictureActions";
 import * as authActions from "../../actions/authActions";
 import * as userActions from "../../actions/userActions";
 import * as routes from "../../constants/routes";
@@ -29,15 +29,13 @@ class NavigationAdmin extends Component {
 
     this.state = {
       username: "",
-      gravatar: ""
+      profilePicture: props.profilePicture.url
     }
   }
 
   componentWillMount() {
-    let activeUser = cookies.get("ssid").uid;
-
     // get user avatar
-    this.props.avatarActions.doAvatarGet(activeUser);
+    this.props.userProfilePictureActions.doAvatarGet();
     // get active user
     this.props.userActions.doUserGet();
   }
@@ -48,8 +46,8 @@ class NavigationAdmin extends Component {
         <div className="dashboard__navigation__top">
           <div className="dashboard__navigation_avatar_container">
             {
-              this.props.avatar.hasGotten && this.state.gravatar ?
-              <img src={this.state.gravatar} alt="User Avatar" />
+              this.props.profilePicture.hasGotten && this.state.profilePicture ?
+                <img src={this.state.profilePicture} alt="User Avatar" />
               :
               <Loader />
             }
@@ -100,8 +98,8 @@ class NavigationAdmin extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.avatar.hasGotten && nextProps.avatar.url !== "") {
-      this.setState({ gravatar: nextProps.avatar.url });
+    if (nextProps.profilePicture.hasGotten && nextProps.profilePicture.url !== "") {
+      this.setState({ profilePicture: nextProps.profilePicture.url });
     } else {
       this.setState({ gravatar: defAvatar });
     }
@@ -158,9 +156,9 @@ class NavigationAdmin extends Component {
 }
 
 NavigationAdmin.propTypes = {
-  avatarActions: propTypes.object,
+  userProfilePictureActions: propTypes.object,
   authActions: propTypes.object,
-  avatar: propTypes.object,
+  profilePicture: propTypes.object,
   userActions: propTypes.object,
   user: propTypes.object,
   history: propTypes.object
@@ -168,14 +166,14 @@ NavigationAdmin.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    avatar: state.avatar,
+    profilePicture: state.userProfilePicture,
     user: state.user
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    avatarActions: bindActionCreators(avatarActions, dispatch),
+    userProfilePictureActions: bindActionCreators(userProfilePictureActions, dispatch),
     authActions: bindActionCreators(authActions, dispatch),
     userActions: bindActionCreators(userActions, dispatch)
   };
