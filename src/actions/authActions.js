@@ -234,21 +234,31 @@ export const doAccountCreate = (data) => {
         batch.commit()
           .then(() => {
             dispatch(accountCreated(data));
-            dispatch(sendEmailConfirmationEmailInitated(data.email));
 
-            // send email with api
-            axios.get(`${EMAIL_API}/s/welcome/${user.uid}`)
-              .then(() => {
-                dispatch(sendEmailConfirmationEmailSent(data.email));
+            // send welcome and confirmation email
+            // to applicants
+            if (data.isApplicant) {
+              dispatch(sendEmailConfirmationEmailInitated(data.email));
+  
+              // send email with api
+              axios.get(`${EMAIL_API}/s/welcome/${user.uid}`)
+                .then(() => {
+                  dispatch(sendEmailConfirmationEmailSent(data.email));
+  
+                  // sign user in after 2 seconds
+                  setTimeout(() => {
+                    dispatch(doSignIn(data.email, data.password));
+                  }, 2000);
+                })
+                .catch(error => {
+                  dispatch(sendEmailConfirmationEmailFailed(error, data.email));
+                })
+            }
 
-                // sign user in after 2 seconds
-                setTimeout(() => {
-                  dispatch(doSignIn(data.email, data.password));
-                }, 2000);
-              })
-              .catch(error => {
-                dispatch(sendEmailConfirmationEmailFailed(error, data.email));
-              })
+            // sign user in after 2 seconds
+            setTimeout(() => {
+              dispatch(doSignIn(data.email, data.password));
+            }, 2000);
           })
           .catch(error => {
             dispatch(addingDataToUserDbsFailed(data, error));

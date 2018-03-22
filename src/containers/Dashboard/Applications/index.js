@@ -74,10 +74,13 @@ class Applications extends Component {
                         <td>{application.user.phone}</td>
                       </tr>
                     )
-                  }) :
-                  <tr>
-                    <td colSpan="4">No applications found</td>
-                  </tr>
+                  }) : this.props.applications.hasGotten && this.state.applications.empty ?
+                    <tr>
+                      <td colSpan="4" style={{textAlign: "center"}}>No applications found.</td>
+                    </tr> :
+                    <tr>
+                      <td colSpan="4" style={{textAlign: "center"}}>Fetching applications...</td>
+                    </tr>
               } 
             </tbody>
           </table>
