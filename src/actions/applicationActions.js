@@ -203,7 +203,7 @@ export const doApplicationSubmit = (user, date) => {
     db.collection("applications")
       .doc(user)
       .update({
-        submitedOn: date,
+        submittedOn: date,
         wasSubmitted: true,
         state: "pending"
       })
