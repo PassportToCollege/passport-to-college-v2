@@ -28,7 +28,7 @@ class ApplicationSection extends Component {
     return this._render(this.props.section);
   }
 
-  _render = section => {
+  _render = section => {    
     switch (section) {
 
       case "information":
@@ -127,7 +127,7 @@ class ApplicationSection extends Component {
                     <AnnotatedList data={[
                       { label: "started", text: moment(this.state.application.startedOn).format("MM-DD-Y") },
                       { label: "submitted", text: moment(this.state.application.submittedOn).format("MM-DD-Y") },
-                      { label: "state", text: this.state.application.state }
+                      { label: "state", text: this.state.application.state.pending ? "pending" : this.state.aplication.state.accepted ? "accepted" : "rejected" }
                     ]} />
                     :
                     <LoadingText options={{

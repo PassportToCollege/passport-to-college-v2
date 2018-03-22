@@ -31,6 +31,7 @@ export const doApplicationsGet = page => {
 
     if (page === 1) {
       db.collection("applications")
+        .where("state.draft", "==", false)
         .orderBy("startedOn", "desc")
         .limit(50)
         .get()
@@ -42,7 +43,6 @@ export const doApplicationsGet = page => {
           snapshots.forEach(snapshot => {
             data.push(snapshot.data());
           });
-
           dispatch(applicationsGetDone(page, data));
         })
         .catch(error => {
@@ -51,6 +51,7 @@ export const doApplicationsGet = page => {
         })
     } else {
       db.collection("applications")
+        .where("state.draft", "==", false)
         .orderBy("startedOn", "desc")
         .limit((page - 1) * 50)
         .get()
@@ -58,6 +59,7 @@ export const doApplicationsGet = page => {
           const lastVisible = tempSnapshots.docs[tempSnapshots.docs.length - 1];
 
           db.collection("applications")
+            .where("state.draft", "==", false)
             .orderBy("startedOn", "desc")
             .startAfter(lastVisible)
             .limit(50)

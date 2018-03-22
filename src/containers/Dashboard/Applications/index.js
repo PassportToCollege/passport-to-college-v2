@@ -26,12 +26,13 @@ class Applications extends Component {
         <header>
           <h1>Applications</h1>
           {
-            this.props.stats.hasGotten && this.state.stats?
+            this.props.stats.hasGotten && this.state.stats &&
+            this.props.applications.hasGotten ?
             <span className="applications__stats">
               Showing 
-              <b> {this.state.stats.applications.total} </b> 
+              <b> {this.state.stats.applications.total - this.state.stats.applications.draft} </b> 
               out of 
-              <b> {this.state.applications.length} </b>
+              <b> {this.state.applications.empty ? "0" : this.state.applications.length} </b>
               applications
             </span> :
             null
@@ -49,7 +50,7 @@ class Applications extends Component {
             </thead>
             <tbody>
               {
-                this.props.applications.hasGotten ?
+                this.props.applications.hasGotten && !this.state.applications.empty ?
                   this.state.applications.map(application => {
                     return (
                       <tr key={application.uid}>
@@ -74,8 +75,10 @@ class Applications extends Component {
                       </tr>
                     )
                   }) :
-                  null
-              }
+                  <tr>
+                    <td colSpan="4">No applications found</td>
+                  </tr>
+              } 
             </tbody>
           </table>
         </div>

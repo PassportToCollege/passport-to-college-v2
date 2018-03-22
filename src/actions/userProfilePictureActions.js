@@ -35,13 +35,14 @@ export const doAvatarGet = () => {
     auth.onAuthStateChanged(user => {
       if (user) {
         const uid = auth.currentUser.uid;
-        const avatarRef = storage.ref("users/profile_images").child(`${uid}.png`);
-    
-        avatarRef.getDownloadURL()
+        return storage.ref("users/profile_images")
+          .child(`${uid}.png`)
+          .getDownloadURL()
           .then(url => {
             dispatch(avatarGetDone(url));
           })
           .catch(error => {
+            console.log(error)
             dispatch(avatarGetFailed(error));
           })
       }
@@ -83,7 +84,7 @@ export const doAvatarUpload = file => {
             dispatch(avatarUploaded());
 
             // get new avatar
-            dispatch(doAvatarGet(user));
+            dispatch(doAvatarGet());
           })
           .catch(error => {
             dispatch(avatarUploadFailed(error));
