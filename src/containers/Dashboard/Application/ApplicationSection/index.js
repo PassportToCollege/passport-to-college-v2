@@ -1,16 +1,13 @@
 import "./ApplicationSection.css";
 
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
 import moment from "moment";
 
-// import * as avatarActions from "../../../../actions/avatarActions";
-
 import AnnotatedList from "../../../../components/AnnotatedList";
 import LoadingText from "../../../../components/LoadingText";
-import Loader from "../../../../components/Loader";
+import WYSIWYGEditor from "../../../../components/Editor";
+import ReviewBlock from "../../../../components/ReviewBlock";
 
 class ApplicationSection extends Component {
   constructor(props) {
@@ -20,7 +17,6 @@ class ApplicationSection extends Component {
       applicationId: props.applicationId,
       section: props.section,
       application: props.application.application,
-      // profilePicture: props.avatar.url
     };
   }
 
@@ -30,7 +26,16 @@ class ApplicationSection extends Component {
 
   _render = section => {    
     switch (section) {
-
+      case "essay":
+        return (
+          <div className="application_section essay__section">
+            <div className="application__essay">
+              <ReviewBlock renderFromFunc
+                renderFunc={this.renderReadOnlyEssay}
+                canEdit={false} />
+            </div>
+          </div>
+        )
       case "information":
       default:
         return (
@@ -90,14 +95,6 @@ class ApplicationSection extends Component {
               </div>
             </div>
             <div className="application__section_right">
-              {/* <div className="application__profile_picture">
-                {
-                  this.props.avatar.hasGotten && this.state.profilePicture ?
-                    <img src={this.state.profilePicture} alt="profile" />
-                  :
-                    <Loader />
-                }
-              </div> */}
               <div className="application__misc">
                 <h2>Miscellaneous</h2>
                 {
@@ -148,9 +145,24 @@ class ApplicationSection extends Component {
     }
   }
 
-  componentWillMount() {
-    // if (this.state.section === "information")
-    //   this.props.avatarActions.doAvatarGet(this.state.applicationId);
+  renderReadOnlyEssay = () => {
+    if (this.props.application.hasGotten)
+      return (
+        <WYSIWYGEditor readonly centerEditor content={this.state.application.essay} />
+      )
+
+    return (
+      <LoadingText options={{
+        class: "block__lines",
+        bg: "transparent",
+        height: "10px",
+        lines: [
+          { color: "rgba(255,101,97,0.2)", width: "80%" },
+          { color: "rgba(255,101,97,0.4)", width: "70%" },
+          { color: "rgba(255,101,97,0.4)", width: "50%" }
+        ]
+      }} />
+    )
   }
 
   componentWillReceiveProps(nextProps) {
@@ -159,33 +171,13 @@ class ApplicationSection extends Component {
 
     if (nextProps.application.hasGotten)
       this.setState({ application: nextProps.application.application });
-    
-    // if (nextProps.avatar.hasGotten)
-    //   this.setState({ profilePicture: nextProps.avatar.url });
   }
 }
 
 ApplicationSection.propTypes = {
   applicationId: propTypes.string,
   section: propTypes.string,
-  application: propTypes.object,
-  // avatarActions: propTypes.object,
-  // avatar: propTypes.object
+  application: propTypes.object
 };
 
-const mapStateToProps = state => {
-  return {
-    // avatar: state.avatar
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    // avatarActions: bindActionCreators(avatarActions, dispatch)
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ApplicationSection);
+export default ApplicationSection;

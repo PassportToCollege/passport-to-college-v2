@@ -23,7 +23,7 @@ export default class Dashboard extends Component {
     return (
       <div className="dashboard">
         <NavigationAdmin />
-        <div className="dashboard__main">
+        <main className="dashboard__main">
           <SearchBar />
           <Route exact path={this.props.match.url} 
             render={this.renderDashboard}></Route>
@@ -31,7 +31,7 @@ export default class Dashboard extends Component {
           <Route path={routes.USERS.route} component={Users}></Route>
           <Route path={routes.PROFILE.route} component={Profile}></Route>
           <Route path={routes.VIEW_APPLICATION.route} component={Application}></Route>
-        </div>
+        </main>
       </div>
     )
   }

@@ -7,15 +7,19 @@ import propTypes from "prop-types";
 const ReviewBlock = props => {
   return (
     <div className="review_block">
-      <div className="review_block__header">
-        <h2>{props.heading}</h2>
-        {
-          props.canEdit ?
-            <Link to={props.editLink}>edit</Link>
-          :
-            null
-        }
-      </div>
+      {
+        props.heading ?
+          <div className="review_block__header">
+            <h2>{props.heading}</h2>
+            {
+              props.canEdit ?
+                <Link to={props.editLink}>edit</Link>
+                :
+                null
+            }
+          </div> :
+          null
+      }
       <div className="review_block__main">
         {
           props.items && props.items.length > 0 ?
