@@ -217,7 +217,12 @@ export const doAccountCreate = (data) => {
           batch.set(db.collection("applications").doc(user.uid), {
             uid: user.uid, 
             user: userData,
-            state: "draft", 
+            state: {
+              draft: true,
+              pending: false,
+              accepted: false,
+              rejected: false
+            }, 
             startedOn: new Date() 
           });
         }

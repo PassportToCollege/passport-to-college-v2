@@ -7,13 +7,11 @@ import propTypes from 'prop-types';
 
 import * as applicationActions from "../../../../actions/applicationActions";
 import * as userActions from "../../../../actions/userActions";
-import * as userProfilePictureActions from "../../../../actions/userProfilePictureActions";
 
 import { getTestKey } from "../../../../utils";
 
 import { PersonalInformation, EducationInformation, USTest, Miscellaneous } from './../../../../components/Forms/index';
 import { ReauthenticateModal } from "../../../../components/Modal";
-import DropUploader from "../../../../components/DropUploader";
 import Button from "../../../../components/Button";
 import { AddNationalTest } from "../../../../components/Modal";
 import TestList from "../../../../components/TestList";
@@ -30,7 +28,6 @@ class ApplicationTask extends Component {
       task: this.props.match.params.task,
       user: this.props.user.user,
       application: this.props.application.application,
-      profilePicture: this.props.profilePicture,
       uid: "",
       email: "",
       isAddingTest: false,
@@ -47,7 +44,7 @@ class ApplicationTask extends Component {
 
   componentWillUpdate(nextProps, nextState) {
     if ((this.state.task !== nextState.task) && this.state.hasChanged) {
-      if (nextState.task !== "personal" && nextState.task !== "profile-picture") {
+      if (nextState.task !== "personal") {
         this.props.applicationActions.doApplicationGet(this.props.application.user);
       }
 
@@ -72,9 +69,6 @@ class ApplicationTask extends Component {
         uid: nextProps.application.user 
       });
     }
-
-    if (nextProps.profilePicture.hasGotten)
-      this.setState({ profilePicture: nextProps.profilePicture });
     
     this.setState({ complete: nextProps.complete });
   }
@@ -101,39 +95,6 @@ class ApplicationTask extends Component {
                 user={this.props.user.user} 
                 disabled={this.state.application.wasSubmitted} /> :
               null
-            }
-          </div>
-        );
-      case "profile-picture":
-        return (
-          <div className="application__portal_task profile_picture__task">
-            <h1 className="application_task__heading">Profile Picture</h1>
-            <p className="application_task__instructions">
-              Upload a profile picture below.
-            </p>
-            {
-              this.props.profilePicture.isGetting ?
-                <span className="no__avatar">Fetching...</span>
-              :
-                null
-            }
-            {
-              this.props.profilePicture.hasGotten && this.props.profilePicture.url ?
-                <div className="avatar__container" style={{ backgroundImage: `url(${this.props.profilePicture.url})` }}></div>
-                :
-               null
-            }
-            {
-              this.props.profilePicture.hasFailed && this.props.profilePicture.error.code === "storage/object-not-found" ?
-                <span className="no__avatar">No profile image</span>
-              :
-                null
-            }
-            {
-              this.props.application.hasGotten ?
-                <DropUploader handleAvatarChange={this.handleAvatarChange} disabled={this.state.application.wasSubmitted}/>
-              :
-                null
             }
           </div>
         );
@@ -303,10 +264,6 @@ class ApplicationTask extends Component {
                     </p>
                     <ReviewBlock heading="Personal" editLink={this.props.match.path.replace(":task", "personal")}
                       items={dataPersonal}
-                      canEdit={!this.state.application.wasSubmitted} />
-
-                    <ReviewBlock heading="Profile Picture" editLink={this.props.match.path.replace(":task", "profile-picture")}
-                      renderImage imageUrl={this.props.profilePicture.url}
                       canEdit={!this.state.application.wasSubmitted} />
 
                     <ReviewBlock heading="Education" editLink={this.props.match.path.replace(":task", "education")}
@@ -516,12 +473,6 @@ class ApplicationTask extends Component {
     this.props.userActions.doUserEmailUpdateWithReauthentication(this.state.email, password);
   }
 
-  handleAvatarChange = e => {
-    let newGravatar = e.files[0];
-
-    this.props.userProfilePictureActions.doAvatarUpload(newGravatar);
-  }
-
   handleEssaySave = html => {
     this.props.applicationActions.doApplicationUpdate(this.state.uid, { essay: html });
     this.setState({ hasChanged: true });
@@ -612,8 +563,6 @@ ApplicationTask.propTypes = {
   setTask: propTypes.func,
   match: propTypes.object,
   applicationActions: propTypes.object,
-  userProfilePictureActions: propTypes.object,
-  profilePicture: propTypes.object,
   application: propTypes.object,
   userActions: propTypes.object,
   user: propTypes.object,
@@ -622,7 +571,6 @@ ApplicationTask.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    profilePicture: state.userProfilePicture,
     user: state.user,
     application: state.application
   };
@@ -632,7 +580,6 @@ const mapDispatchToProps = dispatch => {
   return {
     applicationActions: bindActionCreators(applicationActions, dispatch),
     userActions: bindActionCreators(userActions, dispatch),
-    userProfilePictureActions: bindActionCreators(userProfilePictureActions, dispatch)
   };
 };
 

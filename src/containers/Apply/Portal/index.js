@@ -8,7 +8,6 @@ import propTypes from "prop-types";
 
 import * as applicationActions from "../../../actions/applicationActions";
 import * as userActions from "../../../actions/userActions";
-import * as userProfilePictureActions from "../../../actions/userProfilePictureActions";
 import * as authActions from "../../../actions/authActions";
 import * as routes from "../../../constants/routes";
 
@@ -21,7 +20,6 @@ import { getWordCount } from "../../../utils";
 
 const tasks = [
   "Personal",
-  "Profile Picture",
   "Education",
   "US Standardized Tests",
   "National Tests",
@@ -45,7 +43,6 @@ class ApplicationPortal extends Component {
       isComplete: {
         personal: false,
         education: false,
-        "profile-picture": false,
         "us-standardized-tests": false,
         "national-tests": false,
         miscellaneous: false,
@@ -133,9 +130,6 @@ class ApplicationPortal extends Component {
 
     // get application
     this.props.applicationActions.doApplicationGet(this.state.applicationId);
-
-    // get profile picture
-    this.props.userProfilePictureActions.doAvatarGet();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -224,22 +218,7 @@ class ApplicationPortal extends Component {
       this.setState({ user });
     }
 
-    if (nextProps.profilePicture.hasGotten) {
-      const { url } = nextProps.profilePicture;
-
-      if (url.length) {
-        isComplete = Object.assign({}, isComplete, {
-          "profile-picture": true
-        });
-      } else {
-        isComplete = Object.assign({}, isComplete, {
-          "profile-picture": false
-        });
-      }
-    }
-
-    if ((nextProps.profilePicture.hasGotten || nextProps.profilePicture.hasFailed) && 
-      nextProps.application.hasGotten && 
+    if (nextProps.application.hasGotten && 
       nextProps.user.hasGotten)
       this.setState({ isComplete });
 
@@ -354,8 +333,6 @@ ApplicationPortal.propTypes = {
   application: propTypes.object,
   userActions: propTypes.object,
   user: propTypes.object,
-  userProfilePictureActions: propTypes.object,
-  profilePicture: propTypes.object,
   history: propTypes.object
 };
 
@@ -363,7 +340,6 @@ const mapStateToProps = state => {
   return {
     application: state.application,
     user: state.user,
-    profilePicture: state.userProfilePicture,
     auth: state.auth
   };
 };
@@ -372,7 +348,6 @@ const mapDispatchToProps = dispatch => {
   return {
     applicationActions: bindActionCreators(applicationActions, dispatch),
     userActions: bindActionCreators(userActions, dispatch),
-    userProfilePictureActions: bindActionCreators(userProfilePictureActions, dispatch),
     authActions: bindActionCreators(authActions, dispatch)
   };
 };
