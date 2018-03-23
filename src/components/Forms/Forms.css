@@ -114,7 +114,7 @@
 
 .form.auth__form .form__input_container>input[type]:focus+label,
 .form.auth__form .form__input_container>input[type]:valid+label {
-  transform: translate(1em, -4.5em);
+  transform: translate(1em, -5.5em);
 }
 
 /* Application Task Forms */

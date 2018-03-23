@@ -244,21 +244,11 @@ export const doAccountCreate = (data) => {
               axios.get(`${EMAIL_API}/s/welcome/${user.uid}`)
                 .then(() => {
                   dispatch(sendEmailConfirmationEmailSent(data.email));
-  
-                  // sign user in after 2 seconds
-                  setTimeout(() => {
-                    dispatch(doSignIn(data.email, data.password));
-                  }, 2000);
                 })
                 .catch(error => {
                   dispatch(sendEmailConfirmationEmailFailed(error, data.email));
                 })
             }
-
-            // sign user in after 2 seconds
-            setTimeout(() => {
-              dispatch(doSignIn(data.email, data.password));
-            }, 2000);
           })
           .catch(error => {
             dispatch(addingDataToUserDbsFailed(data, error));

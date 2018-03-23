@@ -6,6 +6,7 @@ import propTypes from "prop-types";
 import moment from "moment";
 
 import Button from "../Button";
+import Loader from "../Loader";
 
 export class SignInForm extends Component {
   constructor(props) {
@@ -34,6 +35,16 @@ export class SignInForm extends Component {
         </div>
         <div className="form__input_container">
           <button className="form__button" type="submit">{this.props.submitText || "Sign In"}</button>
+          {
+            this.props.isWorking ?
+              <Loader width="48px" styles={{
+                position: "absolute",
+                right: "3.5rem",
+                top: "2rem"
+              }} />
+            :
+              null
+          }
         </div>
         {
           this.state.tries > 0 ?
@@ -95,6 +106,16 @@ export const StartApplication = props => {
       </div>
       <div className="form__input_container">
         <button className="form__button" type="submit">Create Account</button>
+        {
+          props.isWorking ?
+            <Loader width="48px" styles={{
+              position: "absolute",
+              right: "3.5rem",
+              top: "2rem"
+            }}/>
+            :
+            null
+        }
       </div>
     </form>
   )
@@ -348,7 +369,8 @@ StartApplication.propTypes = {
   updateEmail: propTypes.func,
   updatePassword: propTypes.func,
   updateName: propTypes.func,
-  handleAccountCreation: propTypes.func
+  handleAccountCreation: propTypes.func,
+  isWorking: propTypes.bool
 };
 
 PersonalInformation.propTypes = {

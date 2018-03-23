@@ -205,7 +205,12 @@ export const doApplicationSubmit = (user, date) => {
       .update({
         submittedOn: date,
         wasSubmitted: true,
-        state: "pending"
+        state: {
+          draft: false,
+          pending: true,
+          accepted: false,
+          rejected: false
+        }
       })
       .then(() => {
         dispatch(applicationSubmitted(user, date));
