@@ -110,7 +110,6 @@ class ApplicationPortal extends Component {
                   setTask={this.setTask}
                   user={this.state.user}
                   application={this.state.application} 
-                  avatar={this.props.profilePicture} 
                   complete={this.state.isComplete} />
               }}/>
             <Route exact path={this.props.match.url}
@@ -289,7 +288,7 @@ class ApplicationPortal extends Component {
           eligibility data will be collected during the review process.</b>
         </p>
         <p>
-          We promise to keep all information and photos private. 
+          We promise to keep all information. 
           We will not repost them or use them outside the reviewing of your application.
         </p>
 
