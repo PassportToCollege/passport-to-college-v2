@@ -46,10 +46,11 @@ class ApplicationTask extends Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if (this.state.task !== nextState.task && this.state.hasChanged) {
-      if (nextState.task !== "personal" || nextState.task !== "profile-picture")
+    if ((this.state.task !== nextState.task) && this.state.hasChanged) {
+      if (nextState.task !== "personal" && nextState.task !== "profile-picture") {
         this.props.applicationActions.doApplicationGet(this.props.application.user);
-        
+      }
+
       this.props.userActions.doUserGet();
       this.setState({ hasChanged: false });
     }

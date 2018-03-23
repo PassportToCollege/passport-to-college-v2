@@ -21,8 +21,8 @@ class Profile extends Component {
     super(props);
 
     this.state = {
-      profilePicture: this.props.profilePicture.url,
-      user: this.props.user.user,
+      profilePicture: props.profilePicture.url,
+      user: props.user.user,
       editingHeaderInfo: false,
       editingAbout: false,
       editingRoles: false,
@@ -84,12 +84,12 @@ class Profile extends Component {
     if (nextProps.profilePicture.url === "")
       this.setState({ profilePicture: defAvatar });
     
-    if(Object.keys(nextProps.user).length && !nextProps.user.isGetting)
+    if(nextProps.user.hasGotten)
       this.setState({ user: nextProps.user.user });
   }
 
   createAboutDataList() {
-    if (Object.keys(this.props.user).length && this.props.user.isGetting) {
+    if (!this.props.user.hasGotten) {
       return (
         <LoadingText options={{
           class: "profile__about_loading",
@@ -107,7 +107,7 @@ class Profile extends Component {
           ]
         }} />
       )
-    } else if (Object.keys(this.props.user).length && !this.props.user.isGetting) {
+    } else if (this.props.user.hasGotten) {
       let { gender, address, phone, dob } = this.state.user;
       let dt = [
        { label: "gender", data: gender },
@@ -123,7 +123,7 @@ class Profile extends Component {
   }
 
   createHeaderInfo = () => {
-    if(Object.keys(this.props.user).length && this.props.user.isGetting) {
+    if (!this.props.user.hasGotten) {
       return (
         <LoadingText options={{
           class: "profile__header_loading",
@@ -135,7 +135,7 @@ class Profile extends Component {
           ]
         }} />
       )
-    } else if (Object.keys(this.props.user).length && !this.props.user.isGetting) {
+    } else if (this.props.user.hasGotten) {
       let user = this.state.user;
 
       if(this.state.editingHeaderInfo) {
@@ -177,7 +177,7 @@ class Profile extends Component {
   }
 
   createRolesList = () => {
-    if (Object.keys(this.props.user).length && this.props.user.isGetting) {
+    if (!this.props.user.hasGotten) {
       return (
         <LoadingText options={{
           class: "profile__about_loading",
@@ -191,17 +191,17 @@ class Profile extends Component {
           ]
         }} />
       )
-    } else if (Object.keys(this.props.user).length && !this.props.user.isGetting) {
+    } else if (this.props.user.hasGotten) {
       return (
         <span>
           <UserInfoItem label="staff?"
             data={
-              this.props.user.isStaff ?
-                this.props.user.role :
+              this.state.user.isStaff ?
+                this.state.user.role :
                 "you do not have a staff role"} />
           <UserInfoItem label="student?"
             data={
-              this.props.user.isStudent ?
+              this.state.user.isStudent ?
                 "you are a student" :
                 "you are not a student"} />
         </span>

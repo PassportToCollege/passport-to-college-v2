@@ -106,7 +106,7 @@ export const PersonalInformation = props => {
       <fieldset disabled={props.disabled === true ? "disabled" : null}>
         <div className="form__input_container">
           <input type="text" name="name" required 
-            onBlur={props.updateField} autoFocus 
+            onBlur={props.updateField} 
             defaultValue={props.user.name.full}
             placeholder="John Doe" />
           <label>Full Name</label>

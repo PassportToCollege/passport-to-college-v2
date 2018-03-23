@@ -30,6 +30,7 @@ class Apply extends Component {
 
   componentWillUnmount() {
     this.props.authActions.removeAuthErrors();
+    this.setState({ hasSent: false, notificationClosed: true });
   }
 
   componentWillReceiveProps(nextProps) {

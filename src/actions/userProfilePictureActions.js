@@ -42,7 +42,6 @@ export const doAvatarGet = () => {
             dispatch(avatarGetDone(url));
           })
           .catch(error => {
-            console.log(error)
             dispatch(avatarGetFailed(error));
           })
       }
