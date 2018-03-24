@@ -9,6 +9,7 @@ import propTypes from "prop-types";
 import * as authActions from "../../../actions/authActions";
 import * as usersAction from "../../../actions/usersActions";
 
+import { SignUpForm } from "../../../components/Forms";
 import Notification from "../../../components/Notification";
 
 class SignUp extends Component {
@@ -17,7 +18,8 @@ class SignUp extends Component {
 
     this.state = {
       notificationClosed: false,
-      hasError: false
+      hasError: false,
+      user: props.user.users
     };
   }
 
@@ -28,10 +30,19 @@ class SignUp extends Component {
     this.props.usersAction.doGetUserByUid(temp_id);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.user.hasGotten)
+      this.setState({ user: nextProps.user.users });
+  }
+
   render() {
     return (
       <div className="signup__container">
-        signup
+        {
+          this.props.user.hasGotten ?
+            <SignUpForm user={this.state.user} /> :
+            null
+        }
       </div>
     )
   }
@@ -39,7 +50,6 @@ class SignUp extends Component {
 
 SignUp.propTypes = {
   match: propTypes.object,
-  auth: propTypes.object,
   user: propTypes.object,
   usersAction: propTypes.object,
   updateLocation: propTypes.func
@@ -47,8 +57,7 @@ SignUp.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    user: state.users,
-    auth: state.auth
+    user: state.users
   };
 };
 

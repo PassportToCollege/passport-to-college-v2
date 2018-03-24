@@ -83,6 +83,52 @@ export class ResetPasswordForm extends Component {
   }
 }
 
+SignInForm.propTypes = ResetPasswordForm.propTypes = {
+  title: propTypes.string,
+  submitText: propTypes.string,
+  handleSubmit: propTypes.func,
+  updateEmail: propTypes.func,
+  updatePassword: propTypes.func,
+  authError: propTypes.bool
+};
+
+export const SignUpForm = ({ user, handleSubmit, handleInputChange }) => {
+  return (
+    <form className="form auth__form signup__form" method="post"
+      onSubmit={handleSubmit}>
+      <h2 className="form__title">Complete signup</h2>
+      <div className="form__input_container">
+        <input type="text" name="name" required onChange={handleInputChange} 
+          defaultValue={user.name.full}/>
+        <label>Full Name</label>
+      </div>
+      <div className="form__input_container">
+        <input type="text" name="email" required onChange={handleInputChange}
+          defaultValue={user.email} />
+        <label>Email</label>
+      </div>
+      <h4>Create password</h4>
+      <div className="form__input_container">
+        <input type="password" name="password" required onChange={handleInputChange} />
+        <label>Password</label>
+      </div>
+      <div className="form__input_container">
+        <input type="password" name="confirm_password" required onChange={handleInputChange} />
+        <label>Confirm Password</label>
+      </div>
+      <div className="form__input_container">
+        <Button type="submit" text="done" solid />
+      </div>
+    </form>
+  )
+}
+
+SignUpForm.propTypes = {
+  user: propTypes.object,
+  handleSubmit: propTypes.func,
+  handleInputChange: propTypes.func
+};
+
 export const CreateUserForm = props => {
   return (
     <form className="form create_user__form" method="post"
@@ -123,6 +169,11 @@ export const CreateUserForm = props => {
   )
 }
 
+CreateUserForm.propTypes = {
+  handleSubmit: propTypes.func,
+  handleInputChange: propTypes.func
+};
+
 export const StartApplication = props => {
 
   return (
@@ -160,6 +211,16 @@ export const StartApplication = props => {
     </form>
   )
 }
+
+StartApplication.propTypes = {
+  title: propTypes.string,
+  handleSignIn: propTypes.func,
+  updateEmail: propTypes.func,
+  updatePassword: propTypes.func,
+  updateName: propTypes.func,
+  handleAccountCreation: propTypes.func,
+  isWorking: propTypes.bool
+};
 
 export const PersonalInformation = props => {
   return (
@@ -212,6 +273,12 @@ export const PersonalInformation = props => {
       </fieldset>
     </form>
   );
+};
+
+PersonalInformation.propTypes = {
+  updateField: propTypes.func,
+  user: propTypes.object,
+  disabled: propTypes.bool
 };
 
 export const EducationInformation = ({ application, updateApplicationField, disabled }) => {
@@ -330,6 +397,12 @@ export const Miscellaneous = ({ application, updateApplicationField, disabled })
   )
 }
 
+EducationInformation.propTypes = USTest.propTypes = Miscellaneous.propTypes = {
+  application: propTypes.object,
+  updateApplicationField: propTypes.func,
+  disabled: propTypes.bool
+};
+
 export const NationalTest = ({ handleTestAdded, handleInputChange }) => {
   const inputChanged = e => {
     if ("function" === typeof handleInputChange)
@@ -392,43 +465,6 @@ export const NationalTest = ({ handleTestAdded, handleInputChange }) => {
     </form>
   )
 }
-
-// Proptypes
-SignInForm.propTypes = ResetPasswordForm.propTypes = {
-  title: propTypes.string,
-  submitText: propTypes.string,
-  handleSubmit: propTypes.func,
-  updateEmail: propTypes.func,
-  updatePassword: propTypes.func,
-  authError: propTypes.bool
-};
-
-CreateUserForm.propTypes = {
-  handleSubmit: propTypes.func,
-  handleInputChange: propTypes.func
-};
-
-StartApplication.propTypes = {
-  title: propTypes.string,
-  handleSignIn: propTypes.func,
-  updateEmail: propTypes.func,
-  updatePassword: propTypes.func,
-  updateName: propTypes.func,
-  handleAccountCreation: propTypes.func,
-  isWorking: propTypes.bool
-};
-
-PersonalInformation.propTypes = {
-  updateField: propTypes.func,
-  user: propTypes.object,
-  disabled: propTypes.bool
-};
-
-EducationInformation.propTypes = USTest.propTypes = Miscellaneous.propTypes = {
-  application: propTypes.object,
-  updateApplicationField: propTypes.func,
-  disabled: propTypes.bool
-};
 
 NationalTest.propTypes = {
   handleTestAdded: propTypes.func,
