@@ -1,0 +1,18 @@
+/* Header */
+.users__container header {
+  position: relative;
+  padding: 1em 0;
+}
+
+.users__container header>h1 {
+  font-family: "Muli", "Nunito", "Roboto", sans-serif;
+  font-weight: lighter;
+  margin: 0;
+  color: rgb(58, 58, 58);
+}
+
+.users__container header>.users__stats {
+  color: rgba(51, 51, 51, 0.85);
+  font-size: 0.85em;
+  font-family: "Nunito", "Roboto", sans-serif;
+}

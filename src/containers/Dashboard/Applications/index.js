@@ -7,8 +7,11 @@ import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
 
 import { queryToObject } from "../../../utils";
+
 import * as applicationsActions from "../../../actions/applicationsActions";
 import * as statsActions from "../../../actions/statsActions";
+
+import LoadingText from "../../../components/LoadingText";
 
 class Applications extends Component {
   constructor(props) {
@@ -18,6 +21,31 @@ class Applications extends Component {
       applications: props.applications.applications,
       stats: props.stats.stats
     };
+  }
+
+  componentWillMount() {
+    const { search } = this.props.location;
+    const { page } = queryToObject(search) || { page: 1 };
+
+    this.props.applicationsActions.doApplicationsGet(parseInt(page, 10));
+    this.setState({ page });
+
+    this.props.statsActions.doStatsGet();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.applications.hasGotten) {
+      this.setState({ applications: nextProps.applications.applications });
+
+      const { search } = this.props.location;
+      const { page } = queryToObject(search) || { page: 1 };
+
+      if (page > 1 && nextProps.applications.applications.empty)
+        this.props.history.goBack();
+    }
+
+    if (nextProps.stats.hasGotten)
+      this.setState({ stats: nextProps.stats.stats });
   }
 
   render() {
@@ -35,7 +63,14 @@ class Applications extends Component {
               <b> {this.state.applications.empty ? "0" : this.state.applications.length} </b>
               applications
             </span> :
-            null
+              <LoadingText options={{
+                class: "block__lines",
+                bg: "transparent",
+                height: "10px",
+                lines: [
+                  { color: "rgba(255,101,97,0.2)", width: "100px" }
+                ]
+              }} />
           }
         </header>
         <div className="applications__main">
@@ -87,31 +122,6 @@ class Applications extends Component {
         </div>
       </div>
     )
-  }
-
-  componentWillMount() {
-    const { search } = this.props.location;
-    const {page} = queryToObject(search) || { page:1 };
-    
-    this.props.applicationsActions.doApplicationsGet(parseInt(page, 10));
-    this.setState({ page });
-  
-    this.props.statsActions.doStatsGet();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.applications.hasGotten) {
-      this.setState({ applications: nextProps.applications.applications });
-      
-      const { search } = this.props.location;
-      const { page } = queryToObject(search) || { page: 1 };
-      
-      if (page > 1 && nextProps.applications.applications.empty)
-        this.props.history.goBack();
-    }
-
-    if (nextProps.stats.hasGotten)
-      this.setState({ stats: nextProps.stats.stats });
   }
 }
 

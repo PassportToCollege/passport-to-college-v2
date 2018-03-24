@@ -62,7 +62,7 @@ export const doUsersGet = (page, userType) => {
           .get()
           .then(snapshots => {
             if (snapshots.empty)
-              return dispatch(usersGetFailed({ empty: true }, page, userType));
+              return dispatch(usersGetDone({ empty: true }, page, userType));
 
             const data = [];
             snapshots.forEach(snapshot => {
@@ -83,7 +83,7 @@ export const doUsersGet = (page, userType) => {
           .get()
           .then(snapshots => {
             if (snapshots.empty)
-              return dispatch(usersGetFailed({ empty: true }, page, userType));
+              return dispatch(usersGetDone({ empty: true }, page, userType));
 
             const data = [];
             snapshots.forEach(snapshot => {
@@ -113,7 +113,7 @@ export const doUsersGet = (page, userType) => {
               .get()
               .then(snapshots => {
                 if (snapshots.empty)
-                  return dispatch(usersGetFailed({ empty: true }, page, userType));
+                  return dispatch(usersGetDone({ empty: true }, page, userType));
 
                 const data = [];
                 snapshots.forEach(snapshot => {
@@ -148,7 +148,7 @@ export const doUsersGet = (page, userType) => {
               .get()
               .then(snapshots => {
                 if (snapshots.empty)
-                  return dispatch(usersGetFailed({ empty: true }, page, userType));
+                  return dispatch(usersGetDone({ empty: true }, page, userType));
 
                 const data = [];
                 snapshots.forEach(snapshot => {
