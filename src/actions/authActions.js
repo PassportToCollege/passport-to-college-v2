@@ -191,21 +191,25 @@ export const doAccountCreate = (data) => {
           emailConfirmed: false
         };
 
-        let name = data.name.split(" ");
-        
-        if (name.length === 3) {
-          userData.name = {
-            first: name[0],
-            middle: name[1],
-            last: name[2],
-            full: [name[0], name[2]].join(" ")
+        if ("string" === typeof data.name) {
+          let name = data.name.split(" ");
+          
+          if (name.length === 3) {
+            userData.name = {
+              first: name[0],
+              middle: name[1],
+              last: name[2],
+              full: [name[0], name[2]].join(" ")
+            }
+          } else {
+            userData.name = {
+              first: name[0],
+              last: name[1],
+              full: data.name
+            }
           }
-        } else {
-          userData.name = {
-            first: name[0],
-            last: name[1],
-            full: data.name
-          }
+        } else if ("object" === typeof data.name) {
+          userData.name = data.name;
         }
 
         let batch = db.batch();
@@ -233,6 +237,10 @@ export const doAccountCreate = (data) => {
             user: userData 
           });
         }
+
+        // delete temp user if uid has temp
+        if (data.uid && data.uid.indexOf("temp") > -1)
+          batch.delete(db.collection("users").doc(data.uid));
 
         dispatch(addingDataToUserDbs(data));
 

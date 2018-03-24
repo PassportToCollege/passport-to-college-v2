@@ -19,7 +19,9 @@ class SignUp extends Component {
     this.state = {
       notificationClosed: false,
       hasError: false,
-      user: props.user.users
+      user: props.user.users,
+      formData: {},
+      creatingAccount: false
     };
   }
 
@@ -33,6 +35,15 @@ class SignUp extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.user.hasGotten)
       this.setState({ user: nextProps.user.users });
+    
+    if (nextProps.auth.hasFailed)
+      this.setState({ 
+        hasError: true, 
+        error: nextProps.auth.error.message, 
+        creatingAccount: false });
+
+    if (nextProps.auth.hasCreated)
+      this.setState({ creatingAccount: false, accountCreated: true });
   }
 
   render() {
@@ -40,11 +51,59 @@ class SignUp extends Component {
       <div className="signup__container">
         {
           this.props.user.hasGotten ?
-            <SignUpForm user={this.state.user} /> :
+            <SignUpForm user={this.state.user} 
+              handleSubmit={this.handleSubmit}
+              handleInputChange={this.handleInputChange} 
+              isWorking={this.state.creatingAccount} /> :
+            null
+        }
+        {
+          this.state.hasError && !this.state.notificationClosed ?
+            <Notification doClose={this.handleNotificationClose}
+              text={this.state.error} /> :
+            null
+        }
+        {
+          !this.state.hasError && this.state.accountCreated ?
+            <Notification doClose={this.handleNotificationClose}
+              text="Signup complete. Close me to sign in." /> :
             null
         }
       </div>
     )
+  }
+
+  handleInputChange = e => {
+    const newFormData = Object.assign({}, this.state.formData, {
+      [e.target.name]: e.target.value
+    });
+
+    this.setState({ formData: newFormData });
+  }
+
+  handleSubmit = e => {
+    e.preventDefault();
+    this.setState({ creatingAccount: true });
+
+    if (this.state.formData.password !== this.state.formData.confirm_password) {
+      this.setState({ 
+        hasError: true,
+        creatingAccount: false,
+        error: "Passwords do not match."
+       });
+
+       return;
+    }
+
+    const data = Object.assign({}, this.state.user, this.state.formData);
+    this.props.authActions.doAccountCreate(data);
+  }
+
+  handleNotificationClose = () => {
+    this.setState({ hasError: false, notificationClosed: true });
+
+    if (this.state.accountCreated)
+      this.location.push("/auth/sign-in");
   }
 }
 
@@ -52,11 +111,14 @@ SignUp.propTypes = {
   match: propTypes.object,
   user: propTypes.object,
   usersAction: propTypes.object,
-  updateLocation: propTypes.func
+  updateLocation: propTypes.func,
+  auth: propTypes.oneOfType([propTypes.bool, propTypes.object]),
+  authActions: propTypes.object
 };
 
 const mapStateToProps = state => {
   return {
+    auth: state.auth,
     user: state.users
   };
 };

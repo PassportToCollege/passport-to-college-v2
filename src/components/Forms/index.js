@@ -92,7 +92,7 @@ SignInForm.propTypes = ResetPasswordForm.propTypes = {
   authError: propTypes.bool
 };
 
-export const SignUpForm = ({ user, handleSubmit, handleInputChange }) => {
+export const SignUpForm = ({ user, handleSubmit, handleInputChange, isWorking }) => {
   return (
     <form className="form auth__form signup__form" method="post"
       onSubmit={handleSubmit}>
@@ -118,6 +118,16 @@ export const SignUpForm = ({ user, handleSubmit, handleInputChange }) => {
       </div>
       <div className="form__input_container">
         <Button type="submit" text="done" solid />
+        {
+          isWorking ?
+            <Loader width="48px" styles={{
+              position: "absolute",
+              right: "3.5rem",
+              top: "2rem"
+            }} />
+            :
+            null
+        }
       </div>
     </form>
   )
@@ -126,7 +136,8 @@ export const SignUpForm = ({ user, handleSubmit, handleInputChange }) => {
 SignUpForm.propTypes = {
   user: propTypes.object,
   handleSubmit: propTypes.func,
-  handleInputChange: propTypes.func
+  handleInputChange: propTypes.func,
+  isWorking: propTypes.bool
 };
 
 export const CreateUserForm = props => {
