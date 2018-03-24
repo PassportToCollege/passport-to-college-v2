@@ -14,6 +14,7 @@ import * as statsActions from "../../../actions/statsActions";
 import LoadingText from "../../../components/LoadingText";
 import Button from "../../../components/Button";
 import Indicator from "../../../components/Indicator";
+import { CreateUserModal } from "../../../components/Modal";
 
 class Users extends Component {
   constructor(props) {
@@ -21,7 +22,8 @@ class Users extends Component {
 
     this.state = {
       stats: props.stats.stats,
-      users: props.users.users
+      users: props.users.users,
+      creatingUser: false
     }
   }
 
@@ -53,6 +55,11 @@ class Users extends Component {
   render() {
     return (
       <div className="dashboard__container users__container">
+        {
+          this.state.creatingUser ?
+            <CreateUserModal doClose={this.closeAddUserModal}/> :
+            null
+        }
         <header>
           <h1>Users</h1>
           {
@@ -145,6 +152,10 @@ class Users extends Component {
       </div>
     )
   }
+
+  openAddUserModal = () => this.setState({ creatingUser: true });
+  closeAddUserModal = () => this.setState({ creatingUser: false });
+  
 }
 
 Users.propTypes = {

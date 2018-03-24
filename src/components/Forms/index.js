@@ -83,6 +83,15 @@ export class ResetPasswordForm extends Component {
   }
 }
 
+export const CreateUserForm = props => {
+  return (
+    <form className="form create_user__form" method="post"
+      onSubmit={props.handleSubmit}>
+
+    </form>
+  )
+}
+
 export const StartApplication = props => {
 
   return (
@@ -361,6 +370,10 @@ SignInForm.propTypes = ResetPasswordForm.propTypes = {
   updateEmail: propTypes.func,
   updatePassword: propTypes.func,
   authError: propTypes.bool
+};
+
+CreateUserForm.propTypes = {
+  handleSubmit: propTypes.func
 };
 
 StartApplication.propTypes = {

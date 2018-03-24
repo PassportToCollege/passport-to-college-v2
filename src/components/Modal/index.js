@@ -3,7 +3,7 @@ import "./Modal.css";
 import React from "react";
 import propTypes from "prop-types";
 
-import { NationalTest } from "../Forms";
+import { NationalTest, CreateUserForm } from "../Forms";
 
 export const ReauthenticateModal = props => {
   const closeModal = () => {
@@ -63,6 +63,35 @@ export const AddNationalTest = ({ doClose, handleInputChange, handleTestAdded })
   )
 }
 
+export const CreateUserModal = ({ doClose, handleInputChange, handleSubmit }) => {
+  const closeModal = () => {
+    this.modalContainer.classList.add("close");
+
+    if ("function" === typeof doClose)
+      doClose();
+  }
+
+  const submitForm = () => {
+    if ("function" === typeof handleSubmit)
+      handleSubmit();
+  }
+
+  const inputChanged = e => {
+    if ("function" === typeof handleInputChange)
+      handleInputChange(e);
+  }
+
+  return (
+    <div className="modal__container modal__create_user"
+      ref={div => this.modalContainer = div}>
+      <div className="modal__bg" onClick={closeModal}></div>
+      <div className="modal__content">
+        <CreateUserForm handleSubmit={submitForm} handleInputChange={inputChanged} />
+      </div>
+    </div>
+  )
+}
+
 // Proptypes
 ReauthenticateModal.propTypes = {
   doAuthenticate: propTypes.func
@@ -74,3 +103,8 @@ AddNationalTest.propTypes = {
   handleTestAdded: propTypes.func
 };
 
+CreateUserModal.propTypes = {
+  doClose: propTypes.func,
+  handleInputChange: propTypes.func,
+  handleSubmit: propTypes.func
+}
