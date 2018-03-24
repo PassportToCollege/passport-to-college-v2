@@ -188,7 +188,7 @@ export const doAccountCreate = (data) => {
           isApplicant: data.isApplicant || false,
           isStudent: data.isStudent || false,
           isStaff: data.isStaff || false,
-          emailConfirmed: false
+          emailConfirmed: data.emailConfirmed || false
         };
 
         if ("string" === typeof data.name) {

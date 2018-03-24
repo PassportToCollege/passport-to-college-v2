@@ -36,6 +36,12 @@ class SignUp extends Component {
     if (nextProps.user.hasGotten)
       this.setState({ user: nextProps.user.users });
     
+    if (nextProps.user.hasFailed)
+      this.setState({ 
+        hasError: true,
+        error: nextProps.user.error.message
+       });
+
     if (nextProps.auth.hasFailed)
       this.setState({ 
         hasError: true, 
@@ -94,8 +100,10 @@ class SignUp extends Component {
 
        return;
     }
+    let { user, formData } = this.state;
+    formData.emailConfirmed = true;
 
-    const data = Object.assign({}, this.state.user, this.state.formData);
+    const data = Object.assign({}, user, formData);
     this.props.authActions.doAccountCreate(data);
   }
 
@@ -103,7 +111,10 @@ class SignUp extends Component {
     this.setState({ hasError: false, notificationClosed: true });
 
     if (this.state.accountCreated)
-      this.location.push("/auth/sign-in");
+      this.props.history.push("/auth/sign-in");
+    
+    if (this.props.user.hasFailed)
+      this.props.history.push("/");
   }
 }
 
@@ -113,7 +124,8 @@ SignUp.propTypes = {
   usersAction: propTypes.object,
   updateLocation: propTypes.func,
   auth: propTypes.oneOfType([propTypes.bool, propTypes.object]),
-  authActions: propTypes.object
+  authActions: propTypes.object,
+  history: propTypes.object
 };
 
 const mapStateToProps = state => {
