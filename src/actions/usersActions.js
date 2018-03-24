@@ -232,7 +232,7 @@ export const doCreateUser = data => {
         if (snapshot.empty) {
           const tempUid = `temp_${uid(16)}`;
           let userData = {
-            uid: tempUid.uid,
+            uid: tempUid,
             email: data.email,
             isAdmin: data.roles.admin || false,
             isApplicant: false,
@@ -279,7 +279,7 @@ export const doCreateUser = data => {
             });
         }
 
-        return dispatch(createUserFailed({ error: "user found with email" }, data));
+        return dispatch(createUserFailed({ message: "User found already exists" }, data));
       });
   }
 }

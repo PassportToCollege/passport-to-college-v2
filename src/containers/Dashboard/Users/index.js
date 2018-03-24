@@ -15,6 +15,7 @@ import LoadingText from "../../../components/LoadingText";
 import Button from "../../../components/Button";
 import Indicator from "../../../components/Indicator";
 import { CreateUserModal } from "../../../components/Modal";
+import Notification from "../../../components/Notification";
 
 class Users extends Component {
   constructor(props) {
@@ -24,7 +25,8 @@ class Users extends Component {
       stats: props.stats.stats,
       users: props.users.users,
       creatingUser: false,
-      createUserModalData: {}
+      createUserModalData: {},
+      notificationClosed: false
     }
   }
 
@@ -51,6 +53,10 @@ class Users extends Component {
 
     if (nextProps.stats.hasGotten)
       this.setState({ stats: nextProps.stats.stats });
+
+    if (!nextProps.users.hasCreated && nextProps.users.hasFailed) {
+      this.setState({ hasError: true, error: nextProps.users.error.message })
+    }
   }
 
   render() {
@@ -61,6 +67,18 @@ class Users extends Component {
             <CreateUserModal doClose={this.closeAddUserModal}
               handleInputChange={this.handleInputChange} 
               handleSubmit={this.handleNewUserCreated} /> :
+            null
+        }
+        {
+          this.props.users.hasCreated ?
+            <Notification doClose={this.handleNotificationClose}
+              text="User created successfully. Close to refresh." /> :
+            null
+        }
+        {
+          !this.props.users.hasCreated && this.props.users.hasFailed && this.state.hasError ?
+            <Notification doClose={this.handleNotificationClose}
+              text={this.state.error} /> :
             null
         }
         <header>
@@ -178,9 +196,22 @@ class Users extends Component {
   handleNewUserCreated = e => {
     e.preventDefault();
 
-    console.log(this.state.createUserModalData);
+    this.props.usersActions.doCreateUser(this.state.createUserModalData);
+    this.setState({ createUserModalData: {} });
+    this.closeAddUserModal();
   }
   
+  handleNotificationClose = () => {
+    this.setState({ notificationClosed: true, hasError: false });
+
+    // get users if user was created successfully
+    if (this.props.users.hasCreated) {
+      const { search } = this.props.location;
+      const { page } = queryToObject(search) || { page: 1 };
+
+      this.props.usersActions.doUsersGet(parseInt(page, 10));
+    }
+  }
 }
 
 Users.propTypes = {
