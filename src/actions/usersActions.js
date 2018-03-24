@@ -1,6 +1,10 @@
+import { uid } from "rand-token";
+import axios from "axios";
+
 import { db } from "../utils/firebase";
 import * as types from "./actionTypes";
 
+const EMAIL_API = process.env.REACT_APP_EMAIL_API;
 const Console = console;
 
 // GET actions
@@ -172,3 +176,110 @@ export const doUsersGet = (page, userType) => {
 }
 
 // CREATE actions
+export const createUserInitiated = data => {
+  return {
+    type: types.USERS_CREATE_USER_INITIATED,
+    data
+  };
+};
+
+export const createUserFailed = (error, data) => {
+  return {
+    type: types.USERS_CREATE_USER_FAILED,
+    error, data
+  };
+};
+
+export const userCreated = data => {
+  return {
+    type: types.USERS_NEW_USER_CREATED,
+    data
+  };
+};
+
+export const sendSignupEmailInitiated = email => {
+  return {
+    type: types.USERS_SEND_SIGNUP_EMAIL_INITIATED,
+    email
+  };
+};
+
+export const signupEmailSent = email => {
+  return {
+    type: types.USERS_SIGNUP_EMAIL_SENT,
+    email
+  };
+};
+
+export const sendSignupEmailFailed = (error, email) => {
+  return {
+    type: types.USERS_SEND_SIGNUP_EMAIL_FAILED,
+    error, email
+  };
+};
+
+export const doCreateUser = data => {
+  return dispatch => {
+    dispatch(createUserInitiated(data));
+
+    const { email } = data;
+
+    // check if user with email already exists
+    db.collection("users")
+      .where("email", "==", email)
+      .get()
+      .then(snapshot => {
+        if (snapshot.empty) {
+          const tempUid = `temp_${uid(16)}`;
+          let userData = {
+            uid: tempUid.uid,
+            email: data.email,
+            isAdmin: data.roles.admin || false,
+            isApplicant: false,
+            isStudent: data.roles.student || false,
+            isStaff: data.roles.staff || false,
+            emailConfirmed: false 
+          }
+
+          let name = data.name.split(" ");
+
+          if (name.length === 3) {
+            userData.name = {
+              first: name[0],
+              middle: name[1],
+              last: name[2],
+              full: [name[0], name[2]].join(" ")
+            }
+          } else {
+            userData.name = {
+              first: name[0],
+              last: name[1],
+              full: data.name
+            }
+          }
+
+          return db.collection("users")
+            .doc(tempUid)
+            .set(userData)
+            .then(() => {
+              dispatch(userCreated(data));
+              dispatch(sendSignupEmailInitiated(data.email));
+
+              // send signup email
+              axios.get(`${EMAIL_API}/s/signup/${tempUid}`)
+                .then(() => {
+                  dispatch(signupEmailSent(email));
+                })
+                .catch(error => {
+                  dispatch(sendSignupEmailFailed(error, data.email))
+                });
+            })
+            .catch(error => {
+              dispatch(createUserFailed(error, data.email));
+            });
+        }
+
+        return dispatch(createUserFailed({ error: "user found with email" }, data));
+      });
+  }
+}
