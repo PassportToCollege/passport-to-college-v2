@@ -11,7 +11,7 @@ class Home extends Component {
   render() {
     return (
       <div className="home__container reset__body_top_padding">
-        <ParallaxHeader height="100vh"
+        <ParallaxHeader showScrollStrip height="100vh"
           bgImage={headerBg}
           overlayColor="#53D1D7"
           bigText="Matching Aptitude With Opportunity"

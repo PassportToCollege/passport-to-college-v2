@@ -30,9 +30,13 @@ const ParallaxHeader = props => {
           ""
         }
       </div>
-      <div className="parallax_header__scroll_strip">
-        
-      </div>
+      {
+        props.showScrollStrip ?
+          <div className="parallax_header__scroll_strip">
+            
+          </div> :
+          null
+      }
     </div>
   )
 }
@@ -43,7 +47,8 @@ ParallaxHeader.propTypes = {
   overlayColor: propTypes.string,
   bigText: propTypes.string,
   showLinkButton:  propTypes.bool,
-  linkButton: propTypes.object
+  linkButton: propTypes.object,
+  showScrollStrip: propTypes.bool
 }
 
 export default ParallaxHeader;
