@@ -14,7 +14,8 @@ class Button extends Component {
 
     if (this.props.solid) {
       buttonStyles = Object.assign({}, buttonStyles, {
-        backgroundColor: "#FF6561",
+        backgroundColor: (this.props.styles && this.props.styles.backgroundColor) ? this.props.styles.backgroundColor : "#FF6561",
+        borderColor: (this.props.styles && this.props.styles.backgroundColor) ? this.props.styles.backgroundColor : "#FF6561",
         color: "#fff"
       });
     }

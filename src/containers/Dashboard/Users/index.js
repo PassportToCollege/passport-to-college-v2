@@ -79,7 +79,8 @@ class Users extends Component {
               position: "absolute",
               right: "2em",
               top: "50%",
-              transform: "translateY(-50%)"
+              transform: "translateY(-50%)",
+              backgroundColor: "#FFCB61"
             }} />
         </header>
       </div>
