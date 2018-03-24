@@ -1,7 +1,7 @@
 import "./Applications.css";
 
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
@@ -91,8 +91,8 @@ class Applications extends Component {
 
   componentWillMount() {
     const { search } = this.props.location;
-    const page = queryToObject(search) || 1;
-
+    const {page} = queryToObject(search) || { page:1 };
+    
     this.props.applicationsActions.doApplicationsGet(parseInt(page, 10));
     this.setState({ page });
   
@@ -100,8 +100,15 @@ class Applications extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.applications.hasGotten)
+    if (nextProps.applications.hasGotten) {
       this.setState({ applications: nextProps.applications.applications });
+      
+      const { search } = this.props.location;
+      const { page } = queryToObject(search) || { page: 1 };
+      
+      if (page > 1 && nextProps.applications.applications.empty)
+        this.props.history.goBack();
+    }
 
     if (nextProps.stats.hasGotten)
       this.setState({ stats: nextProps.stats.stats });
@@ -131,7 +138,9 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Applications);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Applications)
+);
