@@ -76,7 +76,7 @@ class WYSIWYGEditor extends Component {
               <span className="editor__word_count">{this.state.words} { this.state.words === 1 ? "word" : "words" }</span>
             </div>
         }
-        <div className="editor__editor" style={ this.props.centerEditor ? { margin: "0 auto" } : null }>
+        <div className="editor__editor" style={ this.props.editorStyles || null }>
           <Editor editorState={this.state.editorState} 
             onChange={this.onChange}
             handleKeyCommand={this.handleKeyCommand}
@@ -148,7 +148,7 @@ WYSIWYGEditor.propTypes = {
   content: propTypes.object,
   limit: propTypes.number,
   readonly: propTypes.bool,
-  centerEditor: propTypes.bool
+  editorStyles: propTypes.object
 };
 
 export default WYSIWYGEditor;

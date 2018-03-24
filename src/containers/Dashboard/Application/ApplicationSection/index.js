@@ -5,6 +5,7 @@ import propTypes from "prop-types";
 import moment from "moment";
 
 import AnnotatedList from "../../../../components/AnnotatedList";
+import TestList from "../../../../components/TestList";
 import LoadingText from "../../../../components/LoadingText";
 import WYSIWYGEditor from "../../../../components/Editor";
 import ReviewBlock from "../../../../components/ReviewBlock";
@@ -26,20 +27,72 @@ class ApplicationSection extends Component {
 
   _render = section => {    
     switch (section) {
+      case "tests":
+        return (
+          <section className="application__section tests__section">
+            <div className="application__section_left">
+              <div className="application__us_tests">
+                <h2>U.S. Standardized Tests</h2>
+                {
+                  this.props.application.hasGotten && this.state.application ?
+                    <AnnotatedList data={[
+                      { label: "test taken", text: this.state.application.usTest },
+                      { label: "score", text: this.state.application.score }
+                    ]} />
+                    :
+                    <LoadingText options={{
+                      class: "block__lines",
+                      bg: "transparent",
+                      height: "10px",
+                      lines: [
+                        { color: "rgba(255,101,97,0.2)", width: "80%" },
+                        { color: "rgba(255,101,97,0.4)", width: "70%" }
+                      ]
+                    }} />
+                }
+              </div>
+            </div>
+            <div className="application__section_right">
+              <div className="application__us_tests">
+                <h2>National Tests</h2>
+                {
+                  this.props.application.hasGotten && this.state.application ?
+                    this.renderTestList()
+                    :
+                    <LoadingText options={{
+                      class: "block__lines",
+                      bg: "transparent",
+                      height: "10px",
+                      lines: [
+                        { color: "rgba(255,101,97,0.2)", width: "80%" },
+                        { color: "rgba(255,101,97,0.4)", width: "70%" }
+                      ]
+                    }} />
+                }
+              </div>
+            </div>
+          </section>
+        )
       case "essay":
         return (
-          <div className="application_section essay__section">
+          <section className="application__section essay__section">
             <div className="application__essay">
               <ReviewBlock renderFromFunc
                 renderFunc={this.renderReadOnlyEssay}
                 canEdit={false} />
             </div>
-          </div>
+          </section>
+        )
+      case "decide":
+        return (
+          <section className="application__section decide__section">
+
+          </section>
         )
       case "information":
       default:
         return (
-          <div className="application__section information__section">
+          <section className="application__section information__section">
             <div className="application__section_left">
               <div className="application__personal">
                 <h2>Personal information</h2>
@@ -140,7 +193,7 @@ class ApplicationSection extends Component {
                 }
               </div>
             </div>
-          </div>
+          </section>
         )
     }
   }
@@ -148,7 +201,12 @@ class ApplicationSection extends Component {
   renderReadOnlyEssay = () => {
     if (this.props.application.hasGotten)
       return (
-        <WYSIWYGEditor readonly centerEditor content={this.state.application.essay} />
+        <WYSIWYGEditor readonly content={this.state.application.essay} 
+          editorStyles={{
+            margin: "0 auto",
+            maxWidth: "100%",
+            padding: "0 1.875em 2em"
+          }}/>
       )
 
     return (
@@ -163,6 +221,20 @@ class ApplicationSection extends Component {
         ]
       }} />
     )
+  }
+
+  renderTestList = () => {
+    if (this.props.application.isGetting)
+      return <p>Looking for your tests</p>
+
+    if (Object.keys(this.state.application.tests).length > 0) {
+      return (
+        <TestList tests={this.state.application.tests}
+          disabled={true} />
+      )
+    }
+
+    return <p>No tests added.</p>
   }
 
   componentWillReceiveProps(nextProps) {
