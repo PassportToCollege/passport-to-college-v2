@@ -16,3 +16,21 @@
   font-size: 0.85em;
   font-family: "Nunito", "Roboto", sans-serif;
 }
+
+/* Table */
+.users__container table.table .users__name {
+  cursor: pointer;
+  display: block;
+  font-weight: bold;
+  color: #333;
+}
+
+.users__container table.table .users__name+span {
+  font-size: 0.85em;
+}
+
+.users__container table.table .users__email {
+  font-weight: bold;
+  color: #FF6561;
+  cursor: pointer;
+}
