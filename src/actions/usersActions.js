@@ -175,6 +175,26 @@ export const doUsersGet = (page, userType) => {
   }
 }
 
+export const doGetUserByUid = uid => {
+  return dispatch => {
+    dispatch(usersGetInitiated(1, uid));
+
+    db.collection("users")
+      .doc(uid)
+      .get()
+      .then(snapshot => {
+        if (snapshot.exists) {
+          return dispatch(usersGetDone(snapshot.data(), 1, uid));
+        }
+
+        dispatch(usersGetFailed({message: "no user found"}, 1, uid));
+      })
+      .catch(error => {
+        dispatch(usersGetFailed(error, 1, uid));
+      })
+  }
+}
+
 // CREATE actions
 export const createUserInitiated = data => {
   return {
