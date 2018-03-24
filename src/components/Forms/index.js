@@ -87,7 +87,38 @@ export const CreateUserForm = props => {
   return (
     <form className="form create_user__form" method="post"
       onSubmit={props.handleSubmit}>
-
+      <h2>Add user</h2>
+      <div className="form__input_container">
+        <input type="text" name="name" required
+          onChange={props.handleInputChange}
+          placeholder="John Doe" />
+        <label>Full Name</label>
+      </div>
+      <div className="form__input_container">
+        <input type="text" name="email" required
+          onChange={props.handleInputChange}
+          placeholder="johndoe@gmail.com" />
+        <label>Email</label>
+      </div>
+      <div className="form__input_container">
+        <h3>Roles</h3>
+        <span>
+          <input type="checkbox" name="roles" id="admin" 
+            onChange={props.handleInputChange} value="admin"/>
+          <label htmlFor="admin">Admin</label>
+        </span>
+        <span>
+          <input type="checkbox" name="roles" id="student" 
+            onChange={props.handleInputChange} value="student"/>
+          <label htmlFor="student">Student</label>
+        </span>
+        <span>
+          <input type="checkbox" name="roles" id="staff" 
+            onChange={props.handleInputChange} value="staff"/>
+          <label htmlFor="staff">Staff</label>
+        </span>
+      </div>
+      <Button type="submit" text="add" solid />
     </form>
   )
 }
@@ -373,7 +404,8 @@ SignInForm.propTypes = ResetPasswordForm.propTypes = {
 };
 
 CreateUserForm.propTypes = {
-  handleSubmit: propTypes.func
+  handleSubmit: propTypes.func,
+  handleInputChange: propTypes.func
 };
 
 StartApplication.propTypes = {

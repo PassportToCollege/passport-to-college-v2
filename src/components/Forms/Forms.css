@@ -162,3 +162,38 @@
 .form.application_task__form .form__input_container>select {
   cursor: pointer;
 }
+
+/* Create user form */
+.form.form.create_user__form {
+  padding: 0 1.25em;
+}
+
+.form.create_user__form .form__input_container {
+  margin-bottom: 1em;
+}
+
+.form.create_user__form .form__input_container>label {
+  display: block;
+  font-size: 0.85em;
+  font-weight: bold;
+  margin: 0 0 0.95em;
+  opacity: 0.75;
+  font-family: "Muli",
+  "Nunito",
+  "Roboto",
+  sans-serif;
+}
+
+.form.create_user__form .form__input_container>input[type],
+.form.create_user__form .form__input_container>select {
+  width: 100%;
+  border: none;
+  outline: none;
+  border-bottom: 2px solid #333;
+  font-size: 1.02em;
+  padding: 0.75em;
+}
+
+.form.create_user__form .form__input_container > span {
+  display: block;
+}

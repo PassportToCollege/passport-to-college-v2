@@ -23,7 +23,8 @@ class Users extends Component {
     this.state = {
       stats: props.stats.stats,
       users: props.users.users,
-      creatingUser: false
+      creatingUser: false,
+      createUserModalData: {}
     }
   }
 
@@ -57,7 +58,9 @@ class Users extends Component {
       <div className="dashboard__container users__container">
         {
           this.state.creatingUser ?
-            <CreateUserModal doClose={this.closeAddUserModal}/> :
+            <CreateUserModal doClose={this.closeAddUserModal}
+              handleInputChange={this.handleInputChange} 
+              handleSubmit={this.handleNewUserCreated} /> :
             null
         }
         <header>
@@ -155,6 +158,28 @@ class Users extends Component {
 
   openAddUserModal = () => this.setState({ creatingUser: true });
   closeAddUserModal = () => this.setState({ creatingUser: false });
+  handleInputChange = e => {
+    const { name, value } = e.target;
+    if (name === "roles") {
+      const { checked } = e.target;
+      const newData = Object.assign({}, this.state.createUserModalData, {
+          roles: Object.assign({}, this.state.createUserModalData.roles, {
+            [value]: checked
+        })
+      });
+      this.setState({ createUserModalData: newData });
+    } else {
+      const newData = Object.assign({}, this.state.createUserModalData, {
+        [name]: value
+      });
+      this.setState({ createUserModalData: newData });
+    }
+  }
+  handleNewUserCreated = e => {
+    e.preventDefault();
+
+    console.log(this.state.createUserModalData);
+  }
   
 }
 

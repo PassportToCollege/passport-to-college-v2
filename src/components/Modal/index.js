@@ -71,9 +71,9 @@ export const CreateUserModal = ({ doClose, handleInputChange, handleSubmit }) =>
       doClose();
   }
 
-  const submitForm = () => {
+  const submitForm = e => {
     if ("function" === typeof handleSubmit)
-      handleSubmit();
+      handleSubmit(e);
   }
 
   const inputChanged = e => {
