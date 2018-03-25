@@ -132,10 +132,17 @@ class Users extends Component {
                     return (
                       <tr key={user.uid}>
                         <td>
-                          <Link className="users__name"
-                            to={`/admin/dashboard/users/view/${user.uid}`}>
-                            {user.name.full}
-                          </Link>
+                          {
+                            user.isApplicant ?
+                              <Link className="users__name"
+                                to={`/admin/dashboard/applications/view/${user.uid}`}>
+                                {user.name.full}
+                              </Link> :
+                              <Link className="users__name"
+                                to={`/admin/dashboard/users/view/${user.uid}`}>
+                                {user.name.full}
+                              </Link>
+                          }
                           <span>id: {user.uid}</span>
                         </td>
                         <td>
