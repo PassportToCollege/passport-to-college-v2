@@ -91,7 +91,7 @@ class User extends Component {
                   <UserSection {...props}
                     userId={this.props.match.params.user_id}
                     section="personal"
-                    user={this.props.users.user} />
+                    user={this.props.users} />
                   )
               }}>
             </Route>
@@ -105,7 +105,7 @@ class User extends Component {
                         <UserSection {...props}
                           userId={this.props.match.params.user_id}
                           section={section.slug}
-                          user={this.props.users.user} />
+                          user={this.props.users} />
                       )
                     }}>
                   </Route>
