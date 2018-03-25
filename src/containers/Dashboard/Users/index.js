@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Link } from "react-router-dom";
 import propTypes from "prop-types";
+import Cookies from "universal-cookie";
 
 import { queryToObject } from "../../../utils";
 
@@ -16,6 +17,8 @@ import Button from "../../../components/Button";
 import Indicator from "../../../components/Indicator";
 import { CreateUserModal } from "../../../components/Modal";
 import Notification from "../../../components/Notification";
+
+const cookies = new Cookies();
 
 class Users extends Component {
   constructor(props) {
@@ -138,10 +141,15 @@ class Users extends Component {
                                 to={`/admin/dashboard/applications/view/${user.uid}`}>
                                 {user.name.full}
                               </Link> :
-                              <Link className="users__name"
-                                to={`/admin/dashboard/users/view/${user.uid}`}>
-                                {user.name.full}
-                              </Link>
+                              cookies.get("ssid").uid === user.uid ?
+                                <Link className="users__name current_user"
+                                  to={"/admin/dashboard/profile"}>
+                                  {user.name.full} (you)
+                                </Link> :
+                                <Link className="users__name"
+                                  to={`/admin/dashboard/users/view/${user.uid}`}>
+                                  {user.name.full}
+                                </Link>
                           }
                           <span>id: {user.uid}</span>
                         </td>
