@@ -8,12 +8,17 @@
   font-weight: 400;
 }
 
+.user__section > div > div > h5 {
+  margin-top: 0;
+}
+
 .user__section > div > div:not(:first-child) {
   margin-top: 2em;
 }
 
 /* Sections */
-.user__section.personal__section {
+.user__section.personal__section,
+.user__section.education__section {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -21,14 +26,25 @@
   flex-wrap: wrap;
 }
 
-.user__section.personal__section > div {
+.user__section.personal__section > div,
+.user__section.education__section > div {
   max-width: 500px;
   padding: 2em 0;
   flex: 1 0 auto;
 }
 
-.user__section.personal__section > div > div {
+.user__section.personal__section > div > div,
+.user__section.education__section > div > div {
   padding: 2em;
   border: 1px solid rgba(26, 25, 25, 0.15);
   border-radius: 3px;
+}
+
+.user__section .user__not_student {
+  text-align: center;
+  min-width: 100%;
+}
+
+.user__not_student > h4 {
+  text-transform: uppercase;
 }

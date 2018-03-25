@@ -45,16 +45,63 @@ class UserSection extends Component {
   _render = section => {
     switch (section) {
       case "education":
+        if (this.props.user.hasGottenUser && this.state.user &&
+          !this.state.user.isStudent) {
+          return (
+            <section className="user__section education__section">
+              <div className="user__not_student">
+                <h4>user is no a student</h4>
+              </div>
+            </section>
+          )
+        }
+
         return (
           <section className="user__section education__section">
-            {
-              this.props.user.hasGottenUser && this.state.user ?
-                this.state.user.isStudent ?
-                  <p>is student</p> :
-                  <p>not a student</p>
-                :
-                null
-            }
+            <div className="user__section_left">
+              <div className="user__education">
+                {
+                  this.props.student.hasGotten && this.state.student ?
+                    <AnnotatedList data={[
+                      { label: "high school", text: this.state.student.highSchool || "no high school provided" },
+                      { label: "university", text: this.state.student.university || "no university provided" },
+                      { label: "major", text: this.state.student.major || "no major provided" },
+                      { label: "minor", text: this.state.student.minor || "no minor provided" }
+                    ]} /> :
+                    <LoadingText options={{
+                      class: "block__lines",
+                      bg: "transparent",
+                      height: "10px",
+                      lines: [
+                        { color: "rgba(255,101,97,0.2)", width: "80%" },
+                        { color: "rgba(255,101,97,0.4)", width: "70%" }
+                      ]
+                    }} />
+                }
+              </div>
+            </div>
+            <div className="user__section_right">
+              <div className="user__education_meta">
+                <h5>Meta</h5>
+                {
+                  this.props.student.hasGotten && this.state.student ?
+                    <AnnotatedList data={[
+                      { label: "enrollment year", text: this.state.student.enrollmentYear || "no enrollment year provided" },
+                      { label: "graduation year", text: this.state.student.graduationYear || "no graduation year provided" },
+                      { label: "graduated?", text: this.state.student.hasGraduated || "don't know" }
+                    ]} /> :
+                    <LoadingText options={{
+                      class: "block__lines",
+                      bg: "transparent",
+                      height: "10px",
+                      lines: [
+                        { color: "rgba(255,101,97,0.2)", width: "80%" },
+                        { color: "rgba(255,101,97,0.4)", width: "70%" }
+                      ]
+                    }} />
+                }
+              </div>
+            </div>
           </section>
         )
       case "personal":
@@ -72,8 +119,8 @@ class UserSection extends Component {
                   this.props.user.hasGottenUser && this.state.user ?
                     <AnnotatedList data={[
                       { label: "full name", text: this.state.user.name.full },
-                      { label: "dob", text: this.state.user.dob ? this.state.user.dob : "no dob" },
-                      { label: "gender", text: this.state.user.gender ? this.state.user.gender : "no gender provided" }
+                      { label: "dob", text: this.state.user.dob || "no dob" },
+                      { label: "gender", text: this.state.user.gender || "no gender provided" }
                     ]} /> :
                     <LoadingText options={{
                       class: "block__lines",
@@ -98,8 +145,8 @@ class UserSection extends Component {
                     this.props.user.hasGottenUser && this.state.user ?
                       <AnnotatedList data={[
                         { label: "email", text: this.state.user.email },
-                        { label: "phone", text: this.state.user.phone ? this.state.user.phone : "no phone number" },
-                        { label: "country", text: this.state.user.address ? this.state.user.address.country : "no country" }
+                        { label: "phone", text: this.state.user.phone || "no phone number" },
+                        { label: "country", text: this.state.user.address || "no country" }
                       ]} /> :
                       <LoadingText options={{
                         class: "block__lines",
