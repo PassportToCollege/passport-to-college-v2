@@ -9,6 +9,15 @@ export const CONTACT_US = { name: "Contact Us", route: "/contact-us" };
 // Admin Routes
 export const DASHBOARD = { name: "Dashboard", route: "/admin/dashboard" };
 export const USERS = { name: "Users", route: "/admin/dashboard/users" };
+export const VIEW_USER = { name: "View Application", route: "/admin/dashboard/users/view/:user_id" };
+export const VIEW_USER_SECTIONS = [
+  { name: "Education", slug: "education", route: "/education" },
+  { name: "Profile Picture", slug: "profile-picture", route: "/profile-picture" },
+  { name: "Bio", slug: "bio", route: "/bio" },
+  { name: "Accomplishments", slug: "accomplishments", route: "/accomplishments" },
+  { name: "Features", slug: "features", route: "/features" },
+  { name: "Settings", slug: "settings", route: "/settings" }
+];
 export const APPLICATIONS = { name: "Applications", route: "/admin/dashboard/applications" };
 export const VIEW_APPLICATION = { name: "View Application", route: "/admin/dashboard/applications/view/:application_id" };
 export const VIEW_APPLICATION_SECTIONS = [
