@@ -6,5 +6,6 @@ export default {
   userProfilePicture: { url: "" },
   application: {},
   applications: {},
-  stats: {}
+  stats: {},
+  student: {}
 }

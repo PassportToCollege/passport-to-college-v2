@@ -8,6 +8,7 @@ import users from "./usersReducer";
 import application from "./applicationReducer";
 import applications from "./applicationsReducer";
 import stats from "./statsReducer";
+import student from "./studentReducer";
 
 const rootReducer = combineReducers({
   hamburgerState,
@@ -17,7 +18,8 @@ const rootReducer = combineReducers({
   application,
   applications,
   stats,
-  users
+  users,
+  student
 });
 
 export default rootReducer;
