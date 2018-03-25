@@ -1,21 +1,17 @@
-/*
-  Contains actions for the currently logged in user.
-*/
-
 import * as types from "./actionTypes";
 import { auth, storage } from "../utils/firebase";
 
 // GET actions
 export const avatarGetInitiated = () => {
   return {
-    type: types.USER_PROFILE_PICTURE_GET_INITIATED,
+    type: types.PROFILE_PICTURE_GET_INITIATED,
     avatar: ""
   };
 };
 
 export const avatarGetFailed = error => {
   return {
-    type: types.USER_PROFILE_PICTURE_GET_FAILED,
+    type: types.PROFILE_PICTURE_GET_FAILED,
     avatar: "",
     error
   };
@@ -23,7 +19,7 @@ export const avatarGetFailed = error => {
 
 export const avatarGetDone = avatar => {
   return {
-    type: types.USER_PROFILE_PICTURE_GET_DONE,
+    type: types.PROFILE_PICTURE_GET_DONE,
     avatar
   };
 };
@@ -49,23 +45,61 @@ export const doAvatarGet = () => {
   }
 }
 
+export const avatarGetByUidInitiated = uid => {
+  return {
+    type: types.PROFILE_PICTURE_GET_BY_UID_INITIATED,
+    user: uid
+  };
+};
+
+export const avatarGetByUidFailed = (error, uid) => {
+  return {
+    type: types.PROFILE_PICTURE_GET_BY_UID_FAILED,
+    user: uid,
+    error
+  };
+};
+
+export const avatarGetByUidDone = picture => {
+  return {
+    type: types.PROFILE_PICTURE_GET_BY_UID_DONE,
+    picture
+  };
+};
+
+export const doAvatarGetByUid = uid => {
+  return dispatch => {
+    dispatch(avatarGetByUidInitiated());
+
+    return storage.ref("users/profile_images")
+      .child(`${uid}.png`)
+      .getDownloadURL()
+      .then(url => {
+        dispatch(avatarGetByUidDone(url));
+      })
+      .catch(error => {
+        dispatch(avatarGetByUidFailed(error));
+      })
+  }
+}
+
 // UPLOAD actions
 export const avatarUploadInitiated = () => {
   return {
-    type: types.USER_PROFILE_PICTURE_UPLOAD_INITIATED
+    type: types.PROFILE_PICTURE_UPLOAD_INITIATED
   };
 };
 
 export const avatarUploadFailed = error => {
   return {
-    type: types.USER_PROFILE_PICTURE_UPLOAD_FAILED,
+    type: types.PROFILE_PICTURE_UPLOAD_FAILED,
     error
   };
 };
 
 export const avatarUploaded = () => {
   return {
-    type: types.USER_PROFILE_PICTURE_UPLOADED
+    type: types.PROFILE_PICTURE_UPLOADED
   }
 }
 

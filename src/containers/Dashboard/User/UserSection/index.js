@@ -6,10 +6,12 @@ import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
 
 import * as studentActions from "../../../../actions/studentActions";
+import * as userProfilePictureActions from "../../../../actions/userProfilePictureActions";
 
 import AnnotatedList from "../../../../components/AnnotatedList";
 import LoadingText from "../../../../components/LoadingText";
 import InitialsAvatar from "../../../../components/InitialsAvatar";
+import DropUploader from "../../../../components/DropUploader";
 
 class UserSection extends Component {
   constructor(props) {
@@ -19,8 +21,13 @@ class UserSection extends Component {
       uid: props.userId,
       section: props.section,
       user: props.user.user,
-      student: props.student.student
+      student: props.student.student,
+      profilePicture: props.picture.picture
     }
+  }
+
+  componentWillMount() {
+    this.props.uppActions.doAvatarGetByUid(this.props.userId);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -33,6 +40,9 @@ class UserSection extends Component {
       && !this.props.student.isGetting) {
         this.props.studentActions.doStudentGet(this.state.uid);
     }
+
+    if (nextProps.picture.hasGottenByUid)
+      this.setState({ picture: nextProps.picture.picture });
 
     if (nextProps.student.hasGotten)
       this.setState({ student: nextProps.student.student });
@@ -104,7 +114,14 @@ class UserSection extends Component {
             </div>
           </section>
         )
+      case "profile-picture":
+        return (
+          <section className="user__section profile_picture__section">
+            <DropUploader />
+          </section>
+        )
       case "personal":
+      default:
         return (
           <section className="user__section personal__section">
             <div className="user__section_left">
@@ -166,10 +183,6 @@ class UserSection extends Component {
             </div>
           </section>
         )
-      default:
-        return (
-          <p>{this.props.section}</p>
-        )
     }
   }
 }
@@ -179,18 +192,22 @@ UserSection.propTypes = {
   userId: propTypes.string,
   user: propTypes.object,
   student: propTypes.object,
-  studentActions: propTypes.object
+  studentActions: propTypes.object,
+  picture: propTypes.string,
+  uppActions: propTypes.object
 };
 
 const mapStateToProps = state => {
   return {
-    student: state.student
+    student: state.student,
+    picture: state.userProfilePicture
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    studentActions: bindActionCreators(studentActions, dispatch)
+    studentActions: bindActionCreators(studentActions, dispatch),
+    uppActions: bindActionCreators(userProfilePictureActions, dispatch)
   };
 };
 
