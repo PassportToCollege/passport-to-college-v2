@@ -13,6 +13,7 @@ import LoadingText from "../../../../components/LoadingText";
 import InitialsAvatar from "../../../../components/InitialsAvatar";
 import DropUploader from "../../../../components/DropUploader";
 import Loader from "../../../../components/Loader";
+import Notification from "../../../../components/Notification";
 
 class UserSection extends Component {
   constructor(props) {
@@ -23,7 +24,9 @@ class UserSection extends Component {
       section: props.section,
       user: props.user.user,
       student: props.student.student,
-      profilePicture: props.picture.picture
+      profilePicture: props.picture.picture,
+      notificationClosed: false,
+      hasError: false
     }
   }
 
@@ -50,7 +53,17 @@ class UserSection extends Component {
   }
 
   render() {
-    return this._render(this.props.section);
+    return (
+      <div>
+        {
+          this.state.hasError && !this.notificationClosed ?
+            <Notification doClose={this.handleNotificationClose}
+              text={this.state.error} /> :
+            null
+        }
+        { this._render(this.props.section) }
+      </div>
+    )
   }
 
   _render = section => {
@@ -198,7 +211,27 @@ class UserSection extends Component {
 
   updateProfilePicture = e => {
     let newProfilePicture = e.files[0];
-    this.props.uppActions.doAvatarUpload(newProfilePicture, { uid: this.state.uid });
+    let reader = new FileReader();
+    reader.readAsDataURL(newProfilePicture);
+    reader.onload = event => {
+      let dataUrl = event.target.result;
+
+      let image = new Image();
+      image.src = dataUrl;
+      image.onload = () => {
+        const { height, width } = image;
+        
+        // ensure image is square
+        if (Math.abs(height - width) <= 100)
+          return this.props.uppActions.doAvatarUpload(newProfilePicture, { uid: this.state.uid });
+        
+        this.setState({ hasError: true, error: "Profile picture dimensions should be 1:1" });
+      }
+    }
+  }
+
+  handleNotificationClose = () => {
+    this.setState({ hasError: false, notificationClosed: true, error: "" });
   }
 }
 

@@ -35,7 +35,7 @@ export const doStudentGet = uid => {
         if (snapshot.exists)
           return dispatch(studentGetSuccess(snapshot.data()));
 
-        return dispatch(studentGetFailed({ message: "no student found" }. uid));
+        return dispatch(studentGetFailed({ message: "no student found" }, uid));
       })
       .catch(error => {
         dispatch(studentGetFailed(error, uid));
