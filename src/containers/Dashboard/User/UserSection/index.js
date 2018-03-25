@@ -5,6 +5,7 @@ import propTypes from "prop-types";
 
 import AnnotatedList from "../../../../components/AnnotatedList";
 import LoadingText from "../../../../components/LoadingText";
+import InitialsAvatar from "../../../../components/InitialsAvatar";
 
 class UserSection extends Component {
   constructor(props) {
@@ -34,6 +35,12 @@ class UserSection extends Component {
           <section className="user__section personal__section">
             <div className="user__section_left">
               <div className="user__personal">
+                {
+                  this.props.user.hasGottenUser && this.state.user ?
+                    <InitialsAvatar initials={`${this.state.user.name.first[0]}${this.state.user.name.last[0]}`} 
+                    styles={{ display: "block", margin: "0 auto 1em" }}/> :
+                    null
+                }
                 {
                   this.props.user.hasGottenUser && this.state.user ?
                     <AnnotatedList data={[
