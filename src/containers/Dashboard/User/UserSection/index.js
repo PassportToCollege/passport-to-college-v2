@@ -1,7 +1,11 @@
 import "./UserSection.css";
 
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
+
+import * as studentActions from "../../../../actions/studentActions";
 
 import AnnotatedList from "../../../../components/AnnotatedList";
 import LoadingText from "../../../../components/LoadingText";
@@ -14,14 +18,24 @@ class UserSection extends Component {
     this.state = {
       uid: props.userId,
       section: props.section,
-      user: props.user.user
+      user: props.user.user,
+      student: props.student.student
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.user.hasGottenUser) {
+    if (nextProps.user.hasGottenUser)
       this.setState({ user: nextProps.user.user });
+      
+    if (nextProps.user.hasGottenUser 
+      && nextProps.user.user.isStudent
+      && !this.props.student.hasGotten
+      && !this.props.student.isGetting) {
+        this.props.studentActions.doStudentGet(this.state.uid);
     }
+
+    if (nextProps.student.hasGotten)
+      this.setState({ student: nextProps.student.student });
   }
 
   render() {
@@ -116,7 +130,24 @@ class UserSection extends Component {
 UserSection.propTypes = {
   section: propTypes.string,
   userId: propTypes.string,
-  user: propTypes.object
+  user: propTypes.object,
+  student: propTypes.object,
+  studentActions: propTypes.object
 };
 
-export default UserSection;
+const mapStateToProps = state => {
+  return {
+    student: state.student
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    studentActions: bindActionCreators(studentActions, dispatch)
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(UserSection);
