@@ -17,7 +17,7 @@ class User extends Component {
     super(props);
 
     this.state = {
-      user: props.user.users
+      user: props.users.user
     };
   }
 
@@ -27,8 +27,8 @@ class User extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.user.hasGotten)
-      this.setState({ user: nextProps.user.users });
+    if (nextProps.users.hasGotten)
+      this.setState({ user: nextProps.users.user });
   }
 
   render() {
@@ -42,7 +42,7 @@ class User extends Component {
 }
 
 User.propTypes = {
-  user: propTypes.object,
+  users: propTypes.object,
   usersActions: propTypes.object,
   match: propTypes.object,
   history: propTypes.object
@@ -50,7 +50,7 @@ User.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    user: state.users
+    users: state.users
   };
 };
 

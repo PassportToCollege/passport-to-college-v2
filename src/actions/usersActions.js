@@ -175,22 +175,43 @@ export const doUsersGet = (page, userType) => {
   }
 }
 
+export const usersGetByIdInitiated = user => {
+  return {
+    type: types.USERS_GET_BY_ID_INITIATED,
+    user
+  };
+}
+
+export const usersGetByIdDone = (user) => {
+  return {
+    type: types.USERS_GET_BY_ID_SUCCESS,
+    user
+  };
+}
+
+export const usersGetByIdFailed = (error, user) => {
+  return {
+    type: types.USERS_GET_BY_ID_FAILED,
+    user, error
+  };
+}
+
 export const doGetUserByUid = uid => {
   return dispatch => {
-    dispatch(usersGetInitiated(1, uid));
+    dispatch(usersGetByIdInitiated(uid));
 
     db.collection("users")
       .doc(uid)
       .get()
       .then(snapshot => {
         if (snapshot.exists) {
-          return dispatch(usersGetDone(snapshot.data(), 1, uid));
+          return dispatch(usersGetByIdDone(snapshot.data()));
         }
 
-        dispatch(usersGetFailed({message: "no user found"}, 1, uid));
+        dispatch(usersGetByIdFailed({message: "no user found"}, uid));
       })
       .catch(error => {
-        dispatch(usersGetFailed(error, 1, uid));
+        dispatch(usersGetByIdFailed(error, uid));
       })
   }
 }

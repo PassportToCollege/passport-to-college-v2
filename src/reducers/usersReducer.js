@@ -8,7 +8,10 @@ import {
   USERS_NEW_USER_CREATED,
   USERS_SEND_SIGNUP_EMAIL_INITIATED,
   USERS_SEND_SIGNUP_EMAIL_FAILED,
-  USERS_SIGNUP_EMAIL_SENT
+  USERS_SIGNUP_EMAIL_SENT,
+  USERS_GET_BY_ID_INITIATED,
+  USERS_GET_BY_ID_FAILED,
+  USERS_GET_BY_ID_SUCCESS
 } from "../actions/actionTypes";
 
 const users = (state = initialState.users, action) => {
@@ -82,6 +85,28 @@ const users = (state = initialState.users, action) => {
         hasSent: true,
         hasFailed: false,
         email: action.email
+      });
+    case USERS_GET_BY_ID_INITIATED:
+      return Object.assign({}, state, {
+        isGetting: true,
+        hasGotten: false,
+        hasFailed: false,
+        user: action.user
+      });
+    case USERS_GET_BY_ID_FAILED:
+      return Object.assign({}, state, {
+        isGetting: false,
+        hasGotten: false,
+        hasFailed: true,
+        user: action.user,
+        error: action.error
+      });
+    case USERS_GET_BY_ID_SUCCESS:
+      return Object.assign({}, state, {
+        isGetting: false,
+        hasGotten: true,
+        hasFailed: false,
+        user: action.user
       });
     default:
       return state;
