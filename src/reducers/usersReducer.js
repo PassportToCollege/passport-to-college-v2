@@ -18,26 +18,26 @@ const users = (state = initialState.users, action) => {
   switch (action.type) {
     case USERS_GET_INITIATED:
       return Object.assign({}, state, {
-        isGetting: true,
+        isGettingUsers: true,
         hasFailed: false,
-        hasGotten: false,
+        hasGottenUsers: false,
         page: action.page,
         userType: action.userType
       });
     case USERS_GET_FAILED:
       return Object.assign({}, state, {
-        isGetting: false,
+        isGettingUsers: false,
         hasFailed: true,
-        hasGotten: false,
+        hasGottenUsers: false,
         page: action.page,
         userType: action.userType,
         error: action.error
       });
     case USERS_GET_SUCCESS:
       return Object.assign({}, state, {
-        isGetting: false,
+        isGettingUsers: false,
         hasFailed: false,
-        hasGotten: true,
+        hasGottenUsers: true,
         page: action.page,
         userType: action.userType,
         users: action.users
@@ -88,23 +88,23 @@ const users = (state = initialState.users, action) => {
       });
     case USERS_GET_BY_ID_INITIATED:
       return Object.assign({}, state, {
-        isGetting: true,
-        hasGotten: false,
+        isGettingUser: true,
+        hasGottenUser: false,
         hasFailed: false,
         user: action.user
       });
     case USERS_GET_BY_ID_FAILED:
       return Object.assign({}, state, {
-        isGetting: false,
-        hasGotten: false,
+        isGettingUser: false,
+        hasGottenUser: false,
         hasFailed: true,
         user: action.user,
         error: action.error
       });
     case USERS_GET_BY_ID_SUCCESS:
       return Object.assign({}, state, {
-        isGetting: false,
-        hasGotten: true,
+        isGettingUser: false,
+        hasGottenUser: true,
         hasFailed: false,
         user: action.user
       });

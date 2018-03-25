@@ -44,7 +44,7 @@ class Users extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.users.hasGotten) {
+    if (nextProps.users.hasGottenUsers) {
       this.setState({ users: nextProps.users.users });
 
       const { search } = this.props.location;
@@ -88,7 +88,7 @@ class Users extends Component {
           <h1>Users</h1>
           {
             this.props.stats.hasGotten && this.state.stats &&
-              this.props.users.hasGotten ?
+              this.props.users.hasGottenUsers ?
               <span className="users__stats">
                 Showing
               <b> {this.state.users.length} </b>
@@ -130,7 +130,7 @@ class Users extends Component {
             </thead>
             <tbody>
               {
-                this.props.users.hasGotten && !this.state.users.empty ?
+                this.props.users.hasGottenUsers && !this.state.users.empty ?
                   this.state.users.map(user => {
                     return (
                       <tr key={user.uid}>
@@ -174,7 +174,7 @@ class Users extends Component {
                       </tr>
                     )
                   }) :
-                  this.props.users.hasGotten && this.state.users.empty ?
+                  this.props.users.hasGottenUsers && this.state.users.empty ?
                     <tr>
                       <td colSpan="6" style={{ textAlign: "center" }}>No users found.</td>
                     </tr> :

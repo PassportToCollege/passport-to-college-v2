@@ -1,0 +1,15 @@
+.user__container {
+  margin-top: 2em;
+}
+
+/* Header */
+.user__container > header > span > h1 {
+  margin-bottom: 0;
+  font-weight: 400;
+}
+
+.user__container>header>span>p {
+  margin: 0;
+  font-weight: bold;
+  opacity: 0.65;
+}

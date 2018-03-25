@@ -27,7 +27,7 @@ class User extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.users.hasGotten)
+    if (nextProps.users.hasGottenUser)
       this.setState({ user: nextProps.users.user });
   }
 
@@ -36,6 +36,32 @@ class User extends Component {
       <div className="dashboard__container">
         <Button text="back to all users" solid
           doClick={() => this.props.history.push("/admin/dashboard/users")} />
+        <div className="user__container">
+          <header>
+            {
+              this.props.users.hasGottenUser && this.state.user ?
+                <span>
+                  <h1>{this.state.user.name.full}</h1>
+                  {
+                    this.state.user.address ?
+                      <p>{this.state.user.address.country}</p> :
+                      <p style={{ fontStyle: "italic", fontWeight: "lighter" }}>
+                        no country
+                      </p>
+                  }
+                </span> :
+                <LoadingText options={{
+                  class: "block__lines",
+                  bg: "transparent",
+                  height: "10px",
+                  lines: [
+                    { color: "rgba(255,101,97,0.2)", width: "200px" },
+                    { color: "rgba(255,101,97,0.4)", width: "100px" }
+                  ]
+                }} />
+            }
+          </header>
+        </div>
       </div>
     )
   }
