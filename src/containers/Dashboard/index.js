@@ -12,6 +12,7 @@ import Applications from "./Applications";
 import Users from "./Users";
 import Profile from "./Profile";
 import Application from "./Application";
+import User from "./User";
 
 export default class Dashboard extends Component {
 
@@ -28,9 +29,10 @@ export default class Dashboard extends Component {
           <Route exact path={this.props.match.url} 
             render={this.renderDashboard}></Route>
           <Route exact path={routes.APPLICATIONS.route} component={Applications}></Route>
-          <Route path={routes.USERS.route} component={Users}></Route>
+          <Route exact path={routes.USERS.route} component={Users}></Route>
           <Route path={routes.PROFILE.route} component={Profile}></Route>
           <Route path={routes.VIEW_APPLICATION.route} component={Application}></Route>
+          <Route path={routes.VIEW_USER.route} component={User}></Route>
         </main>
       </div>
     )
