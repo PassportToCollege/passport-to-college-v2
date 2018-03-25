@@ -30,6 +30,19 @@ class UserSection extends Component {
 
   _render = section => {
     switch (section) {
+      case "education":
+        return (
+          <section className="user__section education__section">
+            {
+              this.props.user.hasGottenUser && this.state.user ?
+                this.state.user.isStudent ?
+                  <p>is student</p> :
+                  <p>not a student</p>
+                :
+                null
+            }
+          </section>
+        )
       case "personal":
         return (
           <section className="user__section personal__section">

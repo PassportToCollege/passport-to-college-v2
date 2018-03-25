@@ -19,7 +19,7 @@ class SignUp extends Component {
     this.state = {
       notificationClosed: false,
       hasError: false,
-      user: props.user.users,
+      user: props.users.user,
       formData: {},
       creatingAccount: false
     };
@@ -33,13 +33,13 @@ class SignUp extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.user.hasGotten)
-      this.setState({ user: nextProps.user.users });
+    if (nextProps.users.hasGottenUser)
+      this.setState({ user: nextProps.users.user });
     
-    if (nextProps.user.hasFailed)
+    if (nextProps.users.hasFailed)
       this.setState({ 
         hasError: true,
-        error: nextProps.user.error.message
+        error: nextProps.users.error.message
        });
 
     if (nextProps.auth.hasFailed)
@@ -56,7 +56,7 @@ class SignUp extends Component {
     return (
       <div className="signup__container">
         {
-          this.props.user.hasGotten ?
+          this.props.users.hasGottenUser && this.state.user ?
             <SignUpForm user={this.state.user} 
               handleSubmit={this.handleSubmit}
               handleInputChange={this.handleInputChange} 
@@ -111,16 +111,16 @@ class SignUp extends Component {
     this.setState({ hasError: false, notificationClosed: true });
 
     if (this.state.accountCreated)
-      this.props.history.push("/auth/sign-in");
+      return this.props.history.push("/auth/sign-in");
     
-    if (this.props.user.hasFailed)
+    if (this.props.users.hasFailed)
       this.props.history.push("/");
   }
 }
 
 SignUp.propTypes = {
   match: propTypes.object,
-  user: propTypes.object,
+  users: propTypes.object,
   usersAction: propTypes.object,
   updateLocation: propTypes.func,
   auth: propTypes.oneOfType([propTypes.bool, propTypes.object]),
@@ -131,7 +131,7 @@ SignUp.propTypes = {
 const mapStateToProps = state => {
   return {
     auth: state.auth,
-    user: state.users
+    users: state.users
   };
 };
 
