@@ -60,6 +60,28 @@ class User extends Component {
                   ]
                 }} />
             }
+            <ul className="user__sections">
+              <li>
+                <NavLink exact
+                  to={this.props.match.url}
+                  activeClassName="active">
+                  Personal
+                </NavLink>
+              </li>
+              {
+                VIEW_USER_SECTIONS.map(section => {
+                  return (
+                    <li key={section.route}>
+                      <NavLink exact
+                        to={`${this.props.match.url}${section.route}`}
+                        activeClassName="active">
+                        {section.name}
+                      </NavLink>
+                    </li>
+                  )
+                })
+              }
+            </ul>
           </header>
         </div>
       </div>
