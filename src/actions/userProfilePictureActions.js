@@ -103,11 +103,28 @@ export const avatarUploaded = () => {
   }
 }
 
-export const doAvatarUpload = file => {
+export const doAvatarUpload = (file, options) => {
+  options = options || {};
+
   return dispatch => {
     dispatch(avatarUploadInitiated());
 
-    auth.onAuthStateChanged(user => {
+    if (options.uid) {
+      const avatarRef = storage.ref("users/profile_images").child(`${options.uid}.png`);
+
+      return avatarRef.put(file)
+        .then(() => {
+          dispatch(avatarUploaded());
+
+          // get new avatar
+          dispatch(doAvatarGetByUid(options.uid));
+        })
+        .catch(error => {
+          dispatch(avatarUploadFailed(error));
+        })
+    }
+
+    return auth.onAuthStateChanged(user => {
       if (user) {
         const user = auth.currentUser.uid;
         const avatarRef = storage.ref("users/profile_images").child(`${user}.png`);

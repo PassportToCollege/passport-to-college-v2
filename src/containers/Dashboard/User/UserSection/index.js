@@ -12,6 +12,7 @@ import AnnotatedList from "../../../../components/AnnotatedList";
 import LoadingText from "../../../../components/LoadingText";
 import InitialsAvatar from "../../../../components/InitialsAvatar";
 import DropUploader from "../../../../components/DropUploader";
+import Loader from "../../../../components/Loader";
 
 class UserSection extends Component {
   constructor(props) {
@@ -42,7 +43,7 @@ class UserSection extends Component {
     }
 
     if (nextProps.picture.hasGottenByUid)
-      this.setState({ picture: nextProps.picture.picture });
+      this.setState({ profilePicture: nextProps.picture.picture });
 
     if (nextProps.student.hasGotten)
       this.setState({ student: nextProps.student.student });
@@ -117,7 +118,16 @@ class UserSection extends Component {
       case "profile-picture":
         return (
           <section className="user__section profile_picture__section">
-            <DropUploader />
+            {
+              this.props.picture.hasGottenByUid && this.state.profilePicture ?
+                <div className="user__profile_picture_container">
+                  <img src={this.state.profilePicture} alt="User Avatar" />
+                </div> :
+                this.props.picture.hasFailedByUid ?
+                  <p>No profile picture</p> :
+                  <Loader />
+            }
+            <DropUploader handleAvatarChange={this.updateProfilePicture} />
           </section>
         )
       case "personal":
@@ -185,6 +195,11 @@ class UserSection extends Component {
         )
     }
   }
+
+  updateProfilePicture = e => {
+    let newProfilePicture = e.files[0];
+    this.props.uppActions.doAvatarUpload(newProfilePicture, { uid: this.state.uid });
+  }
 }
 
 UserSection.propTypes = {
@@ -193,7 +208,7 @@ UserSection.propTypes = {
   user: propTypes.object,
   student: propTypes.object,
   studentActions: propTypes.object,
-  picture: propTypes.string,
+  picture: propTypes.object,
   uppActions: propTypes.object
 };
 

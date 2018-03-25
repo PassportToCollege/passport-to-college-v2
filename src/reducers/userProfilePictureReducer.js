@@ -36,24 +36,24 @@ const avatar = (state = initialState.userProfilePicture, action) => {
         url: action.avatar
       });
     case PROFILE_PICTURE_GET_BY_UID_INITIATED:
-      return Object.assign({
+      return Object.assign({}, state, {
         isGettingByUid: true,
         hasGottenByUid: false,
-        hasFailed: false,
+        hasFailedByUid: false,
         user: action.uid
       });
     case PROFILE_PICTURE_GET_BY_UID_DONE:
-      return Object.assign({
+      return Object.assign({}, state, {
         isGettingByUid: false,
         hasGottenByUid: true,
-        hasFailed: false,
+        hasFailedByUid: false,
         picture: action.picture
       });
     case PROFILE_PICTURE_GET_BY_UID_FAILED:
-      return Object.assign({
+      return Object.assign({}, state, {
         isGettingByUid: false,
         hasGottenByUid: false,
-        hasFailed: true,
+        hasFailedByUid: true,
         user: action.user,
         error: action.error
       });

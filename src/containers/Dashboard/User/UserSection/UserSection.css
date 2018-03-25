@@ -48,3 +48,19 @@
 .user__not_student > h4 {
   text-transform: uppercase;
 }
+
+/* Profile picture section */
+.user__section.profile_picture__section > p {
+  text-align: center;
+  font-family: "Nunito", "Roboto", sans-serif;
+  font-weight: bold;
+}
+
+.user__section.profile_picture__section .user__profile_picture_container {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.user__section.profile_picture__section .user__profile_picture_container > img {
+  max-width: 200px;
+}
