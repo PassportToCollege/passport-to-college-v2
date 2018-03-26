@@ -16,6 +16,7 @@ import Loader from "../../../../components/Loader";
 import Notification from "../../../../components/Notification";
 import WYSIWYGEditor from "../../../../components/Editor";
 import Button from "../../../../components/Button";
+import AddAccomplishment from "../../../AddAccomplishment";
 
 class UserSection extends Component {
   constructor(props) {
@@ -29,7 +30,8 @@ class UserSection extends Component {
       profilePicture: props.picture.picture,
       notificationClosed: false,
       hasError: false,
-      hasNotification: false
+      hasNotification: false,
+      addingAccomplishment: false
     }
   }
 
@@ -206,11 +208,13 @@ class UserSection extends Component {
         if (this.props.student.hasGotten) {
           return (
             <section className="user__section accomplishments__section">
-              <Button text="+ accomplishment" solid 
+              <Button text={this.state.addingAccomplishment ? "- cancel" : "+ accomplishment"} 
+                solid 
                 styles={{
                   position: "absolute",
                   right: "0"
-                }} />
+                }} 
+                doClick={this.toggleAddAccomplishment} />
               {
                 this.props.student.hasGotten && this.state.student
                 && !this.state.student.accomplishments ?
@@ -218,6 +222,11 @@ class UserSection extends Component {
                     <h4>no accomplishments listed yet</h4>
                   </div> :
                 null
+              }
+              {
+                this.state.addingAccomplishment ?
+                  <AddAccomplishment /> :
+                  null
               }
             </section>
           )
@@ -292,6 +301,10 @@ class UserSection extends Component {
           </section>
         )
     }
+  }
+
+  toggleAddAccomplishment = () => {
+    this.setState({ addingAccomplishment: !this.state.addingAccomplishment });
   }
 
   updateProfilePicture = e => {
