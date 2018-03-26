@@ -78,6 +78,27 @@ export const doStudentUpdate = (student, data) => {
       .update(data)
       .then(() => {
         dispatch(studentUpdated(student, data));
+
+        // get student
+        dispatch(doStudentGet(student));
+      })
+      .catch(error => {
+        dispatch(studentUpdateFailed(error, student, data));
+      })
+  }
+}
+
+export const doStudentUpdateWithoutGet = (student, data) => {
+  return dispatch => {
+    dispatch(studentUpdateInitiated(student, data));
+
+    data = data || {};
+
+    db.collection("students")
+      .doc(student)
+      .update(data)
+      .then(() => {
+        dispatch(studentUpdated(student, data));
       })
       .catch(error => {
         dispatch(studentUpdateFailed(error, student, data));
