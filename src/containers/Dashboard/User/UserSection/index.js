@@ -27,7 +27,8 @@ class UserSection extends Component {
       student: props.student.student,
       profilePicture: props.picture.picture,
       notificationClosed: false,
-      hasError: false
+      hasError: false,
+      hasNotification: false
     }
   }
 
@@ -60,6 +61,12 @@ class UserSection extends Component {
           this.state.hasError && !this.notificationClosed ?
             <Notification doClose={this.handleNotificationClose}
               text={this.state.error} /> :
+            null
+        }
+        {
+          this.state.hasNotification && !this.notificationClosed ?
+            <Notification doClose={this.handleNotificationClose}
+              text={this.state.notification} /> :
             null
         }
         { this._render(this.props.section) }
@@ -270,13 +277,24 @@ class UserSection extends Component {
   }
 
   handleNotificationClose = () => {
-    this.setState({ hasError: false, notificationClosed: true, error: "" });
+    this.setState({ 
+      hasError: false,
+      hasNotification: false, 
+      notificationClosed: true, 
+      error: "",
+      notification: "" 
+    });
   }
 
   handleBioSave = content => {
     // update student with content
     // and refresh student
-    return content;
+    this.props.studentActions.doStudentUpdate(this.state.uid, { bio: content });
+    this.setState({
+      hasNotification: true,
+      notification: "Bio saved",
+      notificationClosed: false
+    });
   }
 }
 
