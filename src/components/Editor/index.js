@@ -45,7 +45,7 @@ class WYSIWYGEditor extends Component {
           this.props.readonly ?
             null
           :
-            <div className="editor__controls">
+            <div className="editor__controls" style={this.props.controlStyles}>
               <span className="editor__control" title="Bold" 
                 data-active={this.state.isBold ? "yes" : null}
                 onClick={this.toggleBold}>
@@ -148,7 +148,8 @@ WYSIWYGEditor.propTypes = {
   content: propTypes.object,
   limit: propTypes.number,
   readonly: propTypes.bool,
-  editorStyles: propTypes.object
+  editorStyles: propTypes.object,
+  controlStyles: propTypes.object
 };
 
 export default WYSIWYGEditor;

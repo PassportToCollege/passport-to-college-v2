@@ -14,6 +14,7 @@ import InitialsAvatar from "../../../../components/InitialsAvatar";
 import DropUploader from "../../../../components/DropUploader";
 import Loader from "../../../../components/Loader";
 import Notification from "../../../../components/Notification";
+import WYSIWYGEditor from "../../../../components/Editor";
 
 class UserSection extends Component {
   constructor(props) {
@@ -143,6 +144,44 @@ class UserSection extends Component {
             <DropUploader handleAvatarChange={this.updateProfilePicture} />
           </section>
         )
+      case "bio":
+        return (
+          <section className="user__section bio__section">
+            {
+              this.props.student.hasGotten && this.state.student
+              && this.state.student.bio && this.state.student.bio.blocks ?
+                <WYSIWYGEditor content={this.state.student.bio} saveButton
+                  handleSave={this.handleBioSave}
+                  editorStyles={{
+                    margin: "0 auto",
+                    maxWidth: "100%",
+                    padding: "2em 1.875em",
+                    backgroundColor: "#FFF",
+                    border: "none"
+                  }} 
+                  controlStyles={{
+                    maxWidth: "100%",
+                    position: "static",
+                    marginBottom: "0"
+                  }} />
+                  :
+                <WYSIWYGEditor saveButton
+                  handleSave={this.handleBioSave}
+                  editorStyles={{
+                    margin: "0 auto",
+                    maxWidth: "100%",
+                    padding: "2em 1.875em",
+                    backgroundColor: "#FFF",
+                    border: "none"
+                  }}
+                  controlStyles={{
+                    maxWidth: "100%",
+                    position: "static",
+                    marginBottom: "0"
+                  }} />
+            }
+          </section>
+        )
       case "personal":
       default:
         return (
@@ -232,6 +271,12 @@ class UserSection extends Component {
 
   handleNotificationClose = () => {
     this.setState({ hasError: false, notificationClosed: true, error: "" });
+  }
+
+  handleBioSave = content => {
+    // update student with content
+    // and refresh student
+    return content;
   }
 }
 
