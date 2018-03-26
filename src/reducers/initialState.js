@@ -7,5 +7,6 @@ export default {
   application: {},
   applications: {},
   stats: {},
-  student: {}
+  student: {},
+  students: {}
 }
