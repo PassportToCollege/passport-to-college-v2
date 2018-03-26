@@ -1,5 +1,55 @@
 .add_accomplishment {
   width: 100%;
-  padding: 2em;
   background-color: white;
+}
+
+/* Sections */
+.add_accomplishment__section {
+  width: 100%;
+  padding: 2em 3.5em;
+  margin: 0;
+  border-left: 2px dashed rgba(128, 150, 162, 0.95);
+  border-right: 2px dashed rgba(128, 150, 162, 0.95);
+  border-bottom: 2px dashed rgba(128, 150, 162, 0.95);
+  background-color: white;
+}
+
+.add_accomplishment__section:first-child {
+  border-top: 2px dashed rgba(128, 150, 162, 0.95);
+}
+
+.add_accomplishment__section > .section_heading {
+  text-transform: uppercase;
+  color: #FF6561;
+  margin-top: 0;
+  margin-bottom: 2em;
+}
+
+/* Form elements */
+.add_accomplishment .add_accomplishment__section .form__input_container {
+  margin-bottom: 1em;
+}
+
+.add_accomplishment .add_accomplishment__section label {
+  display: block;
+  color: rgba(128, 150, 162, 0.95);
+  font-size: 1.15em;
+  margin-bottom: 0.5em;
+  font-family: "Muli", "Roboto", sans-serif;
+}
+
+.add_accomplishment .add_accomplishment__section input[type],
+.add_accomplishment .add_accomplishment__section select,
+.add_accomplishment .add_accomplishment__section textarea {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 100%;
+  outline: none;
+  border: 2px solid rgba(128, 150, 162, 0.35);
+  padding: 1em;
+}
+
+.add_accomplishment .add_accomplishment__section select {
+  cursor: pointer;
 }

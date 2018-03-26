@@ -225,7 +225,7 @@ class UserSection extends Component {
               }
               {
                 this.state.addingAccomplishment ?
-                  <AddAccomplishment /> :
+                  <AddAccomplishment student={this.state.student} /> :
                   null
               }
             </section>
