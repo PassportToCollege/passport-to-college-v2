@@ -5,7 +5,7 @@ import {
   STUDENTS_GET_SUCCESS
 } from "../actions/actionTypes";
 
-const students = (state = initialState.students, action) {
+const students = (state = initialState.students, action) => {
   switch (action.type) {
     case STUDENTS_GET_INITIATED:
       return Object.assign({}, state, {
