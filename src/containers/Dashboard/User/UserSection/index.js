@@ -15,6 +15,7 @@ import DropUploader from "../../../../components/DropUploader";
 import Loader from "../../../../components/Loader";
 import Notification from "../../../../components/Notification";
 import WYSIWYGEditor from "../../../../components/Editor";
+import Button from "../../../../components/Button";
 
 class UserSection extends Component {
   constructor(props) {
@@ -190,6 +191,43 @@ class UserSection extends Component {
             }
           </section>
         )
+      case "accomplishments":
+        if (this.props.user.hasGottenUser && this.state.user &&
+          !this.state.user.isStudent) {
+          return (
+            <section className="user__section accomplishments__section">
+              <div className="user__not_student">
+                <h4>user is no a student</h4>
+              </div>
+            </section>
+          )
+        }
+
+        if (this.props.student.hasGotten) {
+          return (
+            <section className="user__section accomplishments__section">
+              <Button text="+ accomplishment" solid 
+                styles={{
+                  position: "absolute",
+                  right: "0"
+                }} />
+              {
+                this.props.student.hasGotten && this.state.student
+                && !this.state.student.accomplishments ?
+                  <div className="user__no_accomplishments">
+                    <h4>no accomplishments listed yet</h4>
+                  </div> :
+                null
+              }
+            </section>
+          )
+        } else {
+          return (
+            <Loader styles={{
+              marginTop: "5em"
+            }}/>
+          )
+        }
       case "personal":
       default:
         return (
@@ -268,7 +306,7 @@ class UserSection extends Component {
       image.onload = () => {
         const { height, width } = image;
         
-        // ensure image is square
+        // ensure image is squarish
         if (Math.abs(height - width) <= 100)
           return this.props.uppActions.doAvatarUpload(newProfilePicture, { uid: this.state.uid });
         

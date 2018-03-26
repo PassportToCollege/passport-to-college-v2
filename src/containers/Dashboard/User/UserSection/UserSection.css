@@ -1,5 +1,6 @@
 .user__section {
   padding: 2em 0;
+  position: relative;
 }
 
 .user__section > div > div > h2 {
@@ -40,12 +41,18 @@
   border-radius: 3px;
 }
 
-.user__section .user__not_student {
+.user__section .user__not_student,
+.user__section .user__no_accomplishments {
   text-align: center;
   min-width: 100%;
 }
 
-.user__not_student > h4 {
+.user__no_accomplishments {
+  margin-top: 5em;
+}
+
+.user__not_student > h4,
+.user__no_accomplishments > h4 {
   text-transform: uppercase;
 }
 
