@@ -10,6 +10,7 @@ import applications from "./applicationsReducer";
 import stats from "./statsReducer";
 import student from "./studentReducer";
 import students from "./studentsReducer";
+import feature from "./featureReducer";
 import features from "./featuresReducer";
 
 const rootReducer = combineReducers({
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   users,
   student,
   students,
+  feature,
   features
 });
 

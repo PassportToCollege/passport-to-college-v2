@@ -65,15 +65,20 @@ export const featureUpdateFailed = (error, feature, data) => {
   };
 };
 
-export const doFeatureUpdate = (feature, data) => {
+export const doFeatureUpdate = (feature, data, options) => {
   return dispatch => {
     dispatch(featureUpdateInitiated(feature, data));
+
+    options = options || {};
 
     db.collection("features")
       .doc(feature)
       .update(data)
       .then(() => {
         dispatch(featureUpdated(feature, data));
+
+        if (options.refesh)
+          return dispatch(doFeatureUpdate(feature));
       })
       .catch(error => {
         dispatch(featureUpdateFailed(error, feature, data));
