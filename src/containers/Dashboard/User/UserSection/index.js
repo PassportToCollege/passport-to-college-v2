@@ -230,7 +230,9 @@ class UserSection extends Component {
                     && this.state.student.accomplishments ?
                     <div className="user__accomplishments">
                       <AccomplishmentsList actions
-                        accomplishments={this.state.student.accomplishments} />
+                        accomplishments={this.state.student.accomplishments} 
+                        doDelete={this.handleAccomplishmentDelete} 
+                        doEdit={this.handleAccomplishmentEdit} />
                     </div> :
                     null
                 }
@@ -361,6 +363,14 @@ class UserSection extends Component {
       notification: "Bio saved",
       notificationClosed: false
     });
+  }
+
+  handleAccomplishmentDelete = slug => {
+    console.log(slug);
+  }
+
+  handleAccomplishmentEdit = slug => {
+    console.log(slug);
   }
 }
 

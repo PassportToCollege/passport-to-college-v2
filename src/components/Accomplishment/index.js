@@ -5,7 +5,16 @@ import propTypes from "prop-types";
 
 import IconButton from "../IconButton";
 
-const Accomplishment = ({ accomplishment, actions }) => {
+const Accomplishment = ({ accomplishment, actions, doDelete, doEdit }) => {
+  const handleDelete = () => {
+    if ("function" === typeof doDelete)
+      doDelete(accomplishment.slug);
+  }
+  const handleEdit = () => {
+    if ("function" === typeof doEdit)
+      doEdit(accomplishment.slug);
+  }
+
   return (
     <div className="accomplishment">
       <section className="accomplishment__meta">
@@ -20,13 +29,15 @@ const Accomplishment = ({ accomplishment, actions }) => {
           <section className="accomplishment__actions">
             <IconButton solid icon="delete" 
               styles={{
-                backgroundColor: "tomato"
-              }}/>
+                backgroundColor: "rgba(128, 150, 162, 0.85)"
+              }} 
+              doClick={handleDelete} />
             <IconButton icon="edit"
               styles={{
-                borderColor: "#FFCB61",
-                color: "#FFCB61"
-              }} />
+                borderColor: "rgba(128, 150, 162, 0.85)",
+                color: "rgba(128, 150, 162, 0.85)"
+              }} 
+              doClick={handleEdit} />
           </section> :
           null
       }
@@ -36,7 +47,9 @@ const Accomplishment = ({ accomplishment, actions }) => {
 
 Accomplishment.propTypes = {
   accomplishment: propTypes.object,
-  actions: propTypes.bool
+  actions: propTypes.bool,
+  doDelete: propTypes.func,
+  doEdit: propTypes.func
 };
 
 export default Accomplishment;
