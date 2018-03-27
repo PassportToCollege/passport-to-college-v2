@@ -237,7 +237,7 @@ class UserSection extends Component {
                     <AddAccomplishment student={this.state.student}
                       doClose={() => this.setState({ addingAccomplishment: false })} /> :
                       this.state.editingAccomplishment && this.props.student.hasGotten ?
-                      <AddAccomplishment student={this.state.student}
+                      <AddAccomplishment edit={true} student={this.state.student}
                         slug={this.state.editingSlug}
                         accomplishment={this.state.accomplishment}
                         doClose={() => 

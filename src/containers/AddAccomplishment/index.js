@@ -22,11 +22,11 @@ class AddAccomplishment extends Component {
       newAccomplishment: {
         student: props.student.uid,
         name: props.student.user.name.full,
-        title: "",
-        slug: "",
+        title: props.edit ? props.accomplishment.title : "",
+        slug: props.edit ? props.slug : "",
         details: {
-          excerpt: "",
-          full: ""
+          excerpt: props.edit ? props.accomplishment.details.excerpt : "",
+          full: props.edit ? props.accomplishment.details.full : ""
         }
       },
       notificationClosed: false,
@@ -58,7 +58,7 @@ class AddAccomplishment extends Component {
           <div className="form__input_container">
             <label>Student</label>
             <select name="student" defaultValue={this.state.student.uid} required
-              onChange={this.handleInputChange}>
+              onChange={this.handleInputChange} disabled={this.props.edit}>
               <option value="" disabled>Choose Student</option>
               {
                 this.props.students.hasGotten && this.state.students ?
@@ -78,7 +78,8 @@ class AddAccomplishment extends Component {
             <label>Full name</label>
             <input type="text" name="name" 
               defaultValue={this.state.student && this.state.student.user ? this.state.student.user.name.full : null} required 
-              onBlur={this.handleInputChange} />
+              onBlur={this.handleInputChange} 
+              disabled={this.props.edit} />
           </div>
         </section>
         <section className="add_accomplishment__section">
@@ -86,28 +87,48 @@ class AddAccomplishment extends Component {
           <div className="form__input_container">
             <label>Title</label>
             <input type="text" name="title" required 
-              onBlur={this.handleInputChange} />
+              onBlur={this.handleInputChange} 
+              defaultValue={this.props.edit ? this.props.accomplishment.title : null}/>
           </div>
           <div className="form__input_container">
             <label>Slug (unique accomplishment identifier)</label>
             <input type="text" name="slug" required 
               onBlur={this.handleInputChange} 
-              ref={input => this.slugInput = input} />
+              ref={input => this.slugInput = input} 
+              disabled={this.props.edit} 
+              defaultValue={this.props.edit ? this.props.slug : null} />
           </div>
           <div className="form__input_container">
             <label>Excerpt</label>
-            <textarea name="details.brief" required rows="3"
-              onBlur={this.handleInputChange}></textarea>
+            <textarea name="details.brief" required rows="5"
+              onBlur={this.handleInputChange}>
+              {
+                this.props.edit ?
+                  this.props.accomplishment.details.excerpt :
+                  null
+              }
+              </textarea>
           </div>
           <div className="form__input_container">
             <label>Details</label>
-            <WYSIWYGEditor saveButton
-              editorStyles={{
-                maxWidth: "100%"
-              }}
-              controlStyles={{
-                maxWidth: "100%"
-              }} handleSave={this.handleDetailsSave} />
+            {
+              this.props.edit ?
+                <WYSIWYGEditor saveButton
+                  content={this.state.newAccomplishment.details.full}
+                  editorStyles={{
+                    maxWidth: "100%"
+                  }}
+                  controlStyles={{
+                    maxWidth: "100%"
+                  }} handleSave={this.handleDetailsSave} /> :
+                <WYSIWYGEditor saveButton
+                  editorStyles={{
+                    maxWidth: "100%"
+                  }}
+                  controlStyles={{
+                    maxWidth: "100%"
+                  }} handleSave={this.handleDetailsSave} />
+            }
           </div>
         </section>
         <section className="add_accomplishment__section">
@@ -157,7 +178,7 @@ class AddAccomplishment extends Component {
         });
         break;
       case "title":
-        if (!this.state.newAccomplishment.slug) {
+        if (!this.state.newAccomplishment.slug && !this.props.edit) {
           this.slugInput.value = e.target.value.toLowerCase().split(" ").join("-");
 
           this.setState({
@@ -206,12 +227,19 @@ class AddAccomplishment extends Component {
   }
 }
 
+AddAccomplishment.defaultProps = {
+  edit: false
+};
+
 AddAccomplishment.propTypes = {
   students: propTypes.object,
   studentsActions: propTypes.object,
   student: propTypes.object,
   studentActions: propTypes.object,
-  doClose: propTypes.func
+  doClose: propTypes.func,
+  edit: propTypes.bool,
+  accomplishment: propTypes.object,
+  slug: propTypes.string
 };
 
 const mapStateToProps = state => {
