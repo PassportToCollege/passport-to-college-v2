@@ -77,7 +77,7 @@ class WYSIWYGEditor extends Component {
             </div>
         }
         <div className="editor__editor" style={ this.props.editorStyles || null }
-          onClick={this.focus}>
+          onClick={this.focusEditor}>
           <Editor editorState={this.state.editorState} 
             onChange={this.onChange}
             onBlur={this.handleBlur}
@@ -142,6 +142,10 @@ class WYSIWYGEditor extends Component {
       return 'handled';
     }
     return 'not-handled';
+  }
+
+  focusEditor = () => {
+    this.domEditor.focus();
   }
 }
 
