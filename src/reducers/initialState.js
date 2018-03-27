@@ -8,5 +8,7 @@ export default {
   applications: {},
   stats: {},
   student: {},
-  students: {}
+  students: {},
+  feature: {},
+  features: {}
 }
