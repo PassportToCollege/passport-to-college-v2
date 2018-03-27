@@ -1,3 +1,4 @@
+import firebase from "firebase";
 import { db } from "../utils/firebase";
 import * as types from "./actionTypes";
 
@@ -102,6 +103,51 @@ export const doStudentUpdateWithoutGet = (student, data) => {
       })
       .catch(error => {
         dispatch(studentUpdateFailed(error, student, data));
+      })
+  }
+}
+
+// DELETE actions
+export const accomplishmentDeleteInitiated = (student, slug) => {
+  return {
+    type: types.STUDENT_ACCOMPLISHMENT_DELETE_INITIATED,
+    student, slug
+  };
+};
+
+export const accomplishmentDeleted = (student, slug) => {
+  return {
+    type: types.STUDENT_ACCOMPLISHMENT_DELETED,
+    student, slug
+  };
+};
+
+export const accomplishmentDeleteFailed = (error, student, slug) => {
+  return {
+    type: types.STUDENT_ACCOMPLISHMENT_DELETED,
+    student, slug, error
+  };
+};
+
+export const doAccomplishmentDelete = (student, slug, options) => {
+  return dispatch => {
+    dispatch(accomplishmentDeleteInitiated(student, slug));
+    
+    options = options || {};
+    
+    db.collection("student")
+      .doc(student)
+      .update({
+        [`accomplishments.${slug}`]: firebase.firestore.FieldValue.delete()
+      })
+      .then(() => {
+        dispatch(accomplishmentDeleted(student, slug));
+
+        if (options.goGet)
+          return dispatch(doStudentGet(student));
+      })
+      .catch(error => {
+        dispatch(accomplishmentDeleteFailed(error, student, slug));
       })
   }
 }
