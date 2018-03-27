@@ -32,7 +32,10 @@ class UserSection extends Component {
       notificationClosed: false,
       hasError: false,
       hasNotification: false,
-      addingAccomplishment: false
+      addingAccomplishment: false,
+      editingAccomplishment: false,
+      accomplishment: {},
+      editingSlug: ""
     }
   }
 
@@ -212,7 +215,7 @@ class UserSection extends Component {
         if (this.props.student.hasGotten) {
           return (
             <section className="user__section accomplishments__section">
-              <Button text={this.state.addingAccomplishment ? "- cancel" : "+ accomplishment"} 
+              <Button text={this.state.addingAccomplishment || this.state.editingAccomplishment ? "- cancel" : "+ accomplishment"} 
                 solid 
                 styles={{
                   position: "absolute",
@@ -233,7 +236,18 @@ class UserSection extends Component {
                     && this.state.student ?
                     <AddAccomplishment student={this.state.student}
                       doClose={() => this.setState({ addingAccomplishment: false })} /> :
-                    null
+                      this.state.editingAccomplishment && this.props.student.hasGotten ?
+                      <AddAccomplishment student={this.state.student}
+                        slug={this.state.editingSlug}
+                        accomplishment={this.state.accomplishment}
+                        doClose={() => 
+                          this.setState({ 
+                            editingAccomplishment: false,
+                            editingSlug: "",
+                            accomplishment: {} 
+                          })
+                        } /> :
+                      null
                 }
                 {
                   this.props.student.hasGotten && this.state.student
@@ -323,6 +337,9 @@ class UserSection extends Component {
   }
 
   toggleAddAccomplishment = () => {
+    if (this.state.editingAccomplishment)
+      return this.setState({ editingAccomplishment: false });
+
     this.setState({ addingAccomplishment: !this.state.addingAccomplishment });
   }
 
@@ -375,7 +392,11 @@ class UserSection extends Component {
   }
 
   handleAccomplishmentEdit = slug => {
-    console.log(slug);
+    this.setState({
+      editingAccomplishment: true,
+      editingSlug: slug,
+      accomplishment: this.state.student.accomplishments[slug]
+    });
   }
 }
 
