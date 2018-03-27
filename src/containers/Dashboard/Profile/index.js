@@ -32,6 +32,7 @@ class Profile extends Component {
   render() {
     return (
       <div className="profile__container">
+        {/* TODO: add notification for update errors */}
         <div className="profile__header">
           <div className="dashboard__container profile__header_body">
             <div className="profile__avatar" style={{ backgroundImage: 'url(' + this.state.profilePicture + ')' }}>
@@ -211,8 +212,23 @@ class Profile extends Component {
 
   handleAvatarChange = (e) => {
     let newGravatar = e.target.files[0];
+    let reader = new FileReader();
+    reader.readAsDataURL(newGravatar);
+    reader.onload = event => {
+      let dataUrl = event.target.result;
 
-    this.props.userProfilePictureActions.doAvatarUpload(newGravatar);
+      let image = new Image();
+      image.src = dataUrl;
+      image.onload = () => {
+        const { height, width } = image;
+
+        // ensure image is squarish
+        if (Math.abs(height - width) <= 100)
+          return this.props.userProfilePictureActions.doAvatarUpload(newGravatar);
+
+        this.setState({ hasError: true, error: "Profile picture dimensions should be 1:1" });
+      }
+    }
   }
 
   handleNameEmailUpdate = () => {

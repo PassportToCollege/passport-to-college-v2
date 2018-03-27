@@ -66,10 +66,14 @@
 .user__section.profile_picture__section .user__profile_picture_container {
   margin: 0 auto;
   text-align: center;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  overflow: hidden;
 }
 
 .user__section.profile_picture__section .user__profile_picture_container > img {
-  max-width: 200px;
+  width: 100%;
 }
 
 /* Accomplishments section */
