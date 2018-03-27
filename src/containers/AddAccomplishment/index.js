@@ -19,7 +19,7 @@ class AddAccomplishment extends Component {
     this.state = {
       students: props.students.students,
       student: props.student,
-      accomplishment: {
+      newAccomplishment: {
         student: props.student.uid,
         name: props.student.user.name.full,
         title: "",
@@ -29,7 +29,7 @@ class AddAccomplishment extends Component {
           full: ""
         }
       },
-      notificationClosed: true,
+      notificationClosed: false,
       hasError: false,
       error: ""
     }
@@ -129,52 +129,52 @@ class AddAccomplishment extends Component {
   }
 
   handleDetailsSave = content => {
-    let { full } = this.state.accomplishment.details;
+    let { full } = this.state.newAccomplishment.details;
     full = content;
 
-    const newAccomplishment = Object.assign({}, this.state.accomplishment, {
-        details: Object.assign({}, this.state.accomplishment.details, {
+    const newAccomplishment = Object.assign({}, this.state.newAccomplishment, {
+        details: Object.assign({}, this.state.newAccomplishment.details, {
           full
         })
     });
 
-    this.setState({ accomplishment: newAccomplishment });
+    this.setState({ newAccomplishment });
   }
 
   handleInputChange = e => {
-    let { excerpt } = this.state.accomplishment.details;
+    let { excerpt } = this.state.newAccomplishment.details;
 
     switch (e.target.name) {
       case "details.brief":
         excerpt = e.target.value;
 
         this.setState({
-          accomplishment: Object.assign({}, this.state.accomplishment, {
-            details: Object.assign({}, this.state.accomplishment.details, {
+          newAccomplishment: Object.assign({}, this.state.newAccomplishment, {
+            details: Object.assign({}, this.state.newAccomplishment.details, {
               excerpt
             })
           }) 
         });
         break;
       case "title":
-        if (!this.state.accomplishment.slug) {
+        if (!this.state.newAccomplishment.slug) {
           this.slugInput.value = e.target.value.toLowerCase().split(" ").join("-");
 
           this.setState({
-            accomplishment: Object.assign({}, this.state.accomplishment, {
+            newAccomplishment: Object.assign({}, this.state.newAccomplishment, {
               slug: this.slugInput.value
             })
           });
         }
 
-        this.setState({ accomplishment: Object.assign({}, this.state.accomplishment, {
+        this.setState({ newAccomplishment: Object.assign({}, this.state.newAccomplishment, {
             "title": e.target.value
           })
         });
 
         break;
       default:
-        this.setState({ accomplishment: Object.assign({}, this.state.accomplishment, {
+        this.setState({ newAccomplishment: Object.assign({}, this.state.newAccomplishment, {
           [e.target.name]: e.target.value
         })
       });
@@ -184,12 +184,12 @@ class AddAccomplishment extends Component {
   handleAccomplishmentSave = e => {
     e.preventDefault();
 
-    let { accomplishment } = this.state;
+    let { newAccomplishment } = this.state;
 
-    if ("object" === typeof accomplishment.details.full) {
+    if ("object" === typeof newAccomplishment.details.full) {
       // update student
       const accomplishments = Object.assign({}, this.state.student.accomplishments, {
-        [accomplishment.slug]: accomplishment
+        [newAccomplishment.slug]: newAccomplishment
       });
 
       this.props.studentActions.doStudentUpdate(this.state.student.uid, { accomplishments });
@@ -203,7 +203,6 @@ class AddAccomplishment extends Component {
         error: "You need to provide full details of the accomplishment"
       });
     }
-
   }
 }
 

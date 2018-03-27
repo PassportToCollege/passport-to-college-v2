@@ -57,6 +57,9 @@ class UserSection extends Component {
 
     if (nextProps.student.hasGotten)
       this.setState({ student: nextProps.student.student });
+    
+    if (nextProps.student.hasFailed)
+      this.setState({ hasError: true, notificationClosed: false, error: nextProps.student.error.message });
   }
 
   render() {
@@ -226,6 +229,13 @@ class UserSection extends Component {
                   null
                 }
                 {
+                  this.state.addingAccomplishment && this.props.student.hasGotten
+                    && this.state.student ?
+                    <AddAccomplishment student={this.state.student}
+                      doClose={() => this.setState({ addingAccomplishment: false })} /> :
+                    null
+                }
+                {
                   this.props.student.hasGotten && this.state.student
                     && this.state.student.accomplishments ?
                     <div className="user__accomplishments">
@@ -234,13 +244,6 @@ class UserSection extends Component {
                         doDelete={this.handleAccomplishmentDelete} 
                         doEdit={this.handleAccomplishmentEdit} />
                     </div> :
-                    null
-                }
-                {
-                  this.state.addingAccomplishment && this.props.student.hasGotten 
-                    && this.state.student ?
-                    <AddAccomplishment student={this.state.student} 
-                      doClose={() => this.setState({ addingAccomplishment: false })}/> :
                     null
                 }
               </div>
