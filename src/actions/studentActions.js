@@ -135,7 +135,7 @@ export const doAccomplishmentDelete = (student, slug, options) => {
     
     options = options || {};
     
-    db.collection("student")
+    db.collection("students")
       .doc(student)
       .update({
         [`accomplishments.${slug}`]: firebase.firestore.FieldValue.delete()
@@ -143,7 +143,7 @@ export const doAccomplishmentDelete = (student, slug, options) => {
       .then(() => {
         dispatch(accomplishmentDeleted(student, slug));
 
-        if (options.goGet)
+        if (options.refresh)
           return dispatch(doStudentGet(student));
       })
       .catch(error => {

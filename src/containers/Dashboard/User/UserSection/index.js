@@ -369,7 +369,9 @@ class UserSection extends Component {
   }
 
   handleAccomplishmentDelete = slug => {
-    console.log(slug);
+    this.props.studentActions.doAccomplishmentDelete(this.state.student.uid, slug, {
+      refresh: true
+    });
   }
 
   handleAccomplishmentEdit = slug => {
