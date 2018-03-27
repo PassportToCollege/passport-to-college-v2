@@ -191,14 +191,19 @@ class AddAccomplishment extends Component {
       const accomplishments = Object.assign({}, this.state.student.accomplishments, {
         [accomplishment.slug]: accomplishment
       });
-      return this.props.studentActions.doStudentUpdate(this.state.student.uid, { accomplishments });
+
+      this.props.studentActions.doStudentUpdate(this.state.student.uid, { accomplishments });
+
+      if (this.props.doClose && "function" === typeof this.props.doClose)
+        this.props.doClose();
+    } else {
+      this.setState({
+        hasError: true,
+        notificationClosed: false,
+        error: "You need to provide full details of the accomplishment"
+      });
     }
 
-    this.setState({
-      hasError: true,
-      notificationClosed: false,
-      error: "You need to provide full details of the accomplishment"
-    });
   }
 }
 
@@ -206,7 +211,8 @@ AddAccomplishment.propTypes = {
   students: propTypes.object,
   studentsActions: propTypes.object,
   student: propTypes.object,
-  studentActions: propTypes.object
+  studentActions: propTypes.object,
+  doClose: propTypes.func
 };
 
 const mapStateToProps = state => {
