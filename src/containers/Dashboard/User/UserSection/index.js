@@ -19,6 +19,7 @@ import WYSIWYGEditor from "../../../../components/Editor";
 import Button from "../../../../components/Button";
 import AddAccomplishment from "../../../AddAccomplishment";
 import AccomplishmentsList from "../../../../components/AccomplishmentsList";
+import FeatureStudent from "../../../FeatureStudent";
 
 class UserSection extends Component {
   constructor(props) {
@@ -37,7 +38,8 @@ class UserSection extends Component {
       editingAccomplishment: false,
       accomplishment: {},
       editingSlug: "",
-      noFeatures: props.features.hasFailed && props.features.error
+      noFeatures: props.features.hasFailed && props.features.error,
+      editingFeature: false
     }
   }
 
@@ -295,7 +297,8 @@ class UserSection extends Component {
         if (this.props.student.hasGotten) {
           return (
             <section className="user__section features__section">
-              <Button text="feature student"
+              <Button text={this.state.editingFeature ? "- cancel" : "+ feature student"}
+                doClick={() => this.setState({ editingFeature: !this.state.editingFeature })}
                 solid
                 styles={{
                   position: "absolute",
@@ -307,6 +310,11 @@ class UserSection extends Component {
                     <div className="user__no_features">
                       <h4>student has not been featured</h4>
                     </div> :
+                    null
+                }
+                {
+                  this.state.editingFeature ?
+                    <FeatureStudent student={this.state.student} /> :
                     null
                 }
               </div>

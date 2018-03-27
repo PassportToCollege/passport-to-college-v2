@@ -1,0 +1,56 @@
+.feature_student {
+  width: 100%;
+  background-color: white;
+}
+
+/* Sections */
+.feature_student__section {
+  width: 100%;
+  padding: 2em 3.5em;
+  margin: 0;
+  border-left: 2px dashed rgba(128, 150, 162, 0.95);
+  border-right: 2px dashed rgba(128, 150, 162, 0.95);
+  border-bottom: 2px dashed rgba(128, 150, 162, 0.95);
+  background-color: white;
+}
+
+.feature_student__section:first-child {
+  border-top: 2px dashed rgba(128, 150, 162, 0.95);
+}
+
+.feature_student__section > .section_heading {
+  text-transform: uppercase;
+  color: #FF6561;
+  margin-top: 0;
+  margin-bottom: 2em;
+}
+
+/* Form elements */
+.feature_student .feature_student__section .form__input_container {
+  margin-bottom: 1em;
+}
+
+.feature_student .feature_student__section label {
+  display: block;
+  color: rgba(128, 150, 162, 0.95);
+  font-size: 1.15em;
+  margin-bottom: 0.5em;
+  font-family: "Muli", "Roboto", sans-serif;
+}
+
+.feature_student .feature_student__section input[type],
+.feature_student .feature_student__section select,
+.feature_student .feature_student__section textarea {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 100%;
+  outline: none;
+  border: 2px solid rgba(128, 150, 162, 0.35);
+  padding: 1em;
+  font-family: "Roboto", sans-serif;
+}
+
+.feature_student .feature_student__section select {
+  cursor: pointer;
+}
