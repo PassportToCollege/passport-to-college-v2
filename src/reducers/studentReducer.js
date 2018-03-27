@@ -5,7 +5,10 @@ import {
   STUDENT_GET_SUCCESS,
   STUDENT_UPDATE_INITIATED,
   STUDENT_UPDATE_FAILED,
-  STUDENT_UPDATED
+  STUDENT_UPDATED,
+  STUDENT_ACCOMPLISHMENT_DELETE_INITIATED,
+  STUDENT_ACCOMPLISHMENT_DELETED,
+  STUDENT_ACCOMPLISHMENT_DELETE_FAILED
 } from "../actions/actionTypes";
 
 const student = (state = initialState.student, action) => {
@@ -56,6 +59,28 @@ const student = (state = initialState.student, action) => {
         hasFailed: false,
         student: action.student,
         data: action.data
+      });
+    case STUDENT_ACCOMPLISHMENT_DELETE_INITIATED:
+      return Object.assign({}, state, {
+        isDeleting: true,
+        hasDeleted: false,
+        hasFailed: false,
+        slug: action.slug
+      });
+    case STUDENT_ACCOMPLISHMENT_DELETED:
+      return Object.assign({}, state, {
+        isDeleting: false,
+        hasDeleted: true,
+        hasFailed: false,
+        slug: action.slug
+      });
+    case STUDENT_ACCOMPLISHMENT_DELETE_FAILED:
+      return Object.assign({}, state, {
+        isDeleting: false,
+        hasDeleted: false,
+        hasFailed: true,
+        slug: action.slug,
+        error: action.error
       });
     default:
       return state;
