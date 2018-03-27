@@ -1,0 +1,48 @@
+.accomplishment {
+  background-color: white;
+  padding: 2em;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.accomplishment > section {
+  height: 100%;
+}
+
+.accomplishment > .accomplishment__meta,
+.accomplishment > .accomplishment__actions {
+  max-width: 300px;
+}
+
+.accomplishment>.accomplishment__excerpt {
+  flex: 1;
+}
+
+.accomplishment > .accomplishment__meta > span {
+  font-family: "Muli", sans-serif;
+  font-size: 0.85em;
+  font-style: italic;
+  opacity: 0.85;
+}
+
+.accomplishment > .accomplishment__meta > h2 {
+  margin: 0;
+  font-weight: 400;
+  color: rgba(128, 150, 162, 0.95);
+}
+
+.accomplishment > .accomplishment__excerpt > p {
+  margin: 0;
+}
+
+@media (min-width: 1050px) {
+  .accomplishment>.accomplishment__excerpt {
+    margin: 0 1em;
+    padding: 0 1em;
+    border-right: 1px solid rgba(128, 150, 162, 0.25);
+    border-left: 1px solid rgba(128, 150, 162, 0.25);
+  }
+}

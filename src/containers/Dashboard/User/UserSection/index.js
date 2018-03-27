@@ -17,6 +17,7 @@ import Notification from "../../../../components/Notification";
 import WYSIWYGEditor from "../../../../components/Editor";
 import Button from "../../../../components/Button";
 import AddAccomplishment from "../../../AddAccomplishment";
+import AccomplishmentsList from "../../../../components/AccomplishmentsList";
 
 class UserSection extends Component {
   constructor(props) {
@@ -215,19 +216,31 @@ class UserSection extends Component {
                   right: "0"
                 }} 
                 doClick={this.toggleAddAccomplishment} />
-              {
-                this.props.student.hasGotten && this.state.student
-                && !this.state.student.accomplishments ?
-                  <div className="user__no_accomplishments">
-                    <h4>no accomplishments listed yet</h4>
-                  </div> :
-                null
-              }
-              {
-                this.state.addingAccomplishment ?
-                  <AddAccomplishment student={this.state.student} /> :
+              <div className="accomplishments__section_content">
+                {
+                  this.props.student.hasGotten && this.state.student
+                  && !this.state.student.accomplishments ?
+                    <div className="user__no_accomplishments">
+                      <h4>no accomplishments listed yet</h4>
+                    </div> :
                   null
-              }
+                }
+                {
+                  this.props.student.hasGotten && this.state.student
+                    && this.state.student.accomplishments ?
+                    <div className="user__accomplishments">
+                      <AccomplishmentsList actions
+                        accomplishments={this.state.student.accomplishments} />
+                    </div> :
+                    null
+                }
+                {
+                  this.state.addingAccomplishment && this.props.student.hasGotten 
+                    && this.state.student ?
+                    <AddAccomplishment student={this.state.student} /> :
+                    null
+                }
+              </div>
             </section>
           )
         } else {

@@ -6,6 +6,7 @@ import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
 
 import * as studentsActions from "../../actions/studentsActions";
+import * as studentActions from "../../actions/studentActions";
 
 import WYSIWYGEditor from "../../components/Editor";
 import Button from "../../components/Button";
@@ -187,7 +188,10 @@ class AddAccomplishment extends Component {
 
     if ("object" === typeof accomplishment.details.full) {
       // update student
-      return console.log("everythings good");
+      const accomplishments = Object.assign({}, this.state.student.accomplishments, {
+        [accomplishment.slug]: accomplishment
+      });
+      return this.props.studentActions.doStudentUpdate(this.state.student.uid, { accomplishments });
     }
 
     this.setState({
@@ -201,7 +205,8 @@ class AddAccomplishment extends Component {
 AddAccomplishment.propTypes = {
   students: propTypes.object,
   studentsActions: propTypes.object,
-  student: propTypes.object
+  student: propTypes.object,
+  studentActions: propTypes.object
 };
 
 const mapStateToProps = state => {
@@ -212,7 +217,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    studentsActions: bindActionCreators(studentsActions, dispatch)
+    studentsActions: bindActionCreators(studentsActions, dispatch),
+    studentActions: bindActionCreators(studentActions, dispatch)
   };
 };
 

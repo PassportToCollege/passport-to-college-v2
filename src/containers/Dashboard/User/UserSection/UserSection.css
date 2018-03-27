@@ -71,3 +71,8 @@
 .user__section.profile_picture__section .user__profile_picture_container > img {
   max-width: 200px;
 }
+
+/* Accomplishments section */
+.user__section.accomplishments__section .accomplishments__section_content {
+  padding-top: 40px;
+}
