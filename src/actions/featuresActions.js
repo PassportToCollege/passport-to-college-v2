@@ -32,7 +32,7 @@ export const doGetFeaturesByUser = student => {
       .get()
       .then(snapshots => {
         if (snapshots.empty)
-          return dispatch(featuresGetFailed({ message: `no featured found for ${student}` }));
+          return dispatch(featuresGetFailed({ message: "no features found" }));
         
         let data = [];
         snapshots.forEach(snapshot => {

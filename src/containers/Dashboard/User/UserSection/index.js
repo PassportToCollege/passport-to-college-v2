@@ -7,6 +7,7 @@ import propTypes from "prop-types";
 
 import * as studentActions from "../../../../actions/studentActions";
 import * as userProfilePictureActions from "../../../../actions/userProfilePictureActions";
+import * as featuresActions from "../../../../actions/featuresActions";
 
 import AnnotatedList from "../../../../components/AnnotatedList";
 import LoadingText from "../../../../components/LoadingText";
@@ -53,6 +54,7 @@ class UserSection extends Component {
       && !this.props.student.hasGotten
       && !this.props.student.isGetting) {
         this.props.studentActions.doStudentGet(this.state.uid);
+        this.props.featuresActions.doGetFeaturesByUser(this.state.uid);
     }
 
     if (nextProps.picture.hasGottenByUid)
@@ -61,6 +63,13 @@ class UserSection extends Component {
     if (nextProps.student.hasGotten)
       this.setState({ student: nextProps.student.student });
     
+    if (nextProps.features.hasGotten)
+      this.setState({ features: nextProps.features.features });
+
+    if (nextProps.features.hasFailed && 
+      nextProps.features.error.message === "no features found")
+      this.setState({ noFeatures: true });
+
     if (nextProps.student.hasFailed)
       this.setState({ hasError: true, notificationClosed: false, error: nextProps.student.error.message });
   }
@@ -406,6 +415,8 @@ UserSection.propTypes = {
   user: propTypes.object,
   student: propTypes.object,
   studentActions: propTypes.object,
+  features: propTypes.object,
+  featuresActions: propTypes.object,
   picture: propTypes.object,
   uppActions: propTypes.object
 };
@@ -413,14 +424,16 @@ UserSection.propTypes = {
 const mapStateToProps = state => {
   return {
     student: state.student,
-    picture: state.userProfilePicture
+    picture: state.userProfilePicture,
+    features: state.features
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     studentActions: bindActionCreators(studentActions, dispatch),
-    uppActions: bindActionCreators(userProfilePictureActions, dispatch)
+    uppActions: bindActionCreators(userProfilePictureActions, dispatch),
+    featuresActions: bindActionCreators(featuresActions, dispatch)
   };
 };
 
