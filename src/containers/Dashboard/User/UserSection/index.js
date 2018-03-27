@@ -36,7 +36,8 @@ class UserSection extends Component {
       addingAccomplishment: false,
       editingAccomplishment: false,
       accomplishment: {},
-      editingSlug: ""
+      editingSlug: "",
+      noFeatures: props.features.hasFailed && props.features.error
     }
   }
 
@@ -277,6 +278,45 @@ class UserSection extends Component {
             <Loader styles={{
               marginTop: "5em"
             }}/>
+          )
+        }
+      case "features":
+        if (this.props.user.hasGottenUser && this.state.user &&
+          !this.state.user.isStudent) {
+          return (
+            <section className="user__section features__section">
+              <div className="user__not_student">
+                <h4>user is no a student</h4>
+              </div>
+            </section>
+          )
+        }
+        
+        if (this.props.student.hasGotten) {
+          return (
+            <section className="user__section features__section">
+              <Button text="feature student"
+                solid
+                styles={{
+                  position: "absolute",
+                  right: "0"
+                }} />
+              <div className="features__section_content">
+                {
+                  this.props.features.hasFailed && this.state.noFeatures ?
+                    <div className="user__no_features">
+                      <h4>student has not been featured</h4>
+                    </div> :
+                    null
+                }
+              </div>
+            </section>
+          )
+        } else {
+          return (
+            <Loader styles={{
+              marginTop: "5em"
+            }} />
           )
         }
       case "personal":

@@ -42,17 +42,20 @@
 }
 
 .user__section .user__not_student,
-.user__section .user__no_accomplishments {
+.user__section .user__no_accomplishments,
+.user__section .user__no_features {
   text-align: center;
   min-width: 100%;
 }
 
-.user__no_accomplishments {
+.user__no_accomplishments,
+.user__no_features {
   margin-top: 5em;
 }
 
 .user__not_student > h4,
-.user__no_accomplishments > h4 {
+.user__no_accomplishments > h4,
+.user__no_features > h4 {
   text-transform: uppercase;
 }
 
@@ -80,3 +83,5 @@
 .user__section.accomplishments__section .accomplishments__section_content {
   padding-top: 40px;
 }
+
+/* Features section */
