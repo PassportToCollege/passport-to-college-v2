@@ -76,11 +76,14 @@ class WYSIWYGEditor extends Component {
               <span className="editor__word_count">{this.state.words} { this.state.words === 1 ? "word" : "words" }</span>
             </div>
         }
-        <div className="editor__editor" style={ this.props.editorStyles || null }>
+        <div className="editor__editor" style={ this.props.editorStyles || null }
+          onClick={this.focus}>
           <Editor editorState={this.state.editorState} 
             onChange={this.onChange}
+            onBlur={this.handleBlur}
             handleKeyCommand={this.handleKeyCommand}
-            readOnly={this.props.readonly} />
+            readOnly={this.props.readonly} 
+            ref={ref => this.domEditor = ref} />
         </div>
       </div>
     )
@@ -95,6 +98,11 @@ class WYSIWYGEditor extends Component {
 
   _handleSave = () => {
     this.props.handleSave(convertToRaw(this.state.editorState.getCurrentContent()));
+  }
+
+  handleBlur = () => {
+    if ("function" === typeof this.props.captureBlur)
+      this.props.captureBlur(convertToRaw(this.state.editorState.getCurrentContent()));
   }
 
   toggleBold = () => {
@@ -149,7 +157,8 @@ WYSIWYGEditor.propTypes = {
   limit: propTypes.number,
   readonly: propTypes.bool,
   editorStyles: propTypes.object,
-  controlStyles: propTypes.object
+  controlStyles: propTypes.object,
+  captureBlur: propTypes.func
 };
 
 export default WYSIWYGEditor;

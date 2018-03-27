@@ -113,21 +113,23 @@ class AddAccomplishment extends Component {
             <label>Details</label>
             {
               this.props.edit ?
-                <WYSIWYGEditor saveButton
+                <WYSIWYGEditor
+                  captureBlur={this.handleDetailsBlur}
                   content={this.state.newAccomplishment.details.full}
                   editorStyles={{
                     maxWidth: "100%"
                   }}
                   controlStyles={{
                     maxWidth: "100%"
-                  }} handleSave={this.handleDetailsSave} /> :
-                <WYSIWYGEditor saveButton
+                  }} /> :
+                <WYSIWYGEditor
+                  captureBlur={this.handleDetailsBlur}
                   editorStyles={{
                     maxWidth: "100%"
                   }}
                   controlStyles={{
                     maxWidth: "100%"
-                  }} handleSave={this.handleDetailsSave} />
+                  }} />
             }
           </div>
         </section>
@@ -149,7 +151,7 @@ class AddAccomplishment extends Component {
     })
   }
 
-  handleDetailsSave = content => {
+  handleDetailsBlur = content => {
     let { full } = this.state.newAccomplishment.details;
     full = content;
 
