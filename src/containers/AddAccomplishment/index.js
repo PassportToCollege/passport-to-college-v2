@@ -101,12 +101,12 @@ class AddAccomplishment extends Component {
           <div className="form__input_container">
             <label>Excerpt</label>
             <textarea name="details.brief" required rows="5"
-              onBlur={this.handleInputChange}>
-              {
+              onBlur={this.handleInputChange}
+              defaultValue={
                 this.props.edit ?
                   this.props.accomplishment.details.excerpt :
                   null
-              }
+              }>
               </textarea>
           </div>
           <div className="form__input_container">

@@ -61,7 +61,10 @@ class FeatureStudent extends Component {
         </section>
         <section className="feature_student__section">
           <h3 className="section_heading">4. expiration</h3>
-          <input type="datetime-local" name="expDate" required />
+          <div className="form__input_container">
+            <label>Date</label>
+            <input type="date" name="expDate" required />
+          </div>
         </section>
         <section className="feature_student__section">
           <div className="form__input_container">
