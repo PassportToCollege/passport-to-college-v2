@@ -5,7 +5,10 @@ import {
   FEATURE_GET_SUCCESS,
   FEATURE_UPDATE_FAILED,
   FEATURE_UPDATE_INITIATED,
-  FEATURE_UPDATED
+  FEATURE_UPDATED,
+  FEATURE_CREATION_INITIATED,
+  FEATURE_CREATED,
+  FEATURE_CREATION_FAILED
 } from "../actions/actionTypes";
 
 const feature = (state = initialState.feature, action) => {
@@ -31,6 +34,28 @@ const feature = (state = initialState.feature, action) => {
         hasGotten: true,
         hasFailed: false,
         feature: action.feature
+      });
+    case FEATURE_CREATION_INITIATED:
+      return Object.assign({}, state, {
+        isCreating: true,
+        hasCreated: false,
+        creationFailed: false,
+        data: action.data
+      });
+    case FEATURE_CREATED:
+      return Object.assign({}, state, {
+        isCreating: false,
+        hasCreated: true,
+        creationFailed: false,
+        data: action.data
+      });
+    case FEATURE_CREATION_FAILED:
+      return Object.assign({}, state, {
+        isCreating: false,
+        hasCreated: false,
+        creationFailed: true,
+        error: action.error,
+        data: action.data
       });
     case FEATURE_UPDATE_INITIATED:
       return Object.assign({}, state, {

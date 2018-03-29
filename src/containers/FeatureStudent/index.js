@@ -76,7 +76,8 @@ class FeatureStudent extends Component {
         <section className="feature_student__section">
           <div className="form__input_container">
             <Button type="submit" solid
-              text="save feature" />
+              text="save feature" 
+              doClick={this.handleFeatureSave} />
           </div>
         </section>
       </form>
@@ -96,6 +97,22 @@ class FeatureStudent extends Component {
         [e.target.name]: e.target.value
       })
     });
+  }
+
+  handleFeatureSave = e => {
+    e.preventDefault();
+
+    const { feature } = this.state;
+
+    if ("object" === typeof details) {
+      console.log("you good")
+    } else {
+      this.setState({
+        hasError: true,
+        notificationClosed: false,
+        error: "You need to provide full details of the feature"
+      });
+    }
   }
 
   handleNotificationClose = () => {

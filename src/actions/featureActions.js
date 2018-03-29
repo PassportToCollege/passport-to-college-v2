@@ -1,5 +1,6 @@
 import { db } from "../utils/firebase";
 import * as types from "./actionTypes";
+import * as featuresActions from "./featuresActions";
 
 // GET actions
 export const featureGetInitiated = feature => {
@@ -38,6 +39,48 @@ export const doFeatureGet = feature => {
       })
       .catch(error => {
         dispatch(featureGetFailed(error, feature));
+      })
+  }
+}
+
+// SET actions
+export const featureCreationInitiated = data => {
+  return {
+    type: types.FEATURE_CREATION_INITIATED,
+    data
+  };
+};
+
+export const featureCreated = data => {
+  return {
+    type: types.FEATURE_CREATED,
+    data
+  };
+};
+
+export const featureCreationFailed = (error, data) => {
+  return {
+    type: types.FEATURE_CREATION_FAILED,
+    error, data
+  };
+};
+
+export const doCreateFeature = (data, options) => {
+  return dispatch => {
+    dispatch(featureCreationInitiated(data));
+
+    options = options || {};
+
+    db.collection("features")
+      .add(data)
+      .then(() => {
+        dispatch(featureCreated(data));
+
+        if (options.refresh)
+          return featuresActions.doGetFeaturesByUser(data.student);
+      })
+      .catch(error => {
+        dispatch(featureCreationFailed(error, data));
       })
   }
 }
