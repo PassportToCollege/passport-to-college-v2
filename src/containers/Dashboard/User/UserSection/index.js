@@ -20,6 +20,7 @@ import Button from "../../../../components/Button";
 import AddAccomplishment from "../../../AddAccomplishment";
 import AccomplishmentsList from "../../../../components/AccomplishmentsList";
 import FeatureStudent from "../../../FeatureStudent";
+import FeatureList from "../../../../components/FeatureList";
 
 class UserSection extends Component {
   constructor(props) {
@@ -30,6 +31,7 @@ class UserSection extends Component {
       section: props.section,
       user: props.user.user,
       student: props.student.student,
+      features: props.features.features,
       profilePicture: props.picture.picture,
       notificationClosed: false,
       hasError: false,
@@ -316,6 +318,11 @@ class UserSection extends Component {
                   this.state.editingFeature ?
                     <FeatureStudent student={this.state.student} 
                       doClose={() => this.setState({ editingFeature: false })} /> :
+                    null
+                }
+                {
+                  this.props.features.hasGotten && this.state.features ?
+                    <FeatureList features={this.state.features} /> :
                     null
                 }
               </div>

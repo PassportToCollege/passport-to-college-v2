@@ -1,0 +1,12 @@
+.feature_list {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.feature_list .feature__item {
+  flex-basis: 500px;
+  margin: 1em;
+}

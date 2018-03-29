@@ -36,7 +36,10 @@ export const doGetFeaturesByUser = student => {
         
         let data = [];
         snapshots.forEach(snapshot => {
-          data.push(snapshot.data());
+          let docData = snapshot.data();
+          docData.fid = snapshot.id;
+
+          data.push(docData);
         });
 
         dispatch(featuresGetDone(data));
