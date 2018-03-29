@@ -5,20 +5,25 @@ import propTypes from "prop-types";
 
 import Feature from "../Feature";
 
-const FeatureList = ({ features }) => {
+const FeatureList = ({ features, actions }) => {
   return (
     <div className="feature_list">
       {
         features.map((feature, i) => {
-          return <Feature key={i} feature={feature} />
+          return <Feature key={i} actions feature={feature} />
         })
       }
     </div>
   )
 }
 
+FeatureList.defaultProps = {
+  actions: false
+}
+
 FeatureList.propTypes = {
-  features: propTypes.array
+  features: propTypes.array,
+  actions: propTypes.bool
 };
 
 export default FeatureList;

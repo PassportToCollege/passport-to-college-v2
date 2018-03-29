@@ -322,7 +322,7 @@ class UserSection extends Component {
                 }
                 {
                   this.props.features.hasGotten && this.state.features ?
-                    <FeatureList features={this.state.features} /> :
+                    <FeatureList actions features={this.state.features} /> :
                     null
                 }
               </div>

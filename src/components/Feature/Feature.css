@@ -1,0 +1,11 @@
+.feature__item .feature__actions {
+  padding: 1em 0 0;
+  border-top: 2px solid rgba(53,53,53,0.5);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.feature__item .feature__actions > button {
+  margin-right: 1em;
+}
