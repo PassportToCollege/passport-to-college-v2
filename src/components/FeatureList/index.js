@@ -10,7 +10,7 @@ const FeatureList = ({ features, actions }) => {
     <div className="feature_list">
       {
         features.map((feature, i) => {
-          return <Feature key={i} actions feature={feature} />
+          return <Feature key={i} actions={actions} feature={feature} />
         })
       }
     </div>

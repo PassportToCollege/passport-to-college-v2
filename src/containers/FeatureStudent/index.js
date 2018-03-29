@@ -93,11 +93,19 @@ class FeatureStudent extends Component {
   }
 
   handleInputChange = e => {
-    this.setState({
-      feature: Object.assign({}, this.state.feature, {
-        [e.target.name]: e.target.value
-      })
-    });
+    if (e.target.name === "expDate") {
+      this.setState({
+        feature: Object.assign({}, this.state.feature, {
+          [e.target.name]: new Date(e.target.value).getTime()
+        })
+      });
+    } else {
+      this.setState({
+        feature: Object.assign({}, this.state.feature, {
+          [e.target.name]: e.target.value
+        })
+      });
+    }
   }
 
   handleFeatureSave = e => {
