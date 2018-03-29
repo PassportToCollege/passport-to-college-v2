@@ -1,36 +1,57 @@
 import "./Feature.css";
 
-import React from "react";
+import React, { Component } from "react";
 import propTypes from "prop-types";
 import moment from "moment";
 
 import AnnotatedList from "../AnnotatedList";
 import IconButton from "../IconButton";
 
-const Feature = ({ feature, actions }) => {
-  const featureStyles = {
-    backgroundColor: "#FFF",
-    padding: "1em"
+class Feature extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      feature: props.feature,
+      actions: !!props.actions
+    }
+
+    this.featureStyles = {
+      backgroundColor: "#FFF",
+      padding: "1em"
+    }
   }
 
-  return (
-    <div className="feature__item" style={featureStyles}>
-      <AnnotatedList data={[
-        { label: "fid", text: feature.fid },
-        { label: "created on", text: moment(feature.createdAt).format("MM-DD-Y") },
-        { label: "expires on", text: moment(feature.expDate).format("MM-DD-Y") }
-      ]} />
-      {
-        actions ?
-          <div className="feature__actions">
-            <IconButton solid />
-            <IconButton solid icon="delete" />
-            <IconButton icon="edit" />
-          </div> :
-          null
-      }
-    </div>
-  )
+  render() {
+    return (
+      <div className="feature__item" style={this.featureStyles}>
+        <AnnotatedList data={[
+          { label: "fid", text: this.state.feature.fid },
+          { label: "created on", text: moment(this.state.feature.createdAt).format("MM-DD-Y") },
+          { label: "expires on", text: moment(this.state.feature.expDate).format("MM-DD-Y") }
+        ]} />
+        {
+          this.state.actions ?
+            <div className="feature__actions">
+              <IconButton solid icon="open" 
+                styles={{
+                  backgroundColor: "rgb(147,166,176)"
+                }}/>
+              <IconButton solid icon="delete" 
+                styles={{
+                  backgroundColor: "rgb(198,208,213)"
+                }} />
+              <IconButton icon="edit" 
+                styles={{
+                  borderColor: "rgb(198,208,213)",
+                  color: "rgb(198,208,213)"
+                }} />
+            </div> :
+            null
+        }
+      </div>
+    )
+  }
 }
 
 Feature.defaultProps = {

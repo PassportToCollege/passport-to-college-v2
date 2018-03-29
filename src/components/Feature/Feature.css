@@ -1,6 +1,6 @@
 .feature__item .feature__actions {
   padding: 1em 0 0;
-  border-top: 2px solid rgba(53,53,53,0.5);
+  border-top: 2px dashed rgb(147, 166, 176);
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
