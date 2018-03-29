@@ -71,13 +71,16 @@ export const doCreateFeature = (data, options) => {
 
     options = options || {};
 
+    // make feature active
+    data.isActive = true;
+
     db.collection("features")
       .add(data)
       .then(() => {
         dispatch(featureCreated(data));
 
         if (options.refresh)
-          return featuresActions.doGetFeaturesByUser(data.student);
+          return dispatch(featuresActions.doGetFeaturesByUser(data.student));
       })
       .catch(error => {
         dispatch(featureCreationFailed(error, data));

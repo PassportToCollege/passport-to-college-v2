@@ -314,7 +314,8 @@ class UserSection extends Component {
                 }
                 {
                   this.state.editingFeature ?
-                    <FeatureStudent student={this.state.student} /> :
+                    <FeatureStudent student={this.state.student} 
+                      doClose={() => this.setState({ editingFeature: false })} /> :
                     null
                 }
               </div>

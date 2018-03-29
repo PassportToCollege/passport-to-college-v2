@@ -104,8 +104,11 @@ class FeatureStudent extends Component {
 
     const { feature } = this.state;
 
-    if ("object" === typeof details) {
-      console.log("you good")
+    if ("object" === typeof feature.details) {
+      this.props.featureActions.doCreateFeature(feature, { refresh: true });
+
+      if ("function" === typeof this.props.doClose)
+        this.props.doClose();
     } else {
       this.setState({
         hasError: true,
@@ -126,7 +129,8 @@ class FeatureStudent extends Component {
 
 FeatureStudent.propTypes = {
   student: propTypes.object,
-  featureActions: propTypes.object
+  featureActions: propTypes.object,
+  doClose: propTypes.func
 };
 
 const mapStateToProps = () => {
