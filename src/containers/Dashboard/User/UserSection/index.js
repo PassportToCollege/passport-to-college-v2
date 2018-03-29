@@ -42,7 +42,9 @@ class UserSection extends Component {
       accomplishment: {},
       editingSlug: "",
       noFeatures: props.features.hasFailed && props.features.error,
-      editingFeature: false
+      editingFeature: false,
+      creatingFeature: false,
+      featureBeingEdited: {}
     }
   }
 
@@ -317,14 +319,22 @@ class UserSection extends Component {
                 }
                 {
                   this.state.editingFeature ?
-                    <FeatureStudent student={this.state.student} 
+                    <FeatureStudent editing student={this.state.student}
+                      feature={this.state.featureBeingEdited}
                       doClose={() => this.setState({ editingFeature: false })} /> :
+                    null
+                }
+                {
+                  this.state.creatingFeature ?
+                    <FeatureStudent student={this.state.student}
+                      doClose={() => this.setState({ creatingFeature: false })} /> :
                     null
                 }
                 {
                   this.props.features.hasGotten && this.state.features ?
                     <FeatureList actions features={this.state.features} 
-                      doDelete={this.handleFeatureDelete} /> :
+                      doDelete={this.handleFeatureDelete} 
+                      doEdit={this.handleFeatureEdit} /> :
                     null
                 }
               </div>
@@ -411,6 +421,13 @@ class UserSection extends Component {
   }
 
   toggleFeatureStudent = () => {
+    if (this.state.editingFeature) {
+      return this.setState({ 
+        editingFeature: !this.state.editingFeature,
+        featureBeingEdited: {} 
+      });
+    }
+
     let canAdd = true;
 
     // check if student has an active feature
@@ -426,7 +443,7 @@ class UserSection extends Component {
     }
 
     if (canAdd) {
-      this.setState({ editingFeature: !this.state.editingFeature });
+      this.setState({ creatingFeature: !this.state.creatingFeature });
     } else {
       this.setState({
         hasError: true,
@@ -494,6 +511,10 @@ class UserSection extends Component {
 
   handleFeatureDelete = feature => {
     this.props.featureActions.doFeatureDelete(feature, { refresh: true });
+  }
+
+  handleFeatureEdit = feature => {
+    this.setState({ editingFeature: true, featureBeingEdited: feature });
   }
 }
 

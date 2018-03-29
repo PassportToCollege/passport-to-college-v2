@@ -49,7 +49,8 @@ class Feature extends Component {
                 styles={{
                   borderColor: "rgb(198,208,213)",
                   color: "rgb(198,208,213)"
-                }} />
+                }} 
+                doClick={this.handleEdit} />
             </div> :
             null
         }
@@ -67,6 +68,11 @@ class Feature extends Component {
     if ("function" === typeof this.props.doDelete)
       this.props.doDelete(this.state.feature);
   }
+
+  handleEdit = () => {
+    if ("function" === typeof this.props.doEdit)
+      this.props.doEdit(this.state.feature);
+  }
 }
 
 Feature.defaultProps = {
@@ -76,7 +82,8 @@ Feature.defaultProps = {
 Feature.propTypes = {
   feature: propTypes.object,
   actions: propTypes.bool,
-  doDelete: propTypes.func
+  doDelete: propTypes.func,
+  doEdit: propTypes.func
 };
 
 export default Feature;

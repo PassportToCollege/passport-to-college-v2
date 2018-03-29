@@ -23,12 +23,16 @@ class FeatureStudent extends Component {
       notificationClosed: false,
       hasError: false,
       error: "",
-      feature: {
+      editing: props.editing,
+      feature: props.feature,
+      newFeature: {
         student: props.student.uid,
         name: props.student.user.name.full,
-        details: "",
-        createdAt: new Date().getTime(),
-        expDate: new Date(utc(moment().add(30, "days")).toDate()).getTime()
+        details: props.editing ? props.feature.details : "",
+        createdAt: props.feature.createdAt || new Date().getTime(),
+        expDate: props.editing ?
+          props.feature.expDate : 
+          new Date(utc(moment().add(30, "days")).toDate()).getTime()
       }
     }
   }
@@ -56,21 +60,33 @@ class FeatureStudent extends Component {
         <section className="feature_student__section">
           <h3 className="section_heading">2. details</h3>
           <label>Provide the details about why this student is being featured. This is what readers will see.</label>
-          <WYSIWYGEditor
-            captureBlur={this.handleDetailsBlur}
-            editorStyles={{
-              maxWidth: "100%"
-            }}
-            controlStyles={{
-              maxWidth: "100%"
-            }} />
+          {
+            this.state.editing ?
+              <WYSIWYGEditor
+                content={this.state.feature.details}
+                captureBlur={this.handleDetailsBlur}
+                editorStyles={{
+                  maxWidth: "100%"
+                }}
+                controlStyles={{
+                  maxWidth: "100%"
+                }} /> :
+              <WYSIWYGEditor
+                captureBlur={this.handleDetailsBlur}
+                editorStyles={{
+                  maxWidth: "100%"
+                }}
+                controlStyles={{
+                  maxWidth: "100%"
+                }} />
+          }
         </section>
         <section className="feature_student__section">
           <h3 className="section_heading">3. expiration</h3>
           <div className="form__input_container">
             <label>Default is 30 days from today.</label>
             <input type="date" name="expDate" required 
-              defaultValue={utc(moment().add(30, "days")).format("Y-MM-DD")}
+              defaultValue={utc(moment(this.state.newFeature.expDate)).format("Y-MM-DD")}
               onBlur={this.handleInputChange} />
           </div>
         </section>
@@ -86,7 +102,7 @@ class FeatureStudent extends Component {
   }
 
   handleDetailsBlur = content => {
-    this.setState({ feature: Object.assign({}, this.state.feature, {
+    this.setState({ newFeature: Object.assign({}, this.state.newFeature, {
         details: content
       }) 
     });
@@ -95,13 +111,13 @@ class FeatureStudent extends Component {
   handleInputChange = e => {
     if (e.target.name === "expDate") {
       this.setState({
-        feature: Object.assign({}, this.state.feature, {
+        newFeature: Object.assign({}, this.state.newFeature, {
           [e.target.name]: new Date(e.target.value).getTime()
         })
       });
     } else {
       this.setState({
-        feature: Object.assign({}, this.state.feature, {
+        newFeature: Object.assign({}, this.state.newFeature, {
           [e.target.name]: e.target.value
         })
       });
@@ -111,10 +127,10 @@ class FeatureStudent extends Component {
   handleFeatureSave = e => {
     e.preventDefault();
 
-    const { feature } = this.state;
+    const { newFeature } = this.state;
 
-    if ("object" === typeof feature.details) {
-      this.props.featureActions.doCreateFeature(feature, { refresh: true });
+    if ("object" === typeof newFeature.details) {
+      this.props.featureActions.doCreateFeature(newFeature, { refresh: true });
 
       if ("function" === typeof this.props.doClose)
         this.props.doClose();
@@ -136,10 +152,16 @@ class FeatureStudent extends Component {
   }
 }
 
+FeatureStudent.defaultProps = {
+  editing: false
+};
+
 FeatureStudent.propTypes = {
   student: propTypes.object,
   featureActions: propTypes.object,
-  doClose: propTypes.func
+  doClose: propTypes.func,
+  editing: propTypes.bool,
+  feature: propTypes.object
 };
 
 const mapStateToProps = () => {
