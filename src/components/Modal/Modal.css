@@ -54,3 +54,12 @@
   "Roboto",
   sans-serif;
 }
+
+/* View Feature Modal */
+.modal__container.modal__view_feature .modal__content {
+  padding: 2em 1.75em;
+}
+
+.modal__container.modal__view_feature .modal__content > h4 {
+  margin-bottom: 0;
+}

@@ -6,6 +6,7 @@ import moment from "moment";
 
 import AnnotatedList from "../AnnotatedList";
 import IconButton from "../IconButton";
+import { ViewFeatureModal } from "../Modal";
 
 class Feature extends Component {
   constructor(props) {
@@ -13,7 +14,8 @@ class Feature extends Component {
 
     this.state = {
       feature: props.feature,
-      actions: !!props.actions
+      actions: !!props.actions,
+      viewing: false
     }
 
     this.featureStyles = {
@@ -36,7 +38,8 @@ class Feature extends Component {
               <IconButton solid icon="open" 
                 styles={{
                   backgroundColor: "rgb(147,166,176)"
-                }}/>
+                }}
+                doClick={() => this.setState({ viewing: true })} />
               <IconButton solid icon="delete" 
                 styles={{
                   backgroundColor: "rgb(198,208,213)"
@@ -47,6 +50,12 @@ class Feature extends Component {
                   color: "rgb(198,208,213)"
                 }} />
             </div> :
+            null
+        }
+        {
+          this.state.viewing ?
+            <ViewFeatureModal doClose={() => this.setState({ viewing: false })}
+              feature={this.state.feature} /> :
             null
         }
       </div>

@@ -2,8 +2,10 @@ import "./Modal.css";
 
 import React from "react";
 import propTypes from "prop-types";
+import moment from "moment";
 
 import { NationalTest, CreateUserForm } from "../Forms";
+import WYSIWYGEditor from "../Editor";
 
 export const ReauthenticateModal = props => {
   const closeModal = () => {
@@ -31,6 +33,10 @@ export const ReauthenticateModal = props => {
     </div>
   )
 }
+
+ReauthenticateModal.propTypes = {
+  doAuthenticate: propTypes.func
+};
 
 export const AddNationalTest = ({ doClose, handleInputChange, handleTestAdded }) => {
   const closeModal = () => {
@@ -63,6 +69,12 @@ export const AddNationalTest = ({ doClose, handleInputChange, handleTestAdded })
   )
 }
 
+AddNationalTest.propTypes = {
+  doClose: propTypes.func,
+  handleInputChange: propTypes.func,
+  handleTestAdded: propTypes.func
+};
+
 export const CreateUserModal = ({ doClose, handleInputChange, handleSubmit }) => {
   const closeModal = () => {
     this.modalContainer.classList.add("close");
@@ -92,19 +104,49 @@ export const CreateUserModal = ({ doClose, handleInputChange, handleSubmit }) =>
   )
 }
 
-// Proptypes
-ReauthenticateModal.propTypes = {
-  doAuthenticate: propTypes.func
-};
-
-AddNationalTest.propTypes = {
-  doClose: propTypes.func,
-  handleInputChange: propTypes.func,
-  handleTestAdded: propTypes.func
-};
-
 CreateUserModal.propTypes = {
   doClose: propTypes.func,
   handleInputChange: propTypes.func,
   handleSubmit: propTypes.func
 }
+
+export const ViewFeatureModal = ({ doClose, feature }) => {
+  const closeModal = () => {
+    this.modalContainer.classList.add("close");
+
+    if ("function" === typeof doClose)
+      doClose();
+  }
+
+  return (
+    <div className="modal__container modal__view_feature"
+      ref={div => this.modalContainer = div}>
+      <div className="modal__bg" onClick={closeModal}></div>
+      <div className="modal__content">
+        <h4>Created On</h4>
+        <span>{moment(feature.createdAt).format("MM-DD-Y")}</span>
+        <h4>Expires On</h4>
+        <span>{moment(feature.expDate).format("MM-DD-Y")}</span>
+        <h4>Details</h4>
+        <WYSIWYGEditor readonly content={feature.details}
+          editorStyles={{
+            border: "none",
+            padding: "0",
+            minHeight: "auto"
+          }} />
+        <h4>Active?</h4>
+        <span>{feature.isActive ? "yes" : "no"}</span>
+      </div>
+    </div>
+  )
+}
+
+ViewFeatureModal.propTypes = {
+  doClose: propTypes.func,
+  feature: propTypes.object
+};
+
+
+
+
+
