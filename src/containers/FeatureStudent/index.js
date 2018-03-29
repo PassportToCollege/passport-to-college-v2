@@ -4,12 +4,15 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
+import moment from "moment";
 
 import * as featureActions from "../../actions/featureActions";
 
 import WYSIWYGEditor from "../../components/Editor";
 import Button from "../../components/Button";
 import Notification from "../../components/Notification";
+
+const utc = moment.utc;
 
 class FeatureStudent extends Component {
   constructor(props) {
@@ -19,7 +22,13 @@ class FeatureStudent extends Component {
       student: props.student,
       notificationClosed: false,
       hasError: false,
-      error: ""
+      error: "",
+      feature: {
+        student: props.student.uid,
+        name: props.student.user.name.full,
+        details: "",
+        expDate: new Date(utc(moment().add(30, "days")).toDate()).getTime()
+      }
     }
   }
 
@@ -44,12 +53,8 @@ class FeatureStudent extends Component {
           </div>
         </section>
         <section className="feature_student__section">
-          <h3 className="section_heading">2. excerpt</h3>
-          <textarea name="excerpt" required rows="5"
-            onBlur={this.handleInputChange}></textarea>
-        </section>
-        <section className="feature_student__section">
-          <h3 className="section_heading">3. full details</h3>
+          <h3 className="section_heading">2. details</h3>
+          <label>Provide the details about why this student is being featured. This is what readers will see.</label>
           <WYSIWYGEditor
             captureBlur={this.handleDetailsBlur}
             editorStyles={{
@@ -60,10 +65,12 @@ class FeatureStudent extends Component {
             }} />
         </section>
         <section className="feature_student__section">
-          <h3 className="section_heading">4. expiration</h3>
+          <h3 className="section_heading">3. expiration</h3>
           <div className="form__input_container">
-            <label>Date</label>
-            <input type="date" name="expDate" required />
+            <label>Default is 30 days from today.</label>
+            <input type="date" name="expDate" required 
+              defaultValue={utc(moment().add(30, "days")).format("Y-MM-DD")}
+              onBlur={this.handleInputChange} />
           </div>
         </section>
         <section className="feature_student__section">
@@ -74,6 +81,21 @@ class FeatureStudent extends Component {
         </section>
       </form>
     )
+  }
+
+  handleDetailsBlur = content => {
+    this.setState({ feature: Object.assign({}, this.state.feature, {
+        details: content
+      }) 
+    });
+  }
+
+  handleInputChange = e => {
+    this.setState({
+      feature: Object.assign({}, this.state.feature, {
+        [e.target.name]: e.target.value
+      })
+    });
   }
 
   handleNotificationClose = () => {
