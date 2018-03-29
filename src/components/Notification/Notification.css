@@ -21,6 +21,7 @@
 
 .notification > p {
   margin-right: 1em;
+  max-width: 320px;
 }
 
 .notification > span {

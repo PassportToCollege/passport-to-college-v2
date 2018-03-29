@@ -298,7 +298,7 @@ class UserSection extends Component {
           return (
             <section className="user__section features__section">
               <Button text={this.state.editingFeature ? "- cancel" : "+ feature student"}
-                doClick={() => this.setState({ editingFeature: !this.state.editingFeature })}
+                doClick={this.toggleFeatureStudent}
                 solid
                 styles={{
                   position: "absolute",
@@ -399,6 +399,32 @@ class UserSection extends Component {
       return this.setState({ editingAccomplishment: false });
 
     this.setState({ addingAccomplishment: !this.state.addingAccomplishment });
+  }
+
+  toggleFeatureStudent = () => {
+    let canAdd = true;
+
+    // check if student has an active feature
+    // deny if true
+    if (!this.state.noFeatures) {
+      let { features } = this.state;
+      for (let i = 0; i < features.length; i++) {
+        if (features[i].isActive) {
+          canAdd = false;
+          break;
+        }
+      }
+    }
+
+    if (canAdd) {
+      this.setState({ editingFeature: !this.state.editingFeature });
+    } else {
+      this.setState({
+        hasError: true,
+        notificationClosed: false,
+        error: "A student may only have one active feature. This student already has an active feature. Edit the current active feature or delete it before trying to add a new feature"
+      });
+    }
   }
 
   updateProfilePicture = e => {
