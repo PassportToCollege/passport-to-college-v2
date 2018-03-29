@@ -99,3 +99,16 @@
   justify-content: space-between;
   align-items: center;
 }
+
+.user__section.settings__section .settings__item > span > p {
+  display: inline-block;
+  margin-right: 1em;
+}
+
+.user__section.settings__section .settings_edit_role,
+.user__section.settings__section .settings__add_role {
+  cursor: pointer;
+  text-decoration: underline;
+  color: #53D1D7;
+  font-weight: bold;
+}

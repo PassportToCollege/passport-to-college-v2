@@ -377,6 +377,30 @@ class UserSection extends Component {
                       }} />
                   }
                 </div>
+                <div className="settings__item">
+                  <p>Role</p>
+                  {
+                    this.props.user.hasGottenUser && this.state.user &&
+                    this.state.user.isStaff ?
+                      this.state.user.role ?
+                        <span>
+                          <p>{this.state.user.role}</p>
+                          <span className="settings__edit_role">edit</span>
+                        </span> :
+                        <span>
+                          <p>no role yet</p>
+                          <span className="settings__add_role">add</span>
+                        </span>
+                      :
+                      null
+                  }
+                  {
+                    this.props.user.hasGottenUser && this.state.user &&
+                      !this.state.user.isStaff ?
+                      <p>user is not on staff</p>:
+                      null
+                  }
+                </div>
               </div>
             </div>
             <div className="user__section_right">
