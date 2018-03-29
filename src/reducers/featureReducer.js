@@ -8,7 +8,10 @@ import {
   FEATURE_UPDATED,
   FEATURE_CREATION_INITIATED,
   FEATURE_CREATED,
-  FEATURE_CREATION_FAILED
+  FEATURE_CREATION_FAILED,
+  FEATURE_DELETE_INITIATED,
+  FEATURE_DELETED,
+  FEATURE_DELETE_FAILED
 } from "../actions/actionTypes";
 
 const feature = (state = initialState.feature, action) => {
@@ -78,6 +81,28 @@ const feature = (state = initialState.feature, action) => {
         hasFailed: true,
         error: action.error,
         data: action.data
+      });
+    case FEATURE_DELETE_INITIATED:
+      return Object.assign({}, state, {
+        isDeleting: true,
+        hasDeleted: false,
+        deleteFailed: false,
+        feature: action.feature
+      });
+    case FEATURE_DELETED:
+      return Object.assign({}, state, {
+        isDeleting: false,
+        hasDeleted: true,
+        deleteFailed: false,
+        feature: action.feature
+      });
+    case FEATURE_DELETE_FAILED:
+      return Object.assign({}, state, {
+        isDeleting: false,
+        hasDeleted: false,
+        deleteFailed: true,
+        error: action.error,
+        feature: action.feature
       });
     default:
       return state;

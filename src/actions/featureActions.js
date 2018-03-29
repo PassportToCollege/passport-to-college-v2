@@ -131,3 +131,46 @@ export const doFeatureUpdate = (feature, data, options) => {
       })
   }
 }
+
+// DELETE actions
+export const featureDeleteInitiated = feature => {
+  return {
+    type: types.FEATURE_DELETE_INITIATED,
+    feature
+  };
+};
+
+export const featureDeleted = feature => {
+  return {
+    type: types.FEATURE_DELETED,
+    feature
+  };
+};
+
+export const featureDeleteFailed = (error, feature) => {
+  return {
+    type: types.FEATURE_DELETE_FAILED,
+    feature, error
+  };
+};
+
+export const doFeatureDelete = (feature, options) => {
+  return dispatch => {
+    dispatch(featureDeleteInitiated(feature));
+
+    options = options || {};
+
+    return db.collection("features")
+      .doc(feature.fid)
+      .delete()
+      .then(() => {
+        dispatch(featureDeleted(feature));
+
+        if (options.refesh)
+          return dispatch(featuresActions.doGetFeaturesByUser(feature.student));
+      })
+      .catch(error => {
+        dispatch(featureDeleteFailed(error, feature));
+      });
+  };
+};

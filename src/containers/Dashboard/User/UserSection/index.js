@@ -322,7 +322,8 @@ class UserSection extends Component {
                 }
                 {
                   this.props.features.hasGotten && this.state.features ?
-                    <FeatureList actions features={this.state.features} /> :
+                    <FeatureList actions features={this.state.features} 
+                      doDelete={this.handleFeatureDelete} /> :
                     null
                 }
               </div>
@@ -488,6 +489,10 @@ class UserSection extends Component {
       editingSlug: slug,
       accomplishment: this.state.student.accomplishments[slug]
     });
+  }
+
+  handleFeatureDelete = feature => {
+    console.log(`going to delete ${feature}`);
   }
 }
 

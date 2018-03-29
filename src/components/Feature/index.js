@@ -43,7 +43,8 @@ class Feature extends Component {
               <IconButton solid icon="delete" 
                 styles={{
                   backgroundColor: "rgb(198,208,213)"
-                }} />
+                }} 
+                doClick={this.handleDelete} />
               <IconButton icon="edit" 
                 styles={{
                   borderColor: "rgb(198,208,213)",
@@ -61,6 +62,11 @@ class Feature extends Component {
       </div>
     )
   }
+
+  handleDelete = () => {
+    if ("function" === typeof this.props.doDelete)
+      this.props.doDelete(this.state.feature.fid);
+  }
 }
 
 Feature.defaultProps = {
@@ -69,7 +75,8 @@ Feature.defaultProps = {
 
 Feature.propTypes = {
   feature: propTypes.object,
-  actions: propTypes.bool
+  actions: propTypes.bool,
+  doDelete: propTypes.func
 };
 
 export default Feature;
