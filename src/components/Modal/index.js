@@ -6,6 +6,7 @@ import moment from "moment";
 
 import { NationalTest, CreateUserForm } from "../Forms";
 import WYSIWYGEditor from "../Editor";
+import Button from "../Button";
 
 export const ReauthenticateModal = props => {
   const closeModal = () => {
@@ -144,6 +145,48 @@ export const ViewFeatureModal = ({ doClose, feature }) => {
 ViewFeatureModal.propTypes = {
   doClose: propTypes.func,
   feature: propTypes.object
+};
+
+export const AddRole = ({ doClose, doSubmit, role }) => {
+  const closeModal = () => {
+    this.modalContainer.classList.add("close");
+
+    if ("function" === typeof doClose)
+      doClose();
+  }
+
+  const handleSubmit = e => {
+    e.preventDefault();
+
+    this.modalContainer.classList.add("close");
+
+    if ("function" === typeof doSubmit)
+      doSubmit(this.roleInput)
+  }
+
+  return (
+    <div className="modal__container modal__add_role"
+      ref={div => this.modalContainer = div}>
+      <div className="modal__bg" onClick={closeModal}></div>
+      <div className="modal__content">
+        <h3>{role ? "Edit role" : "Add role"}</h3>
+        <form className="form form__add_role"
+          onSubmit={handleSubmit}>
+          <input type="text" name="role" required
+            ref={input => this.roleInput = input} 
+            defaultValue={role || ""}/>
+          <Button solid type="submit" doClick={handleSubmit}
+            text={role ? "change" : "add"} />
+        </form>
+      </div>
+    </div>
+  )
+}
+
+AddRole.propTypes = {
+  doClose: propTypes.func,
+  doSubmit: propTypes.func,
+  role: propTypes.string
 };
 
 

@@ -105,7 +105,7 @@
   margin-right: 1em;
 }
 
-.user__section.settings__section .settings_edit_role,
+.user__section.settings__section .settings__edit_role,
 .user__section.settings__section .settings__add_role {
   cursor: pointer;
   text-decoration: underline;

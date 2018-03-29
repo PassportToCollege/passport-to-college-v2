@@ -19,6 +19,7 @@ import Loader from "../../../../components/Loader";
 import Notification from "../../../../components/Notification";
 import WYSIWYGEditor from "../../../../components/Editor";
 import Button from "../../../../components/Button";
+import { AddRole } from "../../../../components/Modal";
 import AddAccomplishment from "../../../AddAccomplishment";
 import AccomplishmentsList from "../../../../components/AccomplishmentsList";
 import FeatureStudent from "../../../FeatureStudent";
@@ -46,7 +47,9 @@ class UserSection extends Component {
       noFeatures: props.features.hasFailed && props.features.error,
       editingFeature: false,
       creatingFeature: false,
-      featureBeingEdited: {}
+      featureBeingEdited: {},
+      addingRole: false,
+      editingRole: false
     }
   }
 
@@ -385,11 +388,13 @@ class UserSection extends Component {
                       this.state.user.role ?
                         <span>
                           <p>{this.state.user.role}</p>
-                          <span className="settings__edit_role">edit</span>
+                          <span className="settings__edit_role"
+                            onClick={() => this.setState({ editingRole: true })}>edit</span>
                         </span> :
                         <span>
                           <p>no role yet</p>
-                          <span className="settings__add_role">add</span>
+                          <span className="settings__add_role"
+                            onClick={() => this.setState({ addingRole: true })}>add</span>
                         </span>
                       :
                       null
@@ -398,6 +403,20 @@ class UserSection extends Component {
                     this.props.user.hasGottenUser && this.state.user &&
                       !this.state.user.isStaff ?
                       <p>user is not on staff</p>:
+                      null
+                  }
+                  {
+                    this.state.addingRole ?
+                      <AddRole doSubmit={this.handleAddRoleSubmit} 
+                        doClose={() => this.setState({ addingRole: false })} /> :
+                      null
+                  }
+                  {
+                    this.props.user.hasGottenUser && this.state.user &&
+                    this.state.user.role && this.state.editingRole ?
+                      <AddRole doSubmit={this.handleAddRoleSubmit}
+                        doClose={() => this.setState({ editingRole: false })} 
+                        role={this.state.user.role} /> :
                       null
                   }
                 </div>
@@ -639,6 +658,14 @@ class UserSection extends Component {
     this.props.studentActions.doStudentUpdate(this.state.student.uid, {
       showOnSite: !this.state.student.showOnSite
     });
+  }
+
+  handleAddRoleSubmit = e => {
+    this.props.usersActions.doUserUpdate(this.state.user.uid, {
+      role: e.value
+    }, { refresh: true });
+
+    this.setState({ addingRole: false, editingRole: false });
   }
 }
 
