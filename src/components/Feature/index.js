@@ -65,7 +65,7 @@ class Feature extends Component {
 
   handleDelete = () => {
     if ("function" === typeof this.props.doDelete)
-      this.props.doDelete(this.state.feature.fid);
+      this.props.doDelete(this.state.feature);
   }
 }
 

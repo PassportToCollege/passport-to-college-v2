@@ -166,7 +166,7 @@ export const doFeatureDelete = (feature, options) => {
       .then(() => {
         dispatch(featureDeleted(feature));
 
-        if (options.refesh)
+        if (options.refresh)
           return dispatch(featuresActions.doGetFeaturesByUser(feature.student));
       })
       .catch(error => {

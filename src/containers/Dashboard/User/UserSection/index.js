@@ -8,6 +8,7 @@ import propTypes from "prop-types";
 import * as studentActions from "../../../../actions/studentActions";
 import * as userProfilePictureActions from "../../../../actions/userProfilePictureActions";
 import * as featuresActions from "../../../../actions/featuresActions";
+import * as featureActions from "../../../../actions/featureActions";
 
 import AnnotatedList from "../../../../components/AnnotatedList";
 import LoadingText from "../../../../components/LoadingText";
@@ -492,7 +493,7 @@ class UserSection extends Component {
   }
 
   handleFeatureDelete = feature => {
-    console.log(`going to delete ${feature}`);
+    this.props.featureActions.doFeatureDelete(feature, { refresh: true });
   }
 }
 
@@ -504,6 +505,7 @@ UserSection.propTypes = {
   studentActions: propTypes.object,
   features: propTypes.object,
   featuresActions: propTypes.object,
+  featureActions: propTypes.object,
   picture: propTypes.object,
   uppActions: propTypes.object
 };
@@ -520,7 +522,8 @@ const mapDispatchToProps = dispatch => {
   return {
     studentActions: bindActionCreators(studentActions, dispatch),
     uppActions: bindActionCreators(userProfilePictureActions, dispatch),
-    featuresActions: bindActionCreators(featuresActions, dispatch)
+    featuresActions: bindActionCreators(featuresActions, dispatch),
+    featureActions: bindActionCreators(featureActions, dispatch)
   };
 };
 
