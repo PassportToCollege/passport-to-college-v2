@@ -11,7 +11,10 @@ import {
   USERS_SIGNUP_EMAIL_SENT,
   USERS_GET_BY_ID_INITIATED,
   USERS_GET_BY_ID_FAILED,
-  USERS_GET_BY_ID_SUCCESS
+  USERS_GET_BY_ID_SUCCESS,
+  USERS_UPDATE_INITIATED,
+  USERS_UPDATE_FAILED,
+  USERS_UPDATED
 } from "../actions/actionTypes";
 
 const users = (state = initialState.users, action) => {
@@ -107,6 +110,31 @@ const users = (state = initialState.users, action) => {
         hasGottenUser: true,
         hasFailed: false,
         user: action.user
+      });
+    case USERS_UPDATE_INITIATED:
+      return Object.assign({}, state, {
+        isUpdating: true,
+        hasUpdated: false,
+        updateFailed: false,
+        data: action.data,
+        uid: action.user
+      });
+    case USERS_UPDATE_FAILED:
+      return Object.assign({}, state, {
+        isUpdating: false,
+        hasUpdated: false,
+        updateFailed: true,
+        data: action.data,
+        uid: action.user,
+        error: action.error
+      });
+    case USERS_UPDATED:
+      return Object.assign({}, state, {
+        isUpdating: false,
+        hasUpdated: true,
+        updateFailed: false,
+        data: action.data,
+        uid: action.user
       });
     default:
       return state;

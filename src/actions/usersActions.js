@@ -324,3 +324,51 @@ export const doCreateUser = data => {
       });
   }
 }
+
+// UPDATE actions
+export const userUpdateInitiated = (uid, data) => {
+  return {
+    type: types.USERS_UPDATE_INITIATED,
+    user: uid,
+    data
+  };
+};
+
+export const userUpdated = (uid, data) => {
+  return {
+    type: types.USERS_UPDATED,
+    user: uid,
+    data
+  };  
+};
+
+export const userUpdateFailed = (error, uid, data) => {
+  return {
+    type: types.USERS_UPDATED,
+    user: uid,
+    data, error
+  };  
+};
+
+export const doUserUpdate = (uid, data, options) => {
+  return dispatch => {
+    dispatch(userUpdateInitiated(uid, data));
+
+    options = options || {};
+
+    db.collection("users")
+      .doc(uid)
+      .update(data)
+      .then(() => {
+        dispatch(userUpdated(uid, data));
+
+        // dispatch user get to update props
+        // with new user data
+        if (options.refresh)
+          return dispatch(doGetUserByUid(uid));
+      })
+      .catch(error => {
+        return dispatch(userUpdateFailed(error, uid, data));
+      })
+  }
+}

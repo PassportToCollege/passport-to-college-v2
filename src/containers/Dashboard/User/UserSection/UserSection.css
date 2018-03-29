@@ -19,7 +19,8 @@
 
 /* Sections */
 .user__section.personal__section,
-.user__section.education__section {
+.user__section.education__section,
+.user__section.settings__section {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -28,14 +29,16 @@
 }
 
 .user__section.personal__section > div,
-.user__section.education__section > div {
+.user__section.education__section > div,
+.user__section.settings__section > div {
   max-width: 500px;
   padding: 2em 0;
   flex: 1 0 auto;
 }
 
 .user__section.personal__section > div > div,
-.user__section.education__section > div > div {
+.user__section.education__section > div > div,
+.user__section.settings__section > div > div {
   padding: 2em;
   border: 1px solid rgba(26, 25, 25, 0.15);
   border-radius: 3px;
@@ -87,4 +90,12 @@
 /* Features section */
 .user__section.features__section .features__section_content {
   padding-top: 40px;
+}
+
+/* Settings section */
+.user__section.settings__section .settings__item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }

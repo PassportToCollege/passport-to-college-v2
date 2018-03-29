@@ -9,6 +9,7 @@ import * as studentActions from "../../../../actions/studentActions";
 import * as userProfilePictureActions from "../../../../actions/userProfilePictureActions";
 import * as featuresActions from "../../../../actions/featuresActions";
 import * as featureActions from "../../../../actions/featureActions";
+import * as usersActions from "../../../../actions/usersActions";
 
 import AnnotatedList from "../../../../components/AnnotatedList";
 import LoadingText from "../../../../components/LoadingText";
@@ -22,6 +23,7 @@ import AddAccomplishment from "../../../AddAccomplishment";
 import AccomplishmentsList from "../../../../components/AccomplishmentsList";
 import FeatureStudent from "../../../FeatureStudent";
 import FeatureList from "../../../../components/FeatureList";
+import Toggler from "../../../../components/Toggler";
 
 class UserSection extends Component {
   constructor(props) {
@@ -347,6 +349,28 @@ class UserSection extends Component {
             }} />
           )
         }
+      case "settings":
+        return (
+          <section className="user__section settings__section">
+            <div className="user__section_left">
+              <div className="settings__roles">
+                <h2>User Roles</h2>
+                <div className="settings__item">
+                  <p>Admin</p>
+                  {
+                    this.props.user.hasGottenUser && this.state.user ?
+                      <Toggler state={this.state.user.isAdmin ? "yes" : "no"} 
+                        doClick={this.toggleAdminSetting} /> :
+                      null
+                  }
+                </div>
+              </div>
+            </div>
+            <div className="user__section_right">
+
+            </div>
+          </section>
+        )
       case "personal":
       default:
         return (
@@ -516,6 +540,12 @@ class UserSection extends Component {
   handleFeatureEdit = feature => {
     this.setState({ editingFeature: true, featureBeingEdited: feature });
   }
+
+  toggleAdminSetting = () => {
+    this.props.usersActions.doUserUpdate(this.state.user.uid, { 
+      isAdmin: !this.state.user.isAdmin 
+    }, { refresh: true });
+  }
 }
 
 UserSection.propTypes = {
@@ -528,7 +558,8 @@ UserSection.propTypes = {
   featuresActions: propTypes.object,
   featureActions: propTypes.object,
   picture: propTypes.object,
-  uppActions: propTypes.object
+  uppActions: propTypes.object,
+  usersActions: propTypes.object
 };
 
 const mapStateToProps = state => {
@@ -544,7 +575,8 @@ const mapDispatchToProps = dispatch => {
     studentActions: bindActionCreators(studentActions, dispatch),
     uppActions: bindActionCreators(userProfilePictureActions, dispatch),
     featuresActions: bindActionCreators(featuresActions, dispatch),
-    featureActions: bindActionCreators(featureActions, dispatch)
+    featureActions: bindActionCreators(featureActions, dispatch),
+    usersActions: bindActionCreators(usersActions, dispatch)
   };
 };
 
