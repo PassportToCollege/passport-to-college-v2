@@ -85,3 +85,6 @@
 }
 
 /* Features section */
+.user__section.features__section .features__section_content {
+  padding-top: 40px;
+}

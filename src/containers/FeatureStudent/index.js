@@ -27,6 +27,7 @@ class FeatureStudent extends Component {
         student: props.student.uid,
         name: props.student.user.name.full,
         details: "",
+        createdAt: new Date().getTime(),
         expDate: new Date(utc(moment().add(30, "days")).toDate()).getTime()
       }
     }
