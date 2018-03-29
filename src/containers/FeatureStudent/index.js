@@ -12,8 +12,6 @@ import WYSIWYGEditor from "../../components/Editor";
 import Button from "../../components/Button";
 import Notification from "../../components/Notification";
 
-const utc = moment.utc;
-
 class FeatureStudent extends Component {
   constructor(props) {
     super(props);
@@ -32,7 +30,7 @@ class FeatureStudent extends Component {
         createdAt: props.feature.createdAt || new Date().getTime(),
         expDate: props.editing ?
           props.feature.expDate : 
-          new Date(utc(moment().add(30, "days")).toDate()).getTime()
+          new Date(moment().add(30, "days").toDate()).getTime()
       }
     }
   }
@@ -86,7 +84,7 @@ class FeatureStudent extends Component {
           <div className="form__input_container">
             <label>Default is 30 days from today.</label>
             <input type="date" name="expDate" required 
-              defaultValue={utc(moment(this.state.newFeature.expDate)).format("Y-MM-DD")}
+              defaultValue={moment(this.state.newFeature.expDate).format("Y-MM-DD")}
               onBlur={this.handleInputChange} />
           </div>
         </section>
@@ -130,7 +128,14 @@ class FeatureStudent extends Component {
     const { newFeature } = this.state;
 
     if ("object" === typeof newFeature.details) {
-      this.props.featureActions.doCreateFeature(newFeature, { refresh: true });
+      if (this.state.editing) {
+        this.props.featureActions.doFeatureUpdate(this.state.feature.fid, newFeature, {
+          refresh: true,
+          student: this.state.student.uid
+        });
+      } else {
+        this.props.featureActions.doCreateFeature(newFeature, { refresh: true });
+      }
 
       if ("function" === typeof this.props.doClose)
         this.props.doClose();

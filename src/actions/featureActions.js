@@ -123,8 +123,8 @@ export const doFeatureUpdate = (feature, data, options) => {
       .then(() => {
         dispatch(featureUpdated(feature, data));
 
-        if (options.refesh)
-          return dispatch(doFeatureUpdate(feature));
+        if (options.refresh && options.student)
+          return dispatch(featuresActions.doGetFeaturesByUser(options.student));
       })
       .catch(error => {
         dispatch(featureUpdateFailed(error, feature, data));
