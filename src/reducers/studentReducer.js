@@ -40,7 +40,7 @@ const student = (state = initialState.student, action) => {
         isUpdating: true,
         hasUpdated: false,
         hasFailed: false,
-        student: action.student,
+        uid: action.student,
         data: action.data
       });
     case STUDENT_UPDATE_FAILED:
@@ -48,7 +48,7 @@ const student = (state = initialState.student, action) => {
         isUpdating: false,
         hasUpdated: false,
         hasFailed: true,
-        student: action.student,
+        uid: action.student,
         data: action.data,
         error: action.error
       });
@@ -57,7 +57,7 @@ const student = (state = initialState.student, action) => {
         isUpdating: false,
         hasUpdated: true,
         hasFailed: false,
-        student: action.student,
+        uid: action.student,
         data: action.data
       });
     case STUDENT_ACCOMPLISHMENT_DELETE_INITIATED:
