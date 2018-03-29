@@ -361,13 +361,65 @@ class UserSection extends Component {
                     this.props.user.hasGottenUser && this.state.user ?
                       <Toggler state={this.state.user.isAdmin ? "yes" : "no"} 
                         doClick={this.toggleAdminSetting} /> :
-                      null
+                      <Loader width="16px" styles={{
+                        margin: "0"
+                      }} />
+                  }
+                </div>
+                <div className="settings__item">
+                  <p>Staff</p>
+                  {
+                    this.props.user.hasGottenUser && this.state.user ?
+                      <Toggler state={this.state.user.isStaff ? "yes" : "no"}
+                        doClick={this.toggleStaffSetting} /> :
+                      <Loader width="16px" styles={{
+                        margin: "0"
+                      }} />
                   }
                 </div>
               </div>
             </div>
             <div className="user__section_right">
-
+              <div className="settings__students">
+                <h2>Students</h2>
+                {
+                  this.props.user.hasGottenUser && this.state.user &&
+                  this.state.user.isStudent ?
+                  <span>
+                    <div className="settings__item">
+                      <p>Graduated</p>
+                        {
+                          this.props.student.hasGotten && this.state.student ?
+                            <Toggler state={this.state.student.hasGraduated ? "yes" : "no"}
+                            doClick={this.toggleGraduated} /> :
+                            <Loader width="16px" styles={{
+                              margin: "0"
+                            }}/>
+                        }
+                    </div>
+                    <div className="settings__item">
+                      <p>Show on website</p>
+                      {
+                        this.props.student.hasGotten && this.state.student ?
+                        <Toggler state={this.state.student.showOnSite ? "yes" : "no"}
+                          doClick={this.toggleShowOnSite} />:
+                        <Loader width="16px" styles={{
+                          margin: "0"
+                        }}/>
+                      }
+                    </div>
+                  </span> :
+                  null
+                }
+                {
+                  this.props.user.hasGottenUser && this.state.user &&
+                    !this.state.user.isStudent ?
+                    <div className="user__not_student">
+                      <h4>user is no a student</h4>
+                    </div> :
+                    null
+                }
+              </div>
             </div>
           </section>
         )
@@ -545,6 +597,24 @@ class UserSection extends Component {
     this.props.usersActions.doUserUpdate(this.state.user.uid, { 
       isAdmin: !this.state.user.isAdmin 
     }, { refresh: true });
+  }
+
+  toggleStaffSetting = () => {
+    this.props.usersActions.doUserUpdate(this.state.user.uid, {
+      isStaff: !this.state.user.isStaff
+    }, { refresh: true });
+  }
+
+  toggleGraduated = () => {
+    this.props.studentActions.doStudentUpdate(this.state.student.uid, { 
+      hasGraduated: !this.state.student.hasGraduated
+     });
+  }
+
+  toggleShowOnSite = () => {
+    this.props.studentActions.doStudentUpdate(this.state.student.uid, {
+      showOnSite: !this.state.student.showOnSite
+    });
   }
 }
 
