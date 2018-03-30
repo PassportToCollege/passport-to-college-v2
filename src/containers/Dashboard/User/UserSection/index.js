@@ -784,6 +784,11 @@ class UserSection extends Component {
 
     this.setState({ editingPersonal: false });
   }
+
+  handleStudentEducationEdit = student => {
+    this.props.studentActions.doStudentUpdate(student.uid, student);
+    this.setState({ editingEducation: false });
+  }
 }
 
 UserSection.propTypes = {

@@ -385,7 +385,7 @@ export const EditStudentEducation = ({ student, doClose, doSubmit }) => {
           </div>
           <div className="form__input_container">
             <label>Minor</label>
-            <input type="text" name="minor" required
+            <input type="text" name="minor"
               defaultValue={student.minor}
               onChange={handleFormChange} />
           </div>
@@ -399,9 +399,9 @@ export const EditStudentEducation = ({ student, doClose, doSubmit }) => {
           </div>
           <div className="form__input_container">
             <label>Graduation Year</label>
-            <input type="number" name="graduation" required
+            <input type="number" name="graduationYear" required
               min="2017"
-              defaultValue={student.graduation}
+              defaultValue={student.graduationYear}
               onChange={handleFormChange} />
           </div>
           <Button solid type="submit" doClick={handleSubmit}
