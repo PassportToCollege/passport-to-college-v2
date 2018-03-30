@@ -19,7 +19,7 @@ import Loader from "../../../../components/Loader";
 import Notification from "../../../../components/Notification";
 import WYSIWYGEditor from "../../../../components/Editor";
 import Button from "../../../../components/Button";
-import { AddRole } from "../../../../components/Modal";
+import { AddRole, DeleteUser } from "../../../../components/Modal";
 import AddAccomplishment from "../../../AddAccomplishment";
 import AccomplishmentsList from "../../../../components/AccomplishmentsList";
 import FeatureStudent from "../../../FeatureStudent";
@@ -49,7 +49,8 @@ class UserSection extends Component {
       creatingFeature: false,
       featureBeingEdited: {},
       addingRole: false,
-      editingRole: false
+      editingRole: false,
+      deletingUser: false
     }
   }
 
@@ -468,7 +469,15 @@ class UserSection extends Component {
                 {
                   this.props.user.hasGottenUser && this.state.user ?
                     <Button solid text={`delete ${this.state.user.name.full}`}
-                      doClick={this.handleRemoveUserButtonClick} /> :
+                      doClick={() => this.setState({ deletingUser: true })} /> :
+                    null
+                }
+                {
+                  this.props.user.hasGottenUser && this.state.user &&
+                  this.state.deletingUser ?
+                    <DeleteUser name={this.state.user.name.full}
+                      doClose={() => this.setState({ deletingUser: false })}
+                      doSubmit={this.handleUserDelete} /> :
                     null
                 }
               </div>

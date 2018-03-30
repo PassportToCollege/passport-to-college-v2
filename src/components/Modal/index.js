@@ -189,6 +189,55 @@ AddRole.propTypes = {
   role: propTypes.string
 };
 
+export const DeleteUser = ({ name, doClose, doSubmit }) => {
+  const closeModal = () => {
+    this.modalContainer.classList.add("close");
+
+    if ("function" === typeof doClose)
+      doClose();
+  }
+
+  const handleSubmit = e => {
+    e.preventDefault();
+
+    // check if names match
+    if (e.value !== name) {
+      return;
+    }
+
+    this.modalContainer.classList.add("close");
+
+    if ("function" === typeof doSubmit)
+      doSubmit(this.nameInput)
+  }
+
+  return (
+    <div className="modal__container modal__delete_user"
+      ref={div => this.modalContainer = div}>
+      <div className="modal__bg" onClick={closeModal}></div>
+      <div className="modal__content">
+        <h3>Confirm Delete</h3>
+        <p>You are about to remove a user account. This action cannot be undone.</p>
+        <form className="form form__delete_user"
+          onSubmit={handleSubmit}>
+          <label>Type user&apos;s full name to confirm delete</label>
+          <input type="text" name="name" required
+            ref={input => this.nameInput = input} />
+          <Button solid type="submit" doClick={handleSubmit}
+            text="remove" />
+          <Button type="button" doClick={closeModal}
+            text="cancel" />
+        </form>
+      </div>
+    </div>
+  )
+};
+
+DeleteUser.propTypes = {
+  name: propTypes.string,
+  doClose: propTypes.func,
+  doSubmit: propTypes.func
+}
 
 
 
