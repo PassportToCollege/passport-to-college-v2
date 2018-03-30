@@ -22,7 +22,7 @@ import Loader from "../../../../components/Loader";
 import Notification from "../../../../components/Notification";
 import WYSIWYGEditor from "../../../../components/Editor";
 import Button from "../../../../components/Button";
-import { AddRole, DeleteUser, EditUserPersonal } from "../../../../components/Modal";
+import { AddRole, DeleteUser, EditUserPersonal, EditStudentEducation } from "../../../../components/Modal";
 import AddAccomplishment from "../../../AddAccomplishment";
 import AccomplishmentsList from "../../../../components/AccomplishmentsList";
 import FeatureStudent from "../../../FeatureStudent";
@@ -155,6 +155,14 @@ class UserSection extends Component {
                         { color: "rgba(255,101,97,0.4)", width: "70%" }
                       ]
                     }} />
+                }
+                {
+                  this.props.student.hasGotten && this.state.student 
+                  && this.state.editingEducation ?
+                    <EditStudentEducation student={this.state.student}
+                      doClose={() => this.setState({ editingEducation: false })}
+                      doSubmit={this.handleStudentEducationEdit} /> :
+                    null
                 }
               </div>
             </div>

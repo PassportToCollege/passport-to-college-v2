@@ -337,5 +337,86 @@ EditUserPersonal.propTypes = {
   doSubmit :propTypes.func
 };
 
+export const EditStudentEducation = ({ student, doClose, doSubmit }) => {
+  const closeModal = () => {
+    this.modalContainer.classList.add("close");
+
+    if ("function" === typeof doClose)
+      doClose();
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+
+    this.modalContainer.classList.add("close");
+
+    if ("function" === typeof doSubmit)
+      doSubmit(student)
+  }
+
+  const handleFormChange = e => {
+    student[e.target.name] = e.target.value;
+  }
+
+  return (
+    <div className="modal__container modal__edit_user_personal"
+      ref={div => this.modalContainer = div}>
+      <div className="modal__bg" onClick={closeModal}></div>
+      <div className="modal__content">
+        <h3>{`Edit ${student.user.name.full}`}</h3>
+        <form className="form form__edit_user_personal">
+          <div className="form__input_container">
+            <label>High School</label>
+            <input type="text" name="highSchool" required
+              defaultValue={student.highSchool}
+              onChange={handleFormChange} />
+          </div>
+          <div className="form__input_container">
+            <label>University</label>
+            <input type="text" name="university" required
+              defaultValue={student.university}
+              onChange={handleFormChange} />
+          </div>
+          <div className="form__input_container">
+            <label>Major</label>
+            <input type="text" name="major" required
+              defaultValue={student.major}
+              onChange={handleFormChange} />
+          </div>
+          <div className="form__input_container">
+            <label>Minor</label>
+            <input type="text" name="minor" required
+              defaultValue={student.minor}
+              onChange={handleFormChange} />
+          </div>
+          <h4>Meta Information</h4>
+          <div className="form__input_container">
+            <label>Enrollment Year</label>
+            <input type="number" name="enrollmentYear" required
+              min="2013" max={new Date().getFullYear()}
+              defaultValue={student.enrollmentYear} 
+              onChange={handleFormChange}/>
+          </div>
+          <div className="form__input_container">
+            <label>Graduation Year</label>
+            <input type="number" name="graduation" required
+              min="2017"
+              defaultValue={student.graduation}
+              onChange={handleFormChange} />
+          </div>
+          <Button solid type="submit" doClick={handleSubmit}
+            text="save" />
+        </form>
+      </div>
+    </div>
+  )
+}
+
+EditStudentEducation.propTypes = {
+  student: propTypes.object,
+  doClose: propTypes.func,
+  doSubmit: propTypes.func
+};
+
 
 
