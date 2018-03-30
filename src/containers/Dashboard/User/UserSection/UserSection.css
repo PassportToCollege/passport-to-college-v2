@@ -62,6 +62,11 @@
   text-transform: uppercase;
 }
 
+.user__section.education__section > div,
+.user__section.personal__section > div {
+  padding: 5em 0 2em;
+}
+
 /* Profile picture section */
 .user__section.profile_picture__section > p {
   text-align: center;

@@ -128,6 +128,14 @@ class UserSection extends Component {
           <section className="user__section education__section">
             <div className="user__section_left">
               <div className="user__education">
+                <Button solid type="button" text="edit"
+                  doClick={() => this.setState({ editingEducation: true })}
+                  styles={{
+                    position: "absolute",
+                    right: "0",
+                    top: "2em",
+                    backgroundColor: "rgb(147,166,176)"
+                  }} />
                 {
                   this.props.student.hasGotten && this.state.student ?
                     <AnnotatedList data={[
@@ -156,7 +164,10 @@ class UserSection extends Component {
                     <AnnotatedList data={[
                       { label: "enrollment year", text: this.state.student.enrollmentYear || "no enrollment year provided" },
                       { label: "graduation year", text: this.state.student.graduationYear || "no graduation year provided" },
-                      { label: "graduated?", text: this.state.student.hasGraduated || "don't know" }
+                      { 
+                        label: "graduated?", 
+                        text: this.state.student.hasGraduated ? "yes" : "no" 
+                      }
                     ]} /> :
                     <LoadingText options={{
                       class: "block__lines",
@@ -244,7 +255,8 @@ class UserSection extends Component {
                 solid 
                 styles={{
                   position: "absolute",
-                  right: "0"
+                  right: "0",
+                  backgroundColor: "rgb(147,166,176)"
                 }} 
                 doClick={this.toggleAddAccomplishment} />
               <div className="accomplishments__section_content">
@@ -315,7 +327,8 @@ class UserSection extends Component {
                 solid
                 styles={{
                   position: "absolute",
-                  right: "0"
+                  right: "0",
+                  backgroundColor: "rgb(147,166,176)"
                 }} />
               <div className="features__section_content">
                 {
@@ -431,7 +444,10 @@ class UserSection extends Component {
                   {
                     this.props.user.hasGottenUser && this.state.user ?
                       <Button type="button" solid text="send"
-                        doClick={this.sendPasswordResetEmail} /> :
+                        doClick={this.sendPasswordResetEmail}
+                        styles={{
+                          backgroundColor: "rgb(147,166,176)"
+                        }} /> :
                       null
                   }
                 </div>
@@ -483,7 +499,10 @@ class UserSection extends Component {
                 {
                   this.props.user.hasGottenUser && this.state.user ?
                     <Button solid text={`delete ${this.state.user.name.full}`}
-                      doClick={() => this.setState({ deletingUser: true })} /> :
+                      doClick={() => this.setState({ deletingUser: true })} 
+                      styles={{
+                        backgroundColor: "rgb(147,166,176)"
+                      }} /> :
                     null
                 }
                 {
@@ -502,6 +521,14 @@ class UserSection extends Component {
       default:
         return (
           <section className="user__section personal__section">
+            <Button solid type="button" text="edit"
+              doClick={() => this.setState({ editingPersonal: true })}
+              styles={{
+                position: "absolute",
+                right: "0",
+                top: "2em",
+                backgroundColor: "rgb(147,166,176)"
+              }} />
             <div className="user__section_left">
               <div className="user__personal">
                 {
