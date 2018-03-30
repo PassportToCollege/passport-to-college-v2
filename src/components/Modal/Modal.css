@@ -76,3 +76,36 @@
   font-family: "Roboto", sans-serif;
   margin-bottom: 2em;
 }
+
+/* Delete user modal */
+.modal__container.modal__delete_user .modal__content {
+  padding: 2em 1.75em;
+}
+.modal__container.modal__delete_user .modal__content > h3 {
+  margin: 0;
+}
+
+.modal__container.modal__delete_user .modal__content > p {
+  margin-top: 0;
+  font-style: italic;
+  font-weight: bold;
+  font-size: 0.85em;
+  opacity: 0.5;
+}
+
+.modal__container.modal__delete_user .modal__content > form > input[type] {
+   display: block;
+   width: 100%;
+   max-width: 100%;
+   min-width: 100%;
+   outline: none;
+   border: 2px solid rgba(128, 150, 162, 0.35);
+   padding: 1em;
+   font-family: "Roboto",
+   sans-serif;
+   margin: 1em 0;
+  }
+
+  .modal__container.modal__delete_user .modal__content button:last-child {
+    margin-left: 1em;
+  }
