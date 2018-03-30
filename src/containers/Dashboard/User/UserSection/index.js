@@ -5,6 +5,8 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
 
+import { auth } from "../../../../utils/firebase";
+
 import * as studentActions from "../../../../actions/studentActions";
 import * as userProfilePictureActions from "../../../../actions/userProfilePictureActions";
 import * as featuresActions from "../../../../actions/featuresActions";
@@ -422,6 +424,18 @@ class UserSection extends Component {
                   }
                 </div>
               </div>
+              <div className="settings__account">
+                <h2>Account</h2>
+                <div className="settings__item">
+                  <p>Send password reset email</p>
+                  {
+                    this.props.user.hasGottenUser && this.state.user ?
+                      <Button type="button" solid text="send"
+                        doClick={this.sendPasswordResetEmail} /> :
+                      null
+                  }
+                </div>
+              </div>
             </div>
             <div className="user__section_right">
               <div className="settings__students">
@@ -692,6 +706,24 @@ class UserSection extends Component {
       notificationClosed: false,
       error: "Only support for removing users from the firebase console is available at the moment"
     })
+  }
+
+  sendPasswordResetEmail = () => {
+    auth.sendPasswordResetEmail(this.state.user.email)
+      .then(() => {
+        this.setState({
+          hasError: true,
+          notificationClosed: false,
+          error: "Password reset email sent"
+        });
+      })
+      .catch(error => {
+        this.setState({
+          hasError: true,
+          notificationClosed: false,
+          error: error.message
+        });
+      });
   }
 }
 
