@@ -356,6 +356,25 @@ export const doUserUpdate = (uid, data, options) => {
 
     options = options || {};
 
+    if (data.name && "string" === typeof data.name) {
+      let name = data.name.split(" ");
+
+      if (name.length === 3) {
+        data.name = {
+          first: name[0],
+          middle: name[1],
+          last: name[2],
+          full: [name[0], name[2]].join(" ")
+        }
+      } else {
+        data.name = {
+          first: name[0],
+          last: name[1],
+          full: data.name
+        }
+      }
+    }
+
     db.collection("users")
       .doc(uid)
       .update(data)

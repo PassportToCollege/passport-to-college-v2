@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
+import moment from "moment";
 
 import { auth } from "../../../../utils/firebase";
 
@@ -542,7 +543,10 @@ class UserSection extends Component {
                   this.props.user.hasGottenUser && this.state.user ?
                     <AnnotatedList data={[
                       { label: "full name", text: this.state.user.name.full },
-                      { label: "dob", text: this.state.user.dob || "no dob" },
+                      { 
+                        label: "dob", 
+                        text: this.state.user.dob ? moment(this.state.user.dob).format("MM-DD-Y") : "no dob" 
+                      },
                       { label: "gender", text: this.state.user.gender || "no gender provided" }
                     ]} /> :
                     <LoadingText options={{
@@ -577,7 +581,10 @@ class UserSection extends Component {
                       <AnnotatedList data={[
                         { label: "email", text: this.state.user.email },
                         { label: "phone", text: this.state.user.phone || "no phone number" },
-                        { label: "country", text: this.state.user.address || "no country" }
+                        { 
+                          label: "country", 
+                          text: this.state.user.address ? this.state.user.address.country : "no country" 
+                        }
                       ]} /> :
                       <LoadingText options={{
                         class: "block__lines",
@@ -760,6 +767,14 @@ class UserSection extends Component {
           error: error.message
         });
       });
+  }
+
+  handleUserPersonalEdit = user => {
+    this.props.usersActions.doUserUpdate(user.uid, user, {
+      refresh: true
+    });
+
+    this.setState({ editingPersonal: false });
   }
 }
 

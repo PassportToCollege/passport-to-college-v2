@@ -257,6 +257,26 @@ export const EditUserPersonal = ({ user, doClose, doSubmit }) => {
       doSubmit(user)
   }
 
+  const handleFormChange = e => {
+    switch (e.target.name) {
+      case "country":
+        if (user.address) {
+          user.address.country = e.target.value;
+        } else {
+          user.address = {
+            country: e.target.value
+          }
+        }
+
+        break;
+      case "dob":
+        user.dob = new Date(moment.utc(moment(e.target.value)).toDate()).getTime();
+        break;
+      default:
+        user[e.target.name] = e.target.value;
+    }
+  }
+
   return (
     <div className="modal__container modal__edit_user_personal"
       ref={div => this.modalContainer = div}>
@@ -267,16 +287,19 @@ export const EditUserPersonal = ({ user, doClose, doSubmit }) => {
           <div className="form__input_container">
             <label>Full name</label>
             <input type="text" name="name" required 
-              defaultValue={user.name.full} />
+              defaultValue={user.name.full} 
+              onChange={handleFormChange} />
           </div>
           <div className="form__input_container">
             <label>Date of birth</label>
             <input type="date" name="dob" required
-              defaultValue={moment(user.dob).format("MM-DD-Y")} />
+              defaultValue={moment(user.dob).format("Y-MM-DD")} 
+              onBlur={handleFormChange}/>
           </div>
           <div className="form__input_container">
             <label>Gender</label>
-            <select name="gender" required defaultValue={user.gender || ""}>
+            <select name="gender" required defaultValue={user.gender || ""}
+              onChange={handleFormChange}>
               <option value="" disabled>Select One</option>
               <option value="female">Female</option>
               <option value="male">Male</option>
@@ -291,12 +314,14 @@ export const EditUserPersonal = ({ user, doClose, doSubmit }) => {
           <div className="form__input_container">
             <label>Phone</label>
             <input type="tel" name="phone" required
-              defaultValue={user.phone} />
+              defaultValue={user.phone} 
+              onChange={handleFormChange}/>
           </div>
           <div className="form__input_container">
             <label>Country</label>
             <input type="text" name="country" required
-              defaultValue={user.address ? user.address.country : ""} />
+              defaultValue={user.address ? user.address.country : ""} 
+              onChange={handleFormChange}/>
           </div>
           <Button solid type="submit" doClick={handleSubmit}
             text="save" />
