@@ -463,6 +463,15 @@ class UserSection extends Component {
                     null
                 }
               </div>
+              <div className="settings__delete_user">
+                <h2>Remove User</h2>
+                {
+                  this.props.user.hasGottenUser && this.state.user ?
+                    <Button solid text={`delete ${this.state.user.name.full}`}
+                      doClick={this.handleRemoveUserButtonClick} /> :
+                    null
+                }
+              </div>
             </div>
           </section>
         )
