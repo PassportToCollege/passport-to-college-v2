@@ -240,6 +240,77 @@ DeleteUser.propTypes = {
   doSubmit: propTypes.func
 }
 
+export const EditUserPersonal = ({ user, doClose, doSubmit }) => {
+  const closeModal = () => {
+    this.modalContainer.classList.add("close");
+
+    if ("function" === typeof doClose)
+      doClose();
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+
+    this.modalContainer.classList.add("close");
+
+    if ("function" === typeof doSubmit)
+      doSubmit(user)
+  }
+
+  return (
+    <div className="modal__container modal__edit_user_personal"
+      ref={div => this.modalContainer = div}>
+      <div className="modal__bg" onClick={closeModal}></div>
+      <div className="modal__content">
+        <h3>{`Edit ${user.name.full}`}</h3>
+        <form className="form form__edit_user_personal">
+          <div className="form__input_container">
+            <label>Full name</label>
+            <input type="text" name="name" required 
+              defaultValue={user.name.full} />
+          </div>
+          <div className="form__input_container">
+            <label>Date of birth</label>
+            <input type="date" name="dob" required
+              defaultValue={moment(user.dob).format("MM-DD-Y")} />
+          </div>
+          <div className="form__input_container">
+            <label>Gender</label>
+            <select name="gender" required defaultValue={user.gender || ""}>
+              <option value="" disabled>Select One</option>
+              <option value="female">Female</option>
+              <option value="male">Male</option>
+            </select>
+          </div>
+          <h4>Contact Information</h4>
+          <div className="form__input_container">
+            <label>Email</label>
+            <input type="email" name="email" required disabled
+              defaultValue={user.email} />
+          </div>
+          <div className="form__input_container">
+            <label>Phone</label>
+            <input type="tel" name="phone" required
+              defaultValue={user.phone} />
+          </div>
+          <div className="form__input_container">
+            <label>Country</label>
+            <input type="text" name="country" required
+              defaultValue={user.address ? user.address.country : ""} />
+          </div>
+          <Button solid type="submit" doClick={handleSubmit}
+            text="save" />
+        </form>
+      </div>
+    </div>
+  )
+}
+
+EditUserPersonal.propTypes = {
+  user: propTypes.object,
+  doClose: propTypes.func,
+  doSubmit :propTypes.func
+};
 
 
 

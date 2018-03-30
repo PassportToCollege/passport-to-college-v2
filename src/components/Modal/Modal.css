@@ -94,22 +94,52 @@
 }
 
 .modal__container.modal__delete_user .modal__content > form > input[type] {
-   display: block;
-   width: 100%;
-   max-width: 100%;
-   min-width: 100%;
-   outline: none;
-   border: 2px solid rgba(128, 150, 162, 0.35);
-   padding: 1em;
-   font-family: "Roboto",
-   sans-serif;
-   margin: 1em 0;
-  }
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 100%;
+  outline: none;
+  border: 2px solid rgba(128, 150, 162, 0.35);
+  padding: 1em;
+  font-family: "Roboto",
+  sans-serif;
+  margin: 1em 0;
+}
 
-  .modal__container.modal__delete_user .modal__content > form > input[type].error {
-    border-color: tomato;
-  }
+.modal__container.modal__delete_user .modal__content > form > input[type].error {
+  border-color: tomato;
+}
 
-  .modal__container.modal__delete_user .modal__content button:last-child {
-    margin-left: 1em;
-  }
+.modal__container.modal__delete_user .modal__content button:last-child {
+  margin-left: 1em;
+}
+
+/* Edit user personal modal */
+.modal__container.modal__edit_user_personal .modal__content > form h4 {
+  padding: 0;
+}
+
+.modal__container.modal__edit_user_personal .modal__content > form input[type],
+.modal__container.modal__edit_user_personal .modal__content > form select {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 100%;
+  outline: none;
+  border: 2px solid rgba(128, 150, 162, 0.35);
+  padding: 1em;
+  font-family: "Roboto", sans-serif;
+  margin: 0 0 1em;
+}
+
+.modal__container.modal__edit_user_personal .modal__content > form select {
+  cursor: pointer;
+}
+
+.modal__container.modal__edit_user_personal .modal__content > form label {
+  display: block;
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+  font-weight: bold;
+  color: rgba(128, 150, 162, 0.85);
+}

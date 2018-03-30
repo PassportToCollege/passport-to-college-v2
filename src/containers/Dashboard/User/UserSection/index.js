@@ -21,7 +21,7 @@ import Loader from "../../../../components/Loader";
 import Notification from "../../../../components/Notification";
 import WYSIWYGEditor from "../../../../components/Editor";
 import Button from "../../../../components/Button";
-import { AddRole, DeleteUser } from "../../../../components/Modal";
+import { AddRole, DeleteUser, EditUserPersonal } from "../../../../components/Modal";
 import AddAccomplishment from "../../../AddAccomplishment";
 import AccomplishmentsList from "../../../../components/AccomplishmentsList";
 import FeatureStudent from "../../../FeatureStudent";
@@ -52,7 +52,8 @@ class UserSection extends Component {
       featureBeingEdited: {},
       addingRole: false,
       editingRole: false,
-      deletingUser: false
+      deletingUser: false,
+      editingPersonal: false
     }
   }
 
@@ -557,6 +558,14 @@ class UserSection extends Component {
                         { color: "rgba(255,101,97,0.2)", width: "80%" }
                       ]
                     }} />
+                }
+                {
+                  this.props.user.hasGottenUser && this.state.user
+                    && this.state.editingPersonal ?
+                    <EditUserPersonal user={this.state.user}
+                      doClose={() => this.setState({ editingPersonal: false })}
+                      doSubmit={this.handleUserPersonalEdit} /> :
+                    null
                 }
               </div>
             </div>
