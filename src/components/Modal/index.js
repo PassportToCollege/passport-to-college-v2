@@ -201,7 +201,8 @@ export const DeleteUser = ({ name, doClose, doSubmit }) => {
     e.preventDefault();
 
     // check if names match
-    if (e.value !== name) {
+    if (this.nameInput.value !== name) {
+      this.nameInput.classList.add("error");
       return;
     }
 

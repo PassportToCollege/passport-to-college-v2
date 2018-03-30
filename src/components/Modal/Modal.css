@@ -106,6 +106,10 @@
    margin: 1em 0;
   }
 
+  .modal__container.modal__delete_user .modal__content > form > input[type].error {
+    border-color: tomato;
+  }
+
   .modal__container.modal__delete_user .modal__content button:last-child {
     margin-left: 1em;
   }

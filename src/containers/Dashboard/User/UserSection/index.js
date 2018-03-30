@@ -685,6 +685,14 @@ class UserSection extends Component {
 
     this.setState({ addingRole: false, editingRole: false });
   }
+
+  handleUserDelete = () => {
+    this.setState({
+      hasError: true,
+      notificationClosed: false,
+      error: "Only support for removing users from the firebase console is available at the moment"
+    })
+  }
 }
 
 UserSection.propTypes = {
