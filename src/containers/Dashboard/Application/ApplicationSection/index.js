@@ -3,6 +3,7 @@ import "./ApplicationSection.css";
 import React, { Component } from "react";
 import propTypes from "prop-types";
 import moment from "moment";
+import axios from "axios";
 
 import AnnotatedList from "../../../../components/AnnotatedList";
 import TestList from "../../../../components/TestList";
@@ -10,6 +11,9 @@ import LoadingText from "../../../../components/LoadingText";
 import WYSIWYGEditor from "../../../../components/Editor";
 import ReviewBlock from "../../../../components/ReviewBlock";
 import Button from "../../../../components/Button";
+import Notification from "../../../../components/Notification";
+
+const EMAIL_API = process.env.REACT_APP_EMAIL_API;
 
 class ApplicationSection extends Component {
   constructor(props) {
@@ -19,7 +23,18 @@ class ApplicationSection extends Component {
       applicationId: props.applicationId,
       section: props.section,
       application: props.application.application,
+      hasError: false,
+      notificationClosed: true,
+      error: ""
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.section)
+      this.setState({ section: nextProps.section });
+
+    if (nextProps.application.hasGotten)
+      this.setState({ application: nextProps.application.application });
   }
 
   render() {
@@ -87,24 +102,69 @@ class ApplicationSection extends Component {
       case "decide":
         return (
           <section className="application__section decide__section">
+            {
+              this.state.hasError && !this.state.notificationClosed ?
+                <Notification doClose={() => this.setState({
+                    hasError: false,
+                    notificationClosed: true,
+                    error: ""
+                  })}
+                  text={this.state.error} /> :
+                null
+
+            }
             <div className="application__section_left">
               <div className="application__decide_accept">
                 <h2>Accept</h2>
                 <p>This student has met the financial, academic, and character requirements of a Passport to College scholar. Therefore, we will move forward and work with this student.</p>
-                <Button solid text="notify student" type="button"
-                  doClick={this.sendAcceptanceEmail} />
+                {
+                  this.props.application.hasGotten && this.state.application
+                  && this.state.application.state.accepted ?
+                    <p style={{
+                        fontWeight: "bold"
+                      }}>
+                      {`This application was accepted on ${moment(this.state.application.acceptedOn).format("MM-DD-Y")}`}
+                    </p> :
+                      this.props.application.hasGotten && this.state.application
+                      && this.state.application.state.rejected ?
+                        <p style={{
+                            fontWeight: "bold"
+                          }}>
+                          {`This application was rejected on ${moment(this.state.application.rejectedOn).format("MM-DD-Y")}`}
+                        </p> :
+                      <Button solid text="notify student" type="button"
+                        doClick={this.sendAcceptanceEmail} />
+                }
               </div>
             </div>
             <div className="application__section_right">
               <div className="application__decide_reject">
                 <h2>Reject</h2>
                 <p>This student has not met the financial, academic, and/or character requirements of a Passport to College scholar. Therefore, we will not move forward and work with this student.</p>
-                <div className="application__rejection_note">
-                  <label>Include rejection message (optional)</label>
-                  <textarea rows="4" ref={textarea => this.rejectText = textarea}></textarea>
-                </div>
-                <Button text="notify student" type="button"
-                  doClick={this.sendRejectionEmail} />
+                {
+                  this.props.application.hasGotten && this.state.application
+                  && this.state.application.state.rejected ?
+                    <p style={{
+                        fontWeight: "bold"
+                      }}>
+                      {`This application was rejected on ${moment(this.state.application.rejectedOn).format("MM-DD-Y")}`}
+                    </p> :
+                      this.props.application.hasGotten && this.state.application
+                      && this.state.application.state.accepted ?
+                      <p style={{
+                          fontWeight: "bold"
+                        }}>
+                        {`This application was accepted on ${moment(this.state.application.acceptedOn).format("MM-DD-Y")}`}
+                      </p> :
+                      <span>
+                        <div className="application__rejection_note">
+                          <label>Include rejection message (optional)</label>
+                          <textarea rows="4" ref={textarea => this.rejectText = textarea}></textarea>
+                        </div>
+                        <Button text="notify student" type="button"
+                          doClick={this.sendRejectionEmail} />
+                      </span>
+                }
               </div>
             </div>
           </section>
@@ -197,7 +257,7 @@ class ApplicationSection extends Component {
                     <AnnotatedList data={[
                       { label: "started", text: moment(this.state.application.startedOn).format("MM-DD-Y") },
                       { label: "submitted", text: moment(this.state.application.submittedOn).format("MM-DD-Y") },
-                      { label: "state", text: this.state.application.state.pending ? "pending" : this.state.aplication.state.accepted ? "accepted" : "rejected" }
+                      { label: "state", text: this.state.application.state.pending ? "pending" : this.state.application.state.accepted ? "accepted" : "rejected" }
                     ]} />
                     :
                     <LoadingText options={{
@@ -257,19 +317,33 @@ class ApplicationSection extends Component {
     return <p>No tests added.</p>
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.section)
-      this.setState({ section: nextProps.section });
-
-    if (nextProps.application.hasGotten)
-      this.setState({ application: nextProps.application.application });
+  sendAcceptanceEmail = () => {
+    axios.get(`${EMAIL_API}/s/accept-application/${this.state.applicationId}`)
+      .then(() => {
+        this.props.applicationActions.doApplicationUpdate(this.state.applicationId, {
+          state: Object.assign({}, this.state.application.state, {
+            pending: false,
+            accepted: true
+          }),
+          acceptedOn: new Date(moment.utc(moment().toDate())).getTime()
+        });
+      })
+      .catch(error => {
+        this.setState({
+          hasError: true,
+          notificationClosed: false,
+          error: "There was a problem sending your message"
+        });
+        console.log(error);
+      })
   }
 }
 
 ApplicationSection.propTypes = {
   applicationId: propTypes.string,
   section: propTypes.string,
-  application: propTypes.object
+  application: propTypes.object,
+  applicationActions: propTypes.object
 };
 
 export default ApplicationSection;

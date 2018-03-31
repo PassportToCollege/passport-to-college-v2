@@ -85,7 +85,8 @@ class Application extends Component {
                     <ApplicationSection {...props}
                       applicationId={this.props.match.params.application_id}
                       section="information"
-                      application={this.props.application} />
+                      application={this.props.application}
+                      applicationActions={this.props.applicationActions} />
                   )
                 }}>
               </Route>
@@ -98,7 +99,9 @@ class Application extends Component {
                         return (
                           <ApplicationSection {...props}
                             section={section.name.toLowerCase()}
-                            application={this.props.application} />
+                            application={this.props.application} 
+                            applicationActions={this.props.applicationActions}
+                            applicationId={this.props.match.params.application_id} />
                         )
                       }}>
                     </Route>
