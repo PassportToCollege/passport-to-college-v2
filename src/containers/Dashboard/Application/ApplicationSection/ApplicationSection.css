@@ -14,7 +14,8 @@
 
 /* Sections */
 .application__section.information__section,
-.application__section.tests__section {
+.application__section.tests__section,
+.application__section.decide__section {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -23,15 +24,36 @@
 }
 
 .application__section.information__section > div,
-.application__section.tests__section > div {
+.application__section.tests__section > div,
+.application__section.decide__section > div {
   max-width: 500px;
   padding: 2em 0;
   flex: 1 0 auto;
 }
 
 .application__section.information__section > div > div,
-.application__section.tests__section > div > div {
+.application__section.tests__section > div > div,
+.application__section.decide__section > div > div {
   padding: 2em;
   border: 1px solid rgba(26, 25, 25, 0.15);
   border-radius: 3px;
+}
+
+/* Decide section */
+.application__section.decide__section .application__rejection_note {
+  margin: 1em 0;
+}
+
+.application__section.decide__section .application__rejection_note label {
+  display: block;
+  font-weight: bold;
+  font-size: 0.85em;
+  color: rgba(128, 150, 162, 0.85);
+}
+
+.application__section.decide__section .application__rejection_note textarea {
+  display: block;
+  min-width: 100%;
+  max-width: 100%;
+  outline: none; 
 }

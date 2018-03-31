@@ -9,6 +9,7 @@ import TestList from "../../../../components/TestList";
 import LoadingText from "../../../../components/LoadingText";
 import WYSIWYGEditor from "../../../../components/Editor";
 import ReviewBlock from "../../../../components/ReviewBlock";
+import Button from "../../../../components/Button";
 
 class ApplicationSection extends Component {
   constructor(props) {
@@ -86,7 +87,26 @@ class ApplicationSection extends Component {
       case "decide":
         return (
           <section className="application__section decide__section">
-
+            <div className="application__section_left">
+              <div className="application__decide_accept">
+                <h2>Accept</h2>
+                <p>This student has met the financial, academic, and character requirements of a Passport to College scholar. Therefore, we will move forward and work with this student.</p>
+                <Button solid text="notify student" type="button"
+                  doClick={this.sendAcceptanceEmail} />
+              </div>
+            </div>
+            <div className="application__section_right">
+              <div className="application__decide_reject">
+                <h2>Reject</h2>
+                <p>This student has not met the financial, academic, and/or character requirements of a Passport to College scholar. Therefore, we will not move forward and work with this student.</p>
+                <div className="application__rejection_note">
+                  <label>Include rejection message (optional)</label>
+                  <textarea rows="4" ref={textarea => this.rejectText = textarea}></textarea>
+                </div>
+                <Button text="notify student" type="button"
+                  doClick={this.sendRejectionEmail} />
+              </div>
+            </div>
           </section>
         )
       case "information":
