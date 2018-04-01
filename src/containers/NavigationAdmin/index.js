@@ -9,7 +9,7 @@ import Cookies from "universal-cookie";
 import { withRouter } from "react-router-dom";
 
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
-import { faTachometerAlt, faUsers, faUser, faHome, faSignOutAlt } from "@fortawesome/fontawesome-free-solid";
+import { faTachometerAlt, faUsers, faUser, faHome, faSignOutAlt, faRss } from "@fortawesome/fontawesome-free-solid";
 import { faWpforms } from "@fortawesome/fontawesome-free-brands";
 import LoadingText from "../../components/LoadingText";
 import Loader from "../../components/Loader";
@@ -120,7 +120,8 @@ class NavigationAdmin extends Component {
     let mainRoutes = [
       routes.DASHBOARD,
       routes.APPLICATIONS,
-      routes.USERS
+      routes.USERS,
+      routes.BLOG_DASH
     ]
 
     const els = mainRoutes.map((v, i) => {
@@ -135,6 +136,9 @@ class NavigationAdmin extends Component {
           break;
         case "/admin/dashboard/users":
           icon = faUsers;
+          break;
+        case "/admin/dashboard/blog":
+          icon = faRss;
           break;
         default:
           icon = "";
