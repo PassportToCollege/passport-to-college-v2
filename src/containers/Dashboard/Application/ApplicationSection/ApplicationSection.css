@@ -19,16 +19,15 @@
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  justify-content: space-between;
+  justify-content: space-around;
   flex-wrap: wrap;
 }
 
 .application__section.information__section > div:not([class="notification"]),
 .application__section.tests__section > div:not([class="notification"]),
 .application__section.decide__section > div:not([class="notification"]) {
-  max-width: 500px;
   padding: 2em 0;
-  flex: 1 0 auto;
+  flex: 0 1 500px;
 }
 
 .application__section.information__section > div > div,

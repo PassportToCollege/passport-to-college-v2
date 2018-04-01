@@ -24,16 +24,15 @@
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  justify-content: space-between;
+  justify-content: space-around;
   flex-wrap: wrap;
 }
 
 .user__section.personal__section > div,
 .user__section.education__section > div,
 .user__section.settings__section > div {
-  max-width: 500px;
   padding: 2em 0;
-  flex: 1 0 auto;
+  flex: 0 1 500px;
 }
 
 .user__section.personal__section > div > div,

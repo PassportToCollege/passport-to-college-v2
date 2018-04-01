@@ -1,0 +1,4 @@
+.dash_posts__container {
+  min-height: calc(100vh - 58px);
+  position: relative;
+}

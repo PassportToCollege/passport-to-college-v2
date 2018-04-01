@@ -1,0 +1,43 @@
+.navigation_posts {
+  width: 100px;
+  height: 100%;
+  position: fixed;
+  background-color: #FF6561;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.navigation_posts__add_post {
+  color: white;
+  width: 50px;
+  height: 50px;
+  border: 2px solid white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2em;
+  cursor: pointer;
+}
+
+.navigation_posts .navigation_posts__links {
+  margin: 1em 0;
+  border-top: 2px solid white;
+}
+
+.navigation_posts .navigation_posts__links > li {
+  text-align: center;
+}
+
+.navigation_posts .navigation_posts__links > li > a {
+  padding: 1em 0;
+  display: block;
+  color: white;
+  font-family: "Nunito", sans-serif;
+}
+
+.navigation_posts .navigation_posts__links > li > a.active {
+  font-weight: bold;
+}

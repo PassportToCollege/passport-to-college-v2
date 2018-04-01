@@ -27,6 +27,13 @@ export const VIEW_APPLICATION_SECTIONS = [
 ];
 export const PROFILE = { name: "Profile", route: "/admin/dashboard/profile" };
 export const DASH_POSTS = { name: "Posts", route: "/admin/dashboard/posts" };
+export const DASH_POSTS_SECTIONS = [
+  { name: "All", route: "/admin/dashboard/posts" },
+  { name: "Archived", route: "/admin/dashboard/posts/archived" },
+  { name: "Published", route: "/admin/dashboard/posts/published" },
+  { name: "Draft", route: "/admin/dashboard/posts/draft" },
+  { name: "Settings", route: "/admin/dashboard/posts/settings" }
+]
 
 // Student Application Routes
 export const APPLY = { name: "Apply", route: "/apply" };
