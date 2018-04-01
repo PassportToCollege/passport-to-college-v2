@@ -332,9 +332,8 @@ class ApplicationSection extends Component {
         this.setState({
           hasError: true,
           notificationClosed: false,
-          error: "There was a problem sending your message"
+          error: error.message || "There was a problem sending your message"
         });
-        console.log(error);
       })
   }
 }

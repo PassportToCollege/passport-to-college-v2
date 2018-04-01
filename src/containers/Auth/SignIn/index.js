@@ -25,7 +25,8 @@ class SignIn extends Component {
   render() {
     return (
       <div className="signin__container">
-        <SignInForm handleSubmit={this.handleSignIn}
+        <SignInForm title="Sign in below:"
+          handleSubmit={this.handleSignIn}
           updateEmail={this.updateEmail}
           updatePassword={this.updatePassword} 
           authError={this.state.hasError} />
