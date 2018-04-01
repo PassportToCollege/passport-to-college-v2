@@ -26,7 +26,7 @@ export const VIEW_APPLICATION_SECTIONS = [
   { name: "Decide", route: "/decide" }
 ];
 export const PROFILE = { name: "Profile", route: "/admin/dashboard/profile" };
-export const BLOG_DASH = { name: "Blog", route: "/admin/dashboard/blog" };
+export const DASH_POSTS = { name: "Posts", route: "/admin/dashboard/posts" };
 
 // Student Application Routes
 export const APPLY = { name: "Apply", route: "/apply" };

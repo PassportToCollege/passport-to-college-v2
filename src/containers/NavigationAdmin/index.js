@@ -121,7 +121,7 @@ class NavigationAdmin extends Component {
       routes.DASHBOARD,
       routes.APPLICATIONS,
       routes.USERS,
-      routes.BLOG_DASH
+      routes.DASH_POSTS
     ]
 
     const els = mainRoutes.map((v, i) => {
@@ -137,7 +137,7 @@ class NavigationAdmin extends Component {
         case "/admin/dashboard/users":
           icon = faUsers;
           break;
-        case "/admin/dashboard/blog":
+        case "/admin/dashboard/posts":
           icon = faRss;
           break;
         default:
