@@ -23,9 +23,9 @@
   flex-wrap: wrap;
 }
 
-.application__section.information__section > div,
-.application__section.tests__section > div,
-.application__section.decide__section > div {
+.application__section.information__section > div:not([class="notification"]),
+.application__section.tests__section > div:not([class="notification"]),
+.application__section.decide__section > div:not([class="notification"]) {
   max-width: 500px;
   padding: 2em 0;
   flex: 1 0 auto;

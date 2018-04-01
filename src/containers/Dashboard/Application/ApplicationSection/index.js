@@ -24,6 +24,7 @@ class ApplicationSection extends Component {
       section: props.section,
       application: props.application.application,
       hasError: false,
+      hasNotification: false,
       notificationClosed: true,
       error: ""
     };
@@ -103,9 +104,10 @@ class ApplicationSection extends Component {
         return (
           <section className="application__section decide__section">
             {
-              this.state.hasError && !this.state.notificationClosed ?
+              (this.state.hasError || this.state.hasNotification) && !this.state.notificationClosed ?
                 <Notification doClose={() => this.setState({
                     hasError: false,
+                    hasNotification: false,
                     notificationClosed: true,
                     error: ""
                   })}
@@ -326,6 +328,38 @@ class ApplicationSection extends Component {
             accepted: true
           }),
           acceptedOn: new Date(moment.utc(moment().toDate())).getTime()
+        });
+        this.setState({
+          hasNotification: true,
+          notificationClosed: false,
+          error: "Student has been notified of your decision"
+        });
+      })
+      .catch(error => {
+        this.setState({
+          hasError: true,
+          notificationClosed: false,
+          error: error.message || "There was a problem sending your message"
+        });
+      })
+  }
+
+  sendRejectionEmail = () => {
+    axios.post(`${EMAIL_API}/s/reject-application/${this.state.applicationId}`, {
+      message: this.rejectText.value
+    })
+      .then(() => {
+        this.props.applicationActions.doApplicationUpdate(this.state.applicationId, {
+          state: Object.assign({}, this.state.application.state, {
+            pending: false,
+            rejected: true
+          }),
+          rejectedOn: new Date(moment.utc(moment().toDate())).getTime()
+        });
+        this.setState({
+          hasNotification: true,
+          notificationClosed: false,
+          error: "Student has been notified of your decision"
         });
       })
       .catch(error => {

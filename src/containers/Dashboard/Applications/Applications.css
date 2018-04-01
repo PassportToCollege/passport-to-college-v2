@@ -7,6 +7,9 @@
   background-color: rgb(58, 58, 58);
 }
 
+.applications__state_indicator[data-state="accepted"] { background-color: darkolivegreen }
+.applications__state_indicator[data-state="rejected"] { background-color: tomato }
+
 /* Header */
 .applications__container header {
   position: relative;

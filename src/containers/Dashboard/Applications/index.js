@@ -91,7 +91,7 @@ class Applications extends Component {
                       <tr key={application.uid}>
                         <td>
                           <span className="applications__state_indicator"
-                            data-state={application.state}></span>
+                            data-state={application.state.accepted ? "accepted" : application.state.rejected ? "rejected" : "pending"}></span>
                         </td>
                         <td>
                           <Link className="applications__name" 
