@@ -1,6 +1,7 @@
 nav.dashboard__navigation {
   background-color: #333;
   position: fixed;
+  z-index: 99;
   top: 0;
   left: 0;
   height: 100%;
