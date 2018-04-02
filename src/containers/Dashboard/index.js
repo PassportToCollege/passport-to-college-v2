@@ -16,7 +16,6 @@ import User from "./User";
 import DashPosts from "./DashPosts";
 
 export default class Dashboard extends Component {
-
   componentWillMount() {
     this.props.updateLocation("dashboard home");
   }

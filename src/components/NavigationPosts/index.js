@@ -38,10 +38,13 @@ class NavigationPosts extends Component {
         notificationClosed: false
       });
     
-    if (nextProps.post.hasCreated && !this.state.working) {
+    if (nextProps.post.hasCreated && this.state.working) {
       this.setState({ working: false });
       this.props.history.push(`/admin/dashboard/posts/e/${nextProps.post.id}`);
     }
+
+    if (nextProps.show !== this.state.show)
+      this.setState({ show: nextProps.show });
   }
 
   render() {
