@@ -26,7 +26,9 @@ export const VIEW_APPLICATION_SECTIONS = [
   { name: "Decide", route: "/decide" }
 ];
 export const PROFILE = { name: "Profile", route: "/admin/dashboard/profile" };
+export const POST_CATEGORIES = { name: "Post categories", route: "/admin/dashboard/posts/categories" };
 export const DASH_POSTS = { name: "Posts", route: "/admin/dashboard/posts" };
+export const DASH_POSTS_NEW = { name: "Create post", route: "/admin/dashboard/posts/new" };
 export const DASH_POSTS_SECTIONS = [
   { name: "All", route: "/admin/dashboard/posts" },
   { name: "Archived", route: "/admin/dashboard/posts/archived" },

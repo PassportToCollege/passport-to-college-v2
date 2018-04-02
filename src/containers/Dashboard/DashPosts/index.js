@@ -1,7 +1,6 @@
 import "./DashPosts.css";
 
 import React, { Component } from "react";
-import propTypes from "prop-types";
 
 import NavigationPosts from "../../../components/NavigationPosts";
 
