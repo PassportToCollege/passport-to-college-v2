@@ -15,7 +15,7 @@ class EditPost extends Component {
 
   componentWillMount() {
     this.props.togglePostNav(false);
-    
+
     const { post_id } = this.props.match.params;
     this.props.postAction.doPostGet(post_id);
   }
@@ -23,7 +23,18 @@ class EditPost extends Component {
   render() {
     return (
       <div className="edit_post">
+        <nav className="edit_post__nav">
+          <h4>options</h4>
+          <ul className="edit_post__nav_list">
+            <li className="edit_post__save">save</li>
+            <li className="edit_post__publish">publish</li>
+            <li className="edit_post__unpublish">unpublish</li>
+            <li className="edit_post__archive">archive</li>
+          </ul>
+        </nav>
+        <main className="edit_post__edit">
 
+        </main>
       </div>
     )
   }
