@@ -11,6 +11,7 @@ class EditPost extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      id: props.match.params.post_id,
       post: props.post.post,
       postChanges: {}
     };
@@ -20,7 +21,7 @@ class EditPost extends Component {
     this.props.togglePostNav(false);
 
     const { post_id } = this.props.match.params;
-    this.props.postAction.doPostGet(post_id);
+    this.props.postActions.doPostGet(post_id);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -34,7 +35,8 @@ class EditPost extends Component {
         <nav className="edit_post__nav">
           <h4>options</h4>
           <ul className="edit_post__nav_list">
-            <li className="edit_post__save">save</li>
+            <li className="edit_post__save"
+              onClick={this.updatePost}>save</li>
             <li className="edit_post__publish">publish</li>
             <li className="edit_post__unpublish">unpublish</li>
             <li className="edit_post__archive">archive</li>
@@ -61,11 +63,17 @@ class EditPost extends Component {
       }) 
     });
   }
+
+  updatePost = () => {
+    this.props.postActions.doPostUpdate(this.state.id, this.state.postChanges, {
+      refresh: true
+    });
+  }
 }
 
 EditPost.propTypes = {
   post: propTypes.object,
-  postAction: propTypes.object,
+  postActions: propTypes.object,
   match: propTypes.object,
   togglePostNav: propTypes.func
 };
@@ -78,7 +86,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    postAction: bindActionCreators(postActions, dispatch)
+    postActions: bindActionCreators(postActions, dispatch)
   };
 };
 
