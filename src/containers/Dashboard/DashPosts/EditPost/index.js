@@ -35,8 +35,14 @@ class EditPost extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.post.hasGotten)
-      this.setState({ post: nextProps.post.post });
+    if (nextProps.post.hasGotten) {
+      this.setState({ 
+        post: nextProps.post.post, 
+        postChanges: Object.assign({}, this.state.postChanges, { 
+          excerpt: nextProps.post.post.excerpt 
+        }) 
+      });
+    }
 
     if (nextProps.post.postGetFailed ||
       nextProps.post.postUpdateFailed) {
@@ -91,7 +97,8 @@ class EditPost extends Component {
           <div className="edit_post__hero_container">
             {
               this.props.post.gotHero && this.state.hero ? 
-              <DropUploader label={<span><b>Choose a hero image</b> or drag it here</span>}
+              <DropUploader overlay
+                label={<span><b>Choose a hero image</b> or drag it here</span>}
                 uploaderStyles={{
                   backgroundColor: "white",
                   backgroundImage: `url(${this.state.hero})`,
@@ -103,8 +110,11 @@ class EditPost extends Component {
                 handleAvatarChange={this.handleHeroImageChange} 
                 dropAreaStyles={{
                   background: "none",
-                  color: "#333",
-                  borderColor: "#333"
+                  color: "#FFF",
+                  borderColor: "#FFF"
+                }}
+                labelStyles={{
+                  color: "#FFF"
                 }}/> : <Loader />
             }
             {
@@ -118,8 +128,8 @@ class EditPost extends Component {
             <label>Post excerpt</label>
             <span>This will appear in the blog homepage and landing page of the website.</span>
             <textarea name="excerpt" rows="5"
-              value={this.state.postChanges ? this.state.post.excerpt : ""}
-              onBlur={this.handleExcerptChange}></textarea>
+              value={this.state.postChanges.excerpt}
+              onChange={this.handleExcerptChange}></textarea>
           </div>
           <div className="edit_post__editor">
             <label>Full post</label>

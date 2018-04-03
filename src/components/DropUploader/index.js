@@ -38,6 +38,10 @@ const DropUploader = props => {
 
   return (
     <form className={`form drop__uploader ${props.disabled === true ? "disabled" : ""}`} encType="multipart/form-data" style={props.uploaderStyles}>
+      {
+        props.overlay ?
+          <div className="drop__uploader_overlay"></div> : null
+      }
       <fieldset disabled={props.disabled === true ? "disabled" : null}>
         <div className="drop__area" 
           onClick={handleDragAreaClick}
@@ -49,7 +53,7 @@ const DropUploader = props => {
           <input type="file" name="avatar" accept="image/*"
             ref={input => this.avatartInput = input}
             onChange={handleAvatarChange} />
-          <label>
+          <label style={props.labelStyles}>
             {
               props.label || 
               <span><b>Choose an image</b> or drag it here</span>
@@ -61,12 +65,18 @@ const DropUploader = props => {
   );
 }
 
+DropUploader.defaultProps = {
+  overlay: false
+};
+
 DropUploader.propTypes = {
   handleAvatarChange: propTypes.func,
   disabled: propTypes.bool,
   uploaderStyles: propTypes.object,
   dropAreaStyles: propTypes.object,
-  label: propTypes.object
+  label: propTypes.object,
+  overlay: propTypes.bool,
+  labelStyles: propTypes.object
 };
 
 export default DropUploader;

@@ -3,6 +3,16 @@
   background-color: #FFD889;
   padding: 2em 1.525em;
   margin-top: 2em;
+  position: relative;
+}
+
+.drop__uploader_overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0, 0.65);
 }
 
 .form.drop__uploader .drop__area {
@@ -16,6 +26,7 @@
   cursor: pointer;
   transition: border-width 200ms linear;
   color: #FFB318;
+  position: relative;
 }
 
 .form.drop__uploader .drop__area.item__enter {
