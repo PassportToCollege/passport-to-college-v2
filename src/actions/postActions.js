@@ -84,6 +84,9 @@ export const doHeroUpload = (file, post, options) => {
       .put(file)
       .then(() => {
         dispatch(heroUploaded());
+
+        if (options.refresh)
+          return dispatch(doHeroGet(post));
       })
       .catch(error => {
         dispatch(uploadHeroFailed(error));

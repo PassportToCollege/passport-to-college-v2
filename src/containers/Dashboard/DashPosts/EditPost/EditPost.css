@@ -5,6 +5,7 @@
   grid-template-columns: [first] minmax(200px, 15%) [second] auto [third];
   grid-template-rows: auto;
   position: relative;
+  background-color: white;
 }
 
 /* Nav */
@@ -90,6 +91,9 @@
   grid-column: second / span third;
   background-color: white;
   padding: 4.5em 3.5em;
+  width: 1170px;
+  max-width: 100%;
+  margin: 0 auto;
 }
 
 .edit_post__edit .edit_post__post_title {

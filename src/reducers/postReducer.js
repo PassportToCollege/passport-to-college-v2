@@ -106,21 +106,21 @@ const post = (state = initialState.post, action) => {
     case POST_GET_HERO_INITIATED:
       return Object.assign({}, state, {
         gettingHero: true,
-        gothero: false,
+        gotHero: false,
         heroGetFailed: false,
         id: action.id
       });
     case POST_GET_HERO_DONE:
       return Object.assign({}, state, {
         gettingHero: false,
-        gothero: true,
+        gotHero: true,
         heroGetFailed: false,
         hero: action.hero
       });
     case POST_GET_HERO_FAILED:
       return Object.assign({}, state, {
         gettingHero: false,
-        gothero: false,
+        gotHero: false,
         heroGetFailed: true,
         id: action.id,
         error: action.error

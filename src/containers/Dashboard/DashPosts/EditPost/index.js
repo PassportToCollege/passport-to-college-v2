@@ -7,8 +7,10 @@ import propTypes from "prop-types";
 
 import * as postActions from "../../../../actions/postActions";
 
+import Loader from "../../../../components/Loader";
 import Notification from "../../../../components/Notification";
 import WYSIWYGEditor from "../../../../components/Editor";
+import DropUploader from "../../../../components/DropUploader";
 
 class EditPost extends Component {
   constructor(props) {
@@ -16,6 +18,7 @@ class EditPost extends Component {
     this.state = {
       id: props.match.params.post_id,
       post: props.post.post,
+      hero: props.post.hero,
       postChanges: {},
       hasNotification: false,
       hasError: false,
@@ -28,6 +31,7 @@ class EditPost extends Component {
 
     const { post_id } = this.props.match.params;
     this.props.postActions.doPostGet(post_id);
+    this.props.postActions.doHeroGet(post_id);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -50,6 +54,9 @@ class EditPost extends Component {
         notificationClosed: false
       });
     }
+
+    if (nextProps.post.gotHero)
+      this.setState({ hero: nextProps.post.hero });
   }
 
   render() {
@@ -71,7 +78,7 @@ class EditPost extends Component {
             onInput={this.handleTitleChange}>
             {
               this.props.post.hasGotten && this.state.post ?
-                this.state.post.title ? this.state.post.title : "Post Title Here" :
+                this.state.post.title ? this.state.post.title : "Type Your Post Title Here" :
                 null
             }
           </h1>
@@ -81,6 +88,31 @@ class EditPost extends Component {
                 `by ${this.state.post.author.name.full}` : null
             }
           </p>
+          <div className="edit_post__hero_container">
+            {
+              this.props.post.gotHero && this.state.hero ? 
+              <DropUploader 
+                uploaderStyles={{
+                  backgroundColor: "white",
+                  backgroundImage: `url(${this.state.hero})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat",
+                  padding: "4em"
+                }}
+                handleAvatarChange={this.handleHeroImageChange} 
+                dropAreaStyles={{
+                  background: "none",
+                  color: "#333",
+                  borderColor: "#333"
+                }}/> : <Loader />
+            }
+            {
+              this.props.post.heroGetFailed ?
+                <DropUploader handleAvatarChange={this.handleHeroImageChange} /> :
+                null
+            }
+          </div>
           {
             (this.state.hasError || this.state.hasNotification) && !this.state.notificationClosed ?
               <Notification doClose={() => this.setState({ 
@@ -107,6 +139,35 @@ class EditPost extends Component {
     this.props.postActions.doPostUpdate(this.state.id, this.state.postChanges, {
       refresh: true
     });
+  }
+
+  handleHeroImageChange = e => {
+    let newHero = e.files[0];
+    let reader = new FileReader();
+
+    reader.readAsDataURL(newHero);
+    reader.onload = event => {
+      let dataUrl = event.target.result;
+
+      let image = new Image();
+      image.src = dataUrl;
+      image.onload = () => {
+        const { width, height } = image;
+
+        // ensure image is rectangular
+        if (((width/height)*100) >= 133) {
+          return this.props.postActions.doHeroUpload(newHero, this.state.id, {
+            refresh: true
+          });
+        }
+
+        this.setState({
+          hasError: true,
+          notificationClosed: false,
+          notification: "Hero aspect ratio must be between 4:3 and 16:9"
+        });
+      };
+    };
   }
 }
 

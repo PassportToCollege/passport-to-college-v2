@@ -15,6 +15,7 @@
   justify-content: center;
   cursor: pointer;
   transition: border-width 200ms linear;
+  color: #FFB318;
 }
 
 .form.drop__uploader .drop__area.item__enter {
@@ -23,7 +24,6 @@
 
 .form.drop__uploader .drop__area > svg {
   font-size: 4em;
-  color: #FFB318;
 }
 
 .form.drop__uploader .drop__area>input[type="file"] {

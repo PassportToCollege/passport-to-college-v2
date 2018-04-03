@@ -37,13 +37,14 @@ const DropUploader = props => {
   }
 
   return (
-    <form className={`form drop__uploader ${props.disabled === true ? "disabled" : null}`} encType="multipart/form-data">
+    <form className={`form drop__uploader ${props.disabled === true ? "disabled" : ""}`} encType="multipart/form-data" style={props.uploaderStyles}>
       <fieldset disabled={props.disabled === true ? "disabled" : null}>
         <div className="drop__area" 
           onClick={handleDragAreaClick}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
-          onDrop={handleDrop}>
+          onDrop={handleDrop}
+          style={props.dropAreaStyles}>
           <FontAwesomeIcon icon={faUpload} />
           <input type="file" name="avatar" accept="image/*"
             ref={input => this.avatartInput = input}
@@ -57,7 +58,9 @@ const DropUploader = props => {
 
 DropUploader.propTypes = {
   handleAvatarChange: propTypes.func,
-  disabled: propTypes.bool
+  disabled: propTypes.bool,
+  uploaderStyles: propTypes.object,
+  dropAreaStyles: propTypes.object
 };
 
 export default DropUploader;
