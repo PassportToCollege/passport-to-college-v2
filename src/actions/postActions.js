@@ -1,5 +1,5 @@
 import * as types from "./actionTypes";
-import { db, auth } from "../utils/firebase";
+import { db, auth, storage } from "../utils/firebase";
 import moment from "moment";
 
 const Console = console;
@@ -53,6 +53,43 @@ export const doPostCreate = () => {
     });
   };
 };
+
+export const uploadHeroInitiated = () => {
+  return {
+    type: types.POST_UPLOAD_HERO_INITIATED
+  };
+};
+
+export const uploadHeroFailed = error => {
+  return {
+    type: types.POST_UPLOAD_HERO_FAILED,
+    error
+  };
+};
+
+export const heroUploaded = () => {
+  return {
+    type: types.POST_HERO_UPLOADED
+  };
+};
+
+export const doHeroUpload = (file, post, options) => {
+  return dispatch => {
+    dispatch(uploadHeroInitiated());
+
+    options = options || {};
+
+    return storage.ref("posts/heros")
+      .child(`${post}.png`)
+      .put(file)
+      .then(() => {
+        dispatch(heroUploaded());
+      })
+      .catch(error => {
+        dispatch(uploadHeroFailed(error));
+      })
+  }
+}
 
 // GET actions
 export const postGetInitiated = id => {
@@ -117,6 +154,44 @@ export const doPostGet = id => {
       });
   };
 };
+
+export const getHeroInitiated = post => {
+  return {
+    type: types.POST_GET_HERO_INITIATED,
+    id: post
+  };
+};
+
+export const getHeroFailed = (error, post) => {
+  return {
+    type: types.POST_GET_HERO_FAILED,
+    id: post,
+    error
+  };
+};
+
+export const getHeroDone = hero => {
+  return {
+    type: types.POST_GET_HERO_DONE,
+    hero
+  };
+};
+
+export const doHeroGet = post => {
+  return dispatch => {
+    dispatch(getHeroInitiated(post));
+
+    return storage.ref("posts/heros")
+      .child(`${post}.png`)
+      .getDownloadURL()
+      .then(url => {
+        dispatch(getHeroDone(url));
+      })
+      .catch(error => {
+        dispatch(getHeroFailed(error, post));
+      })
+  }
+}
 
 // UPDATE actions
 export const updatePostInitiated = (id, data) => {
