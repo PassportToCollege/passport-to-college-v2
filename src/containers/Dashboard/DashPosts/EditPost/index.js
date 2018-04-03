@@ -10,7 +10,10 @@ import * as postActions from "../../../../actions/postActions";
 class EditPost extends Component {
   constructor(props) {
     super(props);
-    this.state = {}
+    this.state = {
+      post: props.post.post,
+      postChanges: {}
+    };
   }
 
   componentWillMount() {
@@ -18,6 +21,11 @@ class EditPost extends Component {
 
     const { post_id } = this.props.match.params;
     this.props.postAction.doPostGet(post_id);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.post.hasGotten)
+      this.setState({ post: nextProps.post.post });
   }
 
   render() {
@@ -33,10 +41,25 @@ class EditPost extends Component {
           </ul>
         </nav>
         <main className="edit_post__edit">
-
+          <h1 className="edit_post__post_title" contentEditable
+            suppressContentEditableWarning={true}
+            onInput={this.handleTitleChange}>
+            {
+              this.props.post.hasGotten && this.state.post ?
+                this.state.post.title ? this.state.post.title : "Post Title Here" :
+                null
+            }
+          </h1>
         </main>
       </div>
     )
+  }
+
+  handleTitleChange = e => {
+    this.setState({ postChanges: Object.assign({}, this.state.postChanges, {
+        title: e.target.innerText
+      }) 
+    });
   }
 }
 

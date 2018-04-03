@@ -9,7 +9,7 @@
 
 /* Nav */
 .edit_post__nav {
-  grid-column: first span second;
+  grid-column: first / span second;
   background-color: #11A5AC;
   position: sticky;
   top: 0;
@@ -87,5 +87,21 @@
 
 /* Main */
 .edit_post__edit {
-  grid-column: second span third;
+  grid-column: second / span third;
+  background-color: white;
+  padding: 2.5em 3.5em;
+}
+
+.edit_post__edit .edit_post__post_title {
+  border: none;
+  outline: none;
+  width: 600px;
+  max-width: 100%;
+  resize: none;
+  margin: 0 auto;
+  display: block;
+  text-align: center;
+  font-family: "Muli", sans-serif;
+  font-weight: 900;
+  font-size: 4.25em;
 }
