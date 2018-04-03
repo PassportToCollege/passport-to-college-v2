@@ -8,7 +8,13 @@ import {
   POST_GET_DONE,
   POST_UPDATE_INITIATED,
   POST_UPDATE_FAILED,
-  POST_UPDATED
+  POST_UPDATED,
+  POST_UPLOAD_HERO_INITIATED,
+  POST_UPLOAD_HERO_FAILED,
+  POST_HERO_UPLOADED,
+  POST_GET_HERO_INITIATED,
+  POST_GET_HERO_DONE,
+  POST_GET_HERO_FAILED
 } from "../actions/actionTypes";
 
 const post = (state = initialState.post, action) => {
@@ -77,6 +83,47 @@ const post = (state = initialState.post, action) => {
         isUpdate: false,
         hasUpdated: true,
         postUpdateFailed: false
+      });
+    case POST_UPLOAD_HERO_INITIATED:
+      return Object.assign({}, state, {
+        isUploading: true,
+        hasUploaded: false,
+        heroUploadFailed: false
+      });
+    case POST_HERO_UPLOADED:
+      return Object.assign({}, state, {
+        isUploading: false,
+        hasUploaded: true,
+        heroUploadFailed: false
+      });
+    case POST_UPLOAD_HERO_FAILED:
+      return Object.assign({}, state, {
+        isUploading: false,
+        hasUploaded: false,
+        heroUploadFailed: true,
+        error: action.error
+      });
+    case POST_GET_HERO_INITIATED:
+      return Object.assign({}, state, {
+        gettingHero: true,
+        gothero: false,
+        heroGetFailed: false,
+        id: action.id
+      });
+    case POST_GET_HERO_DONE:
+      return Object.assign({}, state, {
+        gettingHero: false,
+        gothero: true,
+        heroGetFailed: false,
+        hero: action.hero
+      });
+    case POST_GET_HERO_FAILED:
+      return Object.assign({}, state, {
+        gettingHero: false,
+        gothero: false,
+        heroGetFailed: true,
+        id: action.id,
+        error: action.error
       });
     default:
       return state;
