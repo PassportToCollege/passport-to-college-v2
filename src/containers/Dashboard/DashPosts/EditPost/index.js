@@ -114,7 +114,16 @@ class EditPost extends Component {
                 null
             }
           </div>
+          <div className="edit_post__excerpt">
+            <label>Post excerpt</label>
+            <span>This will appear in the blog homepage and landing page of the website.</span>
+            <textarea name="excerpt" rows="5"
+              value={this.state.postChanges ? this.state.post.excerpt : ""}
+              onBlur={this.handleExcerptChange}></textarea>
+          </div>
           <div className="edit_post__editor">
+            <label>Full post</label>
+            <span>This will appear in the blog exactly as it looks here.</span>
             <WYSIWYGEditor saveButton editorStyles={{
               maxWidth: "100%"
             }}
@@ -140,6 +149,13 @@ class EditPost extends Component {
   handleTitleChange = e => {
     this.setState({ postChanges: Object.assign({}, this.state.postChanges, {
         title: e.target.innerText
+      }) 
+    });
+  }
+
+  handleExcerptChange = e => {
+    this.setState({ postChanges: Object.assign({}, this.state.postChanges, {
+        excerpt: e.target.value
       }) 
     });
   }
