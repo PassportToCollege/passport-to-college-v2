@@ -91,7 +91,7 @@ class EditPost extends Component {
           <div className="edit_post__hero_container">
             {
               this.props.post.gotHero && this.state.hero ? 
-              <DropUploader 
+              <DropUploader label={<span><b>Choose a hero image</b> or drag it here</span>}
                 uploaderStyles={{
                   backgroundColor: "white",
                   backgroundImage: `url(${this.state.hero})`,
@@ -109,9 +109,18 @@ class EditPost extends Component {
             }
             {
               this.props.post.heroGetFailed ?
-                <DropUploader handleAvatarChange={this.handleHeroImageChange} /> :
+                <DropUploader label={<span><b>Choose a hero image</b> or drag it here</span>}
+                  handleAvatarChange={this.handleHeroImageChange} /> :
                 null
             }
+          </div>
+          <div className="edit_post__editor">
+            <WYSIWYGEditor saveButton editorStyles={{
+              maxWidth: "100%"
+            }}
+            controlStyles={{
+              maxWidth: "100%"
+            }}/>
           </div>
           {
             (this.state.hasError || this.state.hasNotification) && !this.state.notificationClosed ?

@@ -49,7 +49,12 @@ const DropUploader = props => {
           <input type="file" name="avatar" accept="image/*"
             ref={input => this.avatartInput = input}
             onChange={handleAvatarChange} />
-          <label><b>Choose an image</b> or drag it here</label>
+          <label>
+            {
+              props.label || 
+              <span><b>Choose an image</b> or drag it here</span>
+            }
+          </label>
         </div>
       </fieldset>
     </form>
@@ -60,7 +65,8 @@ DropUploader.propTypes = {
   handleAvatarChange: propTypes.func,
   disabled: propTypes.bool,
   uploaderStyles: propTypes.object,
-  dropAreaStyles: propTypes.object
+  dropAreaStyles: propTypes.object,
+  label: propTypes.object
 };
 
 export default DropUploader;
