@@ -53,7 +53,7 @@ class EditPost extends Component {
       });
     }
 
-    if (nextProps.post.postUpdated) {
+    if (nextProps.post.hasUpdated) {
       this.setState({
         hasNotification: true,
         notification: "Post updated successfully",
@@ -105,7 +105,9 @@ class EditPost extends Component {
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                   backgroundRepeat: "no-repeat",
-                  padding: "4em"
+                  padding: "4em",
+                  width: "1170px",
+                  maxWidth: "100%"
                 }}
                 handleAvatarChange={this.handleHeroImageChange} 
                 dropAreaStyles={{
@@ -134,12 +136,29 @@ class EditPost extends Component {
           <div className="edit_post__editor">
             <label>Full post</label>
             <span>This will appear in the blog exactly as it looks here.</span>
-            <WYSIWYGEditor saveButton editorStyles={{
-              maxWidth: "100%"
-            }}
-            controlStyles={{
-              maxWidth: "100%"
-            }}/>
+            {
+              this.props.post.hasGotten && this.state.post ?
+                this.state.post.full ?
+                  <WYSIWYGEditor saveButton
+                    content={this.state.post.full} 
+                    editorStyles={{
+                      maxWidth: "1170px"
+                    }}
+                    controlStyles={{
+                      maxWidth: "1170px"
+                    }} 
+                    handleSave={this.handleFullPostSave}/> :
+                  <WYSIWYGEditor saveButton
+                    editorStyles={{
+                      maxWidth: "1170px"
+                    }}
+                    controlStyles={{
+                      maxWidth: "1170px"
+                    }} 
+                    handleSave={this.handleFullPostSave}/> :
+                null
+
+            }
           </div>
           {
             (this.state.hasError || this.state.hasNotification) && !this.state.notificationClosed ?
@@ -167,6 +186,17 @@ class EditPost extends Component {
     this.setState({ postChanges: Object.assign({}, this.state.postChanges, {
         excerpt: e.target.value
       }) 
+    });
+  }
+
+  handleFullPostSave = content => {
+    this.setState({ 
+      postChanges: Object.assign({}, this.state.postChanges, {
+        full: content
+      }),
+      hasNotification: true,
+      notification: "Saved to state. Save the post to save all changes",
+      notificationClosed: false
     });
   }
 

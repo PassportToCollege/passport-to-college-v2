@@ -1,8 +1,8 @@
 .edit_post {
   display: grid;
-  width: 100%;
+  max-width: 100%;
   min-height: calc(100vh - 58px);
-  grid-template-columns: [first] minmax(200px, 15%) [second] auto [third];
+  grid-template-columns: [first] minmax(200px, 15%) [second] 1fr [third];
   grid-template-rows: auto;
   position: relative;
   background-color: white;
@@ -92,8 +92,6 @@
   grid-column: second / span third;
   background-color: white;
   padding: 4.5em 3.5em;
-  width: 1170px;
-  max-width: 100%;
   margin: 0 auto;
 }
 

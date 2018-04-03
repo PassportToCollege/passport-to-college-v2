@@ -63,7 +63,7 @@ const post = (state = initialState.post, action) => {
       });
     case POST_UPDATE_INITIATED:
       return Object.assign({}, state, {
-        isUpdate: true,
+        isUpdating: true,
         hasUpdated: false,
         postUpdateFailed: false,
         data: action.data,
@@ -71,7 +71,7 @@ const post = (state = initialState.post, action) => {
       });
     case POST_UPDATE_FAILED:
       return Object.assign({}, state, {
-        isUpdate: false,
+        isUpdating: false,
         hasUpdated: false,
         postUpdateFailed: true,
         data: action.data,
@@ -80,7 +80,7 @@ const post = (state = initialState.post, action) => {
       });
     case POST_UPDATED:
       return Object.assign({}, state, {
-        isUpdate: false,
+        isUpdating: false,
         hasUpdated: true,
         postUpdateFailed: false
       });
