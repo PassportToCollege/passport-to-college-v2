@@ -88,9 +88,9 @@ export const doPostGet = id => {
           const postData = post.data();
 
           // get user if author is uid
-          if ("string" === postData.author) {
+          if ("string" === typeof postData.author) {
             return db.collection("users")
-              .doc(postCreated.author)
+              .doc(postData.author)
               .get()
               .then(author => {
                 if (author.exists) {

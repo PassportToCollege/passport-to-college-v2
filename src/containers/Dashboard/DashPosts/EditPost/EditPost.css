@@ -89,7 +89,7 @@
 .edit_post__edit {
   grid-column: second / span third;
   background-color: white;
-  padding: 2.5em 3.5em;
+  padding: 4.5em 3.5em;
 }
 
 .edit_post__edit .edit_post__post_title {
@@ -104,4 +104,9 @@
   font-family: "Muli", sans-serif;
   font-weight: 900;
   font-size: 4.25em;
+}
+
+.edit_post__edit .edit_post__author {
+  font-family: "Nunito", sans-serif;
+  text-align: center;
 }

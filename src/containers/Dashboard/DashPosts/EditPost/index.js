@@ -7,13 +7,19 @@ import propTypes from "prop-types";
 
 import * as postActions from "../../../../actions/postActions";
 
+import Notification from "../../../../components/Notification";
+import WYSIWYGEditor from "../../../../components/Editor";
+
 class EditPost extends Component {
   constructor(props) {
     super(props);
     this.state = {
       id: props.match.params.post_id,
       post: props.post.post,
-      postChanges: {}
+      postChanges: {},
+      hasNotification: false,
+      hasError: false,
+      notificationClosed: true
     };
   }
 
@@ -27,6 +33,23 @@ class EditPost extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.post.hasGotten)
       this.setState({ post: nextProps.post.post });
+
+    if (nextProps.post.postGetFailed ||
+      nextProps.post.postUpdateFailed) {
+      this.setState({
+        hasError: true,
+        notification: nextProps.post.error.message,
+        notificationClosed: false
+      });
+    }
+
+    if (nextProps.post.postUpdated) {
+      this.setState({
+        hasNotification: true,
+        notification: "Post updated successfully",
+        notificationClosed: false
+      });
+    }
   }
 
   render() {
@@ -52,6 +75,22 @@ class EditPost extends Component {
                 null
             }
           </h1>
+          <p className="edit_post__author">
+            {
+              this.props.post.hasGotten && this.state.post ?
+                `by ${this.state.post.author.name.full}` : null
+            }
+          </p>
+          {
+            (this.state.hasError || this.state.hasNotification) && !this.state.notificationClosed ?
+              <Notification doClose={() => this.setState({ 
+                notificationClosed: true,
+                hasError: false,
+                hasNotification: false,
+                notification: ""
+               })}
+               text={this.state.notification} /> : null
+          }
         </main>
       </div>
     )
