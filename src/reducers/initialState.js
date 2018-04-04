@@ -11,5 +11,6 @@ export default {
   students: {},
   feature: {},
   features: {},
-  post: {}
+  post: {},
+  posts: {}
 }

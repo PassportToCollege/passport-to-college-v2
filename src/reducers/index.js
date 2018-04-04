@@ -13,6 +13,7 @@ import students from "./studentsReducer";
 import feature from "./featureReducer";
 import features from "./featuresReducer";
 import post from "./postReducer";
+import posts from "./postsReducer";
 
 const rootReducer = combineReducers({
   hamburgerState,
@@ -27,7 +28,8 @@ const rootReducer = combineReducers({
   students,
   feature,
   features,
-  post
+  post,
+  posts
 });
 
 export default rootReducer;
