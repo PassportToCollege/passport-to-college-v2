@@ -2,7 +2,7 @@ import "./EditPost.css";
 
 import React, { Component} from "react";
 import { connect} from "react-redux";
-import { bindActionCreators } from "redux"
+import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
 
 import * as postActions from "../../../../actions/postActions";
@@ -77,6 +77,7 @@ class EditPost extends Component {
             <li className="edit_post__unpublish">unpublish</li>
             <li className="edit_post__archive">archive</li>
           </ul>
+          <h4>categories</h4>
         </nav>
         <main className="edit_post__edit">
           <h1 className="edit_post__post_title" contentEditable
