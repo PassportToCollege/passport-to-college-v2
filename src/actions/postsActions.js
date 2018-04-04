@@ -1,5 +1,5 @@
 import * as types from "./actionTypes";
-import { db } from "../utils/firebase";
+import { db, storage } from "../utils/firebase";
 
 // GET actions
 export const postsGetInitiated = () => {
@@ -34,7 +34,18 @@ export const doPostsGet = () => {
 
         let posts = [];
         snapshots.forEach(snapshot => {
-          posts.push(snapshot.data());
+          // get post hero image
+          storage.ref("posts/heros")
+            .child(`${snapshot.id}.png`)
+            .getDownloadURL()
+            .then(url => {
+              let post = snapshot.data();
+              post.hero = url;
+              posts.push(post);
+            })
+            .catch(() => {
+              posts.push(snapshot.data());
+            })
         });
 
         dispatch(postsGetDone(posts));

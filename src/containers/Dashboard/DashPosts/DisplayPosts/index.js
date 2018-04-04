@@ -11,7 +11,8 @@ class DisplayPosts extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      posts: props.posts.posts
+      posts: props.posts.posts,
+      section: props.section
     }
   }
 
@@ -27,8 +28,8 @@ class DisplayPosts extends Component {
 
   render() {
     return (
-      <div className="posts">
-
+      <div className="dashboard_posts">
+        {this.state.section}
       </div>
     )
   }
@@ -37,7 +38,8 @@ class DisplayPosts extends Component {
 DisplayPosts.propTypes = {
   posts: propTypes.object,
   postsActions: propTypes.object,
-  togglePostNav: propTypes.func
+  togglePostNav: propTypes.func,
+  section: propTypes.string
 };
 
 const mapStateToProps = state => {

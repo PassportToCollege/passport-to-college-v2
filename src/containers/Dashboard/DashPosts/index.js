@@ -23,13 +23,6 @@ class DashPosts extends Component {
     return (
       <div className="dashboard__container dashboard__container_full dash_posts__container">
         <NavigationPosts show={this.state.showPostNav} />
-        <Route exact path={this.props.match.url}
-          render={props => {
-            return (
-              <DisplayPosts {...props} 
-                togglePostNav={val => this.setState({ showPostNav: val }) } />
-            )
-          }}></Route>
         <Route exact path={routes.DASH_POSTS_EDIT.route} 
           render={(props) => {
             return (
@@ -37,6 +30,24 @@ class DashPosts extends Component {
                 togglePostNav={val => this.setState({ showPostNav: val })} />
             )
         }}></Route>
+        {
+          routes.DASH_POSTS_SECTIONS.map(section => {
+            if (section.name === "Settings")
+              return null;
+
+            return (
+              <Route key={section.route} exact 
+                path={section.route}
+                render={props => {
+                  return (
+                    <DisplayPosts {...props}
+                      togglePostNav={val => this.setState({ showPostNav: val })} 
+                      section={section.name.toLowerCase()} />
+                  )
+                }}></Route>
+            )
+          })
+        }
       </div>
     )
   }
