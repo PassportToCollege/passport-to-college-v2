@@ -442,8 +442,13 @@ export const AddPostCategory = ({ doClose, doSubmit }) => {
       <div className="modal__content">
         <h3>Add post category</h3>
         <form className="form form__add_post_category"
-          onSubmit={this.handleSubmit}>
-
+          onSubmit={handleSubmit}>
+          <div className="form__input_container">
+            <label>Category name</label>
+            <input type="text" name="categpry" required
+              onChange={input => this.categoryInput = input} />
+          </div>
+          <Button type="submit" text="add" solid />
         </form>
       </div>
     </div>
