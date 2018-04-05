@@ -33,22 +33,26 @@ export const doPostsGet = () => {
           return dispatch(postsGetFailed({ message: "no posts found" }));
 
         let posts = [];
+        let heroPromises = [];
+
         snapshots.forEach(snapshot => {
-          // get post hero image
-          storage.ref("posts/heros")
-            .child(`${snapshot.id}.png`)
-            .getDownloadURL()
-            .then(url => {
-              let post = snapshot.data();
-              post.hero = url;
-              posts.push(post);
-            })
-            .catch(() => {
-              posts.push(snapshot.data());
-            })
+          heroPromises.push(storage.ref("posts/heros").child(`${snapshot.id}.png`).getDownloadURL());
+          let post = snapshot.data();
+          post.id = snapshot.id;
+
+          posts.push(post);
         });
 
-        dispatch(postsGetDone(posts));
+        Promise.all(heroPromises).then(urls => {
+          for (let post of posts) {
+            post.hero = urls.find(url => {
+              return url.indexOf(post.id) > -1;
+            });
+          }
+
+          dispatch(postsGetDone(posts));
+        });
+
       })
       .catch(error => {
         dispatch(postsGetFailed(error));

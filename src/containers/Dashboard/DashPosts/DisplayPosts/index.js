@@ -7,6 +7,9 @@ import propTypes from "prop-types";
 
 import * as postsActions from "../../../../actions/postsActions";
 
+import PostCardList from "../../../../components/PostCardList";
+import Loader from "../../../../components/Loader";
+
 class DisplayPosts extends Component {
   constructor(props) {
     super(props);
@@ -29,7 +32,11 @@ class DisplayPosts extends Component {
   render() {
     return (
       <div className="dashboard_posts">
-        {this.state.section}
+        {
+          this.props.posts.hasGotten && this.state.posts.length ?
+            <PostCardList posts={this.state.posts} /> :
+            <Loader />
+        }
       </div>
     )
   }

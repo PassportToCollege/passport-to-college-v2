@@ -1,0 +1,26 @@
+.post_card {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 2.5em 2.25em;
+  flex-direction: row;
+  background-color: white;
+  flex-wrap: wrap;
+}
+
+.post_card > a > img {
+  display: inline-block;
+  max-width: 250px;
+  flex: 0 1 250px;
+}
+
+.post_card > .post_card__excerpt {
+  width: 600px;
+  flex: 0 1 600px;
+  padding: 1em;
+}
+
+.post_card > .post_card__excerpt > h2 {
+  margin-top: 0;
+  font-family: "Muli", sans-serif;
+}
