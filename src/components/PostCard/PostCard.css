@@ -30,8 +30,16 @@
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background-color: #333;
+  background-color: #999;
   vertical-align: middle;
+}
+
+.post_card > .post_card__content > .post_card__state[data-state="published"] {
+  background-color: olivedrab;
+}
+
+.post_card > .post_card__content > .post_card__state[data-state="archived"] {
+  background-color: #FFCB61;
 }
 
 .post_card > .post_card__content > .post_card__date {

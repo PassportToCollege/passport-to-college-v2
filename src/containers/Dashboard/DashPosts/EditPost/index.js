@@ -10,6 +10,7 @@ import * as postActions from "../../../../actions/postActions";
 import Notification from "../../../../components/Notification";
 import WYSIWYGEditor from "../../../../components/Editor";
 import DropUploader from "../../../../components/DropUploader";
+import moment from "moment";
 
 class EditPost extends Component {
   constructor(props) {
@@ -72,9 +73,22 @@ class EditPost extends Component {
           <ul className="edit_post__nav_list">
             <li className="edit_post__save"
               onClick={this.updatePost}>save</li>
-            <li className="edit_post__publish">publish</li>
-            <li className="edit_post__unpublish">unpublish</li>
-            <li className="edit_post__archive">archive</li>
+            {
+              this.props.post.hasGotten && this.state.post 
+              && this.state.post.state.draft ?
+                <li className="edit_post__publish"
+                  onClick={this.publishPost}>publish</li> :
+                null
+            }
+            {
+              this.props.post.hasGotten && this.state.post
+                && this.state.post.state.published ?
+                <li className="edit_post__unpublish"
+                  onClick={this.unpublishPost}>unpublish</li> :
+                null
+            }
+            <li className="edit_post__archive"
+              onClick={this.archivePost}>archive</li>
           </ul>
           <h4>categories</h4>
         </nav>
@@ -105,9 +119,7 @@ class EditPost extends Component {
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                   backgroundRepeat: "no-repeat",
-                  padding: "4em",
-                  width: "1170px",
-                  maxWidth: "100%"
+                  padding: "4em"
                 }}
                 handleAvatarChange={this.handleHeroImageChange} 
                 dropAreaStyles={{
@@ -204,6 +216,38 @@ class EditPost extends Component {
     this.props.postActions.doPostUpdate(this.state.id, this.state.postChanges, {
       refresh: true
     });
+  }
+
+  publishPost = () => {
+    this.props.postActions.doPostUpdate(this.state.id, {
+      state: {
+        published: true,
+        archived: false,
+        draft: false
+      },
+      publishedOn: new Date(moment.utc(moment()).toDate()).getTime()
+    }, { refresh: true });
+  }
+
+  archivePost = () => {
+    this.props.postActions.doPostUpdate(this.state.id, {
+      state: {
+        published: false,
+        archived: true,
+        draft: false
+      },
+      archivedOn: new Date(moment.utc(moment()).toDate()).getTime()
+    }, { refresh: true });
+  }
+
+  unpublishPost = () => {
+    this.props.postActions.doPostUpdate(this.state.id, {
+      state: {
+        published: false,
+        archived: false,
+        draft: true
+      }
+    }, { refresh: true });
   }
 
   handleHeroImageChange = e => {

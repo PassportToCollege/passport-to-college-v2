@@ -2,7 +2,7 @@
   display: grid;
   max-width: 100%;
   min-height: calc(100vh - 58px);
-  grid-template-columns: [first] minmax(200px, 15%) [second] 1fr [third];
+  grid-template-columns: [first] minmax(200px, 15%) [second] minmax(200px, 85%) [third];
   grid-template-rows: auto;
   position: relative;
   background-color: white;
@@ -93,14 +93,14 @@
   background-color: white;
   padding: 4.5em 3.5em;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .edit_post__edit .edit_post__post_title {
-  border: none;
-  outline: none;
-  width: 600px;
-  max-width: 100%;
-  resize: none;
+  max-width: 600px;
   margin: 0 auto;
   display: block;
   text-align: center;
@@ -112,6 +112,12 @@
 .edit_post__edit .edit_post__author {
   font-family: "Nunito", sans-serif;
   text-align: center;
+}
+
+.edit_post .edit_post__hero_container {
+  width: 1170px;
+  max-width: 100%;
+  margin: 0 auto;
 }
 
 .edit_post .edit_post__excerpt {
