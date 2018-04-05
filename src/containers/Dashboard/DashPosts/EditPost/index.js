@@ -7,7 +7,6 @@ import propTypes from "prop-types";
 
 import * as postActions from "../../../../actions/postActions";
 
-import Loader from "../../../../components/Loader";
 import Notification from "../../../../components/Notification";
 import WYSIWYGEditor from "../../../../components/Editor";
 import DropUploader from "../../../../components/DropUploader";
@@ -118,7 +117,7 @@ class EditPost extends Component {
                 }}
                 labelStyles={{
                   color: "#FFF"
-                }}/> : <Loader />
+                }}/> : null
             }
             {
               this.props.post.heroGetFailed ?

@@ -14,13 +14,28 @@
   flex: 0 1 250px;
 }
 
-.post_card > .post_card__excerpt {
+.post_card > .post_card__content {
   width: 600px;
   flex: 0 1 600px;
   padding: 1em;
 }
 
-.post_card > .post_card__excerpt > h2 {
+.post_card > .post_card__content > h2 {
   margin-top: 0;
   font-family: "Muli", sans-serif;
+}
+
+.post_card > .post_card__content > .post_card__state {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #333;
+  vertical-align: middle;
+}
+
+.post_card > .post_card__content > .post_card__date {
+  display: inline-block;
+  vertical-align: middle;
+  padding-left: 1em; 
 }
