@@ -13,6 +13,7 @@ import Notification from "../../../../components/Notification";
 import WYSIWYGEditor from "../../../../components/Editor";
 import DropUploader from "../../../../components/DropUploader";
 import { AddPostCategory } from "../../../../components/Modal";
+import Toggler from "../../../../components/Toggler";
 
 class EditPost extends Component {
   constructor(props) {
@@ -130,14 +131,20 @@ class EditPost extends Component {
           </ul>
           <h4>categories</h4>
           <ul className="edit_post__nav_list categories_list">
-            <li className="edit_post__add_categpry"
+            <li className="edit_post__add_category"
               onClick={() => this.setState({ addingCategory: true })}>add category</li>
             {
               this.props.postCategories.gotCategories && this.state.categories ?
                 this.state.categories.map(category => {
                   return (
                     <li key={category.slug} 
-                      className="edit_post__category">{category.name}</li>
+                      className="edit_post__category">
+                      <span>{category.name}</span>
+                      <Toggler state="no" doClick={this.togglePostCategory}
+                        options={{
+                          clickArg: category.slug
+                        }} />
+                    </li>
                   )
                 }) : null
             }
@@ -334,6 +341,10 @@ class EditPost extends Component {
     this.props.postCategoryActions.doCategoryAdd(e.value, {
       refresh: true
     });
+  }
+
+  togglePostCategory = category => {
+    console.log(category)
   }
 }
 

@@ -3,10 +3,14 @@ import "./Toggler.css";
 import React from "react";
 import propTypes from "prop-types";
 
-const Toggler = ({ state, doClick }) => {
+const Toggler = ({ state, doClick, options }) => {
   const handleClick = () => {
-    if ("function" === typeof doClick)
-      doClick();
+    if ("function" === typeof doClick) {
+      if (options.clickArg)
+        return doClick(options.clickArg);
+      
+      return doClick();
+    }
   }
 
   return (
@@ -23,7 +27,8 @@ Toggler.defaultProps = {
 
 Toggler.propTypes = {
   state: propTypes.string,
-  doClick: propTypes.func
+  doClick: propTypes.func,
+  options: propTypes.object
 }
 
 export default Toggler;
