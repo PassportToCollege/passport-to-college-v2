@@ -78,6 +78,14 @@
   content: "\f187";
 }
 
+.edit_post__nav .edit_post__nav_list > li.edit_post__unarchive::before {
+  content: "\f07c";
+}
+
+.edit_post__nav .edit_post__nav_list > li.edit_post__delete::before {
+  content: "\f1f8";
+}
+
 .edit_post__nav .edit_post__nav_list > li::before {
   font-family: FontAwesome;
   color: inherit;

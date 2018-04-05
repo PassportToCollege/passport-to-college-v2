@@ -87,8 +87,22 @@ class EditPost extends Component {
                   onClick={this.unpublishPost}>unpublish</li> :
                 null
             }
-            <li className="edit_post__archive"
-              onClick={this.archivePost}>archive</li>
+            {
+              this.props.post.hasGotten && this.state.post 
+              && this.state.post.state.archived ?
+              <li className="edit_post__unarchive"
+                onClick={this.unpublishPost}>unarchive</li> :
+              null
+            }
+            {
+              this.props.post.hasGotten && this.state.post
+              && !this.state.post.state.archived ?
+                <li className="edit_post__archive"
+                  onClick={this.archivePost}>archive</li> :
+                null
+            }
+            <li className="edit_post__delete"
+              onClick={this.deletePost}>delete</li>
           </ul>
           <h4>categories</h4>
         </nav>
