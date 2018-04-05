@@ -428,11 +428,9 @@ export const AddPostCategory = ({ doClose, doSubmit }) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-
-    this.modalContainer.classList.add("close");
-
+    
     if ("function" === typeof doSubmit)
-      doSubmit()
+      doSubmit(this.categoryInput)
   }
 
   return (
@@ -446,7 +444,7 @@ export const AddPostCategory = ({ doClose, doSubmit }) => {
           <div className="form__input_container">
             <label>Category name</label>
             <input type="text" name="categpry" required
-              onChange={input => this.categoryInput = input} />
+              ref={input => this.categoryInput = input} />
           </div>
           <Button type="submit" text="add" solid />
         </form>

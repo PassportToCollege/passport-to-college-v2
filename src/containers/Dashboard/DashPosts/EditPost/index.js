@@ -7,6 +7,7 @@ import propTypes from "prop-types";
 import moment from "moment";
 
 import * as postActions from "../../../../actions/postActions";
+import * as postCategoryActions from "../../../../actions/postCategoryActions";
 
 import Notification from "../../../../components/Notification";
 import WYSIWYGEditor from "../../../../components/Editor";
@@ -20,6 +21,7 @@ class EditPost extends Component {
       id: props.match.params.post_id,
       post: props.post.post,
       hero: props.post.hero,
+      categories: props.postCategories.categories,
       postChanges: {},
       hasNotification: false,
       hasError: false,
@@ -34,6 +36,8 @@ class EditPost extends Component {
     const { post_id } = this.props.match.params;
     this.props.postActions.doPostGet(post_id);
     this.props.postActions.doHeroGet(post_id);
+
+    this.props.postCategoryActions.doCategoriesGet();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -65,6 +69,18 @@ class EditPost extends Component {
 
     if (nextProps.post.gotHero)
       this.setState({ hero: nextProps.post.hero });
+    
+    if (nextProps.postCategories.gotCategories)
+      this.setState({ categories: nextProps.postCategories.categories });
+    
+    if (nextProps.postCategories.hasAdded) {
+      this.setState({
+        addingCategory: false,
+        hasNotification: true,
+        notificationClosed: false,
+        notification: "Category added successfully"
+      });
+    }
   }
 
   render() {
@@ -116,6 +132,15 @@ class EditPost extends Component {
           <ul className="edit_post__nav_list categories_list">
             <li className="edit_post__add_categpry"
               onClick={() => this.setState({ addingCategory: true })}>add category</li>
+            {
+              this.props.postCategories.gotCategories && this.state.categories ?
+                this.state.categories.map(category => {
+                  return (
+                    <li key={category.slug} 
+                      className="edit_post__category">{category.name}</li>
+                  )
+                }) : null
+            }
           </ul>
         </nav>
         <main className="edit_post__edit">
@@ -304,24 +329,34 @@ class EditPost extends Component {
       };
     };
   }
+
+  handleCategoryAdd = e => {
+    this.props.postCategoryActions.doCategoryAdd(e.value, {
+      refresh: true
+    });
+  }
 }
 
 EditPost.propTypes = {
   post: propTypes.object,
   postActions: propTypes.object,
   match: propTypes.object,
-  togglePostNav: propTypes.func
+  togglePostNav: propTypes.func,
+  postCategories: propTypes.object,
+  postCategoryActions: propTypes.object
 };
 
 const mapStateToProps = state => {
   return {
-    post: state.post
+    post: state.post,
+    postCategories: state.postCategories
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    postActions: bindActionCreators(postActions, dispatch)
+    postActions: bindActionCreators(postActions, dispatch),
+    postCategoryActions: bindActionCreators(postCategoryActions, dispatch)
   };
 };
 

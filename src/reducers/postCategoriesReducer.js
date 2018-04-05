@@ -21,6 +21,12 @@ const postCategories = (state = initialState.postCategories, action) => {
         gettingCategory: true,
         gotCategory: false,
         getCategoryFailed: false,
+        isAdding: false,
+        hasAdded: false,
+        categoryAddFailed: false,
+        isUpdating: false,
+        hasUpdated: true,
+        updateFailed: false,
         slug: action.slug
       });
     case CATEGORY_GET_FAILED:
@@ -61,7 +67,13 @@ const postCategories = (state = initialState.postCategories, action) => {
       return Object.assign({}, state, {
         gettingCategories: true,
         gotCategories: false,
-        getCategoriesFailed: false
+        getCategoriesFailed: false,
+        isAdding: false,
+        hasAdded: false,
+        categoryAddFailed: false,
+        isUpdating: false,
+        hasUpdated: true,
+        updateFailed: false
       });
     case CATEGORIES_GET_DONE:
       return Object.assign({}, state, {

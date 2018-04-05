@@ -107,7 +107,7 @@ export const categoriesGetFailed = error => {
 
 export const doCategoriesGet = () => {
   return dispatch => {
-    dispatch(categoryGetInitiated());
+    dispatch(categoriesGetInitiated());
 
     return db.collection("post-categories")
       .get()
@@ -120,7 +120,7 @@ export const doCategoriesGet = () => {
           categories.push(snapshot.data());
         });
 
-        return dispatch(categoryGetDone(categories));
+        return dispatch(categoriesGetDone(categories));
       })
       .catch(error => {
         return dispatch(categoriesGetFailed(error));
