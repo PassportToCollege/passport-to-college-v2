@@ -418,5 +418,42 @@ EditStudentEducation.propTypes = {
   doSubmit: propTypes.func
 };
 
+export const AddPostCategory = ({ doClose, doSubmit }) => {
+  const closeModal = () => {
+    this.modalContainer.classList.add("close");
+
+    if ("function" === typeof doClose)
+      doClose();
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+
+    this.modalContainer.classList.add("close");
+
+    if ("function" === typeof doSubmit)
+      doSubmit()
+  }
+
+  return (
+    <div className="modal__container modal__add_post_category"
+      ref={div => this.modalContainer = div}>
+      <div className="modal__bg" onClick={closeModal}></div>
+      <div className="modal__content">
+        <h3>Add post category</h3>
+        <form className="form form__add_post_category"
+          onSubmit={this.handleSubmit}>
+
+        </form>
+      </div>
+    </div>
+  )
+}
+
+AddPostCategory.propTypes = {
+  doClose: propTypes.func,
+  doSubmit: propTypes.func
+};
+
 
 

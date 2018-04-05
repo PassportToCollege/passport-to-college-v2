@@ -4,13 +4,14 @@ import React, { Component} from "react";
 import { connect} from "react-redux";
 import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
+import moment from "moment";
 
 import * as postActions from "../../../../actions/postActions";
 
 import Notification from "../../../../components/Notification";
 import WYSIWYGEditor from "../../../../components/Editor";
 import DropUploader from "../../../../components/DropUploader";
-import moment from "moment";
+import { AddPostCategory } from "../../../../components/Modal";
 
 class EditPost extends Component {
   constructor(props) {
@@ -22,7 +23,8 @@ class EditPost extends Component {
       postChanges: {},
       hasNotification: false,
       hasError: false,
-      notificationClosed: true
+      notificationClosed: true,
+      addingCategory: false
     };
   }
 
@@ -67,7 +69,13 @@ class EditPost extends Component {
 
   render() {
     return (
-      <div className="edit_post">
+      <div className="edit_post" data-no-flow={this.state.addingCategory ? "active" : "inactive"}>
+        {
+          this.state.addingCategory ?
+            <AddPostCategory doClose={() => this.setState({ addingCategory: false })}
+              doSubmit={this.handleCategoryAdd} /> :
+            null
+        }
         <nav className="edit_post__nav">
           <h4>options</h4>
           <ul className="edit_post__nav_list">
@@ -105,6 +113,10 @@ class EditPost extends Component {
               onClick={this.deletePost}>delete</li>
           </ul>
           <h4>categories</h4>
+          <ul className="edit_post__nav_list categories_list">
+            <li className="edit_post__add_categpry"
+              onClick={() => this.setState({ addingCategory: true })}>add category</li>
+          </ul>
         </nav>
         <main className="edit_post__edit">
           <h1 className="edit_post__post_title" contentEditable
