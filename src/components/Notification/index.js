@@ -1,24 +1,34 @@
 import "./Notification.css";
 
-import React from "react";
+import React, { Component } from "react";
 import propTypes from "prop-types";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/fontawesome-free-solid";
 
-const Notification = props => {
-  const closeNotification = () => {
-    this.notification.classList.add("close");
-
-    if (props.doClose && "function" === typeof props.doClose)
-      props.doClose();
+class Notification extends Component {
+  componentWillMount() {
+    // close notification automatically after
+    // 5 secs
+    setTimeout(() => {
+      this.closeNotification();
+    }, 5000);
   }
 
-  return (
-    <div className="notification" ref={div => this.notification = div}>
-      <p>{props.text}</p>
-      <span onClick={closeNotification}><FontAwesomeIcon icon={faTimes} /></span>
-    </div>
-  )
+  render() {
+    return (
+      <div className="notification" ref={div => this.notification = div}>
+        <p>{this.props.text}</p>
+        <span onClick={this.closeNotification}><FontAwesomeIcon icon={faTimes} /></span>
+      </div>
+    )
+  }
+
+  closeNotification = () => {
+    this.notification.classList.add("close");
+
+    if (this.props.doClose && "function" === typeof this.props.doClose)
+      this.props.doClose();
+  }
 }
 
 Notification.propTypes = {

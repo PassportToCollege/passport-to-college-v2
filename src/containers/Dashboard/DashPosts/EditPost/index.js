@@ -152,7 +152,8 @@ class EditPost extends Component {
                     <li key={category.slug} 
                       className="edit_post__category">
                       <span>{category.name}</span>
-                      <Toggler state={this.state.post.categories[category.slug] ? "yes" : "no"} 
+                      <Toggler 
+                        state={this.state.post.categories && this.state.post.categories[category.slug] ? "yes" : "no"} 
                         doClick={this.togglePostCategory}
                         options={{
                           clickArg: category.slug
@@ -368,7 +369,7 @@ class EditPost extends Component {
         }
       };
       postUpdater = Object.assign({}, postChanges, {
-        categories: Object.assign({}, postChanges.categories, {
+        categories: Object.assign({}, this.state.post.categories, {
           [category]: true
         })
       })
@@ -379,7 +380,7 @@ class EditPost extends Component {
         }
       };
       postUpdater = Object.assign({}, postChanges, {
-        categories: Object.assign({}, postChanges.categories, {
+        categories: Object.assign({}, this.state.post.categories, {
           [category]: false
         })
       })
