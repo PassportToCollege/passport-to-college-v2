@@ -9,7 +9,9 @@ import propTypes from "prop-types";
 
 import * as routes from "../../constants/routes";
 import * as hamburgerActions from "../../actions/hamburgerActions";
-const logo = require("../../assets/images/logo__text__white.png");
+
+const logoWhite = require("../../assets/images/logo__text__white.png");
+const logoDark = require("../../assets/images/logo__text__dark.png");
 
 const mainNavItems = [
   routes.LANDING,
@@ -21,13 +23,30 @@ const mainNavItems = [
 ]
 
 class Navigation extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      addBackground: false
+    };
+  }
+
+  componentWillMount() {
+    window.addEventListener("scroll", this.watchScroll);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.watchScroll);
+  }
+
   render() {
     return (
-      <div className="navigation">
+      <div className="navigation" data-add-bg={this.state.addBackground ? "active" : "inactive"}>
         <div className="navigation__container">
           <div className="navigation__logo_container">
             <Link to={routes.LANDING}>
-              <img src={logo} alt="Passport to College Logo" />
+              <img src={this.state.addBackground ? logoDark : logoWhite} 
+                alt="Passport to College Logo" />
             </Link>
           </div>
           <nav className="navigation__nav_container">
@@ -56,6 +75,16 @@ class Navigation extends Component {
         </div>
       </div>
     );
+  }
+
+  watchScroll = () => {
+    const scrollTop = document.scrollingElement.scrollTop;
+    
+    if (scrollTop > 100) {
+      this.setState({ addBackground: true });
+    } else {
+      this.setState({ addBackground: false });
+    }
   }
 
   handleHamburgerOpenClick = () => {

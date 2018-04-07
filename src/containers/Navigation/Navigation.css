@@ -4,6 +4,12 @@
   left: 0;
   width: 100%;
   z-index: 9998;
+  transition: background-color 200ms ease-in;
+}
+
+.navigation[data-add-bg="active"] {
+  background-color: white;
+  box-shadow: 0 1px 5px rgba(51,51,51,0.5);
 }
 
 .navigation .navigation__container {
@@ -14,7 +20,7 @@
    flex-direction: row;
    align-items: center;
    justify-content: space-between;
-   padding: 47px 47px 0;
+   padding: 2em 4em;
 }
 
 /* Navigation Logo */
@@ -40,6 +46,10 @@
   color: #FFFFFF;
   padding: 30px;
   position: relative;
+}
+
+.navigation[data-add-bg="active"] .navigation__nav_container > ul > li > a {
+  color: #333;
 }
 
 .navigation .navigation__nav_container>ul>li>a.active:after {
@@ -69,6 +79,11 @@
   transition: width 250ms linear 100ms;
 }
 
+.navigation[data-add-bg="active"] .navigation__nav_container>ul>li>a.active:after,
+.navigation[data-add-bg="active"] .navigation__nav_container>ul>li>a:after {
+  background-color: #333;
+}
+
 .navigation .navigation__nav_container>ul>li>a:hover:after {
   width: 50px;
 }
@@ -84,6 +99,10 @@
   height: 3px;
   background-color: white;
   margin-bottom: 3px;
+}
+
+.navigation[data-add-bg="active"] .navigation__hamburger .toggle  {
+  background-color: #333;
 }
 
 .navigation .navigation__hamburger .toggle__bottom {
