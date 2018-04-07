@@ -4,6 +4,7 @@ import React from "react";
 import propTypes from "prop-types";
 
 import LinkButton from "../LinkButton";
+import ScrollIndicator from "../ScrollIndicator";
 
 const ParallaxHeader = props => {
   props = props || {};
@@ -33,7 +34,7 @@ const ParallaxHeader = props => {
       {
         props.showScrollStrip ?
           <div className="parallax_header__scroll_strip">
-            
+            <ScrollIndicator />
           </div> :
           null
       }
