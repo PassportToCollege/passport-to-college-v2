@@ -7,9 +7,9 @@ const Toggler = ({ state, doClick, options }) => {
   const handleClick = () => {
     if ("function" === typeof doClick) {
       if (options.clickArg)
-        return doClick(options.clickArg);
+        return doClick(options.clickArg, state);
       
-      return doClick();
+      return doClick(state);
     }
   }
 

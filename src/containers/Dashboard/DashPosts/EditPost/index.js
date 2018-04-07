@@ -24,6 +24,7 @@ class EditPost extends Component {
       hero: props.post.hero,
       categories: props.postCategories.categories,
       postChanges: {},
+      categoriesChanges: {},
       hasNotification: false,
       hasError: false,
       notificationClosed: true,
@@ -71,8 +72,18 @@ class EditPost extends Component {
     if (nextProps.post.gotHero)
       this.setState({ hero: nextProps.post.hero });
     
-    if (nextProps.postCategories.gotCategories)
-      this.setState({ categories: nextProps.postCategories.categories });
+    if (nextProps.postCategories.gotCategories) {
+      let categoriesObj = {};
+      nextProps.postCategories.categories.map(category => {
+        categoriesObj[category.slug] = category;
+        return category;
+      })
+
+      this.setState({ 
+        categories: nextProps.postCategories.categories,
+        categoriesChanges: categoriesObj
+      });
+    }
     
     if (nextProps.postCategories.hasAdded) {
       this.setState({
@@ -134,13 +145,15 @@ class EditPost extends Component {
             <li className="edit_post__add_category"
               onClick={() => this.setState({ addingCategory: true })}>add category</li>
             {
-              this.props.postCategories.gotCategories && this.state.categories ?
+              this.props.postCategories.gotCategories && this.state.categories 
+              && this.props.post.hasGotten && this.state.post ?
                 this.state.categories.map(category => {
                   return (
                     <li key={category.slug} 
                       className="edit_post__category">
                       <span>{category.name}</span>
-                      <Toggler state="no" doClick={this.togglePostCategory}
+                      <Toggler state={this.state.post.categories[category.slug] ? "yes" : "no"} 
+                        doClick={this.togglePostCategory}
                         options={{
                           clickArg: category.slug
                         }} />
@@ -343,8 +356,45 @@ class EditPost extends Component {
     });
   }
 
-  togglePostCategory = category => {
-    console.log(category)
+  togglePostCategory = (category, state) => {
+    let { postChanges, categoriesChanges } = this.state;
+    let postUpdater = {};
+    let categoriesUpdater = {};
+
+    if (state === "no") {
+      categoriesUpdater = {
+        [category]: {
+          posts: categoriesChanges[category].posts + 1
+        }
+      };
+      postUpdater = Object.assign({}, postChanges, {
+        categories: Object.assign({}, postChanges.categories, {
+          [category]: true
+        })
+      })
+    } else {
+      categoriesUpdater = {
+        [category]: {
+          posts: categoriesChanges[category].posts - 1
+        }
+      };
+      postUpdater = Object.assign({}, postChanges, {
+        categories: Object.assign({}, postChanges.categories, {
+          [category]: false
+        })
+      })
+    }
+
+    // update categories and post
+    this.props.postCategoryActions.doCategoryUpdate(
+      category,
+      categoriesUpdater[category],
+      { refresh: true } 
+    );
+
+    this.props.postActions.doPostUpdate(this.state.id, postUpdater, {
+      refresh: true
+    });
   }
 }
 

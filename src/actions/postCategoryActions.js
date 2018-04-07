@@ -153,8 +153,8 @@ export const categoryUpdated = slug => {
 export const doCategoryUpdate = (slug, data = {}, options = {}) => {
   return dispatch => {
     dispatch(categoryUpdateInitiated(slug));
-
-    return db.collection("post-collections")
+    
+    return db.collection("post-categories")
       .doc(slug)
       .update(data)
       .then(() => {
