@@ -6,7 +6,20 @@ import propTypes from "prop-types";
 import ParallaxHeader from "../../components/ParallaxHeader";
 import TopicSection from "../../components/TopicSection";
 
-const headerBg = require("../../assets/images/home__header__bg.jpg");
+const headerBgs = [ 
+  { 
+    "img": require("../../assets/images/home__header_bg_0.jpg"),
+    "color": "#53D1D7" 
+  },
+  { 
+    "img": require("../../assets/images/home__header_bg_1.jpg"),
+    "color": "#53D1D7" 
+  },
+  { 
+    "img": require("../../assets/images/home__header_bg_2.jpg"),
+    "color": "#53D1D7" 
+  }
+];
 
 class Home extends Component {
   constructor(props) {
@@ -33,7 +46,7 @@ class Home extends Component {
     return (
       <div className="home__container reset__body_top_padding">
         <ParallaxHeader showScrollStrip height="100vh"
-          bgImage={headerBg}
+          bgImages={headerBgs}
           overlayColor="#53D1D7"
           bigText="Matching Aptitude With Opportunity"
           showLinkButton={true}

@@ -55,8 +55,8 @@
   border-bottom: 2px solid rgba(51,51,51,0.5);
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  align-items: flex-start;
+  justify-content: space-around;
+  align-items: center;
   overflow: hidden;
   transition: transform 400ms, visibility 300ms;
   transform-origin: center bottom;
@@ -65,4 +65,51 @@
 .parallax_header__scroll_strip[data-flip="active"] {
   transform: rotateX(95deg) rotateZ(0);
   visibility: hidden;
+}
+
+.parallax_header__scroll_strip > .scroll_strip__toggle_bg {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+.parallax_header__scroll_strip > .scroll_strip__toggle_bg > .toggle_bg__divider {
+  width: 1px;
+  height: 40px;
+  background-color: rgba(51,51,51,0.5);
+  margin: 0 1em;
+}
+
+.scroll_strip__toggle_bg .toggle_bg__prev,
+.scroll_strip__toggle_bg .toggle_bg__next {
+  padding: 1em;
+  cursor: pointer;
+  font-size: 1.25em;
+}
+
+.scroll_strip__toggle_bg .toggle_bg__counts > span:not(:first-child) {
+  margin-left: 10px;
+  color: rgba(51,51,51,0.5);
+  font-style: italic;
+}
+
+.parallax_header__scroll_strip > .apply__button > a {
+  color: rgba(51,51,51,0.5);
+  font-weight: 900;
+  font-family: "Muli", sans-serif;
+  text-transform: uppercase;
+  position: relative;
+}
+
+.parallax_header__scroll_strip > .apply__button > a::after {
+  content: "\f101";
+  font-family: FontAwesome;
+  color: rgba(51,51,51,0.2);
+  display: block;
+  position: absolute;
+  right: -16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.25em;
 }

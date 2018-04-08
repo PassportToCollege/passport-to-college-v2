@@ -18,10 +18,10 @@
 
 .scroll_indicator .scroll_indicator__vert_line {
   width: 1px;
-  height: 83px;
+  height: 110px;
   background-color: rgba(51,51,51,0.5);
   position: absolute;
-  top: 0;
+  top: -30px;
 }
 
 .scroll_indicator .scroll_indicator__arrow_down {
