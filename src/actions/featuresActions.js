@@ -49,3 +49,42 @@ export const doGetFeaturesByUser = student => {
       });
   };
 };
+
+export const doGetActiveFeatures = () => {
+  return dispatch => {
+    dispatch(featuresGetInitiated());
+
+    db.collection("features")
+      .where("isActive", "==", true)
+      .orderBy("expDate", "desc")
+      .get()
+      .then(snapshots => {
+        if (snapshots.empty)
+          return dispatch(featuresGetFailed({ message: "no features found" }));
+
+        let features = [];
+        let studentPromises = [];
+
+        snapshots.forEach(snapshot => {
+          const feature = snapshot.data();
+
+          studentPromises.push(db.collection("studenrs").doc(feature.student).get());
+          features.push(feature);
+        });
+
+        Promise.all(studentPromises)
+          .then(students => {
+            for (let feature of features) {
+              feature.student = students.find(student => {
+                return student.uid === feature.student;
+              });
+            }
+          });
+
+        dispatch(featuresGetDone(features));
+      })
+      .catch(error => {
+        dispatch(featuresGetFailed(error));
+      })
+  }
+}

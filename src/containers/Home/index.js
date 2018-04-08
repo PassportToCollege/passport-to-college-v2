@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 import * as statsActions from "../../actions/statsActions";
+import * as featuresActions from "../../actions/featuresActions";
 
 import ParallaxHeader from "../../components/ParallaxHeader";
 import TopicSection from "../../components/TopicSection";
@@ -35,13 +36,15 @@ class Home extends Component {
 
     this.state = {
       flipStrip: false,
-      stats: props.stats.stats
+      stats: props.stats.stats,
+      features: props.features.features
     }
   }
 
   componentWillMount() {
     this.props.updateLocation("landing");
     this.props.statsActions.doStatsGet();
+    this.props.featuresActions.doGetActiveFeatures();
   }
   
   componentDidMount() {
@@ -55,6 +58,9 @@ class Home extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.stats.hasGotten)
       this.setState({ stats: nextProps.stats.stats });
+    
+    if (nextProps.features.hasGotten)
+      this.setState({ features: nextProps.features.features });
   }
 
   render() {
@@ -109,6 +115,11 @@ class Home extends Component {
             <InfoCard blank={true} bgColor="#53D1D7" />
           </div>
         </section>
+        <section className="home__section home__featured_students">
+          <div className="home__section_inner">
+            <h1>featured students</h1>
+          </div>
+        </section>
       </div>
     )
   }
@@ -127,18 +138,22 @@ class Home extends Component {
 Home.propTypes = {
   updateLocation: propTypes.func,
   statsActions: propTypes.object,
-  stats: propTypes.object
+  stats: propTypes.object,
+  features: propTypes.object,
+  featuresActions: propTypes.object
 };
 
 const mapStateToProps = state => {
   return {
-    stats: state.stats
+    stats: state.stats,
+    features: state.features
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    statsActions: bindActionCreators(statsActions, dispatch)
+    statsActions: bindActionCreators(statsActions, dispatch),
+    featuresActions: bindActionCreators(featuresActions, dispatch)
   };
 };
 
