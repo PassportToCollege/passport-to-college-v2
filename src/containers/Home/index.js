@@ -2,9 +2,14 @@ import "./Home.css";
 
 import React, { Component } from "react";
 import propTypes from "prop-types";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+
+import * as statsActions from "../../actions/statsActions";
 
 import ParallaxHeader from "../../components/ParallaxHeader";
 import TopicSection from "../../components/TopicSection";
+import StatItem from "../../components/StatItem";
 
 const headerBgs = [ 
   { 
@@ -26,12 +31,14 @@ class Home extends Component {
     super(props);
 
     this.state = {
-      flipStrip: false
+      flipStrip: false,
+      stats: props.stats.stats
     }
   }
 
   componentWillMount() {
     this.props.updateLocation("landing");
+    this.props.statsActions.doStatsGet();
   }
   
   componentDidMount() {
@@ -40,6 +47,11 @@ class Home extends Component {
 
   componentWillUnmount() {
     window.removeEventListener("scroll", this.watchScroll);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.stats.hasGotten)
+      this.setState({ stats: nextProps.stats.stats });
   }
 
   render() {
@@ -66,6 +78,16 @@ class Home extends Component {
             maxWidth: "100%",
             margin: "0 auto"
           }} />
+        <section className="home__section home__stats">
+          <div className="home__section_inner">
+            <StatItem label="years" stat={new Date().getFullYear() - 2012} />
+            <StatItem label="students" stat={
+              this.props.stats.hasGotten && this.state.stats ? this.state.stats.users.students : 0
+            } />
+            {/* TODO: track university count from dashboard */}
+            <StatItem label="universities" stat="5" />
+          </div>
+        </section>
       </div>
     )
   }
@@ -82,7 +104,24 @@ class Home extends Component {
 }
 
 Home.propTypes = {
-  updateLocation: propTypes.func
+  updateLocation: propTypes.func,
+  statsActions: propTypes.object,
+  stats: propTypes.object
 };
 
-export default Home;
+const mapStateToProps = state => {
+  return {
+    stats: state.stats
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    statsActions: bindActionCreators(statsActions, dispatch)
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Home);

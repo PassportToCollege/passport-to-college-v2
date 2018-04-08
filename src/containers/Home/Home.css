@@ -1,3 +1,27 @@
 .home__container {
   background-color: #FFF;
 }
+
+.home__container .home__section {
+  width: 100%;
+  padding: 5em 3em;
+}
+
+.home__container .home__section > .home__section_inner {
+  width: 1140px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+/* Stats Section */
+.home__section.home__stats {
+  background-color: #FF6561;
+}
+
+.home__section.home__stats > .home__section_inner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
