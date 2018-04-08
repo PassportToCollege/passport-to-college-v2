@@ -13,11 +13,11 @@ const headerBgs = [
   },
   { 
     "img": require("../../assets/images/home__header_bg_1.jpg"),
-    "color": "#53D1D7" 
+    "color": "#FF6561" 
   },
   { 
     "img": require("../../assets/images/home__header_bg_2.jpg"),
-    "color": "#53D1D7" 
+    "color": "#FFCB61" 
   }
 ];
 
