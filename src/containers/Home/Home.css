@@ -16,6 +16,7 @@
 /* Stats Section */
 .home__section.home__stats {
   background-color: #FF6561;
+  padding: 5em 3em 285px;
 }
 
 .home__section.home__stats > .home__section_inner {
@@ -24,4 +25,24 @@
   align-items: center;
   flex-direction: row;
   flex-wrap: wrap;
+  margin-bottom: 2em;
+}
+
+/* About Section */
+.home__container .home__section.home__about {
+  padding: 0;
+  margin-top: -285px;
+}
+
+.home__section.home__about > .home__section_inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.home__section.home__about .home__about_scholars_button {
+  position: relative;
+  margin-top: 2em;
+  font-size: 1em;
 }

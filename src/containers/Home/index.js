@@ -10,6 +10,9 @@ import * as statsActions from "../../actions/statsActions";
 import ParallaxHeader from "../../components/ParallaxHeader";
 import TopicSection from "../../components/TopicSection";
 import StatItem from "../../components/StatItem";
+import InfoCard from "../../components/InfoCard";
+
+const infoCardBg = require("../../assets/images/info_card__bg.JPG");
 
 const headerBgs = [ 
   { 
@@ -86,6 +89,24 @@ class Home extends Component {
             } />
             {/* TODO: track university count from dashboard */}
             <StatItem label="universities" stat="5" />
+          </div>
+        </section>
+        <section className="home__section home__about">
+          <div className="home__section_inner">
+            <InfoCard blank={true} bgColor="transparent" />
+            <InfoCard bgColor="#FFCB61"
+              content="Our villagers are from all over the world, they support the mission by providing funds, services, and goods. They connect with each student. They are apprised of each student’s achievements, challenges, and success."
+              title="villagers" />
+            <InfoCard bgImage={infoCardBg}
+              content={`In our ${new Date().getFullYear() - 2012} years, we have helped ${this.props.stats.hasGotten && this.state.stats ? this.state.stats.users.students : 0} students to enroll in universities accross the United States. This number is set to increase yearly as we stay true and dedicated to our mission.`}
+              title="our scholars"
+              bgOverlay="rgba(51,51,51,0.9)" 
+              linkButton={{
+                to: "/scholars",
+                text: "See Scholars",
+                classes: "home__about_scholars_button"
+              }}/>
+            <InfoCard blank={true} bgColor="#53D1D7" />
           </div>
         </section>
       </div>
