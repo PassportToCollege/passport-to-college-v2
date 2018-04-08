@@ -27,7 +27,9 @@ class Navigation extends Component {
     super(props);
 
     this.state = {
-      addBackground: false
+      addBackground: false,
+      lastScroll: window.pageYOffset || document.documentElement.scrollTop,
+      sDirection: "none"
     };
   }
 
@@ -41,7 +43,9 @@ class Navigation extends Component {
 
   render() {
     return (
-      <div className="navigation" data-add-bg={this.state.addBackground ? "active" : "inactive"}>
+      <div className="navigation" 
+        data-add-bg={this.state.addBackground ? "active" : "inactive"}
+        data-scroll-direction={this.state.sDirection}>
         <div className="navigation__container">
           <div className="navigation__logo_container">
             <Link to={routes.LANDING.route}>
@@ -78,13 +82,22 @@ class Navigation extends Component {
   }
 
   watchScroll = () => {
-    const scrollTop = document.scrollingElement.scrollTop;
+    const { lastScroll } = this.state;
+    const currScroll = window.pageYOffset || document.documentElement.scrollTop;
     
-    if (scrollTop > 100) {
+    if (lastScroll > 100) {
       this.setState({ addBackground: true });
     } else {
       this.setState({ addBackground: false });
     }
+
+    if (currScroll > lastScroll && lastScroll > 500) {
+      this.setState({ sDirection: "down" });
+    } else {
+      this.setState({ sDirection: "up" });
+    }
+
+    this.setState({ lastScroll: currScroll });
   }
 
   handleHamburgerOpenClick = () => {

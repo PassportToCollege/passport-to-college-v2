@@ -2,6 +2,7 @@ import "./LinkButton.css";
 
 import React from "react";
 import propTypes from "prop-types";
+import { Link } from "react-router-dom";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import { faHome } from "@fortawesome/fontawesome-free-solid";
 
@@ -13,7 +14,7 @@ const LinkButton = props => {
     icon = faHome;
 
   return (
-    <a href={props.target} className={`link__button ${props.classes || ""}`}>
+    <Link to={props.target} className={`link__button ${props.classes || ""}`}>
       {
         props.text ? props.text : null
       }
@@ -23,7 +24,7 @@ const LinkButton = props => {
         :
           null
       }
-    </a>
+    </Link>
   )
 }
 

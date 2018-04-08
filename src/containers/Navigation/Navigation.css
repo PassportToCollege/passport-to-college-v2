@@ -4,12 +4,20 @@
   left: 0;
   width: 100%;
   z-index: 9998;
-  transition: background-color 200ms ease-in;
+  transition: background-color 200ms ease-in, transform 500ms linear;
 }
 
 .navigation[data-add-bg="active"] {
   background-color: white;
   box-shadow: 0 1px 5px rgba(51,51,51,0.5);
+}
+
+.navigation[data-scroll-direction="down"] {
+  transform: translateY(-130px);
+}
+
+.navigation[data-scroll-direction="up"] {
+  transform: translateY(0);
 }
 
 .navigation .navigation__container {

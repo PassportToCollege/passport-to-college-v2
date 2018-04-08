@@ -102,7 +102,7 @@ class Home extends Component {
               title="our scholars"
               bgOverlay="rgba(51,51,51,0.9)" 
               linkButton={{
-                to: "/scholars",
+                to: "scholars",
                 text: "See Scholars",
                 classes: "home__about_scholars_button"
               }}/>
