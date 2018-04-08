@@ -33,7 +33,7 @@ const ParallaxHeader = props => {
       </div>
       {
         props.showScrollStrip ?
-          <div className="parallax_header__scroll_strip">
+          <div className="parallax_header__scroll_strip" data-flip={props.flipStrip ? "active" : "inactive"}>
             <ScrollIndicator />
           </div> :
           null
@@ -49,7 +49,8 @@ ParallaxHeader.propTypes = {
   bigText: propTypes.string,
   showLinkButton:  propTypes.bool,
   linkButton: propTypes.object,
-  showScrollStrip: propTypes.bool
+  showScrollStrip: propTypes.bool,
+  flipStrip: propTypes.bool
 }
 
 export default ParallaxHeader;

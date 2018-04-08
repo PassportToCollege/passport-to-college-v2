@@ -58,4 +58,11 @@
   justify-content: center;
   align-items: flex-start;
   overflow: hidden;
+  transition: transform 400ms, visibility 300ms;
+  transform-origin: center bottom;
+}
+
+.parallax_header__scroll_strip[data-flip="active"] {
+  transform: rotateX(95deg) rotateZ(0);
+  visibility: hidden;
 }

@@ -9,6 +9,26 @@ import TopicSection from "../../components/TopicSection";
 const headerBg = require("../../assets/images/home__header__bg.jpg");
 
 class Home extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      flipStrip: false
+    }
+  }
+
+  componentWillMount() {
+    this.props.updateLocation("landing");
+  }
+  
+  componentDidMount() {
+    window.addEventListener("scroll", this.watchScroll);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.watchScroll);
+  }
+
   render() {
     return (
       <div className="home__container reset__body_top_padding">
@@ -17,6 +37,7 @@ class Home extends Component {
           overlayColor="#53D1D7"
           bigText="Matching Aptitude With Opportunity"
           showLinkButton={true}
+          flipStrip={this.state.flipStrip}
           linkButton={{
             target: "/about-us",
             text: "Learn More"
@@ -31,13 +52,19 @@ class Home extends Component {
             width: "1140px",
             maxWidth: "100%",
             margin: "0 auto"
-          }}/>
+          }} />
       </div>
     )
   }
 
-  componentWillMount() {
-    this.props.updateLocation("landing");
+  watchScroll = () => {
+    const scrollTop = document.scrollingElement.scrollTop;
+
+    if (scrollTop > 400) {
+      this.setState({ flipStrip: true });
+    } else {
+      this.setState({ flipStrip: false });
+    }
   }
 }
 

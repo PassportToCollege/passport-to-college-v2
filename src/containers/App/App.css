@@ -28,6 +28,7 @@ a:focus {
 .app__main[data-hamburger="open"] {
   transform: scale(0.75);
   overflow: hidden;
+  height: 100vh;
 }
 
 .app__main > .app__body {

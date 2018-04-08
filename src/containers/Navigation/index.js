@@ -31,7 +31,7 @@ class Navigation extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     window.addEventListener("scroll", this.watchScroll);
   }
 
@@ -44,7 +44,7 @@ class Navigation extends Component {
       <div className="navigation" data-add-bg={this.state.addBackground ? "active" : "inactive"}>
         <div className="navigation__container">
           <div className="navigation__logo_container">
-            <Link to={routes.LANDING}>
+            <Link to={routes.LANDING.route}>
               <img src={this.state.addBackground ? logoDark : logoWhite} 
                 alt="Passport to College Logo" />
             </Link>
