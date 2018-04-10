@@ -4,7 +4,7 @@
   left: 0;
   width: 100%;
   z-index: 9998;
-  transition: background-color 200ms ease-in, transform 500ms linear;
+  transition: background-color 200ms ease-in, transform 350ms ease-out;
 }
 
 .navigation[data-add-bg="active"] {

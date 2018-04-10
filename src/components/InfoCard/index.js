@@ -2,6 +2,7 @@ import "./InfoCard.css";
 
 import React, { Component } from "react";
 import propTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 import LinkButton from "../LinkButton";
 
@@ -38,8 +39,17 @@ class InfoCard extends Component {
           <div className="info_card__overlay" style={{ backgroundColor: this.props.bgOverlay }}>
           </div> : null
         }
-        <h3>{this.state.title}</h3>
-        <p>{this.state.content}</p>
+        {
+          !this.props.feature ?
+            <span className="info_card__content">
+              <h3>{this.state.title}</h3>
+              <p>{this.state.content}</p>
+            </span> :
+            <Link to="/" className="info_card__feature_content">
+              <h2>{this.state.title}</h2>
+              <h4>{this.props.university}</h4>
+            </Link>
+        }
         {
           this.props.linkButton ?
             <LinkButton target={this.props.linkButton.to}
@@ -51,6 +61,10 @@ class InfoCard extends Component {
   }
 }
 
+InfoCard.defaultProps = {
+  feature: false
+};
+
 InfoCard.propTypes = {
   bgImage: propTypes.string,
   bgColor: propTypes.string,
@@ -58,7 +72,9 @@ InfoCard.propTypes = {
   content: propTypes.string,
   blank: propTypes.bool,
   bgOverlay: propTypes.string,
-  linkButton: propTypes.object
+  linkButton: propTypes.object,
+  feature: propTypes.bool,
+  university: propTypes.string
 };
 
 export default InfoCard;

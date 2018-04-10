@@ -1,4 +1,4 @@
-import { db } from "../utils/firebase";
+import { db, storage } from "../utils/firebase";
 import * as types from "./actionTypes";
 
 // GET actions
@@ -64,11 +64,14 @@ export const doGetActiveFeatures = () => {
 
         let features = [];
         let studentPromises = [];
+        let profilePicPromises = [];
 
         snapshots.forEach(snapshot => {
-          const feature = snapshot.data();
+          let feature = snapshot.data();
+          feature.id = snapshot.id;
 
-          studentPromises.push(db.collection("studenrs").doc(feature.student).get());
+          studentPromises.push(db.collection("students").doc(feature.student).get());
+          profilePicPromises.push(storage.ref("users/profile_images").child(`${feature.student}.png`).getDownloadURL());
           features.push(feature);
         });
 
@@ -76,7 +79,18 @@ export const doGetActiveFeatures = () => {
           .then(students => {
             for (let feature of features) {
               feature.student = students.find(student => {
-                return student.uid === feature.student;
+                return student.id === feature.student
+              });
+
+              feature.student = feature.student.data();
+            }
+          });
+        
+        Promise.all(profilePicPromises)
+          .then(urls => {
+            for (let feature of features) {
+              feature.profilePic = urls.find(url => {
+                return url.indexOf(feature.id) > -1;
               });
             }
           });

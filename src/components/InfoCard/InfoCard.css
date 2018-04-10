@@ -21,7 +21,7 @@
   top: 0;
 }
 
-.info_card > h3 {
+.info_card .info_card__content > h3 {
   position: relative;
   margin-bottom: 2.5em;
   padding-left: 4em;
@@ -29,7 +29,7 @@
   font-size: 1.28571429em;
 }
 
-.info_card > h3::before {
+.info_card .info_card__content > h3::before {
   content: "";
   display: block;
   position: absolute;
@@ -42,10 +42,40 @@
   border: 2px solid white;
 }
 
-.info_card > p {
+.info_card .info_card__content > p {
   margin: 0;
   font-family: "Nunito", sans-serif;
   font-size: 1.14285714em;
   font-weight: 500;
   position: relative;
+}
+
+.info_card .info_card__feature_content {
+  display: block;
+  text-align: center;
+  position: relative;
+  color: white;
+  width: 100%;
+  transition: transform 200ms ease-in-out;
+}
+
+.info_card .info_card__feature_content:hover {
+  transform: scale(0.95);
+}
+
+.info_card .info_card__feature_content > h2 {
+  font-family: "Muli", sans-serif;
+  font-size: 3em;
+  text-transform: uppercase;
+  font-weight: 900;
+  margin: 1rem 0;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid white;
+}
+
+.info_card .info_card__feature_content > h4 {
+  margin: 0;
+  font-family: "Nunito", san-serif;
+  font-size: 1.28571429em;
+  font-weight: 400;
 }

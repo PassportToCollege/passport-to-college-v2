@@ -48,15 +48,27 @@
 }
 
 /* Featured Students Section */
-.home__section.home__featured_students {
+.home__section.home__featured_students_title {
   background-color: #53D1D7;
+  padding: 5em 3em 285px;
 }
 
-.home__section.home__featured_students h1 {
+.home__section.home__featured_students_title h1 {
   text-align: center;
   font-weight: bold;
   text-transform: uppercase;
   color: white;
   font-size: 2.85em;
   letter-spacing: 0.25em;
+}
+
+.home__container .home__section.home__featured_students {
+  padding: 0;
+  margin-top: -285px;
+}
+.home__section.home__section.home__featured_students > .home__section_inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
 }

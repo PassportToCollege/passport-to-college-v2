@@ -99,10 +99,11 @@ class Home extends Component {
         </section>
         <section className="home__section home__about">
           <div className="home__section_inner">
-            <InfoCard blank={true} bgColor="transparent" />
             <InfoCard bgColor="#FFCB61"
               content="Our villagers are from all over the world, they support the mission by providing funds, services, and goods. They connect with each student. They are apprised of each student’s achievements, challenges, and success."
               title="villagers" />
+            <InfoCard blank={true} bgColor="transparent" />
+            <InfoCard blank={true} bgColor="#53D1D7" />
             <InfoCard bgImage={infoCardBg}
               content={`In our ${new Date().getFullYear() - 2012} years, we have helped ${this.props.stats.hasGotten && this.state.stats ? this.state.stats.users.students : 0} students to enroll in universities accross the United States. This number is set to increase yearly as we stay true and dedicated to our mission.`}
               title="our scholars"
@@ -112,12 +113,41 @@ class Home extends Component {
                 text: "See Scholars",
                 classes: "home__about_scholars_button"
               }}/>
-            <InfoCard blank={true} bgColor="#53D1D7" />
+          </div>
+        </section>
+        <section className="home__section home__featured_students_title">
+          <div className="home__section_inner">
+            <h1>featured students</h1>
+            <div className="featured_students">
+              
+            </div>
           </div>
         </section>
         <section className="home__section home__featured_students">
           <div className="home__section_inner">
-            <h1>featured students</h1>
+            {
+              this.props.features.hasGotten && this.state.features ?
+                this.state.features.map(feature => {
+                  return (
+                    <InfoCard key={feature.id}
+                      bgOverlay="rgba(51,51,51,0.9)"
+                      bgColor="rgba(51,51,51,0.9)"
+                      bgImage={feature.profilePic}
+                      feature={true}
+                      title={feature.name}
+                      university={feature.student.university} />
+                  )
+                }) : null
+            }
+            {
+              this.props.features.hasGotten && this.state.features
+              && this.state.features.length%2 === 0 ?
+                <span>
+                  <InfoCard blank={true} bgColor="transparent" />
+                  <InfoCard blank={true} bgColor="#FFCB61" />
+                </span> :
+                <InfoCard blank={true} bgColor="#FFCB61" />
+            }
           </div>
         </section>
       </div>
