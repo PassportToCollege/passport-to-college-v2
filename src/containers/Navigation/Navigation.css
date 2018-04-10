@@ -29,6 +29,11 @@
    align-items: center;
    justify-content: space-between;
    padding: 2em 4em;
+   transition: padding 200ms linear;
+}
+
+.navigation[data-add-bg="active"] .navigation__container {
+  padding: 0 2em;
 }
 
 /* Navigation Logo */

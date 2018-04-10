@@ -142,12 +142,9 @@ class Home extends Component {
             {
               this.props.features.hasGotten && this.state.features
               && this.state.features.length%2 === 0 ?
-                <span>
-                  <InfoCard blank={true} bgColor="transparent" />
-                  <InfoCard blank={true} bgColor="#FFCB61" />
-                </span> :
-                <InfoCard blank={true} bgColor="#FFCB61" />
+                  <InfoCard blank={true} bgColor="transparent" /> : null
             }
+            <InfoCard blank={true} bgColor="#FFCB61" />
           </div>
         </section>
       </div>

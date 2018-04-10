@@ -10,7 +10,8 @@ class Notification extends Component {
     // close notification automatically after
     // 5 secs
     setTimeout(() => {
-      this.closeNotification();
+      if (this.notification)
+        this.closeNotification();
     }, 5000);
   }
 

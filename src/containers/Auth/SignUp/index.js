@@ -32,6 +32,10 @@ class SignUp extends Component {
     this.props.usersAction.doGetUserByUid(temp_id);
   }
 
+  componentWillUnmount() {
+    this.props.authActions.removeAuthErrors();
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.users.hasGottenUser)
       this.setState({ user: nextProps.users.user });

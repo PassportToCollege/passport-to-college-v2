@@ -332,7 +332,7 @@ class UserSection extends Component {
         if (this.props.student.hasGotten) {
           return (
             <section className="user__section features__section">
-              <Button text={this.state.editingFeature ? "- cancel" : "+ feature student"}
+              <Button text={this.state.editingFeature || this.state.creatingFeature ? "- cancel" : "+ feature student"}
                 doClick={this.toggleFeatureStudent}
                 solid
                 styles={{
