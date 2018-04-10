@@ -84,18 +84,18 @@ export const doGetActiveFeatures = () => {
 
               feature.student = feature.student.data();
             }
-          });
-        
-        Promise.all(profilePicPromises)
-          .then(urls => {
-            for (let feature of features) {
-              feature.profilePic = urls.find(url => {
-                return url.indexOf(feature.id) > -1;
-              });
-            }
-          });
 
-        dispatch(featuresGetDone(features));
+            Promise.all(profilePicPromises)
+              .then(urls => {
+                for (let feature of features) {
+                  feature.profilePic = urls.find(url => {
+                    return url.indexOf(feature.student.uid) > -1;
+                  });
+                }
+                
+                dispatch(featuresGetDone(features));
+              });
+          });
       })
       .catch(error => {
         dispatch(featuresGetFailed(error));
