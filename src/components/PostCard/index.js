@@ -5,8 +5,34 @@ import propTypes from "prop-types";
 import { Link } from "react-router-dom";
 import moment from "moment";
 
-const PostCard = ({ post, cardStyles }) => {
+const PostCard = ({ post, cardStyles, isDashboard, full }) => {
   const hero = post.hero || "//via.placeholder.com/800x450";
+
+  if (!isDashboard) {
+    return (
+      <div className={`post_card__main ${full ? "full" : ""}`}
+        style={{
+          backgroundImage: `${post.hero ? "url(" + post.hero + ")" : null}`
+        }}>
+        <div className="post_card__overlay"></div>
+        <Link to="/" className="post_card__content">
+          <section className="post_card__categories">
+            {
+              Object.keys(post.categories).map(category => {
+                if (post.categories[category] === true)
+                  return ( 
+                    <span key={category} className="post_card__category">{category}</span> 
+                  )
+                
+                return null
+              })
+            }
+          </section>
+          <h3>{post.title}</h3>
+        </Link>
+      </div>
+    )
+  }
 
   return (
     <li className="post_card" style={cardStyles}>
@@ -38,9 +64,16 @@ const PostCard = ({ post, cardStyles }) => {
   )
 }
 
+PostCard.defaultProps = {
+  isDashboard: true,
+  full: false
+}
+
 PostCard.propTypes = {
   post: propTypes.object,
-  cardStyles: propTypes.object
+  cardStyles: propTypes.object,
+  isDashboard: propTypes.bool,
+  full: propTypes.bool
 };
 
 export default PostCard;

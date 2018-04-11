@@ -14,6 +14,8 @@ import TopicSection from "../../components/TopicSection";
 import StatItem from "../../components/StatItem";
 import InfoCard from "../../components/InfoCard";
 import InfoStrip from "../../components/InfoStrip";
+import PostCard from "../../components/PostCard";
+import Loader from "../../components/Loader";
 
 import infoCardBg from "../../assets/images/info_card__bg.JPG";
 import headerBg0 from "../../assets/images/home__header_bg_0.jpg";
@@ -154,6 +156,48 @@ class Home extends Component {
         <section className="home__section home__posts">
           <div className="home__section_inner">
             <h1>most recent stories</h1>
+            {
+              this.props.posts.isGetting ?
+                <Loader color="#FFCB61" /> : null
+            }
+            {
+              this.props.posts.postsGetFailed && 
+              this.props.posts.error.message === "no posts found" ?
+                <span className="no__posts">No stories yet</span> : null
+            }
+            {
+              this.props.posts.hasGotten && this.state.posts ?
+                <div className="home__most_recent_post">
+                  <PostCard full={true} isDashboard={false} 
+                    post={this.state.posts[0]} />
+                </div> : null
+            }
+            {
+              this.props.posts.hasGotten && this.state.posts &&
+              this.state.posts.length > 1 ?
+                <div className="home__other_recent_posts">
+                  <PostCard isDashboard={false}
+                    post={this.state.posts[1]} />
+                    {
+                      this.state.posts[2] ?
+                      <PostCard isDashboard={false}
+                        post={this.state.posts[2]} /> : null
+                    }
+                </div> : null
+            }
+            {
+              this.props.posts.hasGotten && this.state.posts &&
+              this.state.posts.length > 3 ?
+                this.state.posts.map((post, i) => {
+                  if (i < 3)
+                    return null
+                  
+                  return (
+                    <PostCard key={i} isDashboard={false}
+                      post={post} />
+                  )
+                }) : null 
+            }
           </div>
         </section>
       </div>

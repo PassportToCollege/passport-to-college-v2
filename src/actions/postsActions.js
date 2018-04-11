@@ -1,6 +1,8 @@
 import * as types from "./actionTypes";
 import { db, storage } from "../utils/firebase";
 
+const Console = console;
+
 // GET actions
 export const postsGetInitiated = () => {
   return {
@@ -27,6 +29,7 @@ export const doPostsGet = () => {
     dispatch(postsGetInitiated());
 
     return db.collection("posts")
+      .orderBy("createdAt", "desc")
       .get()
       .then(snapshots => {
         if (snapshots.empty)
@@ -55,6 +58,7 @@ export const doPostsGet = () => {
 
       })
       .catch(error => {
+        Console.log(error);
         dispatch(postsGetFailed(error));
       })
   };
@@ -66,7 +70,7 @@ export const doPostsGetMostRecent = () => {
 
     return  db.collection("posts")
       .where("state.published", "==", true)
-      .orderBy("createdAt", "desc")
+      .orderBy("publishedOn", "desc")
       .limit(5)
       .get()
       .then(snapshots => {
@@ -109,6 +113,7 @@ export const doPostsGetMostRecent = () => {
 
       })
       .catch(error => {
+        Console.log(error)
         dispatch(postsGetFailed(error));
       })
   };
