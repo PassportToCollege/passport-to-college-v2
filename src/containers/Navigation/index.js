@@ -10,8 +10,8 @@ import propTypes from "prop-types";
 import * as routes from "../../constants/routes";
 import * as hamburgerActions from "../../actions/hamburgerActions";
 
-const logoWhite = require("../../assets/images/logo__text__white.png");
-const logoDark = require("../../assets/images/logo__text__dark.png");
+import logoWhite from "../../assets/images/logo__text__white.png";
+import logoDark from "../../assets/images/logo__text__dark.png";
 
 const mainNavItems = [
   routes.LANDING,

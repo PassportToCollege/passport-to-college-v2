@@ -12,22 +12,17 @@ import ParallaxHeader from "../../components/ParallaxHeader";
 import TopicSection from "../../components/TopicSection";
 import StatItem from "../../components/StatItem";
 import InfoCard from "../../components/InfoCard";
+import InfoStrip from "../../components/InfoStrip";
 
-const infoCardBg = require("../../assets/images/info_card__bg.JPG");
+import infoCardBg from "../../assets/images/info_card__bg.JPG";
+import headerBg0 from "../../assets/images/home__header_bg_0.jpg";
+import headerBg1 from "../../assets/images/home__header_bg_1.jpg";
+import headerBg2 from "../../assets/images/home__header_bg_2.jpg";
 
 const headerBgs = [ 
-  { 
-    "img": require("../../assets/images/home__header_bg_0.jpg"),
-    "color": "#53D1D7" 
-  },
-  { 
-    "img": require("../../assets/images/home__header_bg_1.jpg"),
-    "color": "#FF6561" 
-  },
-  { 
-    "img": require("../../assets/images/home__header_bg_2.jpg"),
-    "color": "#FFCB61" 
-  }
+  { "img": headerBg0, "color": "#53D1D7" },
+  { "img": headerBg1, "color": "#FF6561" },
+  { "img": headerBg2, "color": "#FFCB61" }
 ];
 
 class Home extends Component {
@@ -145,6 +140,14 @@ class Home extends Component {
                   <InfoCard blank={true} bgColor="transparent" /> : null
             }
             <InfoCard blank={true} bgColor="#FFCB61" />
+          </div>
+        </section>
+        <section className="home__section" style={{ padding: "0" }}>
+          <InfoStrip content="Passport to College connects with students from all over the world who are beating the odds." />
+        </section>
+        <section className="home__section home__posts">
+          <div className="home__section_inner">
+            <h1>most recent stories</h1>
           </div>
         </section>
       </div>

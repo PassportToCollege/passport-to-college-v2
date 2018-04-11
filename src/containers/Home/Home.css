@@ -72,3 +72,12 @@
   justify-content: center;
   flex-wrap: wrap;
 }
+
+/* Posts section */
+.home__section.home__posts .home__section_inner > h1 {
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 2.85em;
+  letter-spacing: 0.25em;
+}
