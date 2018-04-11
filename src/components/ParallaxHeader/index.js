@@ -40,7 +40,10 @@ class ParallaxHeader extends Component {
           </div>
           {
             this.props.showLinkButton ?
-            <LinkButton target={this.props.linkButton.target} text={this.props.linkButton.text} /> :
+            <LinkButton 
+              target={this.props.linkButton.target} 
+              text={this.props.linkButton.text} 
+              classes="parallax_header__link_button" /> :
             ""
           }
         </div>

@@ -47,6 +47,10 @@
 }
 
 /* Navigation Items */
+.navigation .navigation__container .navigation__nav_container {
+  display: none;
+}
+
 .navigation .navigation__nav_container > ul {
   display: flex;
   flex-direction: row;
@@ -123,3 +127,9 @@
   width: 9px;
 }
 
+
+@media screen and (min-width: 1080px) {
+  .navigation .navigation__container .navigation__nav_container {
+    display: block;
+  }
+}

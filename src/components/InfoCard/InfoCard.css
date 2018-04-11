@@ -79,3 +79,9 @@
   font-size: 1.28571429em;
   font-weight: 400;
 }
+
+@media screen and (max-width: 1156px) {
+  .info_card.info_card__blank {
+    display: none;
+  }
+}
