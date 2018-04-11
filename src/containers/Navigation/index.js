@@ -55,7 +55,7 @@ class Navigation extends Component {
           </div>
           <nav className="navigation__nav_container">
             <ul>
-              {mainNavItems.map((v, i) => {
+              {mainNavItems.map(v => {
                 return (
                   <li key={v.route}>
                     <NavLink

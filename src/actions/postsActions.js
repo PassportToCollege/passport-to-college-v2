@@ -59,3 +59,57 @@ export const doPostsGet = () => {
       })
   };
 };
+
+export const doPostsGetMostRecent = () => {
+  return dispatch => {
+    dispatch(postsGetInitiated());
+
+    return  db.collection("posts")
+      .where("state.published", "==", true)
+      .orderBy("createdAt", "desc")
+      .limit(5)
+      .get()
+      .then(snapshots => {
+        if (snapshots.empty)
+          return dispatch(postsGetFailed({ message: "no posts found" }));
+
+        let posts = [];
+        let heroPromises = [];
+        let authorPromises = [];
+
+        snapshots.forEach(snapshot => {
+          let post = snapshot.data();
+          post.id = snapshot.id;
+
+          heroPromises.push(storage.ref("posts/heros").child(`${snapshot.id}.png`).getDownloadURL());
+          authorPromises.push(db.collection("users").doc(post.author).get());
+
+          posts.push(post);
+        });
+
+        Promise.all(heroPromises).then(urls => {
+          for (let post of posts) {
+            post.hero = urls.find(url => {
+              return url.indexOf(post.id) > -1;
+            });
+          }
+
+          Promise.all(authorPromises).then(authors => {
+            for (let post of posts) {
+              post.author = authors.find(author => {
+                return author.id === post.author;
+              });
+
+              post.author = post.author.data();
+            }
+
+            dispatch(postsGetDone(posts));
+          });
+        });
+
+      })
+      .catch(error => {
+        dispatch(postsGetFailed(error));
+      })
+  };
+};

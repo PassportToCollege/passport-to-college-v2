@@ -7,6 +7,7 @@ import { bindActionCreators } from "redux";
 
 import * as statsActions from "../../actions/statsActions";
 import * as featuresActions from "../../actions/featuresActions";
+import * as postsActions from "../../actions/postsActions";
 
 import ParallaxHeader from "../../components/ParallaxHeader";
 import TopicSection from "../../components/TopicSection";
@@ -32,7 +33,8 @@ class Home extends Component {
     this.state = {
       flipStrip: false,
       stats: props.stats.stats,
-      features: props.features.features
+      features: props.features.features,
+      posts: props.posts.posts
     }
   }
 
@@ -40,6 +42,7 @@ class Home extends Component {
     this.props.updateLocation("landing");
     this.props.statsActions.doStatsGet();
     this.props.featuresActions.doGetActiveFeatures();
+    this.props.postsActions.doPostsGetMostRecent();
   }
   
   componentDidMount() {
@@ -56,6 +59,9 @@ class Home extends Component {
     
     if (nextProps.features.hasGotten)
       this.setState({ features: nextProps.features.features });
+
+    if (nextProps.posts.hasGotten)
+      this.setState({ posts: nextProps.posts.posts });
   }
 
   render() {
@@ -170,20 +176,24 @@ Home.propTypes = {
   statsActions: propTypes.object,
   stats: propTypes.object,
   features: propTypes.object,
-  featuresActions: propTypes.object
+  featuresActions: propTypes.object,
+  posts: propTypes.object,
+  postsActions: propTypes.object
 };
 
 const mapStateToProps = state => {
   return {
     stats: state.stats,
-    features: state.features
+    features: state.features,
+    posts: state.posts
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     statsActions: bindActionCreators(statsActions, dispatch),
-    featuresActions: bindActionCreators(featuresActions, dispatch)
+    featuresActions: bindActionCreators(featuresActions, dispatch),
+    postsActions: bindActionCreators(postsActions, dispatch)
   };
 };
 
