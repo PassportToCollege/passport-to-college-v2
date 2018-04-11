@@ -21,14 +21,16 @@ const PostCard = ({ post, cardStyles, isDashboard, full }) => {
               Object.keys(post.categories).map(category => {
                 if (post.categories[category] === true)
                   return ( 
-                    <span key={category} className="post_card__category">{category}</span> 
+                    <span key={category} className="post_card__category">
+                      {category.split("-").join(" ").trim()}
+                    </span> 
                   )
                 
                 return null
               })
             }
           </section>
-          <h3>{post.title}</h3>
+          <h2>{post.title}</h2>
         </Link>
       </div>
     )

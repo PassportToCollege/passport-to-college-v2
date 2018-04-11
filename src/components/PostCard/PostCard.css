@@ -1,3 +1,55 @@
+/* Main website post cards */
+.post_card__main {
+  max-width: 500px;
+  min-height: 250px;
+  background-color: rgb(51,51,51);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: 2.5em;
+  position: relative;
+}
+
+.post_card__main.full {
+  height: 520px;
+}
+
+.post_card__main .post_card__overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(51,51,51,0.9);
+}
+
+.post_card__main > a.post_card__content {
+  display: block;
+  position: relative;
+  color: white;
+}
+
+.post_card__main > a.post_card__content .post_card__categories > span {
+  text-transform: capitalize;
+  font-family: "Nunito", sans-serif;
+  font-size: 0.85em;
+  font-weight: 400;  
+}
+
+.post_card__main > a.post_card__content .post_card__categories > span:not(:last-child)::after {
+  content: " - ";
+}
+
+.post_card__main > a.post_card__content > h2 {
+  margin-top: 0;
+}
+
+
+/* Dashboard post cards */
 .post_card {
   display: flex;
   justify-content: flex-start;
