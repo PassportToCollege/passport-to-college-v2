@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import propTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { Link } from "react-router-dom";
 
 import * as statsActions from "../../actions/statsActions";
 import * as featuresActions from "../../actions/featuresActions";
@@ -200,6 +201,12 @@ class Home extends Component {
                   }) : null 
               }
             </section>
+            {
+              this.props.posts.hasGotten && this.state.posts ?
+                <Link to="/" className="all_posts__link">
+                  view all posts
+                </Link> : null
+            }
           </div>
         </section>
       </div>
