@@ -16,6 +16,7 @@ footer.footer .footer__main {
   padding: 2em 3em;
 }
 
+/* Nav */
 footer.footer .footer__main > .footer__nav {
   display: flex;
   flex-direction: column;
@@ -44,6 +45,7 @@ footer.footer .footer__main > .footer__nav > li > a:hover {
   border-bottom: 2px solid rgba(255, 255, 255, 1);
 }
 
+/* Recent stories */
 footer.footer .footer__main > .footer__posts > h3 {
   color: rgba(255,255,255,0.6);
   font-size: 1em;
@@ -76,6 +78,43 @@ footer.footer .footer__main > .footer__posts > .footer__post_item > h5 {
   font-weight: 100;
 }
 
+/* Connect with us */
+footer.footer .footer__main > .footer__contact > h3 {
+  color: rgba(255,255,255,0.6);
+  font-size: 1em;
+  font-family: "Muli", sans-serif;
+  font-weight: 100;
+  text-transform: uppercase;
+  margin-bottom: 2em;
+}
+
+footer.footer .footer__main > .footer__contact > .footer__contact_socials {
+  margin-bottom: 2em;
+}
+
+footer.footer .footer__main > .footer__contact > .footer__contact_socials > a {
+  display: inline-block;
+  color: rgba(255,255,255,0.6);
+  font-size: 1.25em;
+  transition: color 200ms linear;
+}
+
+footer.footer .footer__main > .footer__contact > .footer__contact_socials > a:not(:last-child) {
+  margin-right: 1em;
+}
+
+footer.footer .footer__main > .footer__contact > .footer__contact_socials > a:hover {
+  color: rgba(255, 255, 255, 1);
+}
+
+footer.footer .footer__main > .footer__contact > a {
+  display: inline-block;
+  color: white;
+  font-family: "Muli", sans-serif;
+  font-size: 0.95em;
+}
+
+/* Copyright */
 footer.footer > .footer__copyright {
   width: 100%;
   text-align: center;

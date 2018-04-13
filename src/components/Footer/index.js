@@ -6,6 +6,8 @@ import propTypes from "prop-types";
 
 import * as routes from "../../constants/routes";
 
+import FontAwesomeIcon from "@fortawesome/react-fontawesome";
+import { faFacebook, faTwitterSquare, faLinkedin } from "@fortawesome/fontawesome-free-brands";
 import Loader from "../Loader";
 
 import logo from "../../assets/images/logo__text__white.png";
@@ -50,7 +52,19 @@ const Footer = ({ posts }) => {
           }
         </section>
         <section className="footer__contact">
-
+          <h3>connect with us</h3>
+          <div className="footer__contact_socials">
+            <Link to="/">
+              <FontAwesomeIcon icon={faFacebook} />
+            </Link>
+            <Link to="/">
+              <FontAwesomeIcon icon={faTwitterSquare} />
+            </Link>
+            <Link to="/">
+              <FontAwesomeIcon icon={faLinkedin} />
+            </Link>
+          </div>
+          <Link to="/">passportcollege@gmail.com</Link>
         </section>
       </main>
       <section className="footer__copyright">
