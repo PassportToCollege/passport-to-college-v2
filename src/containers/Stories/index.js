@@ -16,6 +16,7 @@ class Stories extends Component {
 
   componentWillMount() {
     this.props.updateLocation("stories");
+    this.props.postsActions.doPostsPaginate(1);
   }
 
   render() {

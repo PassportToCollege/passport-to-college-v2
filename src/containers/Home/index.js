@@ -204,8 +204,8 @@ class Home extends Component {
             </section>
             {
               this.props.posts.gotMostRecent && this.state.posts ?
-                <Link to="/" className="all_posts__link">
-                  view all posts
+                <Link to="/stories" className="all_posts__link">
+                  view all stories
                 </Link> : null
             }
           </div>
