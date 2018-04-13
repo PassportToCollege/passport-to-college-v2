@@ -64,9 +64,29 @@ export const doPostsGet = () => {
   };
 };
 
+export const postsGetMostRecentInitiated = () => {
+  return {
+    type: types.POSTS_GET_MOST_RECENT_INITIATED
+  };
+};
+
+export const postsGetMostRecentFailed = (error) => {
+  return {
+    type: types.POSTS_GET_MOST_RECENT_FAILED,
+    error
+  };
+};
+
+export const postsGetMostRecentDone = posts => {
+  return {
+    type: types.POSTS_GET_MOST_RECENT_DONE,
+    posts
+  };
+};
+
 export const doPostsGetMostRecent = () => {
   return dispatch => {
-    dispatch(postsGetInitiated());
+    dispatch(postsGetMostRecentInitiated());
 
     return  db.collection("posts")
       .where("state.published", "==", true)
@@ -75,7 +95,7 @@ export const doPostsGetMostRecent = () => {
       .get()
       .then(snapshots => {
         if (snapshots.empty)
-          return dispatch(postsGetFailed({ message: "no posts found" }));
+          return dispatch(postsGetMostRecentFailed({ message: "no posts found" }));
 
         let posts = [];
         let heroPromises = [];
@@ -107,14 +127,14 @@ export const doPostsGetMostRecent = () => {
               post.author = post.author.data();
             }
 
-            dispatch(postsGetDone(posts));
+            dispatch(postsGetMostRecentDone(posts));
           });
         });
 
       })
       .catch(error => {
         Console.log(error)
-        dispatch(postsGetFailed(error));
+        dispatch(postsGetMostRecentFailed(error));
       })
   };
 };

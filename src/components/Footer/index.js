@@ -40,8 +40,8 @@ const Footer = ({ posts }) => {
         <section className="footer__posts">
           <h3>recent stories</h3>
           {
-            posts.hasGotten ?
-              posts.posts.map(post => {
+            posts.gotMostRecent ?
+              posts.mostRecent.map(post => {
                 return (
                   <Link key={post.id} to="/" className="footer__post_item">
                     <h4>{post.title}</h4>

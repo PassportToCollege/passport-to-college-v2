@@ -38,7 +38,7 @@ class Home extends Component {
       flipStrip: false,
       stats: props.stats.stats,
       features: props.features.features,
-      posts: props.posts.posts
+      posts: props.posts.mostRecent
     }
   }
 
@@ -64,8 +64,8 @@ class Home extends Component {
     if (nextProps.features.hasGotten)
       this.setState({ features: nextProps.features.features });
 
-    if (nextProps.posts.hasGotten)
-      this.setState({ posts: nextProps.posts.posts });
+    if (nextProps.posts.gotMostRecent)
+      this.setState({ posts: nextProps.posts.mostRecent });
   }
 
   render() {
@@ -159,24 +159,24 @@ class Home extends Component {
           <div className="home__section_inner">
             <h1>most recent stories</h1>
             {
-              this.props.posts.isGetting ?
+              this.props.posts.gettingMostRecent ?
                 <Loader color="#FFCB61" /> : null
             }
             <section className="home__most_recent_posts">
               {
-                this.props.posts.postsGetFailed && 
+                this.props.posts.mostRecentGetFailed && 
                 this.props.posts.error.message === "no posts found" ?
                   <span className="no__posts">No stories yet</span> : null
               }
               {
-                this.props.posts.hasGotten && this.state.posts ?
+                this.props.posts.gotMostRecent && this.state.posts ?
                   <div className="home__most_recent_post">
                     <PostCard full={true} isDashboard={false} 
                       post={this.state.posts[0]} />
                   </div> : null
               }
               {
-                this.props.posts.hasGotten && this.state.posts &&
+                this.props.posts.gotMostRecent && this.state.posts &&
                 this.state.posts.length > 1 ?
                   <div className="home__other_recent_posts">
                     <PostCard isDashboard={false}
@@ -189,7 +189,7 @@ class Home extends Component {
                   </div> : null
               }
               {
-                this.props.posts.hasGotten && this.state.posts &&
+                this.props.posts.gotMostRecent && this.state.posts &&
                 this.state.posts.length > 3 ?
                   this.state.posts.map((post, i) => {
                     if (i < 3)
@@ -203,7 +203,7 @@ class Home extends Component {
               }
             </section>
             {
-              this.props.posts.hasGotten && this.state.posts ?
+              this.props.posts.gotMostRecent && this.state.posts ?
                 <Link to="/" className="all_posts__link">
                   view all posts
                 </Link> : null
