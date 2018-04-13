@@ -1,0 +1,5 @@
+.app__main > .app__body.app__body_stories {
+  background-color: #fafafa;
+  padding-top: 74px;
+  min-height: calc(100vh - 74px);
+}

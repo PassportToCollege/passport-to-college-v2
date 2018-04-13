@@ -11,7 +11,7 @@ import * as routes from "../../constants/routes";
 import * as hamburgerActions from "../../actions/hamburgerActions";
 
 import logoWhite from "../../assets/images/logo__text__white.png";
-import logoDark from "../../assets/images/logo__text__gray.png";
+import logoDark from "../../assets/images/logo__text__dark.png";
 
 const mainNavItems = [
   routes.LANDING,
@@ -29,7 +29,8 @@ class Navigation extends Component {
     this.state = {
       addBackground: false,
       lastScroll: window.pageYOffset || document.documentElement.scrollTop,
-      sDirection: "none"
+      sDirection: "none",
+      onWhite: props.onWhite
     };
   }
 
@@ -41,15 +42,20 @@ class Navigation extends Component {
     window.removeEventListener("scroll", this.watchScroll);
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({ onWhite: nextProps.onWhite });
+  }
+
   render() {
     return (
       <div className="navigation" 
         data-add-bg={this.state.addBackground ? "active" : "inactive"}
-        data-scroll-direction={this.state.sDirection}>
+        data-scroll-direction={this.state.sDirection}
+        data-on-white={this.state.onWhite ? "active" : "inactive"}>
         <div className="navigation__container">
           <div className="navigation__logo_container">
             <Link to={routes.LANDING.route}>
-              <img src={this.state.addBackground ? logoDark : logoWhite} 
+              <img src={this.state.addBackground || this.state.onWhite ? logoDark : logoWhite} 
                 alt="Passport to College Logo" />
             </Link>
           </div>
@@ -106,10 +112,15 @@ class Navigation extends Component {
   }
 }
 
+Navigation.defaultProps = {
+  onWhite: false
+};
+
 Navigation.propTypes = {
   hamburgerActions: propTypes.object,
   hamburgerState: propTypes.object,
-  updateHamburgerState: propTypes.func
+  updateHamburgerState: propTypes.func,
+  onWhite: propTypes.bool
 };
 
 const mapStateToProps = state => {
