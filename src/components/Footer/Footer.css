@@ -1,0 +1,91 @@
+footer.footer {
+  background-color: rgb(53, 53, 53);
+}
+
+footer.footer .footer__container {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+footer.footer .footer__main {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  padding: 2em 3em;
+}
+
+footer.footer .footer__main > .footer__nav {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+footer.footer .footer__main > .footer__nav > img {
+  max-width: 250px;
+}
+
+footer.footer .footer__main > .footer__nav > li {
+  padding: 0 25px;
+}
+
+footer.footer .footer__main > .footer__nav > li > a {
+  color: rgba(255,255,255,0.65);
+  font-family: "Nunito", sans-serif;
+  font-weight: bold;
+  padding: 0.5em 0.5em 0.75em 0;
+  display: block;
+}
+
+footer.footer .footer__main > .footer__nav > li > a.active,
+footer.footer .footer__main > .footer__nav > li > a:hover {
+  color: rgba(255, 255, 255, 1);
+  border-bottom: 2px solid rgba(255, 255, 255, 1);
+}
+
+footer.footer .footer__main > .footer__posts > h3 {
+  color: rgba(255,255,255,0.6);
+  font-size: 1em;
+  font-family: "Muli", sans-serif;
+  font-weight: 100;
+  text-transform: uppercase;
+  margin-bottom: 2em;
+}
+
+footer.footer .footer__main > .footer__posts > .footer__post_item {
+  display: block;
+  color: white;
+  opacity: 0.65;
+  transition: opacity 200ms linear;
+}
+
+footer.footer .footer__main > .footer__posts > .footer__post_item:hover {
+  opacity: 1;
+}
+
+footer.footer .footer__main > .footer__posts > .footer__post_item > h4 {
+  margin: 0;
+  font-family: "Nunito", sans-serif;
+  font-weight: bold;
+}
+
+footer.footer .footer__main > .footer__posts > .footer__post_item > h5 {
+  margin-top: 0;
+  font-family: "Muli", sans-serif;
+  font-weight: 100;
+}
+
+footer.footer > .footer__copyright {
+  width: 100%;
+  text-align: center;
+  background-color: rgb(30,30,30);
+  color: rgba(255,255,255,0.9);
+}
+
+footer.footer > .footer__copyright > p {
+  padding: 2em 3em;
+  font-family: "Muli", sans-serif;
+  font-size: 0.9em;
+  font-weight: 400;
+}

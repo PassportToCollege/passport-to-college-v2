@@ -17,6 +17,7 @@ import InfoCard from "../../components/InfoCard";
 import InfoStrip from "../../components/InfoStrip";
 import PostCard from "../../components/PostCard";
 import Loader from "../../components/Loader";
+import Footer from "../../components/Footer";
 
 import infoCardBg from "../../assets/images/info_card__bg.JPG";
 import headerBg0 from "../../assets/images/home__header_bg_0.jpg";
@@ -209,6 +210,7 @@ class Home extends Component {
             }
           </div>
         </section>
+        <Footer posts={this.props.posts} />
       </div>
     )
   }
