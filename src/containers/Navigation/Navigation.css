@@ -66,7 +66,7 @@
 }
 
 .navigation[data-add-bg="active"] .navigation__nav_container > ul > li > a {
-  color: #333;
+  color: #969696;
 }
 
 .navigation .navigation__nav_container>ul>li>a.active:after {
@@ -94,6 +94,10 @@
   bottom: 20px;
   margin: auto;
   transition: width 250ms linear 100ms;
+}
+.navigation[data-add-bg="active"] .navigation__nav_container > ul > li > a.active,
+.navigation[data-add-bg="active"] .navigation__nav_container > ul > li > a:hover {
+  color: #333;
 }
 
 .navigation[data-add-bg="active"] .navigation__nav_container>ul>li>a.active:after,

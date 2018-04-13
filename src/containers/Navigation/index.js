@@ -11,7 +11,7 @@ import * as routes from "../../constants/routes";
 import * as hamburgerActions from "../../actions/hamburgerActions";
 
 import logoWhite from "../../assets/images/logo__text__white.png";
-import logoDark from "../../assets/images/logo__text__dark.png";
+import logoDark from "../../assets/images/logo__text__gray.png";
 
 const mainNavItems = [
   routes.LANDING,
