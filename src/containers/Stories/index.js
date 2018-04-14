@@ -9,13 +9,15 @@ import * as postCategoryActions from "../../actions/postCategoryActions";
 import * as postsActions from "../../actions/postsActions";
 
 import LinkDropdown from "../../components/LinkDropdown";
+import StoryCard from "../../components/StoryCard";
+import Loader from "../../components/Loader";
 
 class Stories extends Component {
   constructor(props) {
     super(props);
     this.state = {
       page: 1,
-      posts: props.posts.paginatedPosts,
+      posts: [],
       categories: props.postCategories.categories
     }
   }
@@ -28,7 +30,7 @@ class Stories extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.posts.paginationDone)
-      this.setState({ posts: nextProps.posts.paginatedPosts });
+      this.setState({ posts: this.state.posts.concat(nextProps.posts.posts) });
     
     if (nextProps.postCategories.gotCategories)
       this.setState({ categories: nextProps.postCategories.categories });
@@ -42,6 +44,18 @@ class Stories extends Component {
             this.props.postCategories.gotCategories && this.state.categories ?
               <LinkDropdown name="Categories" data={this.createLinkDropdownData()} /> :
               null
+          }
+        </section>
+        <section className="stories__stories">
+          {
+            this.state.posts.length ?
+              this.state.posts.map(post => {
+                return <StoryCard key={post.id} post={post} />
+              }) : null
+          }
+          {
+            this.props.posts.paginatingPosts ?
+              <Loader /> : null
           }
         </section>
       </main>

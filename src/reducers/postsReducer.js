@@ -65,9 +65,7 @@ const posts = (state = initialState.posts, action) => {
         paginationDone: true,
         paginationFailed: false,
         page: action.page,
-        paginatedPosts: Object.assign({}, state.paginatedPosts, {
-          [`page_${action.page}`]: action.posts
-        })
+        posts: action.posts
       });
     default:
       return state;
