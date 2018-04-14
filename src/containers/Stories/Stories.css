@@ -3,3 +3,21 @@
   padding-top: 74px;
   min-height: calc(100vh - 74px);
 }
+
+.stories {
+  width: 1140px;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 5em 0 4em;
+}
+
+/* Header */
+.stories .stories__header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0 2em;
+  margin-bottom: 4em;
+}
