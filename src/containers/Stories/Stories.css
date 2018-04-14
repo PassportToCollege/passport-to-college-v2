@@ -1,12 +1,12 @@
 .app__main > .app__body.app__body_stories {
   background-color: #fafafa;
   padding-top: 74px;
-  min-height: calc(100vh - 74px);
 }
 
 .stories {
   width: 1140px;
   max-width: 100%;
+  min-height: calc(100vh - 74px);
   margin: 0 auto;
   padding: 5em 0 4em;
 }

@@ -11,6 +11,7 @@ import * as postsActions from "../../actions/postsActions";
 import LinkDropdown from "../../components/LinkDropdown";
 import StoryCard from "../../components/StoryCard";
 import Loader from "../../components/Loader";
+import Footer from "../../components/Footer";
 
 class Stories extends Component {
   constructor(props) {
@@ -26,11 +27,15 @@ class Stories extends Component {
     this.props.updateLocation("stories");
     this.props.postsActions.doPostsPaginate(1);
     this.props.postCategoryActions.doCategoriesGet();
+    this.props.postsActions.doPostsGetMostRecent();
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.posts.paginationDone)
+    if (nextProps.posts.paginationDone && this.state.page > 1) {
       this.setState({ posts: this.state.posts.concat(nextProps.posts.posts) });
+    } else if (nextProps.posts.paginationDone) {
+      this.setState({ posts: nextProps.posts.posts });
+    }
     
     if (nextProps.postCategories.gotCategories)
       this.setState({ categories: nextProps.postCategories.categories });
@@ -38,27 +43,30 @@ class Stories extends Component {
 
   render() {
     return (
-      <main className="stories">
-        <section className="stories__header">
-          {
-            this.props.postCategories.gotCategories && this.state.categories ?
-              <LinkDropdown name="Categories" data={this.createLinkDropdownData()} /> :
-              null
-          }
-        </section>
-        <section className="stories__stories">
-          {
-            this.state.posts.length ?
-              this.state.posts.map(post => {
-                return <StoryCard key={post.id} post={post} />
-              }) : null
-          }
-          {
-            this.props.posts.paginatingPosts ?
-              <Loader /> : null
-          }
-        </section>
-      </main>
+      <div>
+        <main className="stories">
+          <section className="stories__header">
+            {
+              this.props.postCategories.gotCategories && this.state.categories ?
+                <LinkDropdown name="Categories" data={this.createLinkDropdownData()} /> :
+                null
+            }
+          </section>
+          <section className="stories__stories">
+            {
+              this.state.posts.length ?
+                this.state.posts.map(post => {
+                  return <StoryCard key={post.id} post={post} />
+                }) : null
+            }
+            {
+              this.props.posts.paginatingPosts ?
+                <Loader /> : null
+            }
+          </section>
+        </main>
+        <Footer posts={this.props.posts}/>
+      </div>
     );
   }
 

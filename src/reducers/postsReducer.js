@@ -43,7 +43,7 @@ const posts = (state = initialState.posts, action) => {
         gettingMostRecent: false,
         gotMostRecent: true,
         mostRecentGetFailed: false,
-        mostRecent: action.posts
+        mostRecent: action.mostRecent
       });
     case POSTS_GET_MOST_RECENT_FAILED:
       return Object.assign({}, state, {

@@ -77,10 +77,10 @@ export const postsGetMostRecentFailed = (error) => {
   };
 };
 
-export const postsGetMostRecentDone = posts => {
+export const postsGetMostRecentDone = mostRecent => {
   return {
     type: types.POSTS_GET_MOST_RECENT_DONE,
-    posts
+    mostRecent
   };
 };
 
