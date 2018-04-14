@@ -21,13 +21,14 @@ class Stories extends Component {
       page: 1,
       posts: [],
       categories: props.postCategories.categories,
-      stats: props.stats.stats
+      stats: props.stats.stats,
+      category: props.match.params.category
     }
   }
 
   componentWillMount() {
     this.props.updateLocation("stories");
-    this.props.postsActions.doPostsPaginate(1);
+    this.props.postsActions.doPostsPaginate(1, this.state.category);
     this.props.postCategoryActions.doCategoriesGet();
     this.props.postsActions.doPostsGetMostRecent();
     this.props.statsActions.doStatsGet();
@@ -53,6 +54,12 @@ class Stories extends Component {
     
     if (nextProps.stats.hasGotten)
       this.setState({ stats: nextProps.stats.stats });
+    
+    if (nextProps.match.params.category !== this.state.category) {
+      if (!this.props.posts.paginatingPosts)
+        this.props.postsActions.doPostsPaginate(1, nextProps.match.params.category);
+      this.setState({ category: nextProps.match.params.category });
+    }
   }
 
   render() {
@@ -67,6 +74,12 @@ class Stories extends Component {
             }
           </section>
           <section className="stories__stories">
+            {
+              this.state.category ?
+                <h1 className="stories__category_heading">
+                  Stories from <i>&apos;{this.state.category}&apos;</i>
+                </h1> : null
+            }
             {
               this.state.posts.length ?
                 this.state.posts.map(post => {
@@ -86,7 +99,7 @@ class Stories extends Component {
 
   createLinkDropdownData = () => {
     let data = [{
-      to: this.props.match.url,
+      to: "/stories",
       label: "All"
     }];
     this.state.categories.map(category => {
@@ -106,7 +119,7 @@ class Stories extends Component {
 
     if (!this.props.posts.paginatingPosts) {
       if ((bottom < wih) && (this.state.page * 25 < this.state.stats.posts.published)) {
-        this.props.postsActions.doPostsPaginate(this.state.page + 1);
+        this.props.postsActions.doPostsPaginate(this.state.page + 1, this.state.category);
         this.setState({ page: this.state.page + 1 });
       }
     }

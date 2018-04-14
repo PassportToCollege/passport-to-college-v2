@@ -12,7 +12,7 @@ const LinkDropdown = ({ name, data }) => {
 
   const handleBlur = e => {
     e.preventDefault();
-    toggleState();
+    this.dropdown.setAttribute("data-state", "closed");
   }
 
   return (

@@ -160,16 +160,26 @@ export const paginatePostsFailed = (error, page) => {
   };
 };
 
-export const doPostsPaginate = page => {
+export const doPostsPaginate = (page, category) => {
   page = parseInt(page, 10);
   
   return dispatch => {
     dispatch(paginatePostsInitiated(page));
+    let postRef;
 
-    if (page === 1) {
-      return db.collection("posts")
+    if (category) {
+      postRef = db.collection("posts")
+        .where("state.published", "==", true)
+        .where(`categories.${category}`, "==", true)
+        .orderBy("publishedOn", "desc")
+    } else {
+      postRef = db.collection("posts")
         .where("state.published", "==", true)
         .orderBy("publishedOn", "desc")
+    }
+
+    if (page === 1) {
+      return postRef
         .limit(25)
         .get()
         .then(snapshots => {
@@ -216,18 +226,12 @@ export const doPostsPaginate = page => {
           dispatch(paginatePostsFailed(error));
         });
     } else {
-      db.collection("posts")
-        .where("state.published", "==", true)
-        .orderBy("publishedOn", "desc")
-        .limit((page - 1) * 25)
+      postRef.limit((page - 1) * 25)
         .get()
         .then(tempSnapshots => {
           const lastVisible = tempSnapshots.docs[tempSnapshots.docs.length - 1];
           
-          return db.collection("posts")
-            .where("state.published", "==", true)
-            .orderBy("publishedOn", "desc")
-            .startAfter(lastVisible)
+          return postRef.startAfter(lastVisible)
             .limit(25)
             .get()
             .then(snapshots => {

@@ -21,3 +21,15 @@
   padding: 0 2em;
   margin-bottom: 4em;
 }
+
+/* Content */
+.stories .stories__stories .stories__category_heading {
+  padding: 0 2em;
+  font-size: 2em;
+  font-family: "Muli", sans-serif;
+}
+
+.stories .stories__stories .stories__category_heading > i {
+  font-weight: 100;
+  opacity: 0.85;
+}
