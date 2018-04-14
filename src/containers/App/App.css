@@ -21,7 +21,6 @@ a:focus {
 .app__main {
   width: 100%;
   min-height: 100%;
-  background-color: #53D1D7;
   transition: transform 250ms linear 100ms;
 }
 

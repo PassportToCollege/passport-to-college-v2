@@ -1,0 +1,35 @@
+.app__main > .app__body.app__body_stories {
+  background-color: #fafafa;
+  padding-top: 74px;
+}
+
+.stories {
+  width: 1140px;
+  max-width: 100%;
+  min-height: calc(100vh - 74px);
+  margin: 0 auto;
+  padding: 5em 0 4em;
+}
+
+/* Header */
+.stories .stories__header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0 2em;
+  margin-bottom: 4em;
+}
+
+/* Content */
+.stories .stories__stories .stories__category_heading {
+  padding: 0 2em;
+  font-size: 2em;
+  font-family: "Muli", sans-serif;
+}
+
+.stories .stories__stories .stories__category_heading > i {
+  font-weight: 100;
+  opacity: 0.85;
+}

@@ -10,6 +10,7 @@ import Hamburger from "../Hamburger";
 import Navigation from "../Navigation";
 
 import Home from "../Home";
+import Stories from "../Stories";
 import SignIn from "../Auth/SignIn";
 import SignUp from "../Auth/SignUp";
 import ResetPassword from "../Auth/ResetPassword";
@@ -55,8 +56,10 @@ class App extends Component {
           {this.renderHamburger()}
           <div className="app__main" data-hamburger={this.state.hamburgerState} style={mainBg}>
             {this.selectNavigation()}
-            <div className="app__body" style={bodyStyles}>
+            <div className={`app__body app__body_${this.state.location}`} style={bodyStyles}>
               <Route exact path={routes.LANDING.route} render={props => this.defaultRouteMiddleware(props, Home)}></Route>
+              <Route exact path={routes.STORIES.route} render={props => this.defaultRouteMiddleware(props, Stories)}></Route>
+              <Route exact path={routes.STORIES_CATEGORY.route} render={props => this.defaultRouteMiddleware(props, Stories)}></Route>
               <Route path={routes.SIGN_IN.route} render={(props) => this.authMiddleware(props, SignIn)}></Route>
               <Route path={routes.SIGN_UP.route} render={props => this.authMiddleware(props, SignUp)}></Route>
               <Route path={routes.RESET_PASSWORD.route} render={(props) => this.authMiddleware(props, ResetPassword)}></Route>
@@ -113,8 +116,9 @@ class App extends Component {
     if (this.state.location !== "application portal") {
       if(this.state.location.indexOf("dashboard") > -1)
         return null;
-      
+
       return <Navigation 
+        onWhite={this.state.location === "stories"}
         updateHamburgerState={newState => this.setState({ hamburgerState: newState})}/>
     }
 

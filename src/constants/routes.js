@@ -4,6 +4,7 @@ export const ABOUT_US = { name: "About Us", route: "/about-us" };
 export const SCHOLARS = { name: "Scholars", route: "/scholars" };
 export const EVENTS = { name: "Events", route: "/events" };
 export const STORIES = { name: "Stories", route: "/stories" };
+export const STORIES_CATEGORY = { name: "Stories by Category", route: "/stories/cat/:category" };
 export const CONTACT_US = { name: "Contact Us", route: "/contact-us" };
 
 // Admin Routes

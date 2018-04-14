@@ -2,7 +2,12 @@ import initialState from "./initialState";
 import {
   POSTS_GET_INITIATED,
   POSTS_GET_DONE,
-  POSTS_GET_FAILED
+  POSTS_GET_FAILED,
+  POSTS_GET_MOST_RECENT_INITIATED,
+  POSTS_GET_MOST_RECENT_DONE,
+  POSTS_GET_MOST_RECENT_FAILED,
+  PAGINATE_POSTS_INITIATED,
+  PAGINATE_POSTS_DONE
 } from "../actions/actionTypes";
 
 const posts = (state = initialState.posts, action) => {
@@ -26,6 +31,41 @@ const posts = (state = initialState.posts, action) => {
         hasGotten: false,
         postsGetFailed: true,
         error: action.error
+      });
+    case POSTS_GET_MOST_RECENT_INITIATED:
+      return Object.assign({}, state, {
+        gettingMostRecent: true,
+        gotMostRecent: false,
+        mostRecentGetFailed: false
+      });
+    case POSTS_GET_MOST_RECENT_DONE:
+      return Object.assign({}, state, {
+        gettingMostRecent: false,
+        gotMostRecent: true,
+        mostRecentGetFailed: false,
+        mostRecent: action.mostRecent
+      });
+    case POSTS_GET_MOST_RECENT_FAILED:
+      return Object.assign({}, state, {
+        gettingMostRecent: false,
+        gotMostRecent: false,
+        mostRecentGetFailed: true,
+        error: action.error
+      });
+    case PAGINATE_POSTS_INITIATED:
+      return Object.assign({}, state, {
+        paginatingPosts: true,
+        paginationDone: false,
+        paginationFailed: false,
+        page: action.page
+      });
+    case PAGINATE_POSTS_DONE:
+      return Object.assign({}, state, {
+        paginatingPosts: false,
+        paginationDone: true,
+        paginationFailed: false,
+        page: action.page,
+        posts: action.posts
       });
     default:
       return state;

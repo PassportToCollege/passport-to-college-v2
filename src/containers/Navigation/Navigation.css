@@ -7,7 +7,8 @@
   transition: background-color 200ms ease-in, transform 350ms ease-out;
 }
 
-.navigation[data-add-bg="active"] {
+.navigation[data-add-bg="active"],
+.navigation[data-on-white="active"] {
   background-color: white;
   box-shadow: 0 1px 5px rgba(51,51,51,0.5);
 }
@@ -32,7 +33,8 @@
    transition: padding 200ms linear;
 }
 
-.navigation[data-add-bg="active"] .navigation__container {
+.navigation[data-add-bg="active"] .navigation__container,
+.navigation[data-on-white="active"] .navigation__container {
   padding: 0 2em;
 }
 
@@ -65,8 +67,9 @@
   position: relative;
 }
 
-.navigation[data-add-bg="active"] .navigation__nav_container > ul > li > a {
-  color: #333;
+.navigation[data-add-bg="active"] .navigation__nav_container > ul > li > a,
+.navigation[data-on-white="active"] .navigation__nav_container > ul > li > a {
+  color: #969696;
 }
 
 .navigation .navigation__nav_container>ul>li>a.active:after {
@@ -95,9 +98,17 @@
   margin: auto;
   transition: width 250ms linear 100ms;
 }
+.navigation[data-add-bg="active"] .navigation__nav_container > ul > li > a.active,
+.navigation[data-add-bg="active"] .navigation__nav_container > ul > li > a:hover,
+.navigation[data-on-white="active"] .navigation__nav_container > ul > li > a.active,
+.navigation[data-on-white="active"] .navigation__nav_container > ul > li > a:hover {
+  color: #333;
+}
 
 .navigation[data-add-bg="active"] .navigation__nav_container>ul>li>a.active:after,
-.navigation[data-add-bg="active"] .navigation__nav_container>ul>li>a:after {
+.navigation[data-add-bg="active"] .navigation__nav_container>ul>li>a:after,
+.navigation[data-on-white="active"] .navigation__nav_container>ul>li>a.active:after,
+.navigation[data-on-white="active"] .navigation__nav_container>ul>li>a:after {
   background-color: #333;
 }
 
@@ -118,7 +129,8 @@
   margin-bottom: 3px;
 }
 
-.navigation[data-add-bg="active"] .navigation__hamburger .toggle  {
+.navigation[data-add-bg="active"] .navigation__hamburger .toggle,
+.navigation[data-on-white="active"] .navigation__hamburger .toggle {
   background-color: #333;
 }
 
