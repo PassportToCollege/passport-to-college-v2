@@ -3,6 +3,7 @@
   display: inline-block;
   width: 300px;
   max-width: 100%;
+  outline: none;
 }
 
 .link_dropdown .link_dropdown__toggle {
@@ -58,9 +59,14 @@
   font-family: "Muli", sans-serif;
 }
 
-.link_dropdown .link_dropdown__items > ul > li > a:hover,
 .link_dropdown .link_dropdown__items > ul > li > a.active {
   background-color: #FF8C89;
   color: white;
   font-weight: bold;
+}
+
+.link_dropdown .link_dropdown__items > ul > li > a:hover {
+  background-color: #FF6561;
+  color: white;
+  font-weight: bold
 }

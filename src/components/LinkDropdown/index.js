@@ -10,9 +10,16 @@ const LinkDropdown = ({ name, data }) => {
     this.dropdown.setAttribute("data-state", curr === "closed" ? "open" : "closed");
   }
 
+  const handleBlur = e => {
+    e.preventDefault();
+    toggleState();
+  }
+
   return (
     <ul className="link_dropdown" data-state="closed"
-      ref={ul => this.dropdown = ul}>
+      tabIndex="0"
+      ref={ul => this.dropdown = ul}
+      onBlur={handleBlur}>
       <li className="link_dropdown__toggle"
         onClick={toggleState}>{name}</li>
       <li className="link_dropdown__items">
