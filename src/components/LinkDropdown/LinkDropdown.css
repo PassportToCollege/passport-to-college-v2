@@ -1,0 +1,72 @@
+.link_dropdown {
+  position: relative;
+  display: inline-block;
+  width: 300px;
+  max-width: 100%;
+  outline: none;
+}
+
+.link_dropdown .link_dropdown__toggle {
+  position: relative;
+  width: 100%;
+  padding: 1em;
+  border-radius: 1em;
+  background-color: #eee;
+  color: rgb(150,150,150);
+  font-family: "Muli", sans-serif;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 300ms linear;
+}
+
+.link_dropdown[data-state="open"] .link_dropdown__toggle {
+  color: white;
+  background-color: #FF6561;
+}
+
+.link_dropdown .link_dropdown__toggle::after {
+  content: "\f0d7";
+  font-family: FontAwesome;
+  position: absolute;
+  right: 1.25em;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.link_dropdown .link_dropdown__items {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 100%;
+  margin-top: 1em;
+  border-radius: 1em;
+  box-shadow: 0 1px 5px rgba(51,51,51,0.2);
+  overflow: hidden;
+  transition: max-height 300ms linear;
+  max-height: 0;
+}
+
+.link_dropdown[data-state="open"] .link_dropdown__items {
+  max-height: 500px;
+  overflow: auto;
+}
+
+.link_dropdown .link_dropdown__items > ul > li > a {
+  display: block;
+  background-color: white;
+  padding: 0.7em 1.25em;
+  color: rgb(150, 150, 150);
+  font-family: "Muli", sans-serif;
+}
+
+.link_dropdown .link_dropdown__items > ul > li > a.active {
+  background-color: #FF8C89;
+  color: white;
+  font-weight: bold;
+}
+
+.link_dropdown .link_dropdown__items > ul > li > a:hover {
+  background-color: #FF6561;
+  color: white;
+  font-weight: bold
+}
