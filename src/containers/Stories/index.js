@@ -7,6 +7,7 @@ import propTypes from "prop-types";
 
 import * as postCategoryActions from "../../actions/postCategoryActions";
 import * as postsActions from "../../actions/postsActions";
+import * as statsActions from "../../actions/statsActions";
 
 import LinkDropdown from "../../components/LinkDropdown";
 import StoryCard from "../../components/StoryCard";
@@ -19,7 +20,8 @@ class Stories extends Component {
     this.state = {
       page: 1,
       posts: [],
-      categories: props.postCategories.categories
+      categories: props.postCategories.categories,
+      stats: props.stats.stats
     }
   }
 
@@ -28,6 +30,15 @@ class Stories extends Component {
     this.props.postsActions.doPostsPaginate(1);
     this.props.postCategoryActions.doCategoriesGet();
     this.props.postsActions.doPostsGetMostRecent();
+    this.props.statsActions.doStatsGet();
+  }
+
+  componentDidMount() {
+    window.addEventListener("scroll", this.fetchPostsOnScroll);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.fetchPostsOnScroll);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -39,12 +50,15 @@ class Stories extends Component {
     
     if (nextProps.postCategories.gotCategories)
       this.setState({ categories: nextProps.postCategories.categories });
+    
+    if (nextProps.stats.hasGotten)
+      this.setState({ stats: nextProps.stats.stats });
   }
 
   render() {
     return (
       <div>
-        <main className="stories">
+        <main className="stories" ref={main => this.storiesContainer = main}>
           <section className="stories__header">
             {
               this.props.postCategories.gotCategories && this.state.categories ?
@@ -84,6 +98,21 @@ class Stories extends Component {
 
     return data;
   };
+
+  fetchPostsOnScroll = () => {
+    const bounding = this.storiesContainer.getBoundingClientRect();
+    const { bottom } = bounding;
+    const wih = window.innerHeight;
+
+    if (!this.props.posts.paginatingPosts) {
+      if ((bottom < wih) && (this.state.page * 25 < this.state.stats.posts.published)) {
+        this.props.postsActions.doPostsPaginate(this.state.page + 1);
+        this.setState({ page: this.state.page + 1 });
+      }
+    }
+
+    return null;
+  };
 }
 
 Stories.propTypes = {
@@ -92,20 +121,24 @@ Stories.propTypes = {
   postCategoryActions: propTypes.object,
   posts: propTypes.object,
   postsActions: propTypes.object,
-  match: propTypes.object
+  match: propTypes.object,
+  stats: propTypes.object,
+  statsActions: propTypes.object
 };
 
 const mapStateToProps = state => {
   return {
     posts: state.posts,
-    postCategories: state.postCategories
+    postCategories: state.postCategories,
+    stats: state.stats
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     postsActions: bindActionCreators(postsActions, dispatch),
-    postCategoryActions: bindActionCreators(postCategoryActions, dispatch)
+    postCategoryActions: bindActionCreators(postCategoryActions, dispatch),
+    statsActions: bindActionCreators(statsActions, dispatch)
   };
 };
 

@@ -222,8 +222,8 @@ export const doPostsPaginate = page => {
         .limit((page - 1) * 25)
         .get()
         .then(tempSnapshots => {
-          const lastVisible = tempSnapshots[tempSnapshots.docs.length - 1];
-
+          const lastVisible = tempSnapshots.docs[tempSnapshots.docs.length - 1];
+          
           return db.collection("posts")
             .where("state.published", "==", true)
             .orderBy("publishedOn", "desc")
