@@ -119,14 +119,16 @@ class Stories extends Component {
   };
 
   fetchPostsOnScroll = () => {
-    const bounding = this.storiesContainer.getBoundingClientRect();
-    const { bottom } = bounding;
-    const wih = window.innerHeight;
-
-    if (!this.props.posts.paginatingPosts) {
-      if ((bottom < wih) && (this.state.page * 25 < this.state.stats.posts.published)) {
-        this.props.postsActions.doPostsPaginate(this.state.page + 1, this.state.category);
-        this.setState({ page: this.state.page + 1 });
+    if (this.storiesContainer) {
+      const bounding = this.storiesContainer.getBoundingClientRect();
+      const { bottom } = bounding;
+      const wih = window.innerHeight;
+  
+      if (!this.props.posts.paginatingPosts) {
+        if ((bottom < wih) && (this.state.page * 25 < this.state.stats.posts.published)) {
+          this.props.postsActions.doPostsPaginate(this.state.page + 1, this.state.category);
+          this.setState({ page: this.state.page + 1 });
+        }
       }
     }
 
