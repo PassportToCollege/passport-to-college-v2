@@ -31,7 +31,7 @@ class App extends Component {
 
     this.state = {
       hamburgerState: "closed",
-      location: "landing"
+      location: ""
     };
   }
 
@@ -77,7 +77,12 @@ class App extends Component {
               <Route exact path={routes.APPLY.route} render={props => this.applyLandingMiddleware(props, Apply)}></Route>
               <Route path={routes.APPLY_PORTAL.route} render={props => this.applicationPortalMiddleware(props, ApplicationPortal)}></Route>
             </div>
-            {this.renderFooter()}
+            {
+              this.state.location !== "" &&
+              this.state.location !== "application portal" &&
+              this.state.location.indexOf("dashboard") === -1 ?
+                <Footer posts={this.props.posts} /> : null 
+            }
           </div>
         </div>
       </BrowserRouter>
@@ -143,8 +148,8 @@ class App extends Component {
   }
 
   renderFooter() {
-    if (this.state.location !== "application portal" ||
-      this.state.location.indexOf("dashboard") === -1) {
+    if (this.state.location !== "application portal" &&
+      this.state.location.indexOf("dashboard") > -1) {
         return <Footer posts={this.props.posts} />
       }
 
