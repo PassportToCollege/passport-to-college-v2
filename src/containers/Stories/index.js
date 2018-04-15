@@ -12,7 +12,6 @@ import * as statsActions from "../../actions/statsActions";
 import LinkDropdown from "../../components/LinkDropdown";
 import StoryCard from "../../components/StoryCard";
 import Loader from "../../components/Loader";
-import Footer from "../../components/Footer";
 
 class Stories extends Component {
   constructor(props) {
@@ -30,7 +29,6 @@ class Stories extends Component {
     this.props.updateLocation("stories");
     this.props.postsActions.doPostsPaginate(1, this.state.category);
     this.props.postCategoryActions.doCategoriesGet();
-    this.props.postsActions.doPostsGetMostRecent();
     this.props.statsActions.doStatsGet();
   }
 
@@ -92,7 +90,6 @@ class Stories extends Component {
             }
           </section>
         </main>
-        <Footer posts={this.props.posts}/>
       </div>
     );
   }
