@@ -16,14 +16,15 @@ class Story extends Component {
 
     this.state = {
       post: props.post.post,
-      hero: props.post.hero
+      hero: props.post.hero,
+      id: props.match.params.post_id
     }
   }
 
   componentWillMount() {
-    const { post_id } = this.props.match.params;
-    this.props.postActions.doPostGet(post_id);
-    this.props.postActions.doHeroGet(post_id);
+    const { id } = this.state;
+    this.props.postActions.doPostGet(id);
+    this.props.postActions.doHeroGet(id);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -32,6 +33,17 @@ class Story extends Component {
 
     if (nextProps.post.gotHero)
       this.setState({ hero: nextProps.post.hero });
+    
+    if (nextProps.match.params && nextProps.match.params.post_id 
+      && (nextProps.match.params.post_id !== this.state.id)) {
+      if (!this.props.post.isGetting)
+        this.props.postActions.doPostGet(nextProps.match.params.post_id);
+      
+      if (!this.props.post.gettingHero)
+        this.props.postActions.doHeroGet(nextProps.match.params.post_id);
+
+      this.setState({ id: nextProps.match.params.post_id });
+    }
   }
 
   render() {

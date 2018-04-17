@@ -62,6 +62,10 @@ footer.footer .footer__main > .footer__posts > .footer__post_item {
   transition: opacity 200ms linear;
 }
 
+footer.footer .footer__main > .footer__posts > .footer__post_item.active {
+  opacity: 1;
+}
+
 footer.footer .footer__main > .footer__posts > .footer__post_item:hover {
   opacity: 1;
 }

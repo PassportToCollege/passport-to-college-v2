@@ -43,10 +43,13 @@ const Footer = ({ posts }) => {
             posts.gotMostRecent ?
               posts.mostRecent.map(post => {
                 return (
-                  <Link key={`footer_${post.id}`} to="/" className="footer__post_item">
+                  <NavLink exact key={`footer_${post.id}`}
+                    activeClassName="active" 
+                    to={`/stories/read/${post.id}`}
+                    className="footer__post_item">
                     <h4>{post.title}</h4>
                     <h5>by {post.author.name.full}</h5>
-                  </Link>
+                  </NavLink>
                 )
               }) : <Loader />
           }
