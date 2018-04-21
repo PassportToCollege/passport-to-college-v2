@@ -67,7 +67,7 @@ class App extends Component {
             {this.selectNavigation()}
             <div className={`app__body app__body_${this.state.location}`} style={bodyStyles}>
               <Route exact path={routes.LANDING.route} render={props => this.landingMiddleware(props)}></Route>
-              <Route exact path={routes.STORIES.route} render={props => this.defaultRouteMiddleware(props, Stories)}></Route>
+              <Route path={routes.STORIES.route} render={props => this.defaultRouteMiddleware(props, Stories)}></Route>
               <Route exact path={routes.STORIES_CATEGORY.route} render={props => this.defaultRouteMiddleware(props, Stories)}></Route>
               <Route path={routes.SIGN_IN.route} render={(props) => this.authMiddleware(props, SignIn)}></Route>
               <Route path={routes.SIGN_UP.route} render={props => this.authMiddleware(props, SignUp)}></Route>

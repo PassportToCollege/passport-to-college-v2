@@ -1,14 +1,17 @@
 import "./Stories.css";
 
 import React, { Component} from "react";
+import { Route } from "react-router-dom";
 import { connect} from "react-redux";
 import { bindActionCreators } from "redux"
 import propTypes from "prop-types";
 
+import * as routes from "../../constants/routes";
 import * as postCategoryActions from "../../actions/postCategoryActions";
 import * as postsActions from "../../actions/postsActions";
 import * as statsActions from "../../actions/statsActions";
 
+import Story from "../Story";
 import LinkDropdown from "../../components/LinkDropdown";
 import StoryCard from "../../components/StoryCard";
 import Loader from "../../components/Loader";
@@ -63,33 +66,39 @@ class Stories extends Component {
   render() {
     return (
       <div>
-        <main className="stories" ref={main => this.storiesContainer = main}>
-          <section className="stories__header">
-            {
-              this.props.postCategories.gotCategories && this.state.categories ?
-                <LinkDropdown name="Categories" data={this.createLinkDropdownData()} /> :
-                null
-            }
-          </section>
-          <section className="stories__stories">
-            {
-              this.state.category ?
-                <h1 className="stories__category_heading">
-                  Stories from <i>&apos;{this.state.category}&apos;</i>
-                </h1> : null
-            }
-            {
-              this.state.posts.length ?
-                this.state.posts.map(post => {
-                  return <StoryCard key={post.id} post={post} />
-                }) : null
-            }
-            {
-              this.props.posts.paginatingPosts ?
-                <Loader /> : null
-            }
-          </section>
-        </main>
+        <Route exact path={routes.STORIES.route}
+          render={() => {
+            return (
+              <main className="stories" ref={main => this.storiesContainer = main}>
+                <section className="stories__header">
+                  {
+                    this.props.postCategories.gotCategories && this.state.categories ?
+                      <LinkDropdown name="Categories" data={this.createLinkDropdownData()} /> :
+                      null
+                  }
+                </section>
+                <section className="stories__stories">
+                  {
+                    this.state.category ?
+                      <h1 className="stories__category_heading">
+                        Stories from <i>&apos;{this.state.category}&apos;</i>
+                      </h1> : null
+                  }
+                  {
+                    this.state.posts.length ?
+                      this.state.posts.map(post => {
+                        return <StoryCard key={post.id} post={post} />
+                      }) : null
+                  }
+                  {
+                    this.props.posts.paginatingPosts ?
+                      <Loader /> : null
+                  }
+                </section>
+              </main>
+            )
+          }} ></Route>
+          <Route path={routes.STORY.route} component={Story}></Route>
       </div>
     );
   }
@@ -110,14 +119,16 @@ class Stories extends Component {
   };
 
   fetchPostsOnScroll = () => {
-    const bounding = this.storiesContainer.getBoundingClientRect();
-    const { bottom } = bounding;
-    const wih = window.innerHeight;
-
-    if (!this.props.posts.paginatingPosts) {
-      if ((bottom < wih) && (this.state.page * 25 < this.state.stats.posts.published)) {
-        this.props.postsActions.doPostsPaginate(this.state.page + 1, this.state.category);
-        this.setState({ page: this.state.page + 1 });
+    if (this.storiesContainer) {
+      const bounding = this.storiesContainer.getBoundingClientRect();
+      const { bottom } = bounding;
+      const wih = window.innerHeight;
+  
+      if (!this.props.posts.paginatingPosts) {
+        if ((bottom < wih) && (this.state.page * 25 < this.state.stats.posts.published)) {
+          this.props.postsActions.doPostsPaginate(this.state.page + 1, this.state.category);
+          this.setState({ page: this.state.page + 1 });
+        }
       }
     }
 

@@ -65,7 +65,8 @@ class Navigation extends Component {
                 return (
                   <li key={v.route}>
                     <NavLink
-                      exact to={v.route}
+                      exact={v.name === "Stories" ? false : true} 
+                      to={v.route}
                       activeClassName="active"
                       onClick={this.handleCloseButtonClick}>
                       {v.name}
