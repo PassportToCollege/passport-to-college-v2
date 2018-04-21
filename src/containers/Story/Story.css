@@ -29,3 +29,11 @@
   margin: 1em auto;
   max-width: 100%;
 }
+
+/* More stories */
+.story .story__more > h2 {
+  font-family: "Muli", sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: rgba(150,150,150);
+}

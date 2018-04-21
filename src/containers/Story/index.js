@@ -6,6 +6,7 @@ import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
 
 import * as postActions from "../../actions/postActions";
+import * as postsActions from "../../actions/postsActions";
 
 import Loader from "../../components/Loader";
 import WYSIWYGEditor from "../../components/Editor";
@@ -17,7 +18,8 @@ class Story extends Component {
     this.state = {
       post: props.post.post,
       hero: props.post.hero,
-      id: props.match.params.post_id
+      id: props.match.params.post_id,
+      more: props.posts.moreByCategory
     }
   }
 
@@ -26,22 +28,26 @@ class Story extends Component {
     this.props.postActions.doPostGet(id);
     this.props.postActions.doHeroGet(id);
   }
-
+  
   componentWillReceiveProps(nextProps) {
-    if (nextProps.post.hasGotten)
+    if (nextProps.post.hasGotten) {
       this.setState({ post: nextProps.post.post });
+    }
 
     if (nextProps.post.gotHero)
       this.setState({ hero: nextProps.post.hero });
     
+    if (nextProps.posts.gotMostRecentByCategory)
+      this.setState({ more: nextProps.posts.moreByCategory });
+
     if (nextProps.match.params && nextProps.match.params.post_id 
       && (nextProps.match.params.post_id !== this.state.id)) {
-      if (!this.props.post.isGetting)
+      if (!this.props.post.isGetting && !this.props.post.hasGotten)
         this.props.postActions.doPostGet(nextProps.match.params.post_id);
       
-      if (!this.props.post.gettingHero)
+      if (!this.props.post.gettingHero && this.props.post.gotHero)
         this.props.postActions.doHeroGet(nextProps.match.params.post_id);
-
+      
       this.setState({ id: nextProps.match.params.post_id });
     }
   }
@@ -72,6 +78,9 @@ class Story extends Component {
             </section> :
             <Loader />
         }
+        <section className="story__more">
+          <h2>more stories like this</h2>
+        </section>
       </main>
     )
   }
@@ -80,18 +89,22 @@ class Story extends Component {
 Story.propTypes = {
   post: propTypes.object,
   postActions: propTypes.object,
+  posts: propTypes.object,
+  postsActions: propTypes.object,
   match: propTypes.object
 };
 
 const mapStateToProps = state => {
   return {
-    post: state.post
+    post: state.post,
+    posts: state.posts
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    postActions: bindActionCreators(postActions, dispatch)
+    postActions: bindActionCreators(postActions, dispatch),
+    postsActions: bindActionCreators(postsActions, dispatch)
   };
 };
 

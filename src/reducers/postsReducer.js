@@ -7,7 +7,10 @@ import {
   POSTS_GET_MOST_RECENT_DONE,
   POSTS_GET_MOST_RECENT_FAILED,
   PAGINATE_POSTS_INITIATED,
-  PAGINATE_POSTS_DONE
+  PAGINATE_POSTS_DONE,
+  POSTS_GET_MOST_RECENT_BY_CATEGORY_INITIATED,
+  POSTS_GET_MOST_RECENT_BY_CATEGORY_DONE,
+  POSTS_GET_MOST_RECENT_BY_CATEGORY_FAILED
 } from "../actions/actionTypes";
 
 const posts = (state = initialState.posts, action) => {
@@ -66,6 +69,29 @@ const posts = (state = initialState.posts, action) => {
         paginationFailed: false,
         page: action.page,
         posts: action.posts
+      });
+    case POSTS_GET_MOST_RECENT_BY_CATEGORY_INITIATED:
+      return Object.assign({}, state, {
+        gettingMostRecentByCategory: true,
+        gotMostRecentByCategory: false,
+        mostRecentGetByCategoryGetFailed: false,
+        categories: action.categories
+      });
+    case POSTS_GET_MOST_RECENT_BY_CATEGORY_DONE:
+      return Object.assign({}, state, {
+        gettingMostRecentByCategory: false,
+        gotMostRecentByCategory: true,
+        mostRecentGetByCategoryGetFailed: false,
+        categories: action.categories,
+        moreByCategory: action.more
+      });
+    case POSTS_GET_MOST_RECENT_BY_CATEGORY_FAILED:
+      return Object.assign({}, state, {
+        gettingMostRecentByCategory: false,
+        gotMostRecentByCategory: false,
+        mostRecentGetByCategoryGetFailed: true,
+        categories: action.categories,
+        error: action.error
       });
     default:
       return state;
