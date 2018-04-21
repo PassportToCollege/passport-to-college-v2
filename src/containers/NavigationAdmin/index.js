@@ -33,7 +33,7 @@ class NavigationAdmin extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     // get user avatar
     this.props.userProfilePictureActions.doAvatarGet();
     // get active user

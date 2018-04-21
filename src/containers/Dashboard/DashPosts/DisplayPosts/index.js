@@ -19,7 +19,7 @@ class DisplayPosts extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.togglePostNav(true);
     this.props.postsActions.doPostsGet();
   }

@@ -22,7 +22,7 @@ class Application extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { application_id } = this.props.match.params;
     this.props.applicationActions.doApplicationGet(application_id);
   }

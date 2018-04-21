@@ -26,7 +26,7 @@ class Apply extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.updateLocation("apply");
   }
 

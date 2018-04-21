@@ -121,7 +121,7 @@ class ApplicationPortal extends Component {
     )
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.updateLocation("application portal");
     
     // get user

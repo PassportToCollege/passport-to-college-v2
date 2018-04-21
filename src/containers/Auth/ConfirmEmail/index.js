@@ -49,7 +49,7 @@ class ConfirmEmail extends Component {
     )
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.updateLocation("confirm-email");
 
     // confirm user's email address

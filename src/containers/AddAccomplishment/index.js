@@ -35,7 +35,7 @@ class AddAccomplishment extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.studentsActions.doStudentsGet();
   }
 

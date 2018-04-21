@@ -25,7 +25,7 @@ class SignUp extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.updateLocation("sign-up");
 
     const { temp_id } = this.props.match.params;

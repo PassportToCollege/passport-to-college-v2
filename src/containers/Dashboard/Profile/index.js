@@ -70,7 +70,7 @@ class Profile extends Component {
     )
   }
 
-  componentWillMount() {
+  componentDidMount() {
     // get user avatar
     this.props.userProfilePictureActions.doAvatarGet();
     

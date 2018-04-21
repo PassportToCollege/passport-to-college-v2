@@ -40,15 +40,13 @@ class Home extends Component {
       posts: props.posts.mostRecent
     }
   }
-
-  componentWillMount() {
-    this.props.updateLocation("landing");
-    this.props.statsActions.doStatsGet();
-    this.props.featuresActions.doGetActiveFeatures();
-  }
   
   componentDidMount() {
     window.addEventListener("scroll", this.watchScroll);
+
+    this.props.updateLocation("landing");
+    this.props.statsActions.doStatsGet();
+    this.props.featuresActions.doGetActiveFeatures();
   }
 
   componentWillUnmount() {

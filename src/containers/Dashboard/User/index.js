@@ -22,7 +22,7 @@ class User extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { user_id } = this.props.match.params;
     this.props.usersActions.doGetUserByUid(user_id);
   }

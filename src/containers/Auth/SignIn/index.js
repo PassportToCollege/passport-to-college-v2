@@ -39,7 +39,7 @@ class SignIn extends Component {
     )
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.updateLocation("sign-in");
   }
 

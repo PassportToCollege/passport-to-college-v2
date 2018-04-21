@@ -23,7 +23,7 @@ class Story extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { id } = this.state;
     this.props.postActions.doPostGet(id);
     this.props.postActions.doHeroGet(id);

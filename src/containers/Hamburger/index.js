@@ -25,6 +25,10 @@ const mainNavItems = [
 const cookies = new Cookies();
 
 class Hamburger extends Component {
+  componentDidMount() {
+    feather.replace();
+  }
+  
   render() {
     return (
       <div className="hamburger" data-active={this.props.hamburgerState.current}>
@@ -62,10 +66,6 @@ class Hamburger extends Component {
         </div>
       </div>
     );
-  }
-
-  componentDidMount() {
-    feather.replace();
   }
 
   selectAuthLink() {

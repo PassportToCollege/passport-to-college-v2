@@ -28,19 +28,17 @@ class Stories extends Component {
     }
   }
 
-  componentWillMount() {
-    this.props.updateLocation("stories");
-    this.props.postsActions.doPostsPaginate(1, this.state.category);
-    this.props.postCategoryActions.doCategoriesGet();
-    this.props.statsActions.doStatsGet();
-  }
-
   componentDidMount() {
     window.addEventListener("scroll", this.fetchPostsOnScroll);
   }
 
   componentWillUnmount() {
     window.removeEventListener("scroll", this.fetchPostsOnScroll);
+
+    this.props.updateLocation("stories");
+    this.props.postsActions.doPostsPaginate(1, this.state.category);
+    this.props.postCategoryActions.doCategoriesGet();
+    this.props.statsActions.doStatsGet();
   }
 
   componentWillReceiveProps(nextProps) {

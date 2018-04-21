@@ -38,7 +38,7 @@ class ApplicationTask extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.setTask(this.state.task);
   }
 

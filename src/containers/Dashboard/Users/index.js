@@ -33,7 +33,7 @@ class Users extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { search } = this.props.location;
     const { page } = queryToObject(search) || { page: 1 };
 

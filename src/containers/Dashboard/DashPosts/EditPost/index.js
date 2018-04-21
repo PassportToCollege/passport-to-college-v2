@@ -32,7 +32,7 @@ class EditPost extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.togglePostNav(false);
 
     const { post_id } = this.props.match.params;

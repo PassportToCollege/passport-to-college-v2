@@ -22,7 +22,7 @@ class ResetPassword extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.updateLocation("reset");
   }
 

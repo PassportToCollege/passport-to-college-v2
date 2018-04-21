@@ -58,7 +58,7 @@ class UserSection extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (!this.state.profilePicture)
       this.props.uppActions.doAvatarGetByUid(this.props.userId);
   }
