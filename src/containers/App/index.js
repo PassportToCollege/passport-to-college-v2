@@ -12,7 +12,7 @@ import { isAuthorized, isApplicant, activeUser } from "../../utils";
 
 import Hamburger from "../Hamburger";
 import Navigation from "../Navigation";
-import Footer from "../../components/Footer";
+import Footer from "../Footer";
 
 import Home from "../Home";
 import Stories from "../Stories";

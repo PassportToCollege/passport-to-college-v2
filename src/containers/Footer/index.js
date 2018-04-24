@@ -8,7 +8,7 @@ import * as routes from "../../constants/routes";
 
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import { faFacebook, faTwitterSquare, faLinkedin } from "@fortawesome/fontawesome-free-brands";
-import Loader from "../Loader";
+import Loader from "../../components/Loader";
 
 import logo from "../../assets/images/logo__text__white.png";
 
@@ -18,7 +18,7 @@ const footerNavItems = [
   routes.SCHOLARS,
   routes.APPLY,
   routes.CONTACT_US
-]
+];
 
 const Footer = ({ posts }) => {
   return (

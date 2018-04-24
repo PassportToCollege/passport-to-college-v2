@@ -5,6 +5,7 @@ import propTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Link } from "react-router-dom";
+import _ from "lodash";
 
 import * as statsActions from "../../actions/statsActions";
 import * as featuresActions from "../../actions/featuresActions";
@@ -37,8 +38,19 @@ class Home extends Component {
       flipStrip: false,
       stats: props.stats.stats,
       features: props.features.features,
-      posts: props.posts.mostRecent
+      posts: props.posts.mostRecent,
+      showHeader: true
     }
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { stats, features, posts } = prevState;
+    return {
+      flipStrip: prevState.flipStrip,
+      stats: nextProps.stats.hasGotten && !_.isEqual(nextProps.stats.stats, stats) ? nextProps.stats.stats : stats,
+      features: nextProps.features.hasGotten && !_.isEqual(nextProps.features.features, features) ? nextProps.features.features : features,
+      posts: nextProps.posts.gotMostRecent && !_.isEqual(nextProps.posts.mostRecent, posts) ? nextProps.posts.mostRecent : posts
+    };
   }
   
   componentDidMount() {
@@ -50,24 +62,15 @@ class Home extends Component {
   }
 
   componentWillUnmount() {
+    clearInterval(this.state.parallaxInterval);
     window.removeEventListener("scroll", this.watchScroll);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.stats.hasGotten)
-      this.setState({ stats: nextProps.stats.stats });
-    
-    if (nextProps.features.hasGotten)
-      this.setState({ features: nextProps.features.features });
-
-    if (nextProps.posts.gotMostRecent)
-      this.setState({ posts: nextProps.posts.mostRecent });
   }
 
   render() {
     return (
       <div className="home__container reset__body_top_padding">
         <ParallaxHeader showScrollStrip height="100vh"
+          setInterval={interval => this.setState({ parallaxInterval: interval })}
           bgImages={headerBgs}
           overlayColor="#53D1D7"
           bigText="Matching Aptitude With Opportunity"
@@ -119,9 +122,6 @@ class Home extends Component {
         <section className="home__section home__featured_students_title">
           <div className="home__section_inner">
             <h1>featured students</h1>
-            <div className="featured_students">
-              
-            </div>
           </div>
         </section>
         <section className="home__section home__featured_students">
