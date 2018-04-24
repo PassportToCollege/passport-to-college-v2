@@ -24,6 +24,8 @@ class Story extends Component {
   }
 
   componentDidMount() {
+    this.props.updateLocation("stories");
+
     const { id } = this.state;
     this.props.postActions.doPostGet(id);
     this.props.postActions.doHeroGet(id);
@@ -91,7 +93,8 @@ Story.propTypes = {
   postActions: propTypes.object,
   posts: propTypes.object,
   postsActions: propTypes.object,
-  match: propTypes.object
+  match: propTypes.object,
+  updateLocation: propTypes.func
 };
 
 const mapStateToProps = state => {

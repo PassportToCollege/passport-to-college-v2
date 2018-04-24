@@ -16,6 +16,7 @@ import Footer from "../Footer";
 
 import Home from "../Home";
 import Stories from "../Stories";
+import Story from "../Story";
 import SignIn from "../Auth/SignIn";
 import SignUp from "../Auth/SignUp";
 import ResetPassword from "../Auth/ResetPassword";
@@ -67,8 +68,9 @@ class App extends Component {
             {this.selectNavigation()}
             <div className={`app__body app__body_${this.state.location}`} style={bodyStyles}>
               <Route exact path={routes.LANDING.route} render={props => this.landingMiddleware(props)}></Route>
-              <Route path={routes.STORIES.route} render={props => this.defaultRouteMiddleware(props, Stories)}></Route>
-              <Route exact path={routes.STORIES_CATEGORY.route} render={props => this.defaultRouteMiddleware(props, Stories)}></Route>
+              <Route exact path={routes.STORIES.route} render={props => this.defaultRouteMiddleware(props, Stories)}></Route>
+              <Route exact path={routes.STORY.route} render={props => this.defaultRouteMiddleware(props, Story)}></Route>
+              <Route path={routes.STORIES_CATEGORY.route} render={props => this.defaultRouteMiddleware(props, Stories)}></Route>
               <Route path={routes.SIGN_IN.route} render={(props) => this.authMiddleware(props, SignIn)}></Route>
               <Route path={routes.SIGN_UP.route} render={props => this.authMiddleware(props, SignUp)}></Route>
               <Route path={routes.RESET_PASSWORD.route} render={(props) => this.authMiddleware(props, ResetPassword)}></Route>

@@ -5,6 +5,7 @@ import { Route } from "react-router-dom";
 import { connect} from "react-redux";
 import { bindActionCreators } from "redux"
 import propTypes from "prop-types";
+import _ from "lodash";
 
 import * as routes from "../../constants/routes";
 import * as postCategoryActions from "../../actions/postCategoryActions";
@@ -24,16 +25,41 @@ class Stories extends Component {
       posts: [],
       categories: props.postCategories.categories,
       stats: props.stats.stats,
-      category: props.match.params.category
+      category: props.match.params.category || "all",
+      isStory: false
     }
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { posts, categories, stats, page } = prevState;
+    let newState = prevState;
+
+    if (nextProps.posts.paginationDone && page > 1 &&
+      !_.isEqual(posts, nextProps.posts.posts)) {
+        newState.posts.concat(nextProps.posts.posts);
+      } else {
+        newState.posts = nextProps.posts.posts;
+      }
+
+    if (nextProps.postCategories.gotCategories &&
+      !_.isEqual(categories, nextProps.postCategories.categories))
+      newState.categories = nextProps.postCategories.categories;
+    
+    if (nextProps.stats.hasGotten &&
+      !_.isEqual(stats, nextProps.stats.stats))
+      newState.stats = nextProps.stats.stats;
+    
+    if (nextProps.match.params.category)
+      newState.category = nextProps.match.params.category;
+    
+    if (_.isEqual(newState, prevState))
+      return null;
+
+    return newState;
   }
 
   componentDidMount() {
     window.addEventListener("scroll", this.fetchPostsOnScroll);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener("scroll", this.fetchPostsOnScroll);
 
     this.props.updateLocation("stories");
     this.props.postsActions.doPostsPaginate(1, this.state.category);
@@ -41,63 +67,39 @@ class Stories extends Component {
     this.props.statsActions.doStatsGet();
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.posts.paginationDone && this.state.page > 1) {
-      this.setState({ posts: this.state.posts.concat(nextProps.posts.posts) });
-    } else if (nextProps.posts.paginationDone) {
-      this.setState({ posts: nextProps.posts.posts });
-    }
-    
-    if (nextProps.postCategories.gotCategories)
-      this.setState({ categories: nextProps.postCategories.categories });
-    
-    if (nextProps.stats.hasGotten)
-      this.setState({ stats: nextProps.stats.stats });
-    
-    if (nextProps.match.params.category !== this.state.category) {
-      if (!this.props.posts.paginatingPosts)
-        this.props.postsActions.doPostsPaginate(1, nextProps.match.params.category);
-      this.setState({ category: nextProps.match.params.category });
-    }
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.fetchPostsOnScroll);
   }
 
   render() {
     return (
-      <div>
-        <Route exact path={routes.STORIES.route}
-          render={() => {
-            return (
-              <main className="stories" ref={main => this.storiesContainer = main}>
-                <section className="stories__header">
-                  {
-                    this.props.postCategories.gotCategories && this.state.categories ?
-                      <LinkDropdown name="Categories" data={this.createLinkDropdownData()} /> :
-                      null
-                  }
-                </section>
-                <section className="stories__stories">
-                  {
-                    this.state.category ?
-                      <h1 className="stories__category_heading">
-                        Stories from <i>&apos;{this.state.category}&apos;</i>
-                      </h1> : null
-                  }
-                  {
-                    this.state.posts.length ?
-                      this.state.posts.map(post => {
-                        return <StoryCard key={post.id} post={post} />
-                      }) : null
-                  }
-                  {
-                    this.props.posts.paginatingPosts ?
-                      <Loader /> : null
-                  }
-                </section>
-              </main>
-            )
-          }} ></Route>
-          <Route path={routes.STORY.route} component={Story}></Route>
-      </div>
+      <main className="stories" ref={main => this.storiesContainer = main}>
+        <section className="stories__header">
+          {
+            this.props.postCategories.gotCategories && this.state.categories ?
+              <LinkDropdown name="Categories" data={this.createLinkDropdownData()} /> :
+              null
+          }
+        </section>
+        <section className="stories__stories">
+          {
+            this.state.category !== "all" ?
+              <h1 className="stories__category_heading">
+                Stories from <i>&apos;{this.state.category}&apos;</i>
+              </h1> : null
+          }
+          {
+            this.state.posts ?
+              this.state.posts.map(post => {
+                return <StoryCard key={post.id} post={post} />
+              }) : null
+          }
+          {
+            this.props.posts.paginatingPosts ?
+              <Loader /> : null
+          }
+        </section>
+      </main>
     );
   }
 

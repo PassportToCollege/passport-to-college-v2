@@ -239,7 +239,7 @@ export const doPostsPaginate = (page, category) => {
     dispatch(paginatePostsInitiated(page));
     let postRef;
 
-    if (category) {
+    if (category  && category !== "all") {
       postRef = db.collection("posts")
         .where("state.published", "==", true)
         .where(`categories.${category}`, "==", true)
