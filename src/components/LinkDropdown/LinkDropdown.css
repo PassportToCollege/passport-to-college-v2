@@ -4,6 +4,7 @@
   width: 300px;
   max-width: 100%;
   outline: none;
+  z-index: 99;
 }
 
 .link_dropdown .link_dropdown__toggle {

@@ -1,18 +1,15 @@
 import "./Stories.css";
 
 import React, { Component} from "react";
-import { Route } from "react-router-dom";
 import { connect} from "react-redux";
 import { bindActionCreators } from "redux"
 import propTypes from "prop-types";
 import _ from "lodash";
 
-import * as routes from "../../constants/routes";
 import * as postCategoryActions from "../../actions/postCategoryActions";
 import * as postsActions from "../../actions/postsActions";
 import * as statsActions from "../../actions/statsActions";
 
-import Story from "../Story";
 import LinkDropdown from "../../components/LinkDropdown";
 import StoryCard from "../../components/StoryCard";
 import Loader from "../../components/Loader";
@@ -77,7 +74,7 @@ class Stories extends Component {
         <section className="stories__header">
           {
             this.props.postCategories.gotCategories && this.state.categories ?
-              <LinkDropdown name="Categories" data={this.createLinkDropdownData()} /> :
+              <LinkDropdown name="Categories" data={this.createLinkDropdownData()}  doClick={this.handleCategoryChange} /> :
               null
           }
         </section>
@@ -134,6 +131,12 @@ class Stories extends Component {
 
     return null;
   };
+
+  handleCategoryChange = e => {
+    const category = e.target.getAttribute("data-label").toLowerCase().split(" ").join("-");
+
+    this.props.postsActions.doPostsPaginate(1, category);
+  }
 }
 
 Stories.propTypes = {
