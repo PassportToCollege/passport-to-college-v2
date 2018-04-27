@@ -62,9 +62,8 @@ class Apply extends Component {
     }
 
     if (nextProps.auth.hasCreated) {
-      newState = {
-        creatingAccount: false
-      };
+      newState = newState || {};
+      newState.creatingAccount = false;
     }
 
     if (nextProps.auth.isAuthorizing) {

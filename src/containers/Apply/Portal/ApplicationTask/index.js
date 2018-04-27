@@ -55,7 +55,7 @@ class ApplicationTask extends Component {
 
         if (prevState.hasChanged) {
           if (nextProps.match.params.task !== "personal")
-            nextProps.applicationActions.doApplicationGet(this.props.application.user);
+            nextProps.applicationActions.doApplicationGet(prevState.application.user.uid);
 
           nextProps.userActions.doUserGet();
           newState.hasChanged = false;
