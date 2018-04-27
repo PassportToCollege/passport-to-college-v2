@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import propTypes from 'prop-types';
+import _ from "lodash";
 
 import * as applicationActions from "../../../../actions/applicationActions";
 import * as userActions from "../../../../actions/userActions";
@@ -42,35 +43,43 @@ class ApplicationTask extends Component {
     this.props.setTask(this.state.task);
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    if ((this.state.task !== nextState.task) && this.state.hasChanged) {
-      if (nextState.task !== "personal") {
-        this.props.applicationActions.doApplicationGet(this.props.application.user);
+  static getDerivedStateFromProps(nextProps, prevState) {
+    let newState = null;
+
+    if (nextProps.match.params.task) {
+      newState = {};
+      newState.task = nextProps.match.params.task;
+
+      if (prevState.task !== nextProps.match.params.task) {
+        nextProps.setTask(nextProps.match.params.task);
+
+        if (prevState.hasChanged) {
+          if (nextProps.match.params.task !== "personal")
+            nextProps.applicationActions.doApplicationGet(this.props.application.user);
+
+          nextProps.userActions.doUserGet();
+          newState.hasChanged = false;
+        }
       }
-
-      this.props.userActions.doUserGet();
-      this.setState({ hasChanged: false });
     }
-  }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.match && nextProps.match.params)
-      this.setState({ task: nextProps.match.params.task });
+    if (nextProps.user.hasGotten) {
+      newState = newState || {};
+      newState.user = nextProps.user.user;
+    }
 
-    if (this.state.task !== nextProps.match.params.task)
-      nextProps.setTask(nextProps.match.params.task);
-
-    if (nextProps.user.hasGotten)
-      this.setState({ user: nextProps.user.user });
-    
     if (nextProps.application.hasGotten) {
-      this.setState({ 
-        application: nextProps.application.application, 
-        uid: nextProps.application.user 
-      });
+      newState = newState || {};
+      newState.application = nextProps.application.application;
+      newState.uid = nextProps.application.user
     }
-    
-    this.setState({ complete: nextProps.complete });
+
+    if (nextProps.complete && !_.isEqual(nextProps.complete, prevState.complete)) {
+      newState = newState || {};
+      newState.complete = nextProps.complete;
+    }
+
+    return newState;
   }
 
   render() {

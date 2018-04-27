@@ -238,7 +238,7 @@ class ApplicationPortal extends Component {
   handleNextButtonClick = () => {
     let nextIndex = formattedTasks.indexOf(this.state.task) + 1;
     let next = formattedTasks[nextIndex];
-
+    
     if (next)
       this.props.history.push(`${this.props.match.url}/${next}`)
     
