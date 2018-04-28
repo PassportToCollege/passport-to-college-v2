@@ -43,23 +43,36 @@ class Users extends Component {
     this.props.statsActions.doStatsGet();
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.users.hasGottenUsers) {
-      this.setState({ users: nextProps.users.users });
+  static getDerivedStateFromProps(nextProps) {
+    let newState = null;
 
-      const { search } = this.props.location;
+    if (nextProps.users.hasGottenUsers) {
+      newState = {};
+      newState.users = nextProps.users.users;
+
+      const { search } = nextProps.location;
       const { page } = queryToObject(search) || { page: 1 };
 
       if (page > 1 && nextProps.users.users.empty)
-        this.props.history.goBack();
+        nextProps.history.goBack();
     }
 
-    if (nextProps.stats.hasGotten)
-      this.setState({ stats: nextProps.stats.stats });
+    if (nextProps.stats.hasGotten) {
+      newState = newState || {};
+      newState = Object.assign({}, newState, {
+        stats: nextProps.stats.stats
+      });
+    }
 
     if (!nextProps.users.hasCreated && nextProps.users.hasFailed) {
-      this.setState({ hasError: true, error: nextProps.users.error.message })
+      newState = newState || {};
+      newState = Object.assign({}, newState, {
+        hasError: true, 
+        error: nextProps.users.error.message
+      });
     }
+
+    return newState;
   }
 
   render() {
