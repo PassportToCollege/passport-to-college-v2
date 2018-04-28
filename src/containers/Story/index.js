@@ -30,28 +30,59 @@ class Story extends Component {
     this.props.postActions.doPostGet(id);
     this.props.postActions.doHeroGet(id);
   }
-  
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.post.hasGotten) {
-      this.setState({ post: nextProps.post.post });
+
+  getSnapshotBeforeUpdate(prevProps, prevState) {
+    let snapshot = null;
+
+    if (this.state.id !== prevState.id) {
+      snapshot = {};
+      snapshot.postChanged = true;
     }
 
-    if (nextProps.post.gotHero)
-      this.setState({ hero: nextProps.post.hero });
+    if (document.scrollingElement.scrollTop > 0) {
+      snapshot = snapshot || {};
+      snapshot.toTop = true;
+    }
+
+    return snapshot;
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (snapshot && snapshot.postChanged) {
+      this.props.postActions.doPostGet(this.state.id);
+      this.props.postActions.doHeroGet(this.state.id);
+    }
+
+    if (snapshot && snapshot.toTop) {
+      document.scrollingElement.scrollTo(0, 0);
+    }
+  }
+  
+  static getDerivedStateFromProps(nextProps, prevState) {
+    let newState = null;
+
+    if (nextProps.post.hasGotten) {
+      newState = {};
+      newState.post = nextProps.post.post;
+    }
+
+    if (nextProps.post.gotHero) {
+      newState = newState || {};
+      newState.hero = nextProps.post.hero;
+    }
     
-    if (nextProps.posts.gotMostRecentByCategory)
-      this.setState({ more: nextProps.posts.moreByCategory });
+    if (nextProps.posts.gotMostRecentByCategory) {
+      newState = newState || {};
+      newState.more = nextProps.posts.moreByCategory;
+    }
 
     if (nextProps.match.params && nextProps.match.params.post_id 
-      && (nextProps.match.params.post_id !== this.state.id)) {
-      if (!this.props.post.isGetting && !this.props.post.hasGotten)
-        this.props.postActions.doPostGet(nextProps.match.params.post_id);
-      
-      if (!this.props.post.gettingHero && this.props.post.gotHero)
-        this.props.postActions.doHeroGet(nextProps.match.params.post_id);
-      
-      this.setState({ id: nextProps.match.params.post_id });
+      && (nextProps.match.params.post_id !== prevState.id)) {
+      newState = newState || {};  
+      newState.id = nextProps.match.params.post_id;
     }
+
+    return newState;
   }
 
   render() {
