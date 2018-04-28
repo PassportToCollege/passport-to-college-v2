@@ -54,6 +54,120 @@ class ApplicationPortal extends Component {
     };
   }
 
+  componentDidMount() {
+    this.props.updateLocation("application portal");
+
+    this.props.userActions.doUserGet();
+    this.props.applicationActions.doApplicationGet(this.state.applicationId);
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    let { isComplete } = prevState;
+    let newState = null;
+
+    if (nextProps.application.hasGotten) {
+      newState = newState || {};
+      const { application } = nextProps.application;
+
+      newState.application = application;
+
+      if ((application.educationLevel && application.educationLevel.length) &&
+        (application.gpa && application.gpa.length) &&
+        (application.lastSchool && application.lastSchool.length)) {
+        isComplete = Object.assign({}, isComplete, {
+          education: true
+        });
+      } else {
+        isComplete = Object.assign({}, isComplete, {
+          education: false
+        });
+      }
+
+      if ((application.usTest && application.usTest.length) &&
+        (application.score && application.score.length)) {
+        isComplete = Object.assign({}, isComplete, {
+          "us-standardized-tests": true
+        });
+      } else {
+        isComplete = Object.assign({}, isComplete, {
+          "us-standardized-tests": false
+        });
+      }
+
+      if (application.tests && Object.keys(application.tests).length) {
+        isComplete = Object.assign({}, isComplete, {
+          "national-tests": true
+        });
+      } else {
+        isComplete = Object.assign({}, isComplete, {
+          "national-tests": false
+        });
+      }
+
+      if ((application.income && application.income.length) &&
+        (application.interest && application.interest.length) &&
+        (application.workEthic && application.workEthic.length)) {
+        isComplete = Object.assign({}, isComplete, {
+          "miscellaneous": true
+        });
+      } else {
+        isComplete = Object.assign({}, isComplete, {
+          "miscellaneous": false
+        });
+      }
+
+      if (application.essay && application.essay.blocks &&
+        application.essay.blocks.length && getWordCount(application.essay.blocks) >= 300) {
+        isComplete = Object.assign({}, isComplete, {
+          essay: true
+        });
+      } else {
+        isComplete = Object.assign({}, isComplete, {
+          essay: false
+        });
+      }
+    }
+
+    if (nextProps.user.hasGotten) {
+      newState = newState || {};
+      const { user } = nextProps.user;
+
+      newState.user = user;
+
+      if ((user.name && user.name.first && user.name.last) &&
+        (user.email && user.email.length) &&
+        (user.address && user.address.country.length) &&
+        (user.dob && "number" === typeof user.dob) &&
+        (user.gender && user.gender.length) &&
+        (user.phone && user.phone.length)) {
+        isComplete = Object.assign({}, isComplete, {
+          personal: true
+        });
+      } else {
+        isComplete = Object.assign({}, isComplete, {
+          personal: false
+        });
+      }
+    }
+
+    if (nextProps.application.hasGotten && nextProps.user.hasGotten) {
+      newState = newState || {};
+
+      if (nextProps.auth.hasFailed) {
+        newState.hasError = true; 
+        newState.error = nextProps.auth.error.message;
+      }
+
+      if (nextProps.auth.hasSent)
+        newState.hasSent = true;
+    }
+
+    if (newState)
+      return Object.assign({}, newState, { isComplete });
+    
+    return null;
+  }
+
   render() {
     return (
       <div className="application_portal">
@@ -121,117 +235,10 @@ class ApplicationPortal extends Component {
     )
   }
 
-  componentWillMount() {
-    this.props.updateLocation("application portal");
-    
-    // get user
-    this.props.userActions.doUserGet();
-
-    // get application
-    this.props.applicationActions.doApplicationGet(this.state.applicationId);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    let { isComplete } = this.state;
-
-    if (nextProps.application.hasGotten) {
-      const { application } = nextProps.application;
-
-      if ((application.educationLevel && application.educationLevel.length) &&
-        (application.gpa && application.gpa.length) &&
-        (application.lastSchool && application.lastSchool.length)) {
-        isComplete = Object.assign({}, isComplete, {
-          education: true
-        });
-      } else {
-        isComplete = Object.assign({}, isComplete, {
-          education: false
-        });
-      }
-
-      if ((application.usTest && application.usTest.length) &&
-        (application.score && application.score.length)) {
-        isComplete = Object.assign({}, isComplete, {
-          "us-standardized-tests": true
-        });
-      } else {
-        isComplete = Object.assign({}, isComplete, {
-          "us-standardized-tests": false
-        });
-      }
-
-      if (application.tests && Object.keys(application.tests).length) {
-        isComplete = Object.assign({}, isComplete, {
-          "national-tests": true
-        });
-      } else {
-        isComplete = Object.assign({}, isComplete, {
-          "national-tests": false
-        });
-      }
-
-      if ((application.income && application.income.length) &&
-        (application.interest && application.interest.length) &&
-        (application.workEthic && application.workEthic.length)) {
-        isComplete = Object.assign({}, isComplete, {
-          "miscellaneous": true
-        });
-      } else {
-        isComplete = Object.assign({}, isComplete, {
-          "miscellaneous": false
-        });
-      }
-
-      if (application.essay && application.essay.blocks && 
-        application.essay.blocks.length && getWordCount(application.essay.blocks) >= 300) {
-        isComplete = Object.assign({}, isComplete, {
-          essay: true
-        });
-      } else {
-        isComplete = Object.assign({}, isComplete, {
-          essay: false
-        });
-      }
-
-      this.setState({ application });
-    }
-    
-    if (nextProps.user.hasGotten) {
-      const { user } = nextProps.user;
-      
-      if ((user.name && user.name.first && user.name.last) &&
-        (user.email && user.email.length) &&
-        (user.address && user.address.country.length) &&
-        (user.dob && "number" === typeof user.dob) &&
-        (user.gender && user.gender.length) &&
-        (user.phone && user.phone.length)) {
-        isComplete = Object.assign({}, isComplete, {
-          personal: true
-        });
-      } else {
-        isComplete = Object.assign({}, isComplete, {
-          personal: false
-        });
-      }
-
-      this.setState({ user });
-    }
-
-    if (nextProps.application.hasGotten && 
-      nextProps.user.hasGotten)
-      this.setState({ isComplete });
-
-    if (nextProps.auth && nextProps.auth.hasFailed && nextProps.auth.error.message)
-      this.setState({ hasError: true, error: nextProps.auth.error.message });
-
-    if (nextProps.auth && nextProps.auth.hasSent)
-      this.setState({ hasSent: true });
-  }
-
   handleNextButtonClick = () => {
     let nextIndex = formattedTasks.indexOf(this.state.task) + 1;
     let next = formattedTasks[nextIndex];
-
+    
     if (next)
       this.props.history.push(`${this.props.match.url}/${next}`)
     

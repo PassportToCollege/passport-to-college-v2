@@ -22,14 +22,16 @@ class Application extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { application_id } = this.props.match.params;
     this.props.applicationActions.doApplicationGet(application_id);
   }
 
-  componentWillReceiveProps(nextProps) {
+  static getDerivedStateFromProps(nextProps) {
     if (nextProps.application.hasGotten)
-      this.setState({ application: nextProps.application.application });
+      return { application: nextProps.application.application };
+    
+    return null;
   }
 
   render() {

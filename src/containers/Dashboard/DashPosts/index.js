@@ -6,7 +6,7 @@ import propTypes from "prop-types";
 
 import * as routes from "../../../constants/routes";
 
-import NavigationPosts from "../../../components/NavigationPosts";
+import NavigationPosts from "../../NavigationPosts";
 import EditPost from "./EditPost";
 import DisplayPosts from "./DisplayPosts";
 

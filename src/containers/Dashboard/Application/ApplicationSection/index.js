@@ -30,12 +30,20 @@ class ApplicationSection extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.section)
-      this.setState({ section: nextProps.section });
+  static getDerivedStateFromProps(nextProps) {
+    let newState = null;
 
-    if (nextProps.application.hasGotten)
-      this.setState({ application: nextProps.application.application });
+    if (nextProps.section)
+      newState = { section: nextProps.section };
+
+    if (nextProps.application.hasGotten) {
+      newState = newState || {};
+      newState = Object.assign({}, newState, {
+        application: nextProps.application.application
+      });
+    }
+
+    return newState;
   }
 
   render() {

@@ -64,6 +64,7 @@ const user = (state = initialState.user, action) => {
       return Object.assign({}, state, {
         isUpdating: true,
         hasFailed: false,
+        hasUpdated: false,
         isReauthenticating: false,
         uid: action.user,
         data: action.data
@@ -72,6 +73,7 @@ const user = (state = initialState.user, action) => {
       return Object.assign({}, state, {
         isUpdating: false,
         hasFailed: true,
+        hasUpdated: false,
         isReauthenticating: false,
         uid: action.user,
         data: action.data,
@@ -81,6 +83,7 @@ const user = (state = initialState.user, action) => {
       return Object.assign({}, state, {
         isUpdating: false,
         hasFailed: false,
+        hasUpdated: true,
         isReauthenticating: false,
         uid: action.user,
         data: action.data

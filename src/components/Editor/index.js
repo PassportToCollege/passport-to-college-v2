@@ -31,11 +31,15 @@ class WYSIWYGEditor extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  static getDerivedStateFromProps(nextProps) {
     if (nextProps.content && nextProps.content.blocks) {
       const content = convertFromRaw(nextProps.content);
-      this.setState({ editorState: EditorState.createWithContent(content) })
+      return {
+        editorState: EditorState.createWithContent(content)
+      };
     }
+
+    return null;
   }
 
   render() {

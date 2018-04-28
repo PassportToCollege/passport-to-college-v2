@@ -29,6 +29,36 @@ class Profile extends Component {
       emailChanged: false
     };
   }
+
+  componentDidMount() {
+    // get user avatar
+    this.props.userProfilePictureActions.doAvatarGet();
+
+    // get user data
+    this.props.userActions.doUserGet();
+  }
+
+  static getDerivedStateFromProps(nextProps) {
+    let newState = null;
+
+    if (nextProps.profilePicture.url && nextProps.profilePicture.url !== "") {
+      newState = {};
+      newState.profilePicture = nextProps.profilePicture.url;
+    }
+
+    if (nextProps.profilePicture.url === "") {
+      newState = newState || {};
+      newState.profilePicture = defAvatar;
+    }
+
+    if (nextProps.user.hasGotten) {
+      newState = newState || {};
+      newState.user = nextProps.user.user;
+    }
+
+    return newState;
+  }
+
   render() {
     return (
       <div className="profile__container">
@@ -68,25 +98,6 @@ class Profile extends Component {
         </div>
       </div>
     )
-  }
-
-  componentWillMount() {
-    // get user avatar
-    this.props.userProfilePictureActions.doAvatarGet();
-    
-    // get user data
-    this.props.userActions.doUserGet();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.profilePicture.url && nextProps.profilePicture.url !== "")
-      this.setState({ profilePicture: nextProps.profilePicture.url });
-    
-    if (nextProps.profilePicture.url === "")
-      this.setState({ profilePicture: defAvatar });
-    
-    if(nextProps.user.hasGotten)
-      this.setState({ user: nextProps.user.user });
   }
 
   createAboutDataList() {

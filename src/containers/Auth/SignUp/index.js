@@ -25,7 +25,7 @@ class SignUp extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.updateLocation("sign-up");
 
     const { temp_id } = this.props.match.params;
@@ -36,24 +36,37 @@ class SignUp extends Component {
     this.props.authActions.removeAuthErrors();
   }
 
-  componentWillReceiveProps(nextProps) {
+  static getDerivedStateFromProps(nextProps) {
+    let newState = null;
+
     if (nextProps.users.hasGottenUser)
-      this.setState({ user: nextProps.users.user });
+      newState = { user: nextProps.users.user };
     
-    if (nextProps.users.hasFailed)
-      this.setState({ 
+    if (nextProps.users.hasFailed) {
+      newState = { 
         hasError: true,
         error: nextProps.users.error.message
-       });
+      };
+    }
 
-    if (nextProps.auth.hasFailed)
-      this.setState({ 
-        hasError: true, 
-        error: nextProps.auth.error.message, 
-        creatingAccount: false });
+    if (nextProps.auth.hasFailed) {
+      newState = newState || {};
+      newState = Object.assign({}, newState, {
+        hasError: true,
+        error: nextProps.auth.error.message,
+        creatingAccount: false
+      });
+    }
 
-    if (nextProps.auth.hasCreated)
-      this.setState({ creatingAccount: false, accountCreated: true });
+    if (nextProps.auth.hasCreated) {
+      newState = newState || {};
+      newState = Object.assign({}, newState, {
+        creatingAccount: false, 
+        accountCreated: true
+      });
+    }
+
+    return newState;
   }
 
   render() {

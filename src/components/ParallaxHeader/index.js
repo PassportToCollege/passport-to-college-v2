@@ -18,11 +18,12 @@ class ParallaxHeader extends Component {
       currBgColor: props.bgImages[0].color,
       bgCount: 0,
       bgImages: props.bgImages
-    }
+    };
   }
 
   componentDidMount() {
-    setInterval(this.nextBg, 7000);
+    const interval = setInterval(() => { this.nextBg() }, 7000);
+    this.props.setInterval(interval);
   }
 
   render() {
@@ -122,7 +123,8 @@ ParallaxHeader.propTypes = {
   showLinkButton:  propTypes.bool,
   linkButton: propTypes.object,
   showScrollStrip: propTypes.bool,
-  flipStrip: propTypes.bool
+  flipStrip: propTypes.bool,
+  setInterval: propTypes.func
 }
 
 export default ParallaxHeader;

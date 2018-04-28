@@ -15,7 +15,7 @@ const PostCard = ({ post, cardStyles, isDashboard, full }) => {
           backgroundImage: `${post.hero ? "url(" + post.hero + ")" : null}`
         }}>
         <div className="post_card__overlay"></div>
-        <Link to="/" className="post_card__content">
+        <Link to={`/stories/read/${post.id}`} className="post_card__content">
           <section className="post_card__categories">
             {
               Object.keys(post.categories).map(category => {

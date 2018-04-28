@@ -25,6 +25,10 @@ const mainNavItems = [
 const cookies = new Cookies();
 
 class Hamburger extends Component {
+  componentDidMount() {
+    feather.replace();
+  }
+  
   render() {
     return (
       <div className="hamburger" data-active={this.props.hamburgerState.current}>
@@ -39,7 +43,7 @@ class Hamburger extends Component {
           </div>
           <div className="hamburger__main_nav">
             <ul>
-              {mainNavItems.map((v, i) => {
+              {mainNavItems.map((v) => {
                 return (
                   <li key={v.route}>
                     <NavLink 
@@ -62,10 +66,6 @@ class Hamburger extends Component {
         </div>
       </div>
     );
-  }
-
-  componentDidMount() {
-    feather.replace();
   }
 
   selectAuthLink() {
@@ -100,7 +100,8 @@ class Hamburger extends Component {
 Hamburger.propTypes = {
   hamburgerActions: propTypes.object,
   hamburgerState: propTypes.object,
-  authActions: propTypes.object
+  authActions: propTypes.object,
+  updateHamburgerState: propTypes.func
 };
 
 const mapStateToProps = state => {

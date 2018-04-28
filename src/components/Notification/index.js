@@ -6,7 +6,7 @@ import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/fontawesome-free-solid";
 
 class Notification extends Component {
-  componentWillMount() {
+  componentDidMount() {
     // close notification automatically after
     // 5 secs
     setTimeout(() => {

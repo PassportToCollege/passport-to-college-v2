@@ -12,7 +12,7 @@ import { faPlus, faFilter } from "@fortawesome/fontawesome-free-solid";
 import * as routes from "../../constants/routes";
 import * as postActions from "../../actions/postActions";
 
-import Loader from "../Loader";
+import Loader from "../../components/Loader";
 
 class NavigationPosts extends Component {
   constructor(props) {
@@ -27,24 +27,35 @@ class NavigationPosts extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.post.isCreating)
-      this.setState({ working: true });
+  static getDerivedStateFromProps(nextProps, prevState) {
+    let newState = null;
 
-    if (nextProps.post.postCreationFailed)
-      this.setState({
+    if (nextProps.post.isCreating) {
+      newState = {};
+      newState.working = true;
+    }
+
+    if (nextProps.post.postCreationFailed) {
+      newState = newState || {};
+      newState = Object.assign({}, newState, {
         hasError: true,
         error: nextProps.post.errpr.message,
         notificationClosed: false
       });
+    }
     
     if (nextProps.post.hasCreated && this.state.working) {
-      this.setState({ working: false });
-      this.props.history.push(`/admin/dashboard/posts/e/${nextProps.post.id}`);
+      newState = newState || {};
+      newState.working = false;
+      nextProps.history.push(`/admin/dashboard/posts/e/${nextProps.post.id}`);
     }
 
-    if (nextProps.show !== this.state.show)
-      this.setState({ show: nextProps.show });
+    if (nextProps.show !== prevState.show) {
+      newState = newState || {};
+      newState.show = nextProps.show;
+    }
+    
+    return newState;
   }
 
   render() {

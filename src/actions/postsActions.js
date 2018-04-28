@@ -139,6 +139,78 @@ export const doPostsGetMostRecent = () => {
   };
 };
 
+export const postsGetMostRecentByCategoryInititated = categories => {
+  return {
+    type: types.POSTS_GET_MOST_RECENT_BY_CATEGORY_INITIATED,
+    categories
+  }
+};
+
+export const postsGetMostRecentByCategoryFailed = (error, categories) => {
+  return {
+    type: types.POSTS_GET_MOST_RECENT_BY_CATEGORY_FAILED,
+    error, categories
+  }
+};
+
+export const postsGetMostRecentByCategoryDone = (more, categories) => {
+  return {
+    type: types.POSTS_GET_MOST_RECENT_BY_CATEGORY_DONE,
+    more, categories
+  }
+};
+
+export const doPostsGetMostRecentByCategory = (categories, options) => {
+  return dispatch => {
+    dispatch(postsGetMostRecentByCategoryInititated(categories));
+
+    categories = categories || {};
+    options = options || {};
+
+    const catKeys = Object.keys(categories);
+
+    let query = db.collection("posts");
+    for (let key of catKeys) {
+      if (categories[key])
+        query = query.where(`categories.${key}`, "==", true);
+    }
+
+    return query.where("state.published", "==", true)
+      .orderBy("publishedOn", "desc")
+      .limit(5)
+      .get()
+      .then(snapshots => {
+        if (snapshots.empty)
+          return dispatch(postsGetMostRecentByCategoryFailed({ message: "no posts found" }, categories));
+
+          let posts = [];
+        let heroPromises = [];
+
+        snapshots.forEach(snapshot => {
+          let post = snapshot.data();
+          post.id = snapshot.id;
+
+          heroPromises.push(storage.ref("posts/heros").child(`${snapshot.id}.png`).getDownloadURL());
+          posts.push(post);
+        });
+
+        Promise.all(heroPromises).then(urls => {
+          for (let post of posts) {
+            post.hero = urls.find(url => {
+              return url.indexOf(post.id) > -1;
+            });
+          }
+
+          dispatch(postsGetMostRecentByCategoryDone(posts, categories));
+        });
+      })
+      .catch(error => {
+        Console.log(error);
+        dispatch(postsGetMostRecentByCategoryFailed(error, categories));
+      })
+  };
+};
+
 export const paginatePostsInitiated = page => {
   return {
     type: types.PAGINATE_POSTS_INITIATED,
@@ -167,7 +239,7 @@ export const doPostsPaginate = (page, category) => {
     dispatch(paginatePostsInitiated(page));
     let postRef;
 
-    if (category) {
+    if (category  && category !== "all") {
       postRef = db.collection("posts")
         .where("state.published", "==", true)
         .where(`categories.${category}`, "==", true)

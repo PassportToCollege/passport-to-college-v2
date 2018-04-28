@@ -39,7 +39,7 @@ class SignIn extends Component {
     )
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.updateLocation("sign-in");
   }
 
@@ -47,21 +47,29 @@ class SignIn extends Component {
     this.props.authActions.removeAuthErrors();
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.auth && nextProps.auth.hasFailed && nextProps.auth.error.message)
-      this.setState({ hasError: true, error: nextProps.auth.error.message });
+  static getDerivedStateFromProps(nextProps) {
+    let newState = null;
+
+    if (nextProps.auth && nextProps.auth.hasFailed && nextProps.auth.error.message) {
+      newState = { 
+        hasError: true, 
+        error: nextProps.auth.error.message 
+      };
+    }
     
-    if (nextProps.auth && nextProps.auth.hasAuthorized === true) {
+    if (nextProps.auth && nextProps.auth.hasAuthorized) {
       const { activeUser } = nextProps.auth;
 
       if (activeUser.isAdmin) {
-        this.props.history.push("/admin/dashboard");
+        nextProps.history.push("/admin/dashboard");
       } else if (activeUser.isApplicant) {
-        this.props.history.push(`/apply/p/${activeUser.uid}`);
+        nextProps.history.push(`/apply/p/${activeUser.uid}`);
       } else {
-        this.props.history.push("/");
+        nextProps.history.push("/");
       }
     }
+
+    return newState;
   }
 
   updateEmail = (e) => this.setState({ email: e.target.value });

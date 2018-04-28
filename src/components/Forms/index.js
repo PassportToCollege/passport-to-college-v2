@@ -17,6 +17,13 @@ export class SignInForm extends Component {
     };
   }
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.authError)
+      return { tries: prevState.tries + 1 };
+
+    return null;
+  }
+
   render() {
     return (
       <form className="form auth__form signin__form" method="post" onSubmit={this.props.handleSubmit}>
@@ -54,11 +61,6 @@ export class SignInForm extends Component {
         }
       </form>
     );
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.authError === true)
-      this.setState({ tries: this.state.tries + 1 })
   }
 }
 

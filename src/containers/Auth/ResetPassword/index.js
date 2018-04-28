@@ -22,7 +22,7 @@ class ResetPassword extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.updateLocation("reset");
   }
 
@@ -30,12 +30,23 @@ class ResetPassword extends Component {
     this.props.authActions.removeAuthErrors();
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.auth && nextProps.auth.hasFailed && nextProps.auth.error.message)
-      this.setState({ hasError: true, error: nextProps.auth.error.message });
-    
-    if (nextProps.auth && nextProps.auth.hasSent)
-      this.setState({ hasSent: true });
+  static getDerivedStateFromProps(nextProps) {
+    let newState = null;
+
+    if (nextProps.auth.hasFailed) {
+      newState = {
+        hasError: true,
+        error: nextProps.auth.error.message
+      };
+    }
+
+    if (nextProps.auth.hasSent) {
+      newState = {
+        hasSent: true
+      };
+    }
+
+    return newState
   }
 
   render() {

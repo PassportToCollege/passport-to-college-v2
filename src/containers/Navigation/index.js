@@ -42,8 +42,11 @@ class Navigation extends Component {
     window.removeEventListener("scroll", this.watchScroll);
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({ onWhite: nextProps.onWhite });
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (prevState.onWhite !== nextProps.onWhite)
+      return { onWhite: nextProps.onWhite };
+
+    return null;
   }
 
   render() {
@@ -65,7 +68,8 @@ class Navigation extends Component {
                 return (
                   <li key={v.route}>
                     <NavLink
-                      exact to={v.route}
+                      exact={v.name === "Stories" ? false : true} 
+                      to={v.route}
                       activeClassName="active"
                       onClick={this.handleCloseButtonClick}>
                       {v.name}

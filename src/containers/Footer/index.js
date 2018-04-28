@@ -8,7 +8,7 @@ import * as routes from "../../constants/routes";
 
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import { faFacebook, faTwitterSquare, faLinkedin } from "@fortawesome/fontawesome-free-brands";
-import Loader from "../Loader";
+import Loader from "../../components/Loader";
 
 import logo from "../../assets/images/logo__text__white.png";
 
@@ -18,7 +18,7 @@ const footerNavItems = [
   routes.SCHOLARS,
   routes.APPLY,
   routes.CONTACT_US
-]
+];
 
 const Footer = ({ posts }) => {
   return (
@@ -43,10 +43,13 @@ const Footer = ({ posts }) => {
             posts.gotMostRecent ?
               posts.mostRecent.map(post => {
                 return (
-                  <Link key={`footer_${post.id}`} to="/" className="footer__post_item">
+                  <NavLink exact key={`footer_${post.id}`}
+                    activeClassName="active" 
+                    to={`/stories/read/${post.id}`}
+                    className="footer__post_item">
                     <h4>{post.title}</h4>
                     <h5>by {post.author.name.full}</h5>
-                  </Link>
+                  </NavLink>
                 )
               }) : <Loader />
           }

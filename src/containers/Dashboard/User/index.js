@@ -22,14 +22,16 @@ class User extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { user_id } = this.props.match.params;
     this.props.usersActions.doGetUserByUid(user_id);
   }
 
-  componentWillReceiveProps(nextProps) {
+  static getDerivedStateFromProps(nextProps) {
     if (nextProps.users.hasGottenUser)
-      this.setState({ user: nextProps.users.user });
+      return { user: nextProps.users.user };
+    
+    return null;
   }
 
   render() {

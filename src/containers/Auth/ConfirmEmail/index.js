@@ -21,11 +21,50 @@ class ConfirmEmail extends Component {
       emailVerified: false
     }
   }
+
+  componentDidMount() {
+    this.props.updateLocation("confirm-email");
+
+    // confirm user's email address
+    const { uid } = this.props.match.params;
+    this.props.userActions.doUserUpdate({ emailConfirmed: true }, uid);
+  }
+
+  componentWillUnmount() {
+    this.props.authActions.removeAuthErrors();
+  }
+
+  static getDerivedStateFromProps(nextProps) {
+    let newState = null;
+
+    if (nextProps.auth.hasFailed) {
+      newState = {
+        hasError: true,
+        error: nextProps.auth.error.message
+      };
+    }
+
+    if (nextProps.user.hasFailed) {
+      newState = newState || {};
+
+      newState.hasError = true;
+      newState.error = nextProps.user.error.message;
+    }
+
+    if (nextProps.user.hasUpdated && nextProps.user.user && nextProps.user.user.emailConfirmed) {
+      newState = newState || {};
+
+      newState.emailVerified = true;
+    }
+
+    return newState;
+  }
+
   render() {
     return (
       <div className="confirm_email__container">
         {
-          this.props.user.isUpdating ?
+          this.props.user.isUpdating && !this.state.emailVerified ?
             <h1>Confirming email address....</h1>
               :
             null
@@ -47,29 +86,6 @@ class ConfirmEmail extends Component {
         }
       </div>
     )
-  }
-
-  componentWillMount() {
-    this.props.updateLocation("confirm-email");
-
-    // confirm user's email address
-    const { uid } = this.props.match.params;
-    this.props.userActions.doUserUpdate({ emailConfirmed: true }, uid);
-  }
-
-  componentWillUnmount() {
-    this.props.authActions.removeAuthErrors();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.auth && nextProps.auth.hasFailed && nextProps.auth.error.message)
-      this.setState({ hasError: true, error: nextProps.auth.error.message });
-    
-    if (nextProps.user && nextProps.user.hasFailed)
-      this.setState({ hasError: true, error: nextProps.user.error.message });
-    
-    if (nextProps.user && !nextProps.user.isUpdating && !nextProps.user.hasFailed)
-      this.setState({ emailVerified: true })
   }
 
   handleNotificationClose = () => {

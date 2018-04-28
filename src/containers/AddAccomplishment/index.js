@@ -35,13 +35,18 @@ class AddAccomplishment extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.studentsActions.doStudentsGet();
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.students.hasGotten)
-      this.setState({ students: nextProps.students.students });
+  static getDerivedStateFromProps(nextProps) {
+    if (nextProps.students.hasGotten) {
+      return {
+        students: nextProps.students.students
+      }
+    }
+
+    return null;
   }
 
   render() {

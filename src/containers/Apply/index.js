@@ -26,7 +26,7 @@ class Apply extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.updateLocation("apply");
   }
 
@@ -35,35 +35,60 @@ class Apply extends Component {
     this.setState({ hasSent: false, notificationClosed: true });
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.auth && nextProps.auth.hasFailed && nextProps.auth.error.message)
-      this.setState({ hasError: true, error: nextProps.auth.error.message, notificationClosed: false, loggingIn: false, creatingAccount: false });
-    
-    if (nextProps.auth && nextProps.auth.hasSent)
-      this.setState({ hasSent: true, notificationClosed: false });
+  static getDerivedStateFromProps(nextProps) {
+    let newState = null;
 
-    if (nextProps.auth.isCreating)
-      this.setState({ creatingAccount: true });
+    if (nextProps.auth.hasFailed) {
+      newState = {
+        hasError: true,
+        error: nextProps.auth.error.message,
+        notificationClosed: false,
+        loggingIn: false,
+        creatingAccount: false
+      };
+    }
 
-    if (nextProps.auth.hasCreated)
-      this.setState({ creatingAccount: false });
+    if (nextProps.auth.hasSent) {
+      newState = {
+        hasSent: true,
+        notificationClosed: false
+      };
+    }
 
-    if (nextProps.auth.isAuthorizing)
-      this.setState({ loggingIn: true });
+    if (nextProps.auth.isCreating) {
+      newState = {
+        creatingAccount: true
+      };
+    }
 
-    if (nextProps.auth && nextProps.auth.hasAuthorized === true) {
+    if (nextProps.auth.hasCreated) {
+      newState = newState || {};
+      newState.creatingAccount = false;
+    }
+
+    if (nextProps.auth.isAuthorizing) {
+      newState = {
+        loggingIn: true
+      };
+    }
+
+    if (nextProps.auth.hasAuthorized) {
+      newState = {
+        loggingIn: false
+      };
+
       const { activeUser } = nextProps.auth;
-      
-      this.setState({ loggingIn: false });
 
       if (activeUser.isApplicant) {
-        this.props.history.push(`/apply/p/${activeUser.uid}`);
+        nextProps.history.push(`/apply/p/${activeUser.uid}`);
       } else if (activeUser.isAdmin) {
-        this.props.history.push("/admin/dashboard");
+        nextProps.history.push("/admin/dashboard");
       } else {
-        this.props.history.push("/");
+        nextProps.history.push("/");
       }
     }
+
+    return newState;
   }
 
   render() {

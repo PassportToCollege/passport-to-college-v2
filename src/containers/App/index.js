@@ -2,15 +2,21 @@ import './App.css';
 
 import React, { Component } from 'react';
 import { Route, BrowserRouter, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import propTypes from "prop-types";
 
 import * as routes from "../../constants/routes";
+import * as postsActions from "../../actions/postsActions";
 import { isAuthorized, isApplicant, activeUser } from "../../utils";
 
 import Hamburger from "../Hamburger";
 import Navigation from "../Navigation";
+import Footer from "../Footer";
 
 import Home from "../Home";
 import Stories from "../Stories";
+import Story from "../Story";
 import SignIn from "../Auth/SignIn";
 import SignUp from "../Auth/SignUp";
 import ResetPassword from "../Auth/ResetPassword";
@@ -26,8 +32,12 @@ class App extends Component {
 
     this.state = {
       hamburgerState: "closed",
-      location: "landing"
-    }
+      location: ""
+    };
+  }
+
+  componentDidMount() {
+    this.props.postsActions.doPostsGetMostRecent();  
   }
 
   render() {
@@ -57,9 +67,10 @@ class App extends Component {
           <div className="app__main" data-hamburger={this.state.hamburgerState} style={mainBg}>
             {this.selectNavigation()}
             <div className={`app__body app__body_${this.state.location}`} style={bodyStyles}>
-              <Route exact path={routes.LANDING.route} render={props => this.defaultRouteMiddleware(props, Home)}></Route>
+              <Route exact path={routes.LANDING.route} render={props => this.landingMiddleware(props)}></Route>
               <Route exact path={routes.STORIES.route} render={props => this.defaultRouteMiddleware(props, Stories)}></Route>
-              <Route exact path={routes.STORIES_CATEGORY.route} render={props => this.defaultRouteMiddleware(props, Stories)}></Route>
+              <Route exact path={routes.STORY.route} render={props => this.defaultRouteMiddleware(props, Story)}></Route>
+              <Route path={routes.STORIES_CATEGORY.route} render={props => this.defaultRouteMiddleware(props, Stories)}></Route>
               <Route path={routes.SIGN_IN.route} render={(props) => this.authMiddleware(props, SignIn)}></Route>
               <Route path={routes.SIGN_UP.route} render={props => this.authMiddleware(props, SignUp)}></Route>
               <Route path={routes.RESET_PASSWORD.route} render={(props) => this.authMiddleware(props, ResetPassword)}></Route>
@@ -68,6 +79,12 @@ class App extends Component {
               <Route exact path={routes.APPLY.route} render={props => this.applyLandingMiddleware(props, Apply)}></Route>
               <Route path={routes.APPLY_PORTAL.route} render={props => this.applicationPortalMiddleware(props, ApplicationPortal)}></Route>
             </div>
+            {
+              this.state.location !== "" &&
+              this.state.location !== "application portal" &&
+              this.state.location.indexOf("dashboard") === -1 ?
+                <Footer posts={this.props.posts} /> : null 
+            }
           </div>
         </div>
       </BrowserRouter>
@@ -106,6 +123,13 @@ class App extends Component {
     return <Redirect to="/apply/" />
   }
 
+  landingMiddleware(props) {
+    return (
+      <Home {...props} posts={this.props.posts}
+        updateLocation={newLocation => { this.setState({ location: newLocation }); }} />
+    );
+  }
+
   renderHamburger() {
     if (this.state.location.indexOf("dashboard") === -1 &&
       this.state.location !== "application portal")
@@ -124,6 +148,35 @@ class App extends Component {
 
     return null;
   }
+
+  renderFooter() {
+    if (this.state.location !== "application portal" &&
+      this.state.location.indexOf("dashboard") > -1) {
+        return <Footer posts={this.props.posts} />
+      }
+
+    return null;
+  }
 }
 
-export default App;
+App.propTypes = {
+  posts: propTypes.object,
+  postsActions: propTypes.object
+};
+
+const mapStateToProps = state => {
+  return {
+    posts: state.posts
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    postsActions: bindActionCreators(postsActions, dispatch)
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);

@@ -4,7 +4,7 @@ import React from "react";
 import { withRouter, NavLink } from "react-router-dom";
 import propTypes from "prop-types";
 
-const LinkDropdown = ({ name, data }) => {
+const LinkDropdown = ({ name, data, doClick }) => {
   const toggleState = () => {
     const curr = this.dropdown.getAttribute("data-state");
     this.dropdown.setAttribute("data-state", curr === "closed" ? "open" : "closed");
@@ -13,6 +13,11 @@ const LinkDropdown = ({ name, data }) => {
   const handleBlur = e => {
     e.preventDefault();
     this.dropdown.setAttribute("data-state", "closed");
+  }
+
+  const handleLinkClick = e => {
+    if ("function" === typeof doClick)
+      doClick(e)
   }
 
   return (
@@ -30,7 +35,9 @@ const LinkDropdown = ({ name, data }) => {
                 <li key={i} className="link_dropdown__item">
                   <NavLink exact to={item.to} 
                     className="link_dropdown__link"
-                    activeClassName="active">
+                    activeClassName="active"
+                    data-label={item.label}
+                    onClick={handleLinkClick}>
                     {item.label}
                   </NavLink>
                 </li>
@@ -45,7 +52,8 @@ const LinkDropdown = ({ name, data }) => {
 
 LinkDropdown.propTypes = {
   name: propTypes.string,
-  data: propTypes.arrayOf(propTypes.object)
+  data: propTypes.arrayOf(propTypes.object),
+  doClick: propTypes.func
 };
 
 export default withRouter(LinkDropdown);
