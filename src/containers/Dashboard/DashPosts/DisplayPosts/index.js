@@ -24,9 +24,11 @@ class DisplayPosts extends Component {
     this.props.postsActions.doPostsGet();
   }
 
-  componentWillReceiveProps(nextProps) {
+  static getDerivedStateFromProps(nextProps) {
     if (nextProps.posts.hasGotten)
-      this.setState({ posts: nextProps.posts.posts });
+      return { posts: nextProps.posts.posts };
+
+    return null;
   }
 
   render() {

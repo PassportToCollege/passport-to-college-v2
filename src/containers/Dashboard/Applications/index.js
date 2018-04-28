@@ -33,19 +33,27 @@ class Applications extends Component {
     this.props.statsActions.doStatsGet();
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.applications.hasGotten) {
-      this.setState({ applications: nextProps.applications.applications });
+  static getDerivedStateFromProps(nextProps) {
+    let newState = null;
 
-      const { search } = this.props.location;
+    if (nextProps.applications.hasGotten) {
+      newState = { applications: nextProps.applications.applications };
+
+      const { search } = nextProps.location;
       const { page } = queryToObject(search) || { page: 1 };
 
       if (page > 1 && nextProps.applications.applications.empty)
-        this.props.history.goBack();
+        nextProps.history.goBack();
     }
 
-    if (nextProps.stats.hasGotten)
-      this.setState({ stats: nextProps.stats.stats });
+    if (nextProps.stats.hasGotten) {
+      newState = newState || {};
+      newState = Object.assign({}, newState, {
+        stats: nextProps.stats.stats
+      });
+    }
+    
+    return newState;
   }
 
   render() {

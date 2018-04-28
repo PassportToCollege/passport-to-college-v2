@@ -42,35 +42,41 @@ class EditPost extends Component {
     this.props.postCategoryActions.doCategoriesGet();
   }
 
-  componentWillReceiveProps(nextProps) {
+  static getDerivedStateFromProps(nextProps, prevState) {
+    let newState = null;
+
     if (nextProps.post.hasGotten) {
-      this.setState({ 
+      newState = { 
         post: nextProps.post.post, 
-        postChanges: Object.assign({}, this.state.postChanges, { 
+        postChanges: Object.assign({}, prevState.postChanges, { 
           excerpt: nextProps.post.post.excerpt 
         }) 
-      });
+      };
     }
 
     if (nextProps.post.postGetFailed ||
       nextProps.post.postUpdateFailed) {
-      this.setState({
+      newState = {
         hasError: true,
         notification: nextProps.post.error.message,
         notificationClosed: false
-      });
+      };
     }
 
     if (nextProps.post.hasUpdated) {
-      this.setState({
+      newState = newState || {};
+      newState = Object.assign({}, newState, {
         hasNotification: true,
         notification: "Post updated successfully",
         notificationClosed: false
       });
     }
 
-    if (nextProps.post.gotHero)
-      this.setState({ hero: nextProps.post.hero });
+    if (nextProps.post.gotHero) {
+      newState = newState || Object.assign({}, newState, { 
+        hero: nextProps.post.hero 
+      });
+    }
     
     if (nextProps.postCategories.gotCategories) {
       let categoriesObj = {};
@@ -79,20 +85,24 @@ class EditPost extends Component {
         return category;
       })
 
-      this.setState({ 
+      newState = newState || {};
+      newState = Object.assign({}, newState, { 
         categories: nextProps.postCategories.categories,
         categoriesChanges: categoriesObj
       });
     }
     
     if (nextProps.postCategories.hasAdded) {
-      this.setState({
+      newState = newState || {};
+      newState = Object.assign({}, newState, {
         addingCategory: false,
         hasNotification: true,
         notificationClosed: false,
         notification: "Category added successfully"
       });
     }
+
+    return newState;
   }
 
   render() {
