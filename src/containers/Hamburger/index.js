@@ -43,7 +43,7 @@ class Hamburger extends Component {
           </div>
           <div className="hamburger__main_nav">
             <ul>
-              {mainNavItems.map((v, i) => {
+              {mainNavItems.map((v) => {
                 return (
                   <li key={v.route}>
                     <NavLink 
