@@ -46,7 +46,6 @@ class Home extends Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     const { stats, features, posts } = prevState;
     return {
-      flipStrip: prevState.flipStrip,
       stats: nextProps.stats.hasGotten && !_.isEqual(nextProps.stats.stats, stats) ? nextProps.stats.stats : stats,
       features: nextProps.features.hasGotten && !_.isEqual(nextProps.features.features, features) ? nextProps.features.features : features,
       posts: nextProps.posts.gotMostRecent && !_.isEqual(nextProps.posts.mostRecent, posts) ? nextProps.posts.mostRecent : posts

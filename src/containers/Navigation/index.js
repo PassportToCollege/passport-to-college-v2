@@ -42,8 +42,11 @@ class Navigation extends Component {
     window.removeEventListener("scroll", this.watchScroll);
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({ onWhite: nextProps.onWhite });
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (prevState.onWhite !== nextProps.onWhite)
+      return { onWhite: nextProps.onWhite };
+
+    return null;
   }
 
   render() {

@@ -40,6 +40,28 @@ class NavigationAdmin extends Component {
     this.props.userActions.doUserGet();
   }
 
+  static getDerivedStateFromProps(nextProps) {
+    let newState = null;
+
+    if (nextProps.profilePicture.url && nextProps.profilePicture.url !== "") {
+      newState = {};
+      newState.profilePicture = nextProps.profilePicture.url;
+    }
+
+    if (nextProps.profilePicture.url === "") {
+      newState = newState || {};
+      newState.profilePicture = defAvatar;
+    }
+
+    if (nextProps.user.hasGotten) {
+      newState = newState || {};
+      newState.username = nextProps.user.user.name.full;
+    }
+    
+    return newState;
+  }
+
+
   render() {
     return (
       <nav className="dashboard__navigation">
@@ -95,17 +117,6 @@ class NavigationAdmin extends Component {
         </div>
       </nav>
     )
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.profilePicture.hasGotten && nextProps.profilePicture.url !== "") {
-      this.setState({ profilePicture: nextProps.profilePicture.url });
-    } else {
-      this.setState({ gravatar: defAvatar });
-    }
-    
-    if (nextProps.user.hasGotten)
-      this.setState({ username: nextProps.user.user.name.full });
   }
 
   handleSignOutClick = (e) => {

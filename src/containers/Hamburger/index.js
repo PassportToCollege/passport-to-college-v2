@@ -100,7 +100,8 @@ class Hamburger extends Component {
 Hamburger.propTypes = {
   hamburgerActions: propTypes.object,
   hamburgerState: propTypes.object,
-  authActions: propTypes.object
+  authActions: propTypes.object,
+  updateHamburgerState: propTypes.func
 };
 
 const mapStateToProps = state => {
