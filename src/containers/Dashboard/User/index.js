@@ -27,9 +27,11 @@ class User extends Component {
     this.props.usersActions.doGetUserByUid(user_id);
   }
 
-  componentWillReceiveProps(nextProps) {
+  static getDerivedStateFromProps(nextProps) {
     if (nextProps.users.hasGottenUser)
-      this.setState({ user: nextProps.users.user });
+      return { user: nextProps.users.user };
+    
+    return null;
   }
 
   render() {

@@ -63,33 +63,61 @@ class UserSection extends Component {
       this.props.uppActions.doAvatarGetByUid(this.props.userId);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.user.hasGottenUser)
-      this.setState({ user: nextProps.user.user });
+  static getDerivedStateFromProps(nextProps, prevState) {
+    let newState = null;
+
+    if (nextProps.user.hasGottenUser) {
+      newState = {};
+      newState.user = nextProps.user.user;
+    }
       
     if (nextProps.user.hasGottenUser 
       && nextProps.user.user.isStudent
-      && !this.props.student.hasGotten
-      && !this.props.student.isGetting) {
-        this.props.studentActions.doStudentGet(this.state.uid);
-        this.props.featuresActions.doGetFeaturesByUser(this.state.uid);
+      && !nextProps.student.hasGotten
+      && !nextProps.student.isGetting) {
+        nextProps.studentActions.doStudentGet(prevState.uid);
+        nextProps.featuresActions.doGetFeaturesByUser(prevState.uid);
     }
 
-    if (nextProps.picture.hasGottenByUid)
-      this.setState({ profilePicture: nextProps.picture.picture });
+    if (nextProps.picture.hasGottenByUid) {
+      newState = newState || {};
+      newState = Object.assign({}, newState, {
+        profilePicture: nextProps.picture.picture
+      });
+    }
 
-    if (nextProps.student.hasGotten)
-      this.setState({ student: nextProps.student.student });
+    if (nextProps.student.hasGotten) {
+      newState = newState || {};
+      newState = Object.assign({}, newState, { 
+        student: nextProps.student.student 
+      });
+    }
     
-    if (nextProps.features.hasGotten)
-      this.setState({ features: nextProps.features.features });
+    if (nextProps.features.hasGotten) {
+      newState = newState || {};
+      newState = Object.assign({}, newState, {
+        features: nextProps.features.features
+      });
+    }
 
     if (nextProps.features.hasFailed && 
-      nextProps.features.error.message === "no features found")
-      this.setState({ noFeatures: true });
+      nextProps.features.error.message === "no features found") {
+      newState = newState || {};
+      newState = Object.assign({}, newState, {
+        noFeatures: true
+      });
+    }
 
-    if (nextProps.student.hasFailed)
-      this.setState({ hasError: true, notificationClosed: false, error: nextProps.student.error.message });
+    if (nextProps.student.hasFailed) {
+      newState = newState || {};
+      newState = Object.assign({}, newState, {
+        hasError: true, 
+        notificationClosed: false, 
+        error: nextProps.student.error.message
+      });
+    }
+    
+    return newState;
   }
 
   render() {
