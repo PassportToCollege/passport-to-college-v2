@@ -27,9 +27,11 @@ class Application extends Component {
     this.props.applicationActions.doApplicationGet(application_id);
   }
 
-  componentWillReceiveProps(nextProps) {
+  static getDerivedStateFromProps(nextProps) {
     if (nextProps.application.hasGotten)
-      this.setState({ application: nextProps.application.application });
+      return { application: nextProps.application.application };
+    
+    return null;
   }
 
   render() {
