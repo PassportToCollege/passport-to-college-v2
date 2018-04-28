@@ -10,7 +10,8 @@ import {
   PAGINATE_POSTS_DONE,
   POSTS_GET_MOST_RECENT_BY_CATEGORY_INITIATED,
   POSTS_GET_MOST_RECENT_BY_CATEGORY_DONE,
-  POSTS_GET_MOST_RECENT_BY_CATEGORY_FAILED
+  POSTS_GET_MOST_RECENT_BY_CATEGORY_FAILED,
+  PAGINATE_POSTS_FAILED
 } from "../actions/actionTypes";
 
 const posts = (state = initialState.posts, action) => {
@@ -69,6 +70,14 @@ const posts = (state = initialState.posts, action) => {
         paginationFailed: false,
         page: action.page,
         posts: action.posts
+      });
+    case PAGINATE_POSTS_FAILED:
+      return Object.assign({}, state, {
+        paginatingPosts: false,
+        paginationDone: false,
+        paginationFailed: true,
+        page: action.page,
+        error: action.error
       });
     case POSTS_GET_MOST_RECENT_BY_CATEGORY_INITIATED:
       return Object.assign({}, state, {

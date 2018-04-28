@@ -6,6 +6,8 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Link } from "react-router-dom";
 import _ from "lodash";
+import FontAwesomeIcon from "@fortawesome/react-fontawesome";
+import { faBatteryEmpty } from "@fortawesome/fontawesome-free-solid";
 
 import * as statsActions from "../../actions/statsActions";
 import * as featuresActions from "../../actions/featuresActions";
@@ -161,7 +163,10 @@ class Home extends Component {
               {
                 this.props.posts.mostRecentGetFailed && 
                 this.props.posts.error.message === "no posts found" ?
-                  <span className="no__posts">No stories yet</span> : null
+                  <div className="no__posts">
+                    <FontAwesomeIcon icon={faBatteryEmpty} />
+                    <h4>Oops! Looks like there are no stories yet.</h4>
+                  </div> : null
               }
               {
                 this.props.posts.gotMostRecent && this.state.posts ?

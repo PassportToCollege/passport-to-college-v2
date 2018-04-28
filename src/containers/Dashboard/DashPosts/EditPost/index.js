@@ -379,10 +379,10 @@ class EditPost extends Component {
         }
       };
       postUpdater = Object.assign({}, postChanges, {
-        categories: Object.assign({}, this.state.post.categories, {
+        category: {
           [category]: true
-        })
-      })
+        }
+      });
     } else {
       categoriesUpdater = {
         [category]: {
@@ -390,10 +390,10 @@ class EditPost extends Component {
         }
       };
       postUpdater = Object.assign({}, postChanges, {
-        categories: Object.assign({}, this.state.post.categories, {
+        category: {
           [category]: false
-        })
-      })
+        }
+      });
     }
 
     // update categories and post

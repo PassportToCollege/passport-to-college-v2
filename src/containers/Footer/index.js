@@ -7,7 +7,7 @@ import propTypes from "prop-types";
 import * as routes from "../../constants/routes";
 
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
-import { faFacebook, faTwitterSquare, faLinkedin } from "@fortawesome/fontawesome-free-brands";
+import { faFacebook, faTwitterSquare, faLinkedin, } from "@fortawesome/fontawesome-free-brands";
 import Loader from "../../components/Loader";
 
 import logo from "../../assets/images/logo__text__white.png";
@@ -51,7 +51,14 @@ const Footer = ({ posts }) => {
                     <h5>by {post.author.name.full}</h5>
                   </NavLink>
                 )
-              }) : <Loader />
+              }) : posts.mostRecentGetFailed ? null : <Loader />
+          }
+          {
+            posts.mostRecentGetFailed &&
+            posts.error.message === "no posts found" ?
+              <span className="no__posts">
+                No stories available yet.
+              </span> : null
           }
         </section>
         <section className="footer__contact">
