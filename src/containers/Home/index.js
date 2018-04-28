@@ -6,8 +6,6 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Link } from "react-router-dom";
 import _ from "lodash";
-import FontAwesomeIcon from "@fortawesome/react-fontawesome";
-import { faBatteryEmpty } from "@fortawesome/fontawesome-free-solid";
 
 import * as statsActions from "../../actions/statsActions";
 import * as featuresActions from "../../actions/featuresActions";
@@ -25,6 +23,7 @@ import infoCardBg from "../../assets/images/info_card__bg.JPG";
 import headerBg0 from "../../assets/images/home__header_bg_0.jpg";
 import headerBg1 from "../../assets/images/home__header_bg_1.jpg";
 import headerBg2 from "../../assets/images/home__header_bg_2.jpg";
+import EmptyStateYellow from "../../assets/images/empty_state__yellow.png";
 
 const headerBgs = [ 
   { "img": headerBg0, "color": "#53D1D7" },
@@ -164,7 +163,7 @@ class Home extends Component {
                 this.props.posts.mostRecentGetFailed && 
                 this.props.posts.error.message === "no posts found" ?
                   <div className="no__posts">
-                    <FontAwesomeIcon icon={faBatteryEmpty} />
+                    <img src={EmptyStateYellow} alt="no posts" />
                     <h4>Oops! Looks like there are no stories yet.</h4>
                   </div> : null
               }

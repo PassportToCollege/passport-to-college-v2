@@ -14,6 +14,8 @@ import LinkDropdown from "../../components/LinkDropdown";
 import StoryCard from "../../components/StoryCard";
 import Loader from "../../components/Loader";
 
+import EmptyState from "../../assets/images/empty_state__default.png";
+
 class Stories extends Component {
   constructor(props) {
     super(props);
@@ -94,6 +96,14 @@ class Stories extends Component {
           {
             this.props.posts.paginatingPosts ?
               <Loader /> : null
+          }
+          {
+            this.props.posts.paginationFailed &&
+            this.props.posts.error.message === "no posts found" ?
+            <div className="no__posts">
+              <img src={EmptyState} alt="no posts" />
+              <h4>Oops! Looks like there are no stories yet.</h4>
+            </div> : null
           }
         </section>
       </main>
