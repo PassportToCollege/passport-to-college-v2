@@ -150,7 +150,7 @@ class EditPost extends Component {
             <li className="edit_post__delete"
               onClick={this.deletePost}>delete</li>
           </ul>
-          <h4>categories</h4>
+          <h4>category</h4>
           <ul className="edit_post__nav_list categories_list">
             <li className="edit_post__add_category"
               onClick={() => this.setState({ addingCategory: true })}>add category</li>
@@ -163,7 +163,7 @@ class EditPost extends Component {
                       className="edit_post__category">
                       <span>{category.name}</span>
                       <Toggler 
-                        state={this.state.post.categories && this.state.post.categories[category.slug] ? "yes" : "no"} 
+                        state={this.state.post.category && this.state.post.category[category.slug] ? "yes" : "no"} 
                         doClick={this.togglePostCategory}
                         options={{
                           clickArg: category.slug

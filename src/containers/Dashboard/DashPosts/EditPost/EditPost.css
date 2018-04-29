@@ -176,3 +176,9 @@
   font-family: "Roboto", sans-serif;
   padding: 1em;
 }
+
+.edit_post__editor {
+  width: 1170px;
+  max-width: 100%;
+  margin: 0 auto;
+}

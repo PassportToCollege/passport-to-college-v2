@@ -18,8 +18,8 @@ const PostCard = ({ post, cardStyles, isDashboard, full }) => {
         <Link to={`/stories/read/${post.id}`} className="post_card__content">
           <section className="post_card__categories">
             {
-              Object.keys(post.categories).map(category => {
-                if (post.categories[category] === true)
+              Object.keys(post.category).map(category => {
+                if (post.category[category] === true)
                   return ( 
                     <span key={category} className="post_card__category">
                       {category.split("-").join(" ").trim()}
