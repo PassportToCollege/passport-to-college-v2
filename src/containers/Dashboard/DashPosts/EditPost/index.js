@@ -13,7 +13,7 @@ import Notification from "../../../../components/Notification";
 import WYSIWYGEditor from "../../../../components/Editor";
 import DropUploader from "../../../../components/DropUploader";
 import { AddPostCategory } from "../../../../components/Modal";
-import Toggler from "../../../../components/Toggler";
+import NavigationEditPost from "../../../NavigationEditPost";
 
 class EditPost extends Component {
   constructor(props) {
@@ -114,66 +114,11 @@ class EditPost extends Component {
               doSubmit={this.handleCategoryAdd} /> :
             null
         }
-        <nav className="edit_post__nav">
-          <h4>options</h4>
-          <ul className="edit_post__nav_list">
-            <li className="edit_post__save"
-              onClick={this.updatePost}>save</li>
-            {
-              this.props.post.hasGotten && this.state.post 
-              && this.state.post.state.draft ?
-                <li className="edit_post__publish"
-                  onClick={this.publishPost}>publish</li> :
-                null
-            }
-            {
-              this.props.post.hasGotten && this.state.post
-                && this.state.post.state.published ?
-                <li className="edit_post__unpublish"
-                  onClick={this.unpublishPost}>unpublish</li> :
-                null
-            }
-            {
-              this.props.post.hasGotten && this.state.post 
-              && this.state.post.state.archived ?
-              <li className="edit_post__unarchive"
-                onClick={this.unpublishPost}>unarchive</li> :
-              null
-            }
-            {
-              this.props.post.hasGotten && this.state.post
-              && !this.state.post.state.archived ?
-                <li className="edit_post__archive"
-                  onClick={this.archivePost}>archive</li> :
-                null
-            }
-            <li className="edit_post__delete"
-              onClick={this.deletePost}>delete</li>
-          </ul>
-          <h4>category</h4>
-          <ul className="edit_post__nav_list categories_list">
-            <li className="edit_post__add_category"
-              onClick={() => this.setState({ addingCategory: true })}>add category</li>
-            {
-              this.props.postCategories.gotCategories && this.state.categories 
-              && this.props.post.hasGotten && this.state.post ?
-                this.state.categories.map(category => {
-                  return (
-                    <li key={category.slug} 
-                      className="edit_post__category">
-                      <span>{category.name}</span>
-                      <Toggler 
-                        state={this.state.post.category && this.state.post.category[category.slug] ? "yes" : "no"} 
-                        doClick={this.togglePostCategory}
-                        options={{
-                          clickArg: category.slug
-                        }} />
-                    </li>
-                  )
-                }) : null
-            }
-          </ul>
-        </nav>
+        <NavigationEditPost post={this.state.post}
+          categories={this.state.categories} 
+          addingCategory={() => this.setState({ addingCategory: true })} 
+          updatePost={this.updatePostFromNav} 
+          togglePostCategory={this.togglePostCategory} />
         <main className="edit_post__edit">
           <h1 className="edit_post__post_title" contentEditable
             suppressContentEditableWarning={true}
@@ -330,6 +275,31 @@ class EditPost extends Component {
         draft: true
       }
     }, { refresh: true });
+  }
+
+  deletePost =() => {
+    // TODO: delete post
+    return;
+  }
+
+  updatePostFromNav = type => {
+    switch (type) {
+      case "publish":
+        this.publishPost();
+        break;
+      case "unpublish":
+      case "unarchive":
+        this.unpublishPost();
+        break;
+      case "archive":
+        this.archivePost();
+        break;
+      case "delete":
+        this.deletePost();
+        break;
+      default:
+        this.updatePost();
+    }
   }
 
   handleHeroImageChange = e => {
