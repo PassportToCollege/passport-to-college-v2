@@ -2,6 +2,8 @@ import * as types from "./actionTypes";
 import { db, auth, storage } from "../utils/firebase";
 import moment from "moment";
 
+import { doPostsGetMostRecent } from "./postsActions";
+
 const Console = console;
 
 // ADD actions
@@ -223,7 +225,6 @@ export const doPostUpdate = (id, data, options) => {
 
     options = options || {};
     data = data || {};
-
     db.collection("posts")
       .doc(id)
       .update(data)
@@ -231,7 +232,10 @@ export const doPostUpdate = (id, data, options) => {
         dispatch(postUpdated());
 
         if (options.refresh)
-          return dispatch(doPostGet(id));
+          dispatch(doPostGet(id));
+        
+        if (options.publishing)
+          return dispatch(doPostsGetMostRecent());
       })
       .catch(error => {
         dispatch(updatePostFailed(error, id, data));

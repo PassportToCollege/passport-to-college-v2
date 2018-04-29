@@ -49,7 +49,7 @@ class EditPost extends Component {
       newState = { 
         post: nextProps.post.post, 
         postChanges: Object.assign({}, prevState.postChanges, { 
-          excerpt: nextProps.post.post.excerpt 
+          excerpt: nextProps.post.post.excerpt || ""
         }) 
       };
     }
@@ -253,7 +253,7 @@ class EditPost extends Component {
         draft: false
       },
       publishedOn: new Date(moment.utc(moment()).toDate()).getTime()
-    }, { refresh: true });
+    }, { refresh: true, publishing: true });
   }
 
   archivePost = () => {
@@ -264,7 +264,7 @@ class EditPost extends Component {
         draft: false
       },
       archivedOn: new Date(moment.utc(moment()).toDate()).getTime()
-    }, { refresh: true });
+    }, { refresh: true, publishing: true });
   }
 
   unpublishPost = () => {
@@ -274,7 +274,7 @@ class EditPost extends Component {
         archived: false,
         draft: true
       }
-    }, { refresh: true });
+    }, { refresh: true, publishing: true });
   }
 
   deletePost =() => {
