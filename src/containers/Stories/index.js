@@ -12,6 +12,7 @@ import * as statsActions from "../../actions/statsActions";
 
 import LinkDropdown from "../../components/LinkDropdown";
 import StoryCard from "../../components/StoryCard";
+import LoadingText from "../../components/LoadingText";
 import Loader from "../../components/Loader";
 
 import EmptyState from "../../assets/images/empty_state__default.png";
@@ -81,7 +82,11 @@ class Stories extends Component {
           {
             this.props.postCategories.gotCategories && this.state.categories ?
               <LinkDropdown name="Categories" data={this.createLinkDropdownData()}  doClick={this.handleCategoryChange} /> :
-              null
+              <LoadingText options={{
+                height: "50px",
+                bg: "transparent",
+                lines: [{ color: "#eee", width: "300px" }]
+              }} />
           }
         </section>
         <section className="stories__stories">
