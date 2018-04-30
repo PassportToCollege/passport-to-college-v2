@@ -8,7 +8,7 @@ import propTypes from "prop-types";
 import * as postActions from "../../actions/postActions";
 import * as postsActions from "../../actions/postsActions";
 
-import Loader from "../../components/Loader";
+import LoadingPost from "../../components/LoadingPost";
 import WYSIWYGEditor from "../../components/Editor";
 import PostCardGrid from "../../components/PostCardGrid";
 
@@ -125,7 +125,7 @@ class Story extends Component {
                   padding: "2em 3em"
                 }} />
             </section> :
-            <Loader />
+            <LoadingPost />
         }
         <section className="story__more">
           <h2>more stories like this</h2>

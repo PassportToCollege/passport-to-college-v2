@@ -25,7 +25,11 @@ const LoadingText = props => {
         options.lines.map((line, i) => {
           return (
           <span key={i} 
-                style={{width: line.width, height: options.height, backgroundColor: line.color}}>
+                style={{
+                  width: line.width, 
+                  height: options.height, 
+                  backgroundColor: line.color
+                }}>
           </span>
           )
         })

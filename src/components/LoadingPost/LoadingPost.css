@@ -1,0 +1,11 @@
+.loading_post {
+  padding: 1em 2em;
+}
+
+.loading_post .loading_post__hero {
+  padding-top: 56.25%;
+  width: 100%;
+  height: 0;
+  background-color: rgba(51,51,51,0.2);
+  margin: 2em 0;
+}
