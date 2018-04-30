@@ -1,0 +1,25 @@
+.post_card_grid {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  padding: 0 2em;
+}
+
+.post_card_grid > * {
+  max-width: 500px;
+  flex: 0 1 500px;
+}
+
+.post_card_grid > .post_card_grid__most_recent,
+.post_card_grid > .post_card_grid__other_recents {
+  margin-bottom: 20px;
+}
+
+.post_card_grid > .post_card_grid__other_recents .post_card__main:not(:last-child) {
+  margin-bottom: 20px;  
+}
+
+.post_card_grid > .post_card_grid__most_recent > .post_card__main:not(:last-child) {
+  margin-bottom: 20px;
+}

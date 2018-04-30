@@ -10,7 +10,7 @@ import * as postsActions from "../../actions/postsActions";
 
 import Loader from "../../components/Loader";
 import WYSIWYGEditor from "../../components/Editor";
-import PostCard from "../../components/PostCard";
+import PostCardGrid from "../../components/PostCardGrid";
 
 class Story extends Component {
   constructor(props) {
@@ -127,14 +127,8 @@ class Story extends Component {
         <section className="story__more">
           <h2>more stories like this</h2>
           {
-            this.props.posts.gotMostRecentByCategory && this.state.more ?
-              this.state.more.map(post => {
-                return (
-                  <PostCard key={post.id}
-                    isDashboard={false}
-                    post={post} /> 
-                )
-              }) : null
+            this.state.more ?
+            <PostCardGrid posts={this.state.more} /> : null
           }
         </section>
       </main>
