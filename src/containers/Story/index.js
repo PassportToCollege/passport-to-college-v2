@@ -20,7 +20,7 @@ class Story extends Component {
       post: props.post.post,
       hero: props.post.hero,
       id: props.match.params.post_id,
-      more: props.posts.moreByCategory
+      more: props.posts.moreByCategory || []
     }
   }
 
@@ -40,7 +40,7 @@ class Story extends Component {
       snapshot.postChanged = true;
     }
 
-    if (!this.state.more && !this.props.posts.gettingMostRecentByCategory
+    if (!this.state.more.length && !this.props.posts.gettingMostRecentByCategory
     && this.props.post.hasGotten) {
       snapshot = snapshot || {};
       snapshot.getMore = true;
@@ -58,6 +58,9 @@ class Story extends Component {
     if (snapshot && snapshot.postChanged) {
       this.props.postActions.doPostGet(this.state.id);
       this.props.postActions.doHeroGet(this.state.id);
+      this.props.postsActions.doPostsGetMostRecentByCategory(this.state.post.category, {
+        exclude: this.state.id
+      });
     }
 
     if (snapshot && snapshot.getMore) {
@@ -127,7 +130,7 @@ class Story extends Component {
         <section className="story__more">
           <h2>more stories like this</h2>
           {
-            this.state.more ?
+            this.state.more.length ?
             <PostCardGrid posts={this.state.more} /> : null
           }
         </section>
