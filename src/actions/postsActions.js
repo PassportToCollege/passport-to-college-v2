@@ -242,7 +242,7 @@ export const doPostsPaginate = (page, category) => {
     if (category  && category !== "all") {
       postRef = db.collection("posts")
         .where("state.published", "==", true)
-        .where(`categories.${category}`, "==", true)
+        .where(`category.${category}`, "==", true)
         .orderBy("publishedOn", "desc")
     } else {
       postRef = db.collection("posts")

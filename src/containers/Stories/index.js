@@ -36,10 +36,14 @@ class Stories extends Component {
     if (nextProps.posts.paginationDone && page > 1 &&
       !_.isEqual(posts, nextProps.posts.posts)) {
         newState.posts.concat(nextProps.posts.posts);
-      } else {
-        newState.posts = nextProps.posts.posts;
       }
+    
+    if (nextProps.posts.paginationDone &&  page === 1)
+      newState.posts = nextProps.posts.posts;
 
+    if (nextProps.posts.paginationFailed)
+      newState.posts = [];
+    
     if (nextProps.postCategories.gotCategories &&
       !_.isEqual(categories, nextProps.postCategories.categories))
       newState.categories = nextProps.postCategories.categories;
@@ -102,7 +106,11 @@ class Stories extends Component {
             this.props.posts.error.message === "no posts found" ?
             <div className="no__posts">
               <img src={EmptyState} alt="no posts" />
-              <h4>Oops! Looks like there are no stories yet.</h4>
+              {
+                this.state.category === "all" ?
+                  <h4>Oops! Looks like there are no stories yet.</h4> :
+                  <h4>Oops! Looks like there are no stories in this category yet.</h4>
+              }
             </div> : null
           }
         </section>
