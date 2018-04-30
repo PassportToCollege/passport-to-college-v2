@@ -374,7 +374,7 @@ class EditPost extends Component {
     );
 
     this.props.postActions.doPostUpdate(this.state.id, postUpdater, {
-      refresh: true
+      refresh: true, publishing: this.state.post.state.published
     });
   }
 }

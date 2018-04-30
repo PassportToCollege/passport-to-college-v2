@@ -139,40 +139,40 @@ export const doPostsGetMostRecent = () => {
   };
 };
 
-export const postsGetMostRecentByCategoryInititated = categories => {
+export const postsGetMostRecentByCategoryInititated = category => {
   return {
     type: types.POSTS_GET_MOST_RECENT_BY_CATEGORY_INITIATED,
-    categories
+    category
   }
 };
 
-export const postsGetMostRecentByCategoryFailed = (error, categories) => {
+export const postsGetMostRecentByCategoryFailed = (error, category) => {
   return {
     type: types.POSTS_GET_MOST_RECENT_BY_CATEGORY_FAILED,
-    error, categories
+    error, category
   }
 };
 
-export const postsGetMostRecentByCategoryDone = (more, categories) => {
+export const postsGetMostRecentByCategoryDone = (more, category) => {
   return {
     type: types.POSTS_GET_MOST_RECENT_BY_CATEGORY_DONE,
-    more, categories
+    more, category
   }
 };
 
-export const doPostsGetMostRecentByCategory = (categories, options) => {
+export const doPostsGetMostRecentByCategory = (category, options) => {
   return dispatch => {
-    dispatch(postsGetMostRecentByCategoryInititated(categories));
+    dispatch(postsGetMostRecentByCategoryInititated(category));
 
-    categories = categories || {};
+    category = category || {};
     options = options || {};
 
-    const catKeys = Object.keys(categories);
+    const catKey = Object.keys(category);
 
     let query = db.collection("posts");
-    for (let key of catKeys) {
-      if (categories[key])
-        query = query.where(`categories.${key}`, "==", true);
+    for (let key of catKey) {
+      if (category[key])
+        query = query.where(`category.${key}`, "==", true);
     }
 
     return query.where("state.published", "==", true)
@@ -181,18 +181,25 @@ export const doPostsGetMostRecentByCategory = (categories, options) => {
       .get()
       .then(snapshots => {
         if (snapshots.empty)
-          return dispatch(postsGetMostRecentByCategoryFailed({ message: "no posts found" }, categories));
+          return dispatch(postsGetMostRecentByCategoryFailed({ message: "no posts found" }, category));
 
-          let posts = [];
+        let posts = [];
         let heroPromises = [];
 
         snapshots.forEach(snapshot => {
           let post = snapshot.data();
           post.id = snapshot.id;
 
-          heroPromises.push(storage.ref("posts/heros").child(`${snapshot.id}.png`).getDownloadURL());
-          posts.push(post);
+          if (options.exclude.indexOf(post.id) > -1) {
+            return null;
+          } else {
+            heroPromises.push(storage.ref("posts/heros").child(`${snapshot.id}.png`).getDownloadURL());
+            posts.push(post);
+          }
         });
+
+        if (!posts.length)
+          return dispatch(postsGetMostRecentByCategoryFailed({ message: "no posts found" }, category)); 
 
         Promise.all(heroPromises).then(urls => {
           for (let post of posts) {
@@ -201,12 +208,12 @@ export const doPostsGetMostRecentByCategory = (categories, options) => {
             });
           }
 
-          dispatch(postsGetMostRecentByCategoryDone(posts, categories));
+          dispatch(postsGetMostRecentByCategoryDone(posts, category));
         });
       })
       .catch(error => {
         Console.log(error);
-        dispatch(postsGetMostRecentByCategoryFailed(error, categories));
+        dispatch(postsGetMostRecentByCategoryFailed(error, category));
       })
   };
 };

@@ -84,14 +84,14 @@ const posts = (state = initialState.posts, action) => {
         gettingMostRecentByCategory: true,
         gotMostRecentByCategory: false,
         mostRecentGetByCategoryGetFailed: false,
-        categories: action.categories
+        category: action.category
       });
     case POSTS_GET_MOST_RECENT_BY_CATEGORY_DONE:
       return Object.assign({}, state, {
         gettingMostRecentByCategory: false,
         gotMostRecentByCategory: true,
         mostRecentGetByCategoryGetFailed: false,
-        categories: action.categories,
+        category: action.category,
         moreByCategory: action.more
       });
     case POSTS_GET_MOST_RECENT_BY_CATEGORY_FAILED:
@@ -99,7 +99,7 @@ const posts = (state = initialState.posts, action) => {
         gettingMostRecentByCategory: false,
         gotMostRecentByCategory: false,
         mostRecentGetByCategoryGetFailed: true,
-        categories: action.categories,
+        category: action.category,
         error: action.error
       });
     default:

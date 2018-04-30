@@ -10,6 +10,7 @@ import * as postsActions from "../../actions/postsActions";
 
 import Loader from "../../components/Loader";
 import WYSIWYGEditor from "../../components/Editor";
+import PostCard from "../../components/PostCard";
 
 class Story extends Component {
   constructor(props) {
@@ -39,6 +40,12 @@ class Story extends Component {
       snapshot.postChanged = true;
     }
 
+    if (!this.state.more && !this.props.posts.gettingMostRecentByCategory
+    && this.props.post.hasGotten) {
+      snapshot = snapshot || {};
+      snapshot.getMore = true;
+    }
+
     if (document.scrollingElement.scrollTop > 0) {
       snapshot = snapshot || {};
       snapshot.toTop = true;
@@ -51,6 +58,12 @@ class Story extends Component {
     if (snapshot && snapshot.postChanged) {
       this.props.postActions.doPostGet(this.state.id);
       this.props.postActions.doHeroGet(this.state.id);
+    }
+
+    if (snapshot && snapshot.getMore) {
+      this.props.postsActions.doPostsGetMostRecentByCategory(this.state.post.category, {
+        exclude: this.state.id
+      });
     }
 
     if (snapshot && snapshot.toTop) {
@@ -113,6 +126,16 @@ class Story extends Component {
         }
         <section className="story__more">
           <h2>more stories like this</h2>
+          {
+            this.props.posts.gotMostRecentByCategory && this.state.more ?
+              this.state.more.map(post => {
+                return (
+                  <PostCard key={post.id}
+                    isDashboard={false}
+                    post={post} /> 
+                )
+              }) : null
+          }
         </section>
       </main>
     )
