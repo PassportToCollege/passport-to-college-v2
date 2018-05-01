@@ -18,6 +18,7 @@ import InfoCard from "../../components/InfoCard";
 import InfoStrip from "../../components/InfoStrip";
 import PostCardGrid from "../../components/PostCardGrid";
 import Loader from "../../components/Loader";
+import ToTopContainer from "../../components/ToTopContainer";
 
 import infoCardBg from "../../assets/images/info_card__bg.JPG";
 import headerBg0 from "../../assets/images/home__header_bg_0.jpg";
@@ -68,7 +69,7 @@ class Home extends Component {
 
   render() {
     return (
-      <div className="home__container reset__body_top_padding">
+      <ToTopContainer classes="home__container reset__body_top_padding">
         <ParallaxHeader showScrollStrip height="100vh"
           setInterval={interval => this.setState({ parallaxInterval: interval })}
           bgImages={headerBgs}
@@ -178,7 +179,7 @@ class Home extends Component {
             }
           </div>
         </section>
-      </div>
+      </ToTopContainer>
     )
   }
 
