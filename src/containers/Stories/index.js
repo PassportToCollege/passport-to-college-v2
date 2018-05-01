@@ -13,6 +13,7 @@ import * as statsActions from "../../actions/statsActions";
 import LinkDropdown from "../../components/LinkDropdown";
 import StoryCard from "../../components/StoryCard";
 import LoadingText from "../../components/LoadingText";
+import { LoadingPosts } from "../../components/LoadingPosts";
 import Loader from "../../components/Loader";
 import ToTopContainer from "../../components/ToTopContainer";
 
@@ -106,7 +107,7 @@ class Stories extends Component {
             }
             {
               this.props.posts.paginatingPosts ?
-                <Loader /> : null
+                <LoadingPosts /> : null
             }
             {
               this.props.posts.paginationFailed &&
