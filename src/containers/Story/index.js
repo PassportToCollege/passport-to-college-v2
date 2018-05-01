@@ -3,6 +3,7 @@ import "./Story.css";
 import React, { Component} from "react";
 import { connect} from "react-redux";
 import { bindActionCreators } from "redux";
+import { Link } from "react-router-dom";
 import propTypes from "prop-types";
 
 import * as postActions from "../../actions/postActions";
@@ -11,6 +12,7 @@ import * as postsActions from "../../actions/postsActions";
 import LoadingPost from "../../components/LoadingPost";
 import WYSIWYGEditor from "../../components/Editor";
 import PostCardGrid from "../../components/PostCardGrid";
+import BorderTopContainer from "../../components/BorderTopContainer";
 
 class Story extends Component {
   constructor(props) {
@@ -124,16 +126,33 @@ class Story extends Component {
                   maxWidth: "100%",
                   padding: "2em 3em"
                 }} />
+              {
+                this.state.post.category ?
+                  <BorderTopContainer classes="story__category">
+                    {
+                      Object.keys(this.state.post.category).map(category => {
+                        if (this.state.post.category[category]) {
+                          return (
+                            <Link key={category}
+                              to={`/stories/cat/${category}`}>
+                              {category.split("-").join(" ")}
+                            </Link>
+                          )
+                        }
+                      })
+                    }
+                  </BorderTopContainer> : null
+              }
             </section> :
             <LoadingPost />
         }
-        <section className="story__more">
+        <BorderTopContainer classes="story__more">
           <h2>more stories like this</h2>
           {
             this.state.more.length ?
             <PostCardGrid posts={this.state.more} /> : null
           }
-        </section>
+        </BorderTopContainer>
       </main>
     )
   }
