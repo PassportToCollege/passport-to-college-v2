@@ -7,6 +7,7 @@ import propTypes from "prop-types";
 
 import * as authActions from "../../../actions/authActions";
 
+import PageMeta from "../../../components/PageMeta";
 import { ResetPasswordForm } from "../../../components/Forms";
 import Notification from "../../../components/Notification";
 
@@ -52,6 +53,7 @@ class ResetPassword extends Component {
   render() {
     return (
       <div className="reset__container">
+        <PageMeta route="RESET_PASSWORD" />
         <ResetPasswordForm handleSubmit={this.handleSubmit}
           updateEmail={this.updateEmail}
           authError={this.state.hasError} 

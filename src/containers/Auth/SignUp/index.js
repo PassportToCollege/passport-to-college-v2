@@ -9,6 +9,7 @@ import propTypes from "prop-types";
 import * as authActions from "../../../actions/authActions";
 import * as usersAction from "../../../actions/usersActions";
 
+import PageMeta from "../../../components/PageMeta";
 import { SignUpForm } from "../../../components/Forms";
 import Notification from "../../../components/Notification";
 
@@ -72,6 +73,7 @@ class SignUp extends Component {
   render() {
     return (
       <div className="signup__container">
+        <PageMeta route="SIGN_UP" />
         {
           this.props.users.hasGottenUser && this.state.user ?
             <SignUpForm user={this.state.user} 
