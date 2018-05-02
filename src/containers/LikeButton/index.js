@@ -18,7 +18,7 @@ class LikeButton extends Component {
     this.state = {
       post: props.post,
       signingUp: false,
-      authorized: props.auth
+      authorized: props.auth.activeUser
     }
   }
 
@@ -26,6 +26,17 @@ class LikeButton extends Component {
     auth: propTypes.oneOfType([propTypes.object, propTypes.bool]),
     authActions: propTypes.object,
     post: propTypes.object
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    let newState = null;
+
+    if (nextProps.auth.activeUser !== prevState.authorized) {
+      newState = {};
+      newState.authorized = nextProps.auth.activeUser;
+    }
+
+    return newState;
   }
 
   render() {

@@ -20,7 +20,7 @@ import {
   EMAIL_CONFIRMATION_SENT,
   EMAIL_CONFIRMATION_SEND_FAILED} from "../actions/actionTypes";
 
-const auth = (state = initialState.activeUser, action) => {
+const auth = (state = initialState.auth, action) => {
   switch(action.type) {
     case REMOVE_AUTH_ERRORS:
       return Object.assign({}, state, {
@@ -66,7 +66,7 @@ const auth = (state = initialState.activeUser, action) => {
         isAuthorizing: false,
         hasSignedOut: true,
         hasFailed: false,
-        activeUser: null
+        activeUser: false
       });
     case ACCOUNT_CREATION_INITIATED:
       return Object.assign({}, state, {
