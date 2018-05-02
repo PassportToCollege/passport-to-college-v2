@@ -51,7 +51,9 @@ class Story extends Component {
 
     if (document.scrollingElement.scrollTop > 0) {
       snapshot = snapshot || {};
-      snapshot.toTop = true;
+
+      if (snapshot.postChanged)
+        snapshot.toTop = true;
     }
 
     return snapshot;
@@ -147,7 +149,7 @@ class Story extends Component {
                   </BorderTopContainer> : null
               }
               <BorderTopContainer classes="story__appreciate">
-                <LikeButton post={this.state.post} />
+                <LikeButton post={this.state.post} postId={this.state.id} />
               </BorderTopContainer>
             </section> :
             <LoadingPost />

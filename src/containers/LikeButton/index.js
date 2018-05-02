@@ -4,7 +4,7 @@ import React, { Component} from "react";
 import { connect} from "react-redux";
 import { bindActionCreators } from "redux"
 import propTypes from "prop-types";
-import { isAuthorized, countLikes } from "../../utils";
+import { isAuthorized, countLikes, activeUser } from "../../utils";
 
 import * as authActions from "../../actions/authActions";
 import * as postActions from "../../actions/postActions";
@@ -18,7 +18,10 @@ class LikeButton extends Component {
     super(props);
 
     this.state = {
+      id: props.postId,
       post: props.post,
+      liked: isAuthorized() && props.post && props.post.likes && props.post.likes[activeUser()],
+      likes: countLikes(props.post.likes),
       signingUp: false,
       signingIn: false,
       authorized: isAuthorized(),
@@ -31,7 +34,9 @@ class LikeButton extends Component {
   static propTypes = {
     auth: propTypes.oneOfType([propTypes.object, propTypes.bool]),
     authActions: propTypes.object,
-    post: propTypes.object
+    post: propTypes.object,
+    postActions: propTypes.object,
+    postId: propTypes.string
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -66,8 +71,6 @@ class LikeButton extends Component {
   }
 
   render() {
-    const liked = this.state.post && this.state.authorized && this.state.post.like && this.state.post.like[this.props.auth.activeUser.uid];
-
     return (
       <React.Fragment>
         {
@@ -95,17 +98,27 @@ class LikeButton extends Component {
         }
         <div className="like_button">
           <IconButton icon="like" 
-            solid={liked} 
+            solid={this.state.liked} 
             styles={{
-              backgroundColor: liked ? "#7DE2E7" : "transparent",
+              backgroundColor: this.state.liked ? "#7DE2E7" : "transparent",
               borderColor: "#7DE2E7",
-              color: liked ? "#fff" : "#7DE2E7"
+              color: this.state.liked ? "#fff" : "#7DE2E7"
             }} 
             doClick={this.handleLike} />
           {
-            this.state.post && 
-            (!this.state.post.likes || countLikes(this.state.post.likes) === 0) ?
+            this.state.likes === 0 ?
               <span>Be the first to like!</span> : null 
+          }
+          {
+            this.state.liked && this.state.likes === 1 ?
+              <span>You like this story!</span> : null
+          }
+          {
+            this.state.liked && this.state.likes > 1 ?
+              <span>
+                You and <b>{this.state.likes - 1}</b> other{this.state.likes - 1 > 1 ? "s" : " person"} like this story!
+              </span> : 
+                this.state.likes > 1 ? <span>{this.state.likes}</span> : null
           }
         </div>
       </React.Fragment>
@@ -115,6 +128,20 @@ class LikeButton extends Component {
   handleLike = () => {
     if (!this.state.authorized)
       return this.setState({ signingUp: true });
+    
+    const liked = !this.state.liked;
+    this.setState({ 
+      liked, 
+      likes: liked ? this.state.likes + 1 : this.state.likes - 1 
+    });
+
+    this.props.postActions.doPostUpdate(this.state.id, {
+      likes: Object.assign({}, this.state.post.likes, {
+        [activeUser()]: liked
+      })
+    }, {
+      refresh: false
+    });
   }
 
   handleGoogleSignUp = () => {

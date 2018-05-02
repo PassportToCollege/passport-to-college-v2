@@ -39,7 +39,7 @@
 .story .story__content .story__category > a {
   display: inline-block;
   padding: 0.5em 1em;
-  background-color: #FF6561;
+  background-color: #333;
   color: white;
   border-radius: 1em;
   font-family: "Nunito", sans-serif;
