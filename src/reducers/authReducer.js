@@ -58,7 +58,7 @@ const auth = (state = initialState.auth, action) => {
         hasFailed: true,
         isAuthorizing: false,
         hasAuthorized: false,
-        activeUser: null,
+        activeUser: false,
         error: action.error
       });
     case SIGNED_OUT:

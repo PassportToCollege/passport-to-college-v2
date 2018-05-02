@@ -14,7 +14,6 @@ import LinkDropdown from "../../components/LinkDropdown";
 import StoryCard from "../../components/StoryCard";
 import LoadingText from "../../components/LoadingText";
 import { LoadingPosts } from "../../components/LoadingPosts";
-import Loader from "../../components/Loader";
 import ToTopContainer from "../../components/ToTopContainer";
 
 import EmptyState from "../../assets/images/empty_state__default.png";

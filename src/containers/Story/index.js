@@ -140,6 +140,8 @@ class Story extends Component {
                             </Link>
                           )
                         }
+
+                        return null
                       })
                     }
                   </BorderTopContainer> : null

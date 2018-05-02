@@ -7,6 +7,7 @@ import moment from "moment";
 import { NationalTest, CreateUserForm } from "../Forms";
 import WYSIWYGEditor from "../Editor";
 import Button from "../Button";
+import TextedIconButton from "../TextedIconButton";
 
 export const ReauthenticateModal = props => {
   const closeModal = () => {
@@ -458,7 +459,7 @@ AddPostCategory.propTypes = {
   doSubmit: propTypes.func
 };
 
-export const SignUpModal = ({ doClose, doGoogle, heading }) => {
+export const SignUpModal = ({ doClose, doGoogle, doFacebook, doSignIn, heading, intro }) => {
   const closeModal = () => {
     this.modalContainer.classList.add("close");
 
@@ -466,12 +467,37 @@ export const SignUpModal = ({ doClose, doGoogle, heading }) => {
       doClose();
   };
 
+  const handleGoogleSignUp = () => {
+    if ("function" === typeof doGoogle)
+      return doGoogle();
+  }
+
+  const handleFacebookSignUp = () => {
+    if ("function" === typeof doFacebook)
+      return doFacebook();
+  }
+
+  const handleSignInClick = () => {
+    if ("function" === typeof doSignIn)
+      return doSignIn();
+  }
+
   return (
     <div className="modal__container modal__signup"
       ref={div => this.modalContainer = div}>
       <div className="modal__bg" onClick={closeModal}></div>
       <div className="modal__content">
-        <h3>{heading}</h3>
+        <h1>{heading}</h1>
+        <p>{intro}</p>
+        <TextedIconButton doClick={handleGoogleSignUp}
+          icon="google" text="Sign up with your Google account." />
+        <TextedIconButton doClick={handleFacebookSignUp}
+          icon="facebook" text="Sign up with your Facebook account." />
+        <p>
+          Already have an account? 
+          <span className="sign_in__link"
+            onClick={handleSignInClick}>Sign in</span>. 
+        </p>
       </div>
     </div>
   )
@@ -480,7 +506,10 @@ export const SignUpModal = ({ doClose, doGoogle, heading }) => {
 SignUpModal.propTypes = {
   doClose: propTypes.func,
   doGoogle: propTypes.func,
-  heading: propTypes.string
+  doFacebook: propTypes.func,
+  doSignIn: propTypes.func,
+  heading: propTypes.string,
+  intro: propTypes.string
 };
 
 

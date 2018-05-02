@@ -30,12 +30,12 @@ const LoadingPost = ({ styles }) => {
         class: "block__lines center__lines",
         height: "10px",
         lines: [
-          { color: "rgba(51,51,51,0.2)", width: "600px" },
-          { color: "rgba(51,51,51,0.2)", width: "600px" },
-          { color: "rgba(51,51,51,0.2)", width: "600px" },
-          { color: "rgba(51,51,51,0.2)", width: "600px" },
-          { color: "rgba(51,51,51,0.2)", width: "600px" },
-          { color: "rgba(51,51,51,0.2)", width: "600px" }
+          { color: "rgba(51,51,51,0.2)", width: "1070px" },
+          { color: "rgba(51,51,51,0.2)", width: "1070px" },
+          { color: "rgba(51,51,51,0.2)", width: "1070px" },
+          { color: "rgba(51,51,51,0.2)", width: "1070px" },
+          { color: "rgba(51,51,51,0.2)", width: "1070px" },
+          { color: "rgba(51,51,51,0.2)", width: "1070px" }
 
         ]
       }} />
@@ -44,15 +44,15 @@ const LoadingPost = ({ styles }) => {
         class: "block__lines center__lines",
         height: "10px",
         lines: [
-          { color: "rgba(51,51,51,0.2)", width: "600px" },
-          { color: "rgba(51,51,51,0.2)", width: "600px" },
-          { color: "rgba(51,51,51,0.2)", width: "600px" },
-          { color: "rgba(51,51,51,0.2)", width: "600px" },
-          { color: "rgba(51,51,51,0.2)", width: "600px" },
-          { color: "rgba(51,51,51,0.2)", width: "600px" },
-          { color: "rgba(51,51,51,0.2)", width: "600px" },
-          { color: "rgba(51,51,51,0.2)", width: "600px" },
-          { color: "rgba(51,51,51,0.2)", width: "600px" }
+          { color: "rgba(51,51,51,0.2)", width: "1070px" },
+          { color: "rgba(51,51,51,0.2)", width: "1070px" },
+          { color: "rgba(51,51,51,0.2)", width: "1070px" },
+          { color: "rgba(51,51,51,0.2)", width: "1070px" },
+          { color: "rgba(51,51,51,0.2)", width: "1070px" },
+          { color: "rgba(51,51,51,0.2)", width: "1070px" },
+          { color: "rgba(51,51,51,0.2)", width: "1070px" },
+          { color: "rgba(51,51,51,0.2)", width: "1070px" },
+          { color: "rgba(51,51,51,0.2)", width: "1070px" }
 
         ]
       }} />
