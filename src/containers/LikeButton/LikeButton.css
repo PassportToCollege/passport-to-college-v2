@@ -1,0 +1,10 @@
+.like_button {
+  display: inline-flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.like_button > span {
+  margin-left: 1em;
+}

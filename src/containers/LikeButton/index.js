@@ -4,7 +4,7 @@ import React, { Component} from "react";
 import { connect} from "react-redux";
 import { bindActionCreators } from "redux"
 import propTypes from "prop-types";
-import { isAuthorized } from "../../utils";
+import { isAuthorized, countLikes } from "../../utils";
 
 import * as authActions from "../../actions/authActions";
 import * as postActions from "../../actions/postActions";
@@ -66,6 +66,8 @@ class LikeButton extends Component {
   }
 
   render() {
+    const liked = this.state.post && this.state.authorized && this.state.post.like && this.state.post.like[this.props.auth.activeUser.uid];
+
     return (
       <React.Fragment>
         {
@@ -92,11 +94,19 @@ class LikeButton extends Component {
               doClose={this.handleErrorNotificationClose} /> : null
         }
         <div className="like_button">
-          <IconButton icon="like" solid 
+          <IconButton icon="like" 
+            solid={liked} 
             styles={{
-              backgroundColor: "#7DE2E7"
+              backgroundColor: liked ? "#7DE2E7" : "transparent",
+              borderColor: "#7DE2E7",
+              color: liked ? "#fff" : "#7DE2E7"
             }} 
             doClick={this.handleLike} />
+          {
+            this.state.post && 
+            (!this.state.post.likes || countLikes(this.state.post.likes) === 0) ?
+              <span>Be the first to like!</span> : null 
+          }
         </div>
       </React.Fragment>
     )
