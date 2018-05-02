@@ -189,3 +189,33 @@
   color: #FF6561;
   cursor: pointer;
 }
+
+/* Signin modal */
+.modal__container.modal__signin .modal__content {
+  border-bottom: 3px solid #53D1D7;
+  padding: 2.25em;
+}
+
+.modal__container.modal__signin .modal__content > .texted_icon_button {
+  margin: 2em 0;
+}
+
+.modal__container.modal__signin .modal__content>form input[type] {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 100%;
+  outline: none;
+  border: 2px solid rgba(128, 150, 162, 0.35);
+  padding: 1em;
+  font-family: "Roboto", sans-serif;
+  margin: 0 0 1em;
+}
+
+.modal__container.modal__signin .modal__content>form label {
+  display: block;
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+  font-weight: bold;
+  color: rgba(128, 150, 162, 0.85);
+}

@@ -10,7 +10,7 @@ import * as authActions from "../../actions/authActions";
 import * as postActions from "../../actions/postActions";
 
 import IconButton from "../../components/IconButton";
-import { SignUpModal } from "../../components/Modal";
+import { SignUpModal, SignInModal } from "../../components/Modal";
 import Notification from "../../components/Notification";
 
 class LikeButton extends Component {
@@ -20,6 +20,7 @@ class LikeButton extends Component {
     this.state = {
       post: props.post,
       signingUp: false,
+      signingIn: false,
       authorized: isAuthorized(),
       hasError: false,
       notificationClosed: true,
@@ -42,7 +43,8 @@ class LikeButton extends Component {
     }
 
     if (nextProps.auth.failedToSignInWithFacebook ||
-      nextProps.auth.failedToSignInWithGoogle) {
+      nextProps.auth.failedToSignInWithGoogle ||
+      nextProps.auth.hasFailed) {
       newState = newState || {};
       newState = Object.assign({}, newState, {
         hasError: true,
@@ -53,9 +55,11 @@ class LikeButton extends Component {
 
     if ((nextProps.auth.hasAuthorized ||
       nextProps.auth.hasSignedInWithGoogle ||
-      nextProps.auth.hasSignedInWithFacebook) && prevState.signingUp) {
+      nextProps.auth.hasSignedInWithFacebook) && 
+      (prevState.signingUp || prevState.signingIn)) {
       newState = newState || {};
       newState.signingUp = false;
+      newState.signingIn = false;
     }
 
     return newState;
@@ -70,8 +74,17 @@ class LikeButton extends Component {
               intro={`Liking shows ${this.state.post.author.name.full} how much you appreciate this story.`}
               doClose={() => this.setState({ signingUp: false })}
               doGoogle={this.handleGoogleSignUp} 
-              doFacebook={this.handleFacebookSignup} />
+              doFacebook={this.handleFacebookSignup} 
+              doSignIn={() => this.setState({ signingIn: true, signingUp: false })} />
             : null
+        }
+        {
+          this.state.signingIn ?
+            <SignInModal doClose={() => this.setState({ signingIn: false })}
+              doGoogle={this.handleGoogleSignUp}
+              doFacebook={this.handleFacebookSignup}
+              doSignIn={this.handleSignIn} 
+              doSignUp={() => this.setState({ signingIn: false, signingUp: true })}/> : null
         }
         {
           this.state.hasError && !this.state.notificationClosed ?
@@ -110,6 +123,10 @@ class LikeButton extends Component {
     });
 
     this.props.authActions.removeAuthErrors();
+  }
+
+  handleSignIn = (email, password) => {
+    this.props.authActions.doSignIn(email.value, password.value);
   }
 }
 
