@@ -9,6 +9,7 @@ import propTypes from "prop-types";
 import { VIEW_APPLICATION_SECTIONS } from "../../../constants/routes";
 import * as applicationActions from "../../../actions/applicationActions";
 
+import PageMeta from "../../../components/PageMeta";
 import ApplicationSection from "./ApplicationSection";
 import Button from "../../../components/Button";
 import LoadingText from "../../../components/LoadingText";
@@ -37,6 +38,12 @@ class Application extends Component {
   render() {
     return (
       <div className="dashboard__container">
+        {
+          this.props.application.hasGotten ?
+            <PageMeta more={
+              <title>{this.props.application.application.user.name.full} | Application | Dashboard</title>
+            } /> : null
+        }
         <Button text="back to all applications" solid 
           doClick={() => this.props.history.push("/admin/dashboard/applications")}/>
         <div className="application__container">

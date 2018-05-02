@@ -6,6 +6,7 @@ import propTypes from "prop-types";
 
 import * as routes from "../../../constants/routes";
 
+import PageMeta from "../../../components/PageMeta";
 import NavigationPosts from "../../NavigationPosts";
 import EditPost from "./EditPost";
 import DisplayPosts from "./DisplayPosts";
@@ -22,6 +23,9 @@ class DashPosts extends Component {
   render() {
     return (
       <div className="dashboard__container dashboard__container_full dash_posts__container">
+        <PageMeta more={
+          <title>Posts | Dashboard | Passport to College</title>
+        } />
         <NavigationPosts show={this.state.showPostNav} />
         <Route exact path={routes.DASH_POSTS_EDIT.route} 
           render={(props) => {

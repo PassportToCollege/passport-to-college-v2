@@ -14,6 +14,7 @@ import * as featuresActions from "../../../../actions/featuresActions";
 import * as featureActions from "../../../../actions/featureActions";
 import * as usersActions from "../../../../actions/usersActions";
 
+import PageMeta from "../../../../components/PageMeta";
 import AnnotatedList from "../../../../components/AnnotatedList";
 import LoadingText from "../../../../components/LoadingText";
 import InitialsAvatar from "../../../../components/InitialsAvatar";
@@ -148,6 +149,9 @@ class UserSection extends Component {
           !this.state.user.isStudent) {
           return (
             <section className="user__section education__section">
+              <PageMeta more={
+                <title>Education | {this.state.user.name.full} | User | Dashboard | Passport to College</title>
+              } />
               <div className="user__not_student">
                 <h4>user is no a student</h4>
               </div>
@@ -157,6 +161,12 @@ class UserSection extends Component {
 
         return (
           <section className="user__section education__section">
+            {
+              this.props.user.hasGottenUser && this.state.user ?
+                <PageMeta more={
+                  <title>Education | {this.state.user.name.full} | User | Dashboard | Passport to College</title>
+                } /> : null
+            }
             <div className="user__section_left">
               <div className="user__education">
                 <Button solid type="button" text="edit"
@@ -226,6 +236,12 @@ class UserSection extends Component {
         return (
           <section className="user__section profile_picture__section">
             {
+              this.props.user.hasGottenUser && this.state.user ?
+                <PageMeta more={
+                  <title>Profile Picture | {this.state.user.name.full} | User | Dashboard | Passport to College</title>
+                } /> : null
+            }
+            {
               (this.props.picture.hasGottenByUid || this.props.user.hasGottenUser) &&
               (this.state.profilePicture || (this.state.user && this.state.user.photo)) ?
                 <div className="user__profile_picture_container">
@@ -241,6 +257,12 @@ class UserSection extends Component {
       case "bio":
         return (
           <section className="user__section bio__section">
+            {
+              this.props.user.hasGottenUser && this.state.user ?
+                <PageMeta more={
+                  <title>Bio | {this.state.user.name.full} | User | Dashboard | Passport to College</title>
+                } /> : null
+            }
             {
               this.props.student.hasGotten && this.state.student
               && this.state.student.bio && this.state.student.bio.blocks ?
@@ -281,6 +303,9 @@ class UserSection extends Component {
           !this.state.user.isStudent) {
           return (
             <section className="user__section accomplishments__section">
+              <PageMeta more={
+                <title>Accomplishments | {this.state.user.name.full} | User | Dashboard | Passport to College</title>
+              } />
               <div className="user__not_student">
                 <h4>user is no a student</h4>
               </div>
@@ -291,6 +316,12 @@ class UserSection extends Component {
         if (this.props.student.hasGotten) {
           return (
             <section className="user__section accomplishments__section">
+              {
+                this.props.user.hasGottenUser && this.state.user ?
+                  <PageMeta more={
+                    <title>Accomplishments | {this.state.user.name.full} | User | Dashboard | Passport to College</title>
+                  } /> : null
+              }
               <Button text={this.state.addingAccomplishment || this.state.editingAccomplishment ? "- cancel" : "+ accomplishment"} 
                 solid 
                 styles={{
@@ -352,6 +383,9 @@ class UserSection extends Component {
           !this.state.user.isStudent) {
           return (
             <section className="user__section features__section">
+              <PageMeta more={
+                <title>Features | {this.state.user.name.full} | User | Dashboard | Passport to College</title>
+              } />
               <div className="user__not_student">
                 <h4>user is no a student</h4>
               </div>
@@ -362,6 +396,12 @@ class UserSection extends Component {
         if (this.props.student.hasGotten) {
           return (
             <section className="user__section features__section">
+              {
+                this.props.user.hasGottenUser && this.state.user ?
+                  <PageMeta more={
+                    <title>Features | {this.state.user.name.full} | User | Dashboard | Passport to College</title>
+                  } /> : null
+              }
               <Button text={this.state.editingFeature || this.state.creatingFeature ? "- cancel" : "+ feature student"}
                 doClick={this.toggleFeatureStudent}
                 solid
@@ -411,6 +451,12 @@ class UserSection extends Component {
       case "settings":
         return (
           <section className="user__section settings__section">
+            {
+              this.props.user.hasGottenUser && this.state.user ?
+                <PageMeta more={
+                  <title>Settings | {this.state.user.name.full} | User | Dashboard | Passport to College</title>
+                } /> : null
+            }
             <div className="user__section_left">
               <div className="settings__roles">
                 <h2>User Roles</h2>

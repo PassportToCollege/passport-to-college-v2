@@ -5,6 +5,7 @@ import propTypes from "prop-types";
 import moment from "moment";
 import axios from "axios";
 
+import PageMeta from "../../../../components/PageMeta";
 import AnnotatedList from "../../../../components/AnnotatedList";
 import TestList from "../../../../components/TestList";
 import LoadingText from "../../../../components/LoadingText";
@@ -55,6 +56,12 @@ class ApplicationSection extends Component {
       case "tests":
         return (
           <section className="application__section tests__section">
+            {
+              this.props.application.hasGotten ?
+                <PageMeta more={
+                  <title>Tests | {this.props.application.application.user.name.full} | Application | Dashboard</title>
+                } /> : null
+            }
             <div className="application__section_left">
               <div className="application__us_tests">
                 <h2>U.S. Standardized Tests</h2>
@@ -101,6 +108,12 @@ class ApplicationSection extends Component {
       case "essay":
         return (
           <section className="application__section essay__section">
+            {
+              this.props.application.hasGotten ?
+                <PageMeta more={
+                  <title>Essay | {this.props.application.application.user.name.full} | Application | Dashboard</title>
+                } /> : null
+            }
             <div className="application__essay">
               <ReviewBlock renderFromFunc
                 renderFunc={this.renderReadOnlyEssay}
@@ -111,6 +124,12 @@ class ApplicationSection extends Component {
       case "decide":
         return (
           <section className="application__section decide__section">
+            {
+              this.props.application.hasGotten ?
+                <PageMeta more={
+                  <title>Decide | {this.props.application.application.user.name.full} | Application | Dashboard</title>
+                } /> : null
+            }
             {
               (this.state.hasError || this.state.hasNotification) && !this.state.notificationClosed ?
                 <Notification doClose={() => this.setState({
