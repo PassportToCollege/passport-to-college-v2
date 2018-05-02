@@ -7,6 +7,7 @@ import moment from "moment";
 import { NationalTest, CreateUserForm } from "../Forms";
 import WYSIWYGEditor from "../Editor";
 import Button from "../Button";
+import TextedIconButton from "../TextedIconButton";
 
 export const ReauthenticateModal = props => {
   const closeModal = () => {
@@ -458,5 +459,135 @@ AddPostCategory.propTypes = {
   doSubmit: propTypes.func
 };
 
+export const SignUpModal = ({ doClose, doGoogle, doFacebook, doSignIn, heading, intro }) => {
+  const closeModal = () => {
+    this.modalContainer.classList.add("close");
 
+    if ("function" === typeof doClose)
+      doClose();
+  };
+
+  const handleGoogleSignUp = () => {
+    if ("function" === typeof doGoogle)
+      return doGoogle();
+  };
+
+  const handleFacebookSignUp = () => {
+    if ("function" === typeof doFacebook)
+      return doFacebook();
+  };
+
+  const handleSignInClick = () => {
+    if ("function" === typeof doSignIn)
+      return doSignIn();
+  };
+
+  return (
+    <div className="modal__container modal__signup"
+      ref={div => this.modalContainer = div}>
+      <div className="modal__bg" onClick={closeModal}></div>
+      <div className="modal__content">
+        <h1>{heading}</h1>
+        <p>{intro}</p>
+        <TextedIconButton doClick={handleGoogleSignUp}
+          icon="google" text="Sign up with your Google account." />
+        <TextedIconButton doClick={handleFacebookSignUp}
+          icon="facebook" text="Sign up with your Facebook account." />
+        <p>
+          Already have an account? 
+          <span className="sign_in__link"
+            onClick={handleSignInClick}> Sign in</span>. 
+        </p>
+      </div>
+    </div>
+  )
+}
+
+SignUpModal.propTypes = {
+  doClose: propTypes.func,
+  doGoogle: propTypes.func,
+  doFacebook: propTypes.func,
+  doSignIn: propTypes.func,
+  heading: propTypes.string,
+  intro: propTypes.string
+};
+
+export const SignInModal = ({ doClose, doGoogle, doFacebook, doSignIn, doSignUp }) => {
+  const closeModal = () => {
+    this.modalContainer.classList.add("close");
+
+    if ("function" === typeof doClose)
+      doClose();
+  };
+
+  const handleGoogleSignIn = () => {
+    if ("function" === typeof doGoogle)
+      return doGoogle();
+  };
+
+  const handleFacebookSignIn = () => {
+    if ("function" === typeof doFacebook)
+      return doFacebook();
+  };
+
+  const handlleSignIn = (e) => {
+    e.preventDefault();
+    
+    if ("function" === typeof doSignIn)
+      return doSignIn(this.emailInput, this.passwordInput);
+  };
+
+  const handleSignUpInstead = () => {
+    if ("function" === typeof doSignUp)
+      return doSignUp();
+  }
+
+  return (
+    <div className="modal__container modal__signin"
+      ref={div => this.modalContainer = div}>
+      <div className="modal__bg" onClick={closeModal}></div>
+      <div className="modal__content">
+        <h3>Sign in</h3>
+        <TextedIconButton doClick={handleGoogleSignIn}
+          icon="google" text="With Google" />
+        <TextedIconButton doClick={handleFacebookSignIn}
+          icon="facebook" text="With Facebook" />
+        <h3>Or with your email address:</h3>
+        <form className="form form__signin"
+          onSubmit={handlleSignIn}>
+          <div className="form__input_container">
+            <label htmlFor="email">Email address</label>
+            <input type="text" id="email" name="email" required
+              ref={input => this.emailInput = input} />
+          </div>
+          <div className="form__input_container">
+            <label htmlFor="password">Password</label>
+            <input type="password" id="password" name="password" required
+              ref={input => this.passwordInput = input} />
+          </div>
+          <Button type="submit" text="sign in" solid 
+            styles={{
+              backgroundColor: "#53D1D7"
+            }}/>
+          <Button type="button" text="sign up instead" solid
+            doClick={handleSignUpInstead} 
+            styles={{
+              backgroundColor: "rgb(153,153,153)",
+              marginLeft: "1em"
+            }}/>
+        </form>
+      </div>
+    </div>
+  )
+};
+
+SignInModal.propTypes = {
+  doClose: propTypes.func,
+  doGoogle: propTypes.func,
+  doFacebook: propTypes.func,
+  doSignIn: propTypes.func,
+  doSignUp: propTypes.func, 
+  heading: propTypes.string,
+  intro: propTypes.string
+};
 

@@ -14,7 +14,7 @@ const StoryCard = ({ post }) => {
         <div className="story_card__categories_date">
           <span className="story_card__categories">
             {
-              Object.keys(post.categories).map(category => {
+              Object.keys(post.category).map(category => {
                 return (
                   <Link key={category}
                     to={`/stories/cat/${category}`}>

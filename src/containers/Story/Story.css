@@ -30,6 +30,28 @@
   max-width: 100%;
 }
 
+/* Category */
+
+.story .story__content .story__category {
+  padding: 1em;
+}
+
+.story .story__content .story__category > a {
+  display: inline-block;
+  padding: 0.5em 1em;
+  background-color: #333;
+  color: white;
+  border-radius: 1em;
+  font-family: "Nunito", sans-serif;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+/* Appreciation section */
+.story .story__content .story__appreciate {
+  padding: 1em;
+}
+
 /* More stories */
 .story .story__more > h2 {
   font-family: "Muli", sans-serif;

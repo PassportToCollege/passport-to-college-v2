@@ -16,8 +16,8 @@ class SignIn extends Component {
     super(props);
 
     this.state = {
-      email: "",
-      password: "",
+      email: null,
+      password: null,
       hasError: false,
       notificationClosed: false
     }
@@ -81,6 +81,10 @@ class SignIn extends Component {
     const {email, password } = this.state;
 
     this.props.authActions.doSignIn(email, password);
+    this.setState({
+      email: null,
+      password: null
+    });
   }
 
   handleNotificationClose = () => {

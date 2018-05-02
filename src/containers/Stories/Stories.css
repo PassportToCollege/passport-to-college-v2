@@ -33,3 +33,16 @@
   font-weight: 100;
   opacity: 0.85;
 }
+
+.stories .stories__stories > .no__posts {
+  text-align: center;
+  color: #aaa;
+}
+
+.stories .stories__stories > .no__posts > img {
+  max-width: 100%;
+}
+
+.stories .stories__stories > .no__posts > h4 {
+  font-size: 2em;
+}

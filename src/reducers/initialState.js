@@ -1,6 +1,8 @@
 export default {
   hamburgerState: { current: "closed" },
-  activeUser: false,
+  auth: {
+    activeUser: false
+  },
   user: {},
   users: {},
   userProfilePicture: { url: "" },

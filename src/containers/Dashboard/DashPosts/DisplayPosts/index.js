@@ -10,6 +10,8 @@ import * as postsActions from "../../../../actions/postsActions";
 import PostCardList from "../../../../components/PostCardList";
 import Loader from "../../../../components/Loader";
 
+import EmptyStateRed from "../../../../assets/images/empty_state__red.png";
+
 class DisplayPosts extends Component {
   constructor(props) {
     super(props);
@@ -37,7 +39,11 @@ class DisplayPosts extends Component {
         {
           this.props.posts.hasGotten && this.state.posts.length ?
             <PostCardList posts={this.state.posts} /> :
-            <Loader />
+            this.props.posts.postsGetFailed ? 
+              <div className="no__posts">
+                <img src={EmptyStateRed} alt="no posts" />
+                <h4>No posts yet.</h4>
+              </div> : <Loader />
         }
       </div>
     )

@@ -12,7 +12,11 @@ import * as statsActions from "../../actions/statsActions";
 
 import LinkDropdown from "../../components/LinkDropdown";
 import StoryCard from "../../components/StoryCard";
-import Loader from "../../components/Loader";
+import LoadingText from "../../components/LoadingText";
+import { LoadingPosts } from "../../components/LoadingPosts";
+import ToTopContainer from "../../components/ToTopContainer";
+
+import EmptyState from "../../assets/images/empty_state__default.png";
 
 class Stories extends Component {
   constructor(props) {
@@ -34,10 +38,14 @@ class Stories extends Component {
     if (nextProps.posts.paginationDone && page > 1 &&
       !_.isEqual(posts, nextProps.posts.posts)) {
         newState.posts.concat(nextProps.posts.posts);
-      } else {
-        newState.posts = nextProps.posts.posts;
       }
+    
+    if (nextProps.posts.paginationDone &&  page === 1)
+      newState.posts = nextProps.posts.posts;
 
+    if (nextProps.posts.paginationFailed)
+      newState.posts = [];
+    
     if (nextProps.postCategories.gotCategories &&
       !_.isEqual(categories, nextProps.postCategories.categories))
       newState.categories = nextProps.postCategories.categories;
@@ -70,33 +78,51 @@ class Stories extends Component {
 
   render() {
     return (
-      <main className="stories" ref={main => this.storiesContainer = main}>
-        <section className="stories__header">
-          {
-            this.props.postCategories.gotCategories && this.state.categories ?
-              <LinkDropdown name="Categories" data={this.createLinkDropdownData()}  doClick={this.handleCategoryChange} /> :
-              null
-          }
-        </section>
-        <section className="stories__stories">
-          {
-            this.state.category !== "all" ?
-              <h1 className="stories__category_heading">
-                Stories from <i>&apos;{this.state.category}&apos;</i>
-              </h1> : null
-          }
-          {
-            this.state.posts ?
-              this.state.posts.map(post => {
-                return <StoryCard key={post.id} post={post} />
-              }) : null
-          }
-          {
-            this.props.posts.paginatingPosts ?
-              <Loader /> : null
-          }
-        </section>
-      </main>
+      <ToTopContainer>
+        <main className="stories" ref={main => this.storiesContainer = main}>
+          <section className="stories__header">
+            {
+              this.props.postCategories.gotCategories && this.state.categories ?
+                <LinkDropdown name="Categories" data={this.createLinkDropdownData()}  doClick={this.handleCategoryChange} /> :
+                <LoadingText options={{
+                  height: "50px",
+                  bg: "transparent",
+                  lines: [{ color: "#eee", width: "300px" }]
+                }} />
+            }
+          </section>
+          <section className="stories__stories">
+            {
+              this.state.category !== "all" ?
+                <h1 className="stories__category_heading">
+                  Stories from <i>&apos;{this.state.category}&apos;</i>
+                </h1> : null
+            }
+            {
+              this.state.posts ?
+                this.state.posts.map(post => {
+                  return <StoryCard key={post.id} post={post} />
+                }) : null
+            }
+            {
+              this.props.posts.paginatingPosts ?
+                <LoadingPosts /> : null
+            }
+            {
+              this.props.posts.paginationFailed &&
+              this.props.posts.error.message === "no posts found" ?
+              <div className="no__posts">
+                <img src={EmptyState} alt="no posts" />
+                {
+                  this.state.category === "all" ?
+                    <h4>Oops! Looks like there are no stories yet.</h4> :
+                    <h4>Oops! Looks like there are no stories in this category yet.</h4>
+                }
+              </div> : null
+            }
+          </section>
+        </main>
+      </ToTopContainer>
     );
   }
 

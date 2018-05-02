@@ -3,13 +3,17 @@ import "./Story.css";
 import React, { Component} from "react";
 import { connect} from "react-redux";
 import { bindActionCreators } from "redux";
+import { Link } from "react-router-dom";
 import propTypes from "prop-types";
 
 import * as postActions from "../../actions/postActions";
 import * as postsActions from "../../actions/postsActions";
 
-import Loader from "../../components/Loader";
+import LoadingPost from "../../components/LoadingPost";
 import WYSIWYGEditor from "../../components/Editor";
+import PostCardGrid from "../../components/PostCardGrid";
+import BorderTopContainer from "../../components/BorderTopContainer";
+import LikeButton from "../LikeButton";
 
 class Story extends Component {
   constructor(props) {
@@ -19,7 +23,7 @@ class Story extends Component {
       post: props.post.post,
       hero: props.post.hero,
       id: props.match.params.post_id,
-      more: props.posts.moreByCategory
+      more: props.posts.moreByCategory || []
     }
   }
 
@@ -39,9 +43,17 @@ class Story extends Component {
       snapshot.postChanged = true;
     }
 
+    if (!this.state.more.length && !this.props.posts.gettingMostRecentByCategory
+    && this.props.post.hasGotten) {
+      snapshot = snapshot || {};
+      snapshot.getMore = true;
+    }
+
     if (document.scrollingElement.scrollTop > 0) {
       snapshot = snapshot || {};
-      snapshot.toTop = true;
+
+      if (snapshot.postChanged)
+        snapshot.toTop = true;
     }
 
     return snapshot;
@@ -51,6 +63,15 @@ class Story extends Component {
     if (snapshot && snapshot.postChanged) {
       this.props.postActions.doPostGet(this.state.id);
       this.props.postActions.doHeroGet(this.state.id);
+      this.props.postsActions.doPostsGetMostRecentByCategory(this.state.post.category, {
+        exclude: this.state.id
+      });
+    }
+
+    if (snapshot && snapshot.getMore) {
+      this.props.postsActions.doPostsGetMostRecentByCategory(this.state.post.category, {
+        exclude: this.state.id
+      });
     }
 
     if (snapshot && snapshot.toTop) {
@@ -108,12 +129,38 @@ class Story extends Component {
                   maxWidth: "100%",
                   padding: "2em 3em"
                 }} />
+              {
+                this.state.post.category ?
+                  <BorderTopContainer classes="story__category">
+                    {
+                      Object.keys(this.state.post.category).map(category => {
+                        if (this.state.post.category[category]) {
+                          return (
+                            <Link key={category}
+                              to={`/stories/cat/${category}`}>
+                              {category.split("-").join(" ")}
+                            </Link>
+                          )
+                        }
+
+                        return null
+                      })
+                    }
+                  </BorderTopContainer> : null
+              }
+              <BorderTopContainer classes="story__appreciate">
+                <LikeButton post={this.state.post} postId={this.state.id} />
+              </BorderTopContainer>
             </section> :
-            <Loader />
+            <LoadingPost />
         }
-        <section className="story__more">
+        <BorderTopContainer classes="story__more">
           <h2>more stories like this</h2>
-        </section>
+          {
+            this.state.more.length ?
+            <PostCardGrid posts={this.state.more} /> : null
+          }
+        </BorderTopContainer>
       </main>
     )
   }
