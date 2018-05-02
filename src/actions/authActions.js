@@ -190,6 +190,118 @@ export const doSignInWithGoogle =() => {
   };
 };
 
+export const signInWithFacebookInitiated = () => {
+  return {
+    type: types.SIGN_IN_WITH_FACEBOOK_INITIATED
+  };
+};
+
+export const signInWithFacebookFailed = error => {
+  return {
+    type: types.SIGN_IN_WITH_FACEBOOK_FAILED,
+    error
+  };
+};
+
+export const signedInWithFacebook = user => {
+  return {
+    type: types.SIGNED_IN_WITH_FACEBOOK,
+    user
+  };
+};
+
+export const doSignInWithFacebook = () => {
+  return dispatch => {
+    dispatch(signInWithFacebookInitiated());
+
+    const provider = new firebase.auth.FacebookAuthProvider();
+    return auth.signInWithPopup(provider)
+      .then(results => {
+        db.collection("users")
+          .doc(results.user.uid)
+          .get()
+          .then(snapshot => {
+            if (snapshot.exists) {
+              let user = snapshot.data();
+
+              // set cookie
+              const d = {
+                uid: results.user.uid,
+                isAdmin: user.isAdmin || false,
+                isApplicant: user.isApplicant || false,
+                isStaff: user.isStaff || false,
+                isStudent: user.isStudent || false,
+                createdAt: new Date()
+              };
+              cookies.set("ssid", d, { path: "/", maxAge: 60 * 60 * 24 });
+
+              user.uid = results.user.uid;
+              dispatch(signedInWithFacebook(user));
+
+            } else {
+              const { user } = results;
+
+              let userData = {
+                uid: user.uid,
+                email: user.email,
+                isAdmin: false,
+                isApplicant: false,
+                isStudent: false,
+                isStaff: false,
+                emailConfirmed: true,
+                photo: user.photoURL
+              };
+
+              let name = user.displayName.split(" ");
+
+              if (name.length === 3) {
+                userData.name = {
+                  first: name[0],
+                  middle: name[1],
+                  last: name[2],
+                  full: [name[0], name[2]].join(" ")
+                }
+              } else {
+                userData.name = {
+                  first: name[0],
+                  last: name[1],
+                  full: user.displayName
+                }
+              }
+
+              dispatch(addingDataToUserDbs(userData));
+
+              return db.collection("users")
+                .doc(user.uid)
+                .set(userData)
+                .then(() => {
+                  dispatch(addedDataToUserDbs());
+
+                  // set cookie
+                  const d = {
+                    uid: results.user.uid,
+                    isAdmin: userData.isAdmin || false,
+                    isApplicant: userData.isApplicant || false,
+                    isStaff: userData.isStaff || false,
+                    isStudent: userData.isStudent || false,
+                    createdAt: new Date()
+                  };
+                  cookies.set("ssid", d, { path: "/", maxAge: 60 * 60 * 24 });
+
+                  dispatch(signedInWithFacebook(userData));
+                })
+                .catch(error => {
+                  dispatch(addingDataToUserDbsFailed(error));
+                });
+            }
+          })
+      })
+      .catch(error => {
+        return dispatch(signInWithFacebookFailed(error));
+      });
+  };
+};
+
 // @SIGN OUT
 export const signOutInitiated = user => {
   return {

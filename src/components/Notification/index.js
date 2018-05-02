@@ -12,7 +12,7 @@ class Notification extends Component {
     setTimeout(() => {
       if (this.notification)
         this.closeNotification();
-    }, 5000);
+    }, 10000);
   }
 
   render() {

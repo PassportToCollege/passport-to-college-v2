@@ -4,12 +4,14 @@ import React, { Component} from "react";
 import { connect} from "react-redux";
 import { bindActionCreators } from "redux"
 import propTypes from "prop-types";
+import { isAuthorized } from "../../utils";
 
 import * as authActions from "../../actions/authActions";
 import * as postActions from "../../actions/postActions";
 
 import IconButton from "../../components/IconButton";
 import { SignUpModal } from "../../components/Modal";
+import Notification from "../../components/Notification";
 
 class LikeButton extends Component {
   constructor(props) {
@@ -18,7 +20,10 @@ class LikeButton extends Component {
     this.state = {
       post: props.post,
       signingUp: false,
-      authorized: props.auth.activeUser
+      authorized: isAuthorized(),
+      hasError: false,
+      notificationClosed: true,
+      error: null
     }
   }
 
@@ -33,7 +38,17 @@ class LikeButton extends Component {
 
     if (nextProps.auth.activeUser !== prevState.authorized) {
       newState = {};
-      newState.authorized = nextProps.auth.activeUser;
+      newState.authorized = isAuthorized();
+    }
+
+    if (nextProps.auth.failedToSignInWithFacebook ||
+      nextProps.auth.failedToSignInWithGoogle) {
+      newState = newState || {};
+      newState = Object.assign({}, newState, {
+        hasError: true,
+        notificationClosed: false,
+        error: nextProps.auth.error.message
+      });
     }
 
     return newState;
@@ -47,8 +62,18 @@ class LikeButton extends Component {
             <SignUpModal heading="Create an account to like this story."
               intro={`Liking shows ${this.state.post.author.name.full} how much you appreciate this story.`}
               doClose={() => this.setState({ signingUp: false })}
-              doGoogle={this.handleGoogleSignUp} />
+              doGoogle={this.handleGoogleSignUp} 
+              doFacebook={this.handleFacebookSignup} />
             : null
+        }
+        {
+          this.state.hasError && !this.state.notificationClosed ?
+            <Notification text={this.state.error}
+              doClose={() => this.setState({
+                hasError: false,
+                notificationClosed: true,
+                error: null
+              })} /> : null
         }
         <div className="like_button">
           <IconButton icon="like" solid 
@@ -68,6 +93,10 @@ class LikeButton extends Component {
 
   handleGoogleSignUp = () => {
     this.props.authActions.doSignInWithGoogle();
+  }
+
+  handleFacebookSignup = () => {
+    this.props.authActions.doSignInWithFacebook();
   }
 }
 

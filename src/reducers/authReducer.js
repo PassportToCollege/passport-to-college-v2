@@ -22,7 +22,11 @@ import {
   EMAIL_CONFIRMATION_SEND_FAILED,
   SIGN_IN_WITH_GOOGLE_INITIATED, 
   SIGN_IN_WITH_GOOGLE_FAILED,
-  SIGNED_IN_WITH_GOOGLE} from "../actions/actionTypes";
+  SIGNED_IN_WITH_GOOGLE,
+  SIGN_IN_WITH_FACEBOOK_INITIATED,
+  SIGN_IN_WITH_FACEBOOK_FAILED,
+  SIGNED_IN_WITH_FACEBOOK
+} from "../actions/actionTypes";
 
 const auth = (state = initialState.auth, action) => {
   switch(action.type) {
@@ -90,6 +94,26 @@ const auth = (state = initialState.auth, action) => {
         signingInWithGoogle: false,
         hasSignedInWithGoogle: true,
         failedToSignInWithGoogle: false,
+        activeUser: action.user
+      });
+    case SIGN_IN_WITH_FACEBOOK_INITIATED:
+      return Object.assign({}, state, {
+        signingInWithFacebook: true,
+        hasSignedInWithFacebook: false,
+        failedToSignInWithFacebook: false
+      });
+    case SIGN_IN_WITH_FACEBOOK_FAILED:
+      return Object.assign({}, state, {
+        signingInWithFacebook: false,
+        hasSignedInWithFacebook: false,
+        failedToSignInWithFacebook: true,
+        error: action.error
+      });
+    case SIGNED_IN_WITH_FACEBOOK:
+      return Object.assign({}, state, {
+        signingInWithFacebook: false,
+        hasSignedInWithFacebook: true,
+        failedToSignInWithFacebook: false,
         activeUser: action.user
       });
     case ACCOUNT_CREATION_INITIATED:
