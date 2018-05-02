@@ -51,6 +51,13 @@ class LikeButton extends Component {
       });
     }
 
+    if ((nextProps.auth.hasAuthorized ||
+      nextProps.auth.hasSignedInWithGoogle ||
+      nextProps.auth.hasSignedInWithFacebook) && prevState.signingUp) {
+      newState = newState || {};
+      newState.signingUp = false;
+    }
+
     return newState;
   }
 
@@ -69,11 +76,7 @@ class LikeButton extends Component {
         {
           this.state.hasError && !this.state.notificationClosed ?
             <Notification text={this.state.error}
-              doClose={() => this.setState({
-                hasError: false,
-                notificationClosed: true,
-                error: null
-              })} /> : null
+              doClose={this.handleErrorNotificationClose} /> : null
         }
         <div className="like_button">
           <IconButton icon="like" solid 
@@ -97,6 +100,16 @@ class LikeButton extends Component {
 
   handleFacebookSignup = () => {
     this.props.authActions.doSignInWithFacebook();
+  }
+
+  handleErrorNotificationClose = () => {
+    this.setState({
+      hasError: false,
+      notificationClosed: true,
+      error: null
+    });
+
+    this.props.authActions.removeAuthErrors();
   }
 }
 
