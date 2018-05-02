@@ -8,6 +8,7 @@ import propTypes from "prop-types";
 
 import * as authActions from "../../../actions/authActions"; 
 
+import PageMeta from "../../../components/PageMeta";
 import { SignInForm } from "../../../components/Forms";
 import Notification from "../../../components/Notification";
 
@@ -25,6 +26,7 @@ class SignIn extends Component {
   render() {
     return (
       <div className="signin__container">
+        <PageMeta route="SIGN_IN" />
         <SignInForm title="Sign in below:"
           handleSubmit={this.handleSignIn}
           updateEmail={this.updateEmail}

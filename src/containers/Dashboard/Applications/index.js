@@ -11,6 +11,7 @@ import { queryToObject } from "../../../utils";
 import * as applicationsActions from "../../../actions/applicationsActions";
 import * as statsActions from "../../../actions/statsActions";
 
+import PageMeta from "../../../components/PageMeta";
 import LoadingText from "../../../components/LoadingText";
 
 class Applications extends Component {
@@ -59,6 +60,9 @@ class Applications extends Component {
   render() {
     return (
       <div className="dashboard__container applications__container">
+        <PageMeta more={
+          <title>Applications | Dashboard | Passport to College</title>
+        } />
         <header>
           <h1>Applications</h1>
           {

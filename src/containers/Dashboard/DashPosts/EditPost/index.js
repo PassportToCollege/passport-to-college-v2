@@ -9,6 +9,7 @@ import moment from "moment";
 import * as postActions from "../../../../actions/postActions";
 import * as postCategoryActions from "../../../../actions/postCategoryActions";
 
+import PageMeta from "../../../../components/PageMeta";
 import Notification from "../../../../components/Notification";
 import WYSIWYGEditor from "../../../../components/Editor";
 import DropUploader from "../../../../components/DropUploader";
@@ -108,6 +109,12 @@ class EditPost extends Component {
   render() {
     return (
       <div className="edit_post" data-no-flow={this.state.addingCategory ? "active" : "inactive"}>
+        {
+          this.props.post.hasGotten ?
+            <PageMeta more={
+              <title>{this.props.post.post.title || this.state.id} | Post | Dashboard | Passport to College</title>
+            } /> : null
+        }
         {
           this.state.addingCategory ?
             <AddPostCategory doClose={() => this.setState({ addingCategory: false })}

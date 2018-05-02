@@ -41,7 +41,7 @@ export const DASH_POSTS_SECTIONS = [
 
 // Student Application Routes
 export const APPLY = { name: "Apply", route: "/apply" };
-export const APPLY_PORTAL = { name: "Application Portal", route: "/apply/p/:application_id" };
+export const APPLY_PORTAL = { name: "Application Portal | Apply", route: "/apply/p/:application_id" };
 
 // Auth Routes
 export const SIGN_IN = { name: "Sign In", route: "/auth/sign-in" };

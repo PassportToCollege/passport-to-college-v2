@@ -8,6 +8,7 @@ import propTypes from "prop-types";
 import * as authActions from "../../../actions/authActions";
 import * as userActions from "../../../actions/userActions";
 
+import PageMeta from "../../../components/PageMeta";
 import Notification from "../../../components/Notification";
 import LinkButton from "../../../components/LinkButton";
 
@@ -63,6 +64,7 @@ class ConfirmEmail extends Component {
   render() {
     return (
       <div className="confirm_email__container">
+        <PageMeta route="CONFIRM_EMAIL_ADDRESS" />
         {
           this.props.user.isUpdating && !this.state.emailVerified ?
             <h1>Confirming email address....</h1>

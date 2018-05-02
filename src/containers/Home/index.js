@@ -11,6 +11,7 @@ import * as statsActions from "../../actions/statsActions";
 import * as featuresActions from "../../actions/featuresActions";
 import * as postsActions from "../../actions/postsActions";
 
+import PageMeta from "../../components/PageMeta";
 import ParallaxHeader from "../../components/ParallaxHeader";
 import TopicSection from "../../components/TopicSection";
 import StatItem from "../../components/StatItem";
@@ -70,6 +71,7 @@ class Home extends Component {
   render() {
     return (
       <ToTopContainer classes="home__container reset__body_top_padding">
+        <PageMeta route="LANDING" />
         <ParallaxHeader showScrollStrip height="100vh"
           setInterval={interval => this.setState({ parallaxInterval: interval })}
           bgImages={headerBgs}

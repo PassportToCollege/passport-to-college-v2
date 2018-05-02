@@ -6,6 +6,7 @@ import propTypes from "prop-types";
 
 import * as routes from "../../constants/routes";
 
+import PageMeta from "../../components/PageMeta";
 import NavigationAdmin from "../NavigationAdmin";
 import SearchBar from "../SearchBar";
 import Applications from "./Applications";
@@ -23,6 +24,7 @@ export default class Dashboard extends Component {
   render() {
     return (
       <div className="dashboard">
+        <PageMeta route="DASHBOARD" />
         <NavigationAdmin />
         <main className="dashboard__main">
           <SearchBar />

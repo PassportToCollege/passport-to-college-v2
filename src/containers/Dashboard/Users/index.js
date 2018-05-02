@@ -12,6 +12,7 @@ import { queryToObject } from "../../../utils";
 import * as usersActions from "../../../actions/usersActions";
 import * as statsActions from "../../../actions/statsActions";
 
+import PageMeta from "../../../components/PageMeta";
 import LoadingText from "../../../components/LoadingText";
 import Button from "../../../components/Button";
 import Indicator from "../../../components/Indicator";
@@ -78,6 +79,9 @@ class Users extends Component {
   render() {
     return (
       <div className="dashboard__container users__container">
+        <PageMeta more={
+          <title>Users | Dashboard | Passport to College</title>
+        } />
         {
           this.state.creatingUser ?
             <CreateUserModal doClose={this.closeAddUserModal}

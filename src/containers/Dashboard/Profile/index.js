@@ -9,6 +9,7 @@ import moment from "moment";
 import * as userProfilePictureActions from "../../../actions/userProfilePictureActions";
 import * as userActions from "../../../actions/userActions";
 
+import PageMeta from "../../../components/PageMeta";
 import UserInfoItem from "../../../components/UserInfoItem";
 import LoadingText from "../../../components/LoadingText";
 
@@ -62,6 +63,9 @@ class Profile extends Component {
   render() {
     return (
       <div className="profile__container">
+        <PageMeta more={
+          <title>Profile | Dashboard | Passport to College</title>
+        } />
         {/* TODO: add notification for update errors */}
         <div className="profile__header">
           <div className="dashboard__container profile__header_body">

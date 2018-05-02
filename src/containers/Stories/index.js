@@ -10,6 +10,7 @@ import * as postCategoryActions from "../../actions/postCategoryActions";
 import * as postsActions from "../../actions/postsActions";
 import * as statsActions from "../../actions/statsActions";
 
+import PageMeta from "../../components/PageMeta";
 import LinkDropdown from "../../components/LinkDropdown";
 import StoryCard from "../../components/StoryCard";
 import LoadingText from "../../components/LoadingText";
@@ -79,6 +80,7 @@ class Stories extends Component {
   render() {
     return (
       <ToTopContainer>
+        <PageMeta route="STORIES" />
         <main className="stories" ref={main => this.storiesContainer = main}>
           <section className="stories__header">
             {
@@ -94,9 +96,14 @@ class Stories extends Component {
           <section className="stories__stories">
             {
               this.state.category !== "all" ?
-                <h1 className="stories__category_heading">
-                  Stories from <i>&apos;{this.state.category}&apos;</i>
-                </h1> : null
+                <React.Fragment>
+                  <PageMeta more={
+                    <title>{this.state.category} | Stories | Passport to College</title>
+                  } />
+                  <h1 className="stories__category_heading">
+                    Stories from <i>&apos;{this.state.category}&apos;</i>
+                  </h1> 
+                </React.Fragment> : null
             }
             {
               this.state.posts ?

@@ -118,7 +118,7 @@ class LikeButton extends Component {
               <span>
                 You and <b>{this.state.likes - 1}</b> other{this.state.likes - 1 > 1 ? "s" : " person"} like this story!
               </span> : 
-                this.state.likes > 1 ? <span>{this.state.likes}</span> : null
+                !this.state.liked && this.state.likes > 0 ? <span>{this.state.likes}</span> : null
           }
         </div>
       </React.Fragment>

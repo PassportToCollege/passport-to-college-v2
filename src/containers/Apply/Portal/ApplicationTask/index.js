@@ -20,6 +20,7 @@ import WYSIWYGEditor from "../../../../components/Editor";
 import ReviewBlock from "../../../../components/ReviewBlock";
 import LoadingText from "../../../../components/LoadingText";
 import Notification from "../../../../components/Notification";
+import PageMeta from "../../../../components/PageMeta";
 
 class ApplicationTask extends Component {
   constructor(props) {
@@ -87,6 +88,9 @@ class ApplicationTask extends Component {
       case "personal":
         return (
           <div className="application__portal_task personal__task">
+            <PageMeta more={
+              <title>Personal | Application Portal | Apply | Passport to College</title>
+            } />
             <h1 className="application_task__heading">Personal Information</h1>
             <p className="application_task__instructions">
               Please provide personal information below.
@@ -110,6 +114,9 @@ class ApplicationTask extends Component {
       case "education":
         return (
           <div className="application__portal_task education__task">
+            <PageMeta more={
+              <title>Education | Application Portal | Apply | Passport to College</title>
+            } />
             <h1 className="application_task__heading">Education Information</h1>
             <p className="application_task__instructions">
               Please provide information about your education below.
@@ -127,6 +134,9 @@ class ApplicationTask extends Component {
       case "us-standardized-tests":
         return (
           <div className="application__portal_task us_tests__task">
+            <PageMeta more={
+              <title>US Standardized Tests | Application Portal | Apply | Passport to College</title>
+            } />
             <h1 className="application_task__heading">US Standardized Tests</h1>
             <p className="application_task__instructions">
               Please provide information on whether you have taken the U.S. Scholastic Aptitude Test (SAT) 
@@ -152,6 +162,9 @@ class ApplicationTask extends Component {
       case "national-tests":
         return (
           <div className="application__portal_task national_tests__task">
+            <PageMeta more={
+              <title>National Tests | Application Portal | Apply | Passport to College</title>
+            } />
             <h1 className="application_task__heading">National Tests</h1>
             <p className="application_task__instructions">
               Please list all the country specific standardized tests you will or have taken. 
@@ -184,6 +197,9 @@ class ApplicationTask extends Component {
       case "miscellaneous":
         return (
           <div className="application__portal_task miscellaneous__task">
+            <PageMeta more={
+              <title>Miscellaneous | Application Portal | Apply | Passport to College</title>
+            } />
             <h1 className="application_task__heading">Miscellaneous</h1>
             <p className="application_task__instructions">
               Please provide information about your family&apos;s income,
@@ -203,6 +219,9 @@ class ApplicationTask extends Component {
       case "essay":
         return (
           <div className="application__portal_task essay__task">
+            <PageMeta more={
+              <title>Essay | Application Portal | Apply | Passport to College</title>
+            } />
             <h1 className="application_task__heading">Essay</h1>
             <p className="application_task__instructions">
               Please write an essay about yourself; your longterm life goals, things you have accomplished,
@@ -257,6 +276,9 @@ class ApplicationTask extends Component {
          
           return (
             <div className="application__portal_task review__task">
+              <PageMeta more={
+                <title>Review | Application Portal | Apply | Passport to College</title>
+              } />
               <h1 className="application_task__heading">Review</h1>
               {
                 !this.applicationComplete(this.state) ?
@@ -302,6 +324,9 @@ class ApplicationTask extends Component {
 
         return (
           <div className="application__portal_task review__task">
+            <PageMeta more={
+              <title>Review | Application Portal | Apply | Passport to College</title>
+            } />
             <h1 className="application_task__heading">Review</h1>            
             <LoadingText options={{
               class: "review_block__loading",
@@ -341,6 +366,9 @@ class ApplicationTask extends Component {
       default:
         return (
           <div className="application__portal_task default_task">
+            <PageMeta more={
+              <title>Submit | Application Portal | Apply | Passport to College</title>
+            } />
             <h1 className="application_task__heading">Submit Application</h1>
             {
               this.applicationComplete(this.state) && 

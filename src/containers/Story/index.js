@@ -9,6 +9,7 @@ import propTypes from "prop-types";
 import * as postActions from "../../actions/postActions";
 import * as postsActions from "../../actions/postsActions";
 
+import PageMeta from "../../components/PageMeta";
 import LoadingPost from "../../components/LoadingPost";
 import WYSIWYGEditor from "../../components/Editor";
 import PostCardGrid from "../../components/PostCardGrid";
@@ -112,6 +113,14 @@ class Story extends Component {
         {
           this.props.post.hasGotten && this.state.post ?
             <section className="story__content">
+              <PageMeta>
+                <title>{this.state.post.title} | Stories | Passport to College</title>
+                <meta property="og:url" content={`${process.env.REACT_APP_URL}/${this.props.match.url}`} />
+                <meta property="og:type" content="website" />
+                <meta property="og:title" content={`${this.state.post.title} | Stories | Passport to College`} />
+                <meta property="og:description" content={this.state.post.excerpt} />
+                <meta property="og:image" content={this.state.hero} />
+              </PageMeta>
               <h1 className="story__title">{this.state.post.title}</h1>
               <span className="story__author">by {this.state.post.author.name.full}</span>
               {

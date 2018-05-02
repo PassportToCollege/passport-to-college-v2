@@ -9,6 +9,7 @@ import * as authActions from "../../actions/authActions";
 
 import { SignInForm, StartApplication } from "../../components/Forms";
 import Notification from "../../components/Notification";
+import PageMeta from "../../components/PageMeta";
 
 class Apply extends Component {
   constructor(props) {
@@ -94,6 +95,7 @@ class Apply extends Component {
   render() {
     return (
       <div className="apply__container">
+        <PageMeta route="APPLY" />
         <SignInForm 
           title="Continue Application"
           submitText="Continue"
