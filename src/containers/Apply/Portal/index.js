@@ -15,6 +15,7 @@ import Button from "../../../components/Button";
 import LinkButton from "../../../components/LinkButton";
 import ApplicationTask from './ApplicationTask';
 import Notification from "../../../components/Notification";
+import PageMeta from "../../../components/PageMeta";
 
 import { getWordCount } from "../../../utils";
 
@@ -171,6 +172,7 @@ class ApplicationPortal extends Component {
   render() {
     return (
       <div className="application_portal">
+        <PageMeta route="APPLY_PORTAL" />
         <header className="application__portal_header">
           <h1>Student Application Portal</h1>
           <div className="application_portal__action_buttons">
