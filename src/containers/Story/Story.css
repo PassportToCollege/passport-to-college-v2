@@ -47,6 +47,11 @@
   text-transform: capitalize;
 }
 
+/* Appreciation section */
+.story .story__content .story__appreciate {
+  padding: 1em;
+}
+
 /* More stories */
 .story .story__more > h2 {
   font-family: "Muli", sans-serif;

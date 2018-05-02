@@ -13,6 +13,7 @@ import LoadingPost from "../../components/LoadingPost";
 import WYSIWYGEditor from "../../components/Editor";
 import PostCardGrid from "../../components/PostCardGrid";
 import BorderTopContainer from "../../components/BorderTopContainer";
+import LikeButton from "../LikeButton";
 
 class Story extends Component {
   constructor(props) {
@@ -143,6 +144,9 @@ class Story extends Component {
                     }
                   </BorderTopContainer> : null
               }
+              <BorderTopContainer classes="story__appreciate">
+                <LikeButton post={this.state.post} />
+              </BorderTopContainer>
             </section> :
             <LoadingPost />
         }

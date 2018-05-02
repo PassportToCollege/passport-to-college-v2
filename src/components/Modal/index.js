@@ -458,5 +458,29 @@ AddPostCategory.propTypes = {
   doSubmit: propTypes.func
 };
 
+export const SignUpModal = ({ doClose, doGoogle, heading }) => {
+  const closeModal = () => {
+    this.modalContainer.classList.add("close");
+
+    if ("function" === typeof doClose)
+      doClose();
+  };
+
+  return (
+    <div className="modal__container modal__signup"
+      ref={div => this.modalContainer = div}>
+      <div className="modal__bg" onClick={closeModal}></div>
+      <div className="modal__content">
+        <h3>{heading}</h3>
+      </div>
+    </div>
+  )
+}
+
+SignUpModal.propTypes = {
+  doClose: propTypes.func,
+  doGoogle: propTypes.func,
+  heading: propTypes.string
+};
 
 
