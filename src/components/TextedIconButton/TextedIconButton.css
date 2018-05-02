@@ -1,0 +1,24 @@
+.texted_icon_button {
+  padding: 0.85em 1em;
+  margin: 2em auto 1em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(51,51,51,0.1);
+  border: none;
+  border-radius: 0.8em;
+  cursor: pointer;
+}
+
+.texted_icon_button .texted_icon_button__icon {
+  margin-right: 1em;
+  font-size: 1.2em;
+}
+
+.texted_icon_button .texted_icon_button__icon.google {
+  color: #dd4b39;
+}
+
+.texted_icon_button .texted_icon_button__icon.facebook {
+  color: #3B5998;
+}

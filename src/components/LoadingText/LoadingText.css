@@ -11,10 +11,15 @@
   display: inline-block;
   border-radius: 10px;
   margin-bottom: 1em;
+  max-width: 100%;
 }
 
 .loading_text__container.block__lines > span {
   display: block;
+}
+
+.loading_text__container.center__lines > span {
+  margin: 0 auto 1em;
 }
 
 .loading_text__container.dashboard__navigation_username_loader > span {

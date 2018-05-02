@@ -59,7 +59,8 @@ class UserSection extends Component {
   }
 
   componentDidMount() {
-    if (!this.state.profilePicture)
+    if (!this.state.profilePicture && !this.props.picture.hasFailedByUid
+      && this.state.section === "profile-picture")
       this.props.uppActions.doAvatarGetByUid(this.props.userId);
   }
 
@@ -225,9 +226,10 @@ class UserSection extends Component {
         return (
           <section className="user__section profile_picture__section">
             {
-              this.props.picture.hasGottenByUid && this.state.profilePicture ?
+              (this.props.picture.hasGottenByUid || this.props.user.hasGottenUser) &&
+              (this.state.profilePicture || (this.state.user && this.state.user.photo)) ?
                 <div className="user__profile_picture_container">
-                  <img src={this.state.profilePicture} alt="User Avatar" />
+                  <img src={this.state.profilePicture || this.state.user.photo} alt="User Avatar" />
                 </div> :
                 this.props.picture.hasFailedByUid ?
                   <p>No profile picture</p> :

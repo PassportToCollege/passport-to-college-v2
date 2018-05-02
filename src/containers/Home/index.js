@@ -16,13 +16,15 @@ import TopicSection from "../../components/TopicSection";
 import StatItem from "../../components/StatItem";
 import InfoCard from "../../components/InfoCard";
 import InfoStrip from "../../components/InfoStrip";
-import PostCard from "../../components/PostCard";
+import PostCardGrid from "../../components/PostCardGrid";
 import Loader from "../../components/Loader";
+import ToTopContainer from "../../components/ToTopContainer";
 
 import infoCardBg from "../../assets/images/info_card__bg.JPG";
 import headerBg0 from "../../assets/images/home__header_bg_0.jpg";
 import headerBg1 from "../../assets/images/home__header_bg_1.jpg";
 import headerBg2 from "../../assets/images/home__header_bg_2.jpg";
+import EmptyStateYellow from "../../assets/images/empty_state__yellow.png";
 
 const headerBgs = [ 
   { "img": headerBg0, "color": "#53D1D7" },
@@ -67,7 +69,7 @@ class Home extends Component {
 
   render() {
     return (
-      <div className="home__container reset__body_top_padding">
+      <ToTopContainer classes="home__container reset__body_top_padding">
         <ParallaxHeader showScrollStrip height="100vh"
           setInterval={interval => this.setState({ parallaxInterval: interval })}
           bgImages={headerBgs}
@@ -157,46 +159,18 @@ class Home extends Component {
               this.props.posts.gettingMostRecent ?
                 <Loader color="#FFCB61" /> : null
             }
-            <section className="home__most_recent_posts">
-              {
-                this.props.posts.mostRecentGetFailed && 
+            {
+              this.props.posts.mostRecentGetFailed &&
                 this.props.posts.error.message === "no posts found" ?
-                  <span className="no__posts">No stories yet</span> : null
-              }
-              {
-                this.props.posts.gotMostRecent && this.state.posts ?
-                  <div className="home__most_recent_post">
-                    <PostCard full={true} isDashboard={false} 
-                      post={this.state.posts[0]} />
-                  </div> : null
-              }
-              {
-                this.props.posts.gotMostRecent && this.state.posts &&
-                this.state.posts.length > 1 ?
-                  <div className="home__other_recent_posts">
-                    <PostCard isDashboard={false}
-                      post={this.state.posts[1]} />
-                      {
-                        this.state.posts[2] ?
-                        <PostCard isDashboard={false}
-                          post={this.state.posts[2]} /> : null
-                      }
-                  </div> : null
-              }
-              {
-                this.props.posts.gotMostRecent && this.state.posts &&
-                this.state.posts.length > 3 ?
-                  this.state.posts.map((post, i) => {
-                    if (i < 3)
-                      return null
-                    
-                    return (
-                      <PostCard key={i} isDashboard={false}
-                        post={post} />
-                    )
-                  }) : null 
-              }
-            </section>
+                <div className="no__posts">
+                  <img src={EmptyStateYellow} alt="no posts" />
+                  <h4>Oops! Looks like there are no stories yet.</h4>
+                </div> : null
+            }
+            {
+              this.props.posts.gotMostRecent && this.state.posts ?
+                <PostCardGrid posts={this.state.posts} /> : null
+            }
             {
               this.props.posts.gotMostRecent && this.state.posts ?
                 <Link to="/stories" className="all_posts__link">
@@ -205,7 +179,7 @@ class Home extends Component {
             }
           </div>
         </section>
-      </div>
+      </ToTopContainer>
     )
   }
 

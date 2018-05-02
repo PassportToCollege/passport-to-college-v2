@@ -3,7 +3,7 @@ import "./IconButton.css";
 import React, { Component } from "react";
 import propTypes from "prop-types";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
-import { faTrashAlt, faEdit, faInfo, faExternalLinkAlt } from "@fortawesome/fontawesome-free-solid";
+import { faTrashAlt, faEdit, faInfo, faExternalLinkAlt, faThumbsUp } from "@fortawesome/fontawesome-free-solid";
 
 class IconButton extends Component {
   handleClick = (e) => {
@@ -16,7 +16,8 @@ class IconButton extends Component {
       default: faInfo,
       delete: faTrashAlt,
       edit: faEdit,
-      open: faExternalLinkAlt
+      open: faExternalLinkAlt,
+      like: faThumbsUp
     };
     let buttonStyles = Object.assign({}, this.props.styles);
 

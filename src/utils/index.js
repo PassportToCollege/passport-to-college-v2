@@ -81,3 +81,16 @@ export const queryToObject = query => {
 
   return null;
 }
+
+export const countLikes = likes => {
+  likes = likes || {};
+  const keys = Object.keys(likes);
+  let count = 0;
+
+  for (let key of keys) {
+    if (likes[key])
+      count++;
+  }
+
+  return count;
+}

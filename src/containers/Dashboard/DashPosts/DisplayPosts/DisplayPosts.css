@@ -4,6 +4,14 @@
   margin: 0 auto;
 }
 
+.dashboard_posts > .no__posts {
+  text-align: center;
+}
+
+.dashboard_posts > .no__posts > img {
+  max-width: 100%;
+}
+
 .dashboard_posts > .post_card__list > .post_card:not(:last-child) {
   margin-bottom: 1em;
 }

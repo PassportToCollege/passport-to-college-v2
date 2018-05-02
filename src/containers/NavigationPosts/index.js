@@ -44,7 +44,7 @@ class NavigationPosts extends Component {
       });
     }
     
-    if (nextProps.post.hasCreated && this.state.working) {
+    if (nextProps.post.hasCreated && prevState.working) {
       newState = newState || {};
       newState.working = false;
       nextProps.history.push(`/admin/dashboard/posts/e/${nextProps.post.id}`);
