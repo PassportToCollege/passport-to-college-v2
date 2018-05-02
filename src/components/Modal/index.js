@@ -496,7 +496,7 @@ export const SignUpModal = ({ doClose, doGoogle, doFacebook, doSignIn, heading, 
         <p>
           Already have an account? 
           <span className="sign_in__link"
-            onClick={handleSignInClick}>Sign in</span>. 
+            onClick={handleSignInClick}> Sign in</span>. 
         </p>
       </div>
     </div>

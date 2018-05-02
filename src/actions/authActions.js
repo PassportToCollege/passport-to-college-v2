@@ -1,4 +1,6 @@
 import axios from "axios";
+import firebase from "firebase";
+
 import * as types from "./actionTypes";
 import { auth, db } from "../utils/firebase";
 import Cookies from "universal-cookie";
@@ -76,6 +78,118 @@ export const doSignIn = (email, password) => {
   };
 };
 
+export const signInWithGoogleInitiated = () => {
+  return {
+    type: types.SIGN_IN_WITH_GOOGLE_INITIATED
+  };
+};
+
+export const signInWithGoogleFailed = error => {
+  return {
+    type: types.SIGN_IN_WITH_GOOGLE_FAILED,
+    error
+  };
+};
+
+export const signedInWithGoogle = user => {
+  return {
+    type: types.SIGNED_IN_WITH_GOOGLE,
+    user
+  };
+};
+
+export const doSignInWithGoogle =() => {
+  return dispatch => {
+    dispatch(signInWithGoogleInitiated());
+
+    const provider = new firebase.auth.GoogleAuthProvider();
+    return auth.signInWithPopup(provider)
+      .then(results => {
+        db.collection("users")
+          .doc(results.user.uid)
+          .get()
+          .then(snapshot => {
+            if (snapshot.exists) {
+              let user = snapshot.data();
+
+              // set cookie
+              const d = {
+                uid: results.user.uid,
+                isAdmin: user.isAdmin || false,
+                isApplicant: user.isApplicant || false,
+                isStaff: user.isStaff || false,
+                isStudent: user.isStudent || false,
+                createdAt: new Date()
+              };
+              cookies.set("ssid", d, { path: "/", maxAge: 60 * 60 * 24 });
+
+              user.uid = results.user.uid;
+              dispatch(signedInWithGoogle(user));
+
+            } else {
+              const { user } = results;
+
+              let userData = {
+                uid: user.uid,
+                email: user.email,
+                isAdmin: false,
+                isApplicant: false,
+                isStudent: false,
+                isStaff: false,
+                emailConfirmed: true,
+                photo: user.photoURL
+              };
+
+              let name = user.displayName.split(" ");
+
+              if (name.length === 3) {
+                userData.name = {
+                  first: name[0],
+                  middle: name[1],
+                  last: name[2],
+                  full: [name[0], name[2]].join(" ")
+                }
+              } else {
+                userData.name = {
+                  first: name[0],
+                  last: name[1],
+                  full: user.displayName
+                }
+              }
+
+              dispatch(addingDataToUserDbs(userData));
+
+              return db.collection("users")
+                .doc(user.uid)
+                .set(userData)
+                .then(() => {
+                  dispatch(addedDataToUserDbs());
+
+                  // set cookie
+                  const d = {
+                    uid: results.user.uid,
+                    isAdmin: userData.isAdmin || false,
+                    isApplicant: userData.isApplicant || false,
+                    isStaff: userData.isStaff || false,
+                    isStudent: userData.isStudent || false,
+                    createdAt: new Date()
+                  };
+                  cookies.set("ssid", d, { path: "/", maxAge: 60 * 60 * 24 });
+
+                  dispatch(signedInWithGoogle(userData));
+                })
+                .catch(error => {
+                  dispatch(addingDataToUserDbsFailed(error));
+                });
+            }
+          })
+      })
+      .catch(error => {
+        return dispatch(signInWithGoogleFailed(error));
+      });
+  };
+};
+
 // @SIGN OUT
 export const signOutInitiated = user => {
   return {
@@ -139,17 +253,22 @@ export const accountCreationFailed = (data, error) => {
   };
 };
 
-export const addingDataToUserDbs = data => {
+export const addingDataToUserDbs = () => {
   return {
-    type: types.ACCOUNT_CREATION_ADDING_TO_USER_DBS,
-    data
+    type: types.ACCOUNT_CREATION_ADDING_TO_USER_DBS
   };
-}
+};
 
-export const addingDataToUserDbsFailed = data => {
+export const addingDataToUserDbsFailed = error => {
   return {
     type: types.ACCOUNT_CREATION_ADDING_TO_USER_DBS_FAILED,
-    data
+    error
+  };
+};
+
+export const addedDataToUserDbs = () => {
+  return {
+    type: types.ACCOUNT_CREATION_ADDED_TO_USER_DBS
   };
 }
 
@@ -242,10 +361,11 @@ export const doAccountCreate = (data) => {
         if (data.uid && data.uid.indexOf("temp") > -1)
           batch.delete(db.collection("users").doc(data.uid));
 
-        dispatch(addingDataToUserDbs(data));
+        dispatch(addingDataToUserDbs());
 
         batch.commit()
           .then(() => {
+            dispatch(addedDataToUserDbs());
             dispatch(accountCreated(data));
 
             // send welcome and confirmation email
@@ -264,7 +384,7 @@ export const doAccountCreate = (data) => {
             }
           })
           .catch(error => {
-            dispatch(addingDataToUserDbsFailed(data, error));
+            dispatch(addingDataToUserDbsFailed(error));
           })
       })
       .catch(error => {

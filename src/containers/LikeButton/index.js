@@ -46,7 +46,8 @@ class LikeButton extends Component {
           this.state.signingUp ?
             <SignUpModal heading="Create an account to like this story."
               intro={`Liking shows ${this.state.post.author.name.full} how much you appreciate this story.`}
-              doClose={() => this.setState({ signingUp: false })} />
+              doClose={() => this.setState({ signingUp: false })}
+              doGoogle={this.handleGoogleSignUp} />
             : null
         }
         <div className="like_button">
@@ -63,6 +64,10 @@ class LikeButton extends Component {
   handleLike = () => {
     if (!this.state.authorized)
       return this.setState({ signingUp: true });
+  }
+
+  handleGoogleSignUp = () => {
+    this.props.authActions.doSignInWithGoogle();
   }
 }
 

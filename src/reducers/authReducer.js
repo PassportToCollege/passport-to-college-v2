@@ -11,6 +11,7 @@ import {
   ACCOUNT_CREATED,
   ACCOUNT_CREATION_ADDING_TO_USER_DBS,
   ACCOUNT_CREATION_ADDING_TO_USER_DBS_FAILED,
+  ACCOUNT_CREATION_ADDED_TO_USER_DBS,
   ACCOUNT_CREATION_FAILED,
   ACCOUNT_CREATION_INITIATED, 
   RESET_PASSWORD_EMAIL_INITIATED,
@@ -18,7 +19,10 @@ import {
   RESET_PASSWORD_EMAIL_FAILED,
   EMAIL_CONFIRMATION_SEND_INITIATED,
   EMAIL_CONFIRMATION_SENT,
-  EMAIL_CONFIRMATION_SEND_FAILED} from "../actions/actionTypes";
+  EMAIL_CONFIRMATION_SEND_FAILED,
+  SIGN_IN_WITH_GOOGLE_INITIATED, 
+  SIGN_IN_WITH_GOOGLE_FAILED,
+  SIGNED_IN_WITH_GOOGLE} from "../actions/actionTypes";
 
 const auth = (state = initialState.auth, action) => {
   switch(action.type) {
@@ -68,6 +72,26 @@ const auth = (state = initialState.auth, action) => {
         hasFailed: false,
         activeUser: false
       });
+    case SIGN_IN_WITH_GOOGLE_INITIATED:
+      return Object.assign({}, state, {
+        signingInWithGoogle: true,
+        hasSignedInWithGoogle: false,
+        failedToSignInWithGoogle: false
+      });
+    case SIGN_IN_WITH_GOOGLE_FAILED:
+      return Object.assign({}, state, {
+        signingInWithGoogle: false,
+        hasSignedInWithGoogle: false,
+        failedToSignInWithGoogle: true,
+        error: action.error
+      });
+    case SIGNED_IN_WITH_GOOGLE:
+      return Object.assign({}, state, {
+        signingInWithGoogle: false,
+        hasSignedInWithGoogle: true,
+        failedToSignInWithGoogle: false,
+        activeUser: action.user
+      });
     case ACCOUNT_CREATION_INITIATED:
       return Object.assign({}, state, {
         isCreating: true,
@@ -93,16 +117,22 @@ const auth = (state = initialState.auth, action) => {
     case ACCOUNT_CREATION_ADDING_TO_USER_DBS:
       return Object.assign({}, state, {
         isCreating: true,
+        hasAdded: false,
         hasFailed: false,
-        isAddingToDbs: true,
-        data: action.data
+        isAddingToDbs: true
+      });
+    case ACCOUNT_CREATION_ADDED_TO_USER_DBS:
+      return Object.assign({}, state, {
+        isCreating: false,
+        hasAdded: true,
+        hasFailed: false,
+        isAddingToDbs: false
       });
     case ACCOUNT_CREATION_ADDING_TO_USER_DBS_FAILED:
       return Object.assign({}, state, {
         isCreating: false,
         hasFailed: true,
         isAddingToDbs: false,
-        data: action.data,
         error: action.error
       });
     case RESET_PASSWORD_EMAIL_INITIATED:
