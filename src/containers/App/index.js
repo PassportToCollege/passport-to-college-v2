@@ -8,7 +8,7 @@ import propTypes from "prop-types";
 
 import * as routes from "../../constants/routes";
 import * as postsActions from "../../actions/postsActions";
-import { isAuthorized, isApplicant, activeUser } from "../../utils";
+import { isAuthorized, isApplicant, activeUser, initializeFacebook } from "../../utils";
 
 import Hamburger from "../Hamburger";
 import Navigation from "../Navigation";
@@ -38,6 +38,7 @@ class App extends Component {
 
   componentDidMount() {
     this.props.postsActions.doPostsGetMostRecent();  
+    initializeFacebook(document, "script", "facebook-jssdk");
   }
 
   render() {
