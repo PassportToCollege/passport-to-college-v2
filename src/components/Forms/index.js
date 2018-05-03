@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import propTypes from "prop-types";
 import moment from "moment";
 
+import TextedIconButton from "../TextedIconButton";
 import Button from "../Button";
 import Loader from "../Loader";
 
@@ -17,6 +18,18 @@ export class SignInForm extends Component {
     };
   }
 
+  static propTypes = {
+    title: propTypes.string,
+    submitText: propTypes.string,
+    handleSubmit: propTypes.func,
+    updateEmail: propTypes.func,
+    updatePassword: propTypes.func,
+    authError: propTypes.bool,
+    handleFacebookSignIn: propTypes.func,
+    handleGoogleSignIn: propTypes.func,
+    isWorking: propTypes.bool
+  }
+
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.authError)
       return { tries: prevState.tries + 1 };
@@ -27,6 +40,21 @@ export class SignInForm extends Component {
   render() {
     return (
       <form className="form auth__form signin__form" method="post" onSubmit={this.props.handleSubmit}>
+        <h2 className="form__title">Sign in</h2>
+        <div className="form__social_signins">
+          <TextedIconButton icon="google" text="Google account"
+            doClick={this.handleGoogleSignIn}
+            buttonStyles={{
+              margin: "2rem 0",
+              display: "inline-block"
+            }} />
+          <TextedIconButton icon="facebook" text="Facebook account"
+            doClick={this.handleFacebookSignIn}
+            buttonStyles={{
+              margin: "2rem 0 2rem 2rem",
+              display: "inline-block"
+            }} />
+        </div>
         {
           this.props.title ?
           <h2 className="form__title">{this.props.title}</h2> :
@@ -62,9 +90,28 @@ export class SignInForm extends Component {
       </form>
     );
   }
+
+  handleFacebookSignIn = () => {
+    if ("function" === this.props.handleFacebookSignIn)
+      this.props.handleFacebookSignIn();
+  }
+
+  handleGoogleSignIn = () => {
+    if ("function" === typeof this.props.handleGoogleSignIn)
+      this.props.handleGoogleSignIn();
+  }
 }
 
 export class ResetPasswordForm extends Component {
+  static propTypes = {
+    title: propTypes.string,
+    submitText: propTypes.string,
+    handleSubmit: propTypes.func,
+    updateEmail: propTypes.func,
+    updatePassword: propTypes.func,
+    authError: propTypes.bool
+  }
+
   render() {
     return (
       <form className="form auth__form reset__form" method="post" onSubmit={this.props.handleSubmit}>
@@ -84,15 +131,6 @@ export class ResetPasswordForm extends Component {
     );
   }
 }
-
-SignInForm.propTypes = ResetPasswordForm.propTypes = {
-  title: propTypes.string,
-  submitText: propTypes.string,
-  handleSubmit: propTypes.func,
-  updateEmail: propTypes.func,
-  updatePassword: propTypes.func,
-  authError: propTypes.bool
-};
 
 export const SignUpForm = ({ user, handleSubmit, handleInputChange, isWorking }) => {
   return (

@@ -23,23 +23,6 @@ class SignIn extends Component {
       notificationClosed: false
     }
   }
-  render() {
-    return (
-      <div className="signin__container">
-        <PageMeta route="SIGN_IN" />
-        <SignInForm title="Sign in below:"
-          handleSubmit={this.handleSignIn}
-          updateEmail={this.updateEmail}
-          updatePassword={this.updatePassword} 
-          authError={this.state.hasError} />
-        {
-          this.state.hasError ?
-            <Notification doClose={this.handleNotificationClose} text={this.state.error} /> :
-            null
-        }
-      </div>
-    )
-  }
 
   componentDidMount() {
     this.props.updateLocation("sign-in");
@@ -53,13 +36,15 @@ class SignIn extends Component {
     let newState = null;
 
     if (nextProps.auth && nextProps.auth.hasFailed && nextProps.auth.error.message) {
-      newState = { 
-        hasError: true, 
-        error: nextProps.auth.error.message 
+      newState = {
+        hasError: true,
+        error: nextProps.auth.error.message
       };
     }
-    
-    if (nextProps.auth && nextProps.auth.hasAuthorized) {
+
+    if (nextProps.auth.hasAuthorized ||
+      nextProps.auth.hasSignedInWithFacebook ||
+      nextProps.auth.hasSignedInWithGoogle) {
       const { activeUser } = nextProps.auth;
 
       if (activeUser.isAdmin) {
@@ -72,6 +57,27 @@ class SignIn extends Component {
     }
 
     return newState;
+  }
+
+  render() {
+    return (
+      <div className="signin__container">
+        <PageMeta route="SIGN_IN" />
+        <SignInForm title="Or with your email:"
+          handleSubmit={this.handleSignIn}
+          handleGoogleSignIn={this.props.authActions.doSignInWithGoogle}
+          handleFacebookSignIn={this.props.authActions.doSignInWithFacebook}
+          updateEmail={this.updateEmail}
+          updatePassword={this.updatePassword} 
+          authError={this.state.hasError} 
+          isWorking={this.props.auth.isAuthorizing || this.props.auth.signingInWithGoogle || this.props.auth.signingInWithFacebook}/>
+        {
+          this.state.hasError ?
+            <Notification doClose={this.handleNotificationClose} text={this.state.error} /> :
+            null
+        }
+      </div>
+    )
   }
 
   updateEmail = (e) => this.setState({ email: e.target.value });
