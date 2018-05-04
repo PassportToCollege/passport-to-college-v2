@@ -20,6 +20,7 @@ export class SignInForm extends Component {
 
   static propTypes = {
     title: propTypes.string,
+    subtitle: propTypes.string,
     submitText: propTypes.string,
     handleSubmit: propTypes.func,
     updateEmail: propTypes.func,
@@ -40,7 +41,7 @@ export class SignInForm extends Component {
   render() {
     return (
       <form className="form auth__form signin__form" method="post" onSubmit={this.props.handleSubmit}>
-        <h2 className="form__title">Sign in</h2>
+        <h2 className="form__title">{this.props.title}</h2>
         <div className="form__social_signins">
           <TextedIconButton icon="google" text="Google account"
             doClick={this.handleGoogleSignIn}
@@ -57,7 +58,7 @@ export class SignInForm extends Component {
         </div>
         {
           this.props.title ?
-          <h2 className="form__title">{this.props.title}</h2> :
+          <h2 className="form__title">{this.props.subtitle}</h2> :
           null
         }
         <div className="form__input_container">

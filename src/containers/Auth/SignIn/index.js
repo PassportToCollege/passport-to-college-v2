@@ -63,7 +63,7 @@ class SignIn extends Component {
     return (
       <div className="signin__container">
         <PageMeta route="SIGN_IN" />
-        <SignInForm title="Or with your email:"
+        <SignInForm title="Sign in" subtitle="Or with your email:"
           handleSubmit={this.handleSignIn}
           handleGoogleSignIn={this.props.authActions.doSignInWithGoogle}
           handleFacebookSignIn={this.props.authActions.doSignInWithFacebook}

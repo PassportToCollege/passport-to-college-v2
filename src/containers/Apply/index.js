@@ -98,8 +98,11 @@ class Apply extends Component {
         <PageMeta route="APPLY" />
         <SignInForm 
           title="Continue Application"
+          subtitle="Or with your email"
           submitText="Continue"
           handleSubmit={this.handleSignIn}
+          handleGoogleSignIn={this.props.authActions.doSignInWithGoogle}
+          handleFacebookSignIn={this.props.authActions.doSignInWithFacebook}
           updateEmail={this.updateEmail}
           updatePassword={this.updatePassword} 
           authError={this.state.hasError}
