@@ -26,8 +26,7 @@ export class SignInForm extends Component {
     updateEmail: propTypes.func,
     updatePassword: propTypes.func,
     authError: propTypes.bool,
-    handleFacebookSignIn: propTypes.func,
-    handleGoogleSignIn: propTypes.func,
+    handleSocialSignIn: propTypes.func,
     isWorking: propTypes.bool
   }
 
@@ -43,13 +42,13 @@ export class SignInForm extends Component {
       <form className="form auth__form signin__form" method="post" onSubmit={this.props.handleSubmit}>
         <h2 className="form__title">{this.props.title}</h2>
         <div className="form__social_signins">
-          <TextedIconButton icon="google" text="Google account"
+          <TextedIconButton icon="google" text="Google Account"
             doClick={this.handleGoogleSignIn}
             buttonStyles={{
               margin: "2rem 0",
               display: "inline-block"
             }} />
-          <TextedIconButton icon="facebook" text="Facebook account"
+          <TextedIconButton icon="facebook" text="Facebook Account"
             doClick={this.handleFacebookSignIn}
             buttonStyles={{
               margin: "2rem 0 2rem 2rem",
@@ -93,13 +92,13 @@ export class SignInForm extends Component {
   }
 
   handleFacebookSignIn = () => {
-    if ("function" === this.props.handleFacebookSignIn)
-      this.props.handleFacebookSignIn();
+    if ("function" === typeof this.props.handleSocialSignIn)
+      this.props.handleSocialSignIn("facebook");
   }
 
   handleGoogleSignIn = () => {
-    if ("function" === typeof this.props.handleGoogleSignIn)
-      this.props.handleGoogleSignIn();
+    if ("function" === typeof this.props.handleSocialSignIn)
+      this.props.handleSocialSignIn("google");
   }
 }
 

@@ -35,7 +35,7 @@ class SignIn extends Component {
   static getDerivedStateFromProps(nextProps) {
     let newState = null;
 
-    if (nextProps.auth && nextProps.auth.hasFailed && nextProps.auth.error.message) {
+    if ((nextProps.auth.hasFailed || nextProps.auth.failedToSignInWithSocial) && nextProps.auth.error.message) {
       newState = {
         hasError: true,
         error: nextProps.auth.error.message
@@ -43,8 +43,7 @@ class SignIn extends Component {
     }
 
     if (nextProps.auth.hasAuthorized ||
-      nextProps.auth.hasSignedInWithFacebook ||
-      nextProps.auth.hasSignedInWithGoogle) {
+      nextProps.auth.hasSignedInWithSocial) {
       const { activeUser } = nextProps.auth;
 
       if (activeUser.isAdmin) {
@@ -65,12 +64,11 @@ class SignIn extends Component {
         <PageMeta route="SIGN_IN" />
         <SignInForm title="Sign in" subtitle="Or with your email:"
           handleSubmit={this.handleSignIn}
-          handleGoogleSignIn={this.props.authActions.doSignInWithGoogle}
-          handleFacebookSignIn={this.props.authActions.doSignInWithFacebook}
+          handleSocialSignIn={this.handleSocialSignIn}
           updateEmail={this.updateEmail}
           updatePassword={this.updatePassword} 
           authError={this.state.hasError} 
-          isWorking={this.props.auth.isAuthorizing || this.props.auth.signingInWithGoogle || this.props.auth.signingInWithFacebook}/>
+          isWorking={this.props.auth.isAuthorizing || this.props.auth.signingInWithSocial}/>
         {
           this.state.hasError ?
             <Notification doClose={this.handleNotificationClose} text={this.state.error} /> :
@@ -93,6 +91,10 @@ class SignIn extends Component {
       email: null,
       password: null
     });
+  }
+
+  handleSocialSignIn = provider => {
+    this.props.authActions.doSignInWithSocial(provider);
   }
 
   handleNotificationClose = () => {

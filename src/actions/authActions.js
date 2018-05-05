@@ -109,19 +109,19 @@ export const doSignInWithSocial = (provider, options) => {
       
     options = options || {};
     
-    let provider;
+    let p;
     switch (provider) {
       case "google":
-        provider = new firebase.auth.GoogleAuthProvider();
+        p = new firebase.auth.GoogleAuthProvider();
         break;
       case "facebook":
-        provider = new firebase.auth.FacebookAuthProvider();
+        p = new firebase.auth.FacebookAuthProvider();
         break;
       default:
         return signInWithSocialFailed({ message: "unknown provider" }, provider)
     }
 
-    return auth.signInWithPopup(provider)
+    return auth.signInWithPopup(p)
       .then(results => {
         db.collection("users")
           .doc(results.user.uid)
