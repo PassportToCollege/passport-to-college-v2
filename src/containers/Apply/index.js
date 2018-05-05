@@ -33,7 +33,12 @@ class Apply extends Component {
 
   componentWillUnmount() {
     this.props.authActions.removeAuthErrors();
-    this.setState({ hasSent: false, notificationClosed: true });
+    this.setState({ 
+      hasSent: false, 
+      notificationClosed: true,
+      email: "",
+      password: "" 
+    });
   }
 
   static getDerivedStateFromProps(nextProps) {
@@ -47,6 +52,24 @@ class Apply extends Component {
         loggingIn: false,
         creatingAccount: false
       };
+    }
+
+    if (nextProps.auth.failedToSignInWithSocial) {
+      if (nextProps.auth.error.message === "user type mismatch") {
+        newState = {
+          hasError: true,
+          error: "The account you used to sign in is not an applicant account. You must use an applicant account to access the application portal.",
+          notificationClosed: false,
+          loggingIn: false
+        }
+      } else {
+        newState = {
+          hasError: true,
+          error: nextProps.auth.error.message,
+          notificationClosed: false,
+          loggingIn: false
+        };
+      }
     }
 
     if (nextProps.auth.hasSent) {
@@ -67,26 +90,19 @@ class Apply extends Component {
       newState.creatingAccount = false;
     }
 
-    if (nextProps.auth.isAuthorizing) {
+    if (nextProps.auth.isAuthorizing || nextProps.auth.signingInWithSocial) {
       newState = {
         loggingIn: true
       };
     }
 
-    if (nextProps.auth.hasAuthorized) {
+    if (nextProps.auth.hasAuthorized || nextProps.auth.hasSignedInWithSocial) {
       newState = {
         loggingIn: false
       };
 
       const { activeUser } = nextProps.auth;
-
-      if (activeUser.isApplicant) {
-        nextProps.history.push(`/apply/p/${activeUser.uid}`);
-      } else if (activeUser.isAdmin) {
-        nextProps.history.push("/admin/dashboard");
-      } else {
-        nextProps.history.push("/");
-      }
+      nextProps.history.push(`/apply/p/${activeUser.uid}`);
     }
 
     return newState;
@@ -101,8 +117,7 @@ class Apply extends Component {
           subtitle="Or with your email"
           submitText="Continue"
           handleSubmit={this.handleSignIn}
-          handleGoogleSignIn={this.props.authActions.doSignInWithGoogle}
-          handleFacebookSignIn={this.props.authActions.doSignInWithFacebook}
+          handleSocialSignIn={this.handleSocialSignIn}
           updateEmail={this.updateEmail}
           updatePassword={this.updatePassword} 
           authError={this.state.hasError}
@@ -141,7 +156,15 @@ class Apply extends Component {
 
     const { email, password } = this.state;
 
-    this.props.authActions.doSignIn(email, password);
+    this.props.authActions.doSignIn(email, password, {
+      strict: "isApplicant"
+    });
+  }
+
+  handleSocialSignIn = provider => {
+    this.props.authActions.doSignInWithSocial(provider, {
+      strict: "isApplicant"
+    });
   }
 
   handleAccountCreation = (e) => {
