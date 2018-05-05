@@ -55,40 +55,19 @@ class Apply extends Component {
       };
     }
 
-    if (nextProps.auth.failedToSignInWithSocial) {
-      if (nextProps.auth.error.message === "user type mismatch") {
-        newState = {
-          hasError: true,
-          error: "The account you used to sign in is not an applicant account. You must use an applicant account to access the application portal.",
-          notificationClosed: false,
-          loggingIn: false
-        }
-      } else {
-        newState = {
-          hasError: true,
-          error: nextProps.auth.error.message,
-          notificationClosed: false,
-          loggingIn: false
-        };
-      }
-    }
+    if (nextProps.auth.failedToSignInWithSocial || nextProps.auth.failedToSignUpWithSocial) {
+      newState = {
+        hasError: true,
+        error: nextProps.auth.error.message,
+        notificationClosed: false,
+        loggingIn: false
+      };
 
-    if (nextProps.auth.failedToSignUpWithSocial) {
-      if (nextProps.auth.error.message === "user already exists") {
-        newState = {
-          hasError: true,
-          error: "A user was found linked to the account you provided. Try signing in instead.",
-          notificationClosed: false,
-          loggingIn: false
-        }
-      } else {
-        newState = {
-          hasError: true,
-          error: nextProps.auth.error.message,
-          notificationClosed: false,
-          loggingIn: false
-        };
-      }
+      if (nextProps.auth.error.message === "user type mismatch")
+        newState.error = "The account you used to sign in is not an applicant account. You must use an applicant account to access the application portal.";
+      
+      if (nextProps.auth.error.message === "user already exists")
+        newState.error = "A user was found linked to the account you provided. Try signing in instead.";
     }
 
     if (nextProps.auth.hasSent) {

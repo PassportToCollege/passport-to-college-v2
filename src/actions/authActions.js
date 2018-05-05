@@ -130,6 +130,7 @@ export const doSignInWithSocial = (provider, options) => {
           .then(snapshot => {
             if (snapshot.exists) {
               let user = snapshot.data();
+              user.uid = results.user.uid;
 
               if (options.strict && !user[options.strict]) {
                 return auth.signOut().then(() => {
@@ -137,21 +138,12 @@ export const doSignInWithSocial = (provider, options) => {
                 });
               }
 
-              const d = {
-                uid: results.user.uid,
-                isAdmin: user.isAdmin || false,
-                isApplicant: user.isApplicant || false,
-                isStaff: user.isStaff || false,
-                isStudent: user.isStudent || false,
-                createdAt: new Date()
-              };
-              cookies.set("ssid", d, { path: "/", maxAge: 60 * 60 * 24 });
+              const userCookie = new SSID(user);
+              userCookie.create();
 
-              user.uid = results.user.uid;
               return dispatch(signedInWithSocial(user));
             }
 
-            // delete newly created user
             results.user.delete().then(() => {
               dispatch(signInWithSocialFailed({ message: "user not found" }, provider));
             });

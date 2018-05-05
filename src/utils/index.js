@@ -150,7 +150,7 @@ export class SSID {
     this.user = user || {};
   }
 
-  static create() {
+  create() {
     const d = {
       uid: this.user.uid,
       isAdmin: this.user.isAdmin,
@@ -163,7 +163,7 @@ export class SSID {
     return cookies.set("ssid", d, { path: "/", maxAge: 60 * 60 * 24 });
   }
 
-  static destroy() {
+  destroy() {
     return cookies.remove("ssid", { path: "/" });
   }
 }
