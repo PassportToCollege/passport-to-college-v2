@@ -111,8 +111,12 @@ class App extends Component {
   }
 
   applyLandingMiddleware(props) {
-    if(isApplicant())
-      return <Redirect to={`/apply/p/${activeUser()}`} />
+    if (isAuthorized()) {
+      if(isApplicant())
+        return <Redirect to={`/apply/p/${activeUser()}`} />
+
+      return <Redirect to="/" />
+    }
 
     return <Apply {...props} updateLocation={newLocation => { this.setState({ location: newLocation }); }} />
   }

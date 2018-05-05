@@ -1,6 +1,7 @@
 import "./Apply.css";
 
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
@@ -41,7 +42,7 @@ class Apply extends Component {
     });
   }
 
-  static getDerivedStateFromProps(nextProps) {
+  static getDerivedStateFromProps(nextProps, prevState) {
     let newState = null;
 
     if (nextProps.auth.hasFailed) {
@@ -59,6 +60,24 @@ class Apply extends Component {
         newState = {
           hasError: true,
           error: "The account you used to sign in is not an applicant account. You must use an applicant account to access the application portal.",
+          notificationClosed: false,
+          loggingIn: false
+        }
+      } else {
+        newState = {
+          hasError: true,
+          error: nextProps.auth.error.message,
+          notificationClosed: false,
+          loggingIn: false
+        };
+      }
+    }
+
+    if (nextProps.auth.failedToSignUpWithSocial) {
+      if (nextProps.auth.error.message === "user already exists") {
+        newState = {
+          hasError: true,
+          error: "A user was found linked to the account you provided. Try signing in instead.",
           notificationClosed: false,
           loggingIn: false
         }
@@ -96,7 +115,8 @@ class Apply extends Component {
       };
     }
 
-    if (nextProps.auth.hasAuthorized || nextProps.auth.hasSignedInWithSocial) {
+    if ((nextProps.auth.hasAuthorized || nextProps.auth.hasSignedInWithSocial) &&
+      prevState.loggingIn) {
       newState = {
         loggingIn: false
       };
@@ -125,7 +145,9 @@ class Apply extends Component {
 
         <StartApplication
           title="Start New Application"
+          subtitle="Or with your email:"
           handleAccountCreation={this.handleAccountCreation}
+          handleSocialSignUp={this.handleSocialSignUp}
           updateName={this.updateName}
           updateEmail={this.updateEmail}
           updatePassword={this.updatePassword}
@@ -164,6 +186,13 @@ class Apply extends Component {
   handleSocialSignIn = provider => {
     this.props.authActions.doSignInWithSocial(provider, {
       strict: "isApplicant"
+    });
+  }
+
+  handleSocialSignUp = provider => {
+    this.props.authActions.doSignUpWithSocial(provider, {
+      applicant: true,
+      emailConfirmed: true
     });
   }
 
@@ -208,7 +237,9 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Apply);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Apply)
+);

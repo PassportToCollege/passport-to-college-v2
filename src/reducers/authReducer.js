@@ -22,7 +22,10 @@ import {
   EMAIL_CONFIRMATION_SEND_FAILED,
   SIGN_IN_WITH_SOCIAL_INITIATED, 
   SIGN_IN_WITH_SOCIAL_FAILED,
-  SIGNED_IN_WITH_SOCIAL
+  SIGNED_IN_WITH_SOCIAL,
+  SIGN_UP_WITH_SOCIAL_INITIATED,
+  SIGN_UP_WITH_SOCIAL_FAILED,
+  SIGNED_UP_WITH_SOCIAL
 } from "../actions/actionTypes";
 
 const auth = (state = initialState.auth, action) => {
@@ -70,6 +73,8 @@ const auth = (state = initialState.auth, action) => {
     case SIGNED_OUT:
       return Object.assign({}, state, {
         isAuthorizing: false,
+        hasAuthorized: false,
+        hasSignedInWithSocial: false,
         hasSignedOut: true,
         hasFailed: false,
         activeUser: false
@@ -96,6 +101,28 @@ const auth = (state = initialState.auth, action) => {
         failedToSignInWithSocial: false,
         provider: action.provider,
         activeUser: action.user
+      });
+    case SIGN_UP_WITH_SOCIAL_INITIATED:
+      return Object.assign({}, state, {
+        signingUpWithSocial: true,
+        hasSignedUpWithSocial: false,
+        failedToSignUpWithSocial: false,
+        provider: action.provider
+      });
+    case SIGN_UP_WITH_SOCIAL_FAILED:
+      return Object.assign({}, state, {
+        signingUpWithSocial: false,
+        hasSignedUpWithSocial: false,
+        failedToSignUpWithSocial: true,
+        provider: action.provider,
+        error: action.error
+      });
+    case SIGNED_UP_WITH_SOCIAL:
+      return Object.assign({}, state, {
+        signingUpWithSocial: false,
+        hasSignedUpWithSocial: true,
+        failedToSignUpWithSocial: false,
+        provider: action.provider
       });
     case ACCOUNT_CREATION_INITIATED:
       return Object.assign({}, state, {

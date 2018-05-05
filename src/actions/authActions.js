@@ -4,6 +4,7 @@ import moment from "moment";
 
 import * as types from "./actionTypes";
 import { auth, db } from "../utils/firebase";
+import { User, SSID } from "../utils";
 import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
@@ -148,97 +149,12 @@ export const doSignInWithSocial = (provider, options) => {
 
               user.uid = results.user.uid;
               return dispatch(signedInWithSocial(user));
-            } else {
-              dispatch(addingDataToUserDbs());
-              
-              const { user } = results;
-
-              let userData = {
-                uid: user.uid,
-                email: user.email,
-                isAdmin: options.strict === "isAdmin",
-                isApplicant: options.strict === "isApplicant",
-                isStudent: options.strict === "isStudent",
-                isStaff: false,
-                emailConfirmed: true,
-                photo: user.photoURL
-              };
-
-              let name = user.displayName.split(" ");
-
-              if (name.length === 3) {
-                userData.name = {
-                  first: name[0],
-                  middle: name[1],
-                  last: name[2],
-                  full: [name[0], name[2]].join(" ")
-                }
-              } else {
-                userData.name = {
-                  first: name[0],
-                  last: name[1],
-                  full: user.displayName
-                }
-              }
-
-              let batch = db.batch();
-              let userRef = db.collection("users").doc(user.uid);
-
-              batch.set(userRef, userData);
-
-              if (userData.isApplicant) {
-                batch.set(db.collection("applications").doc(user.uid), {
-                  uid: user.uid,
-                  user: userData,
-                  state: {
-                    draft: true,
-                    pending: false,
-                    accepted: false,
-                    rejected: false
-                  },
-                  startedOn: new Date(moment.utc(moment()).toDate()).getTime()
-                });
-              }
-
-              if (userData.isStudent) {
-                batch.set(db.collection("students").doc(user.uid), {
-                  uid: user.uid,
-                  user: userData
-                });
-              }
-
-              batch.commit()
-                .then(() => {
-                  dispatch(addedDataToUserDbs());
-
-                  if (userData.isApplicant) {
-                    dispatch(sendEmailConfirmationEmailInitated(userData.email));
-
-                    axios.get(`${EMAIL_API}/s/welcome/${user.uid}`)
-                      .then(() => {
-                        dispatch(sendEmailConfirmationEmailSent(user.email));
-
-                        const d = {
-                          uid: results.user.uid,
-                          isAdmin: userData.isAdmin || false,
-                          isApplicant: userData.isApplicant || false,
-                          isStaff: userData.isStaff || false,
-                          isStudent: userData.isStudent || false,
-                          createdAt: new Date()
-                        };
-                        cookies.set("ssid", d, { path: "/", maxAge: 60 * 60 * 24 });
-
-                        dispatch(signedInWithSocial(userData));
-                      })
-                      .catch(error => {
-                        dispatch(sendEmailConfirmationEmailFailed(error, user.email));
-                      })
-                  }
-                })
-                .catch(error => {
-                  dispatch(addingDataToUserDbsFailed(error));
-                })
             }
+
+            // delete newly created user
+            results.user.delete().then(() => {
+              dispatch(signInWithSocialFailed({ message: "user not found" }, provider));
+            });
           })
       })
       .catch(error => {
@@ -450,6 +366,134 @@ export const doAccountCreate = (data) => {
   };
 };
 
+export const signUpWithSocialInitiated = provider => {
+  return {
+    type: types.SIGN_UP_WITH_SOCIAL_INITIATED,
+    provider
+  };
+};
+
+export const signUpWithSocialFailed = (error, provider) => {
+  return {
+    type: types.SIGN_UP_WITH_SOCIAL_FAILED,
+    error, provider
+  };
+};
+
+export const signedUpWithSocial = provider => {
+  return {
+    type: types.SIGNED_UP_WITH_SOCIAL,
+    provider
+  };
+};
+
+export const doSignUpWithSocial = (provider, options) => {
+  return dispatch => {
+    if ("string" !== typeof provider)
+      return signUpWithSocialFailed({ message: "provider type error" }, provider);
+
+    dispatch(signUpWithSocialInitiated(provider));
+
+    options = options || {};
+
+    let p;
+    switch (provider) {
+      case "google":
+        p = new firebase.auth.GoogleAuthProvider();
+        break;
+      case "facebook":
+        p = new firebase.auth.FacebookAuthProvider();
+        break;
+      default:
+        return signUpWithSocialFailed({ message: "unknown provider" }, provider)
+    }
+
+    return auth.signInWithPopup(p)
+      .then(results => {
+        db.collection("users")
+          .doc(results.user.uid)
+          .get()
+          .then(snapshot => {
+            if (snapshot.exists) {
+              let data = snapshot.data();
+
+              if (data.isAdmin || data.isApplicant || data.isStudent) {
+                return auth.signOut().then(() => {
+                  dispatch(signUpWithSocialFailed({ message: "user already exists" }, provider));
+                });
+              }
+            }
+
+            dispatch(addingDataToUserDbs());
+
+            const { user } = results;
+            options.photo = user.photoURL;
+
+            const newUser = new User(user.uid, user.email, user.displayName, options);
+            const userData = newUser.data;
+
+            let batch = db.batch();
+            let userRef = db.collection("users").doc(user.uid);
+
+            batch.set(userRef, userData, { merge: true });
+
+            if (userData.isApplicant) {
+              batch.set(db.collection("applications").doc(user.uid), {
+                uid: user.uid,
+                user: userData,
+                state: {
+                  draft: true,
+                  pending: false,
+                  accepted: false,
+                  rejected: false
+                },
+                startedOn: new Date(moment.utc(moment()).toDate()).getTime()
+              }, { merge: true });
+            }
+
+            if (userData.isStudent) {
+              batch.set(db.collection("students").doc(user.uid), {
+                uid: user.uid,
+                user: userData
+              }, { merge: true });
+            }
+
+            batch.commit()
+              .then(() => {
+                dispatch(addedDataToUserDbs());
+
+                if (userData.isApplicant) {
+                  dispatch(sendEmailConfirmationEmailInitated(userData.email));
+
+                  axios.get(`${EMAIL_API}/s/welcome/${user.uid}`)
+                    .then(() => {
+                      dispatch(sendEmailConfirmationEmailSent(user.email));
+
+                      const userCookie = new SSID(userData);
+                      userCookie.create();
+
+                      dispatch(signedUpWithSocial(provider));
+                      dispatch(signedInWithSocial(userData));
+                    })
+                    .catch(error => {
+                      dispatch(signedUpWithSocial(provider));
+                      dispatch(signedInWithSocial(userData));
+                      dispatch(sendEmailConfirmationEmailFailed(error, user.email));
+                    })
+                }
+              })
+              .catch(error => {
+                dispatch(addingDataToUserDbsFailed(error));
+              })
+          });
+      })
+      .catch(error => {
+        return dispatch(signUpWithSocialFailed(error, provider));
+      })
+  }
+}
+
+
 // @REMOVE ERRORS
 export const removeAuthErrors = () => {
   return {
@@ -491,7 +535,6 @@ export const doResetPasswordEmailSend = email => {
       .catch(error => {
         dispatch(resetPasswordEmailSendFailed(error, email));
       });
-
   }
 }
 
