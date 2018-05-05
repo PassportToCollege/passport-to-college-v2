@@ -37,6 +37,7 @@ const auth = (state = initialState.auth, action) => {
         isCreating: false,
         isAddingToDbs: false,
         failedToSignInWithSocial: false,
+        failedToSignUpWithSocial: false,
         error: null
       });
     case SIGN_IN_AUTHORIZING:

@@ -47,8 +47,8 @@ class LikeButton extends Component {
       newState.authorized = isAuthorized();
     }
 
-    if (nextProps.auth.failedToSignInWithFacebook ||
-      nextProps.auth.failedToSignInWithGoogle ||
+    if (nextProps.auth.failedToSignInWithSocial ||
+      nextProps.auth.failedToSignUpWithSocial ||
       nextProps.auth.hasFailed) {
       newState = newState || {};
       newState = Object.assign({}, newState, {
@@ -56,11 +56,14 @@ class LikeButton extends Component {
         notificationClosed: false,
         error: nextProps.auth.error.message
       });
+
+      if (nextProps.auth.error.message === "user already exists")
+        newState.error = "A user was found linked to the account you provided. Try signing in instead.";
     }
 
     if ((nextProps.auth.hasAuthorized ||
-      nextProps.auth.hasSignedInWithGoogle ||
-      nextProps.auth.hasSignedInWithFacebook) && 
+      nextProps.auth.hasSignedInWithSocial ||
+      nextProps.auth.hasSignedUpWithSocial) && 
       (prevState.signingUp || prevState.signingIn)) {
       newState = newState || {};
       newState.signingUp = false;
@@ -68,6 +71,26 @@ class LikeButton extends Component {
     }
 
     return newState;
+  }
+
+  getSnapshotBeforeUpdate(prevProps, prevState) {
+    let snapshot = null;
+
+    if (this.state.authorized !== prevState.authorized) {
+      snapshot = {};
+      snapshot.authorized = true;
+    }
+
+    return snapshot;
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (snapshot && snapshot.authorized) {
+      this.setState({
+        liked: this.state.post.likes && this.state.post.likes[activeUser()],
+        likes: countLikes(this.state.post.likes)
+      });
+    }
   }
 
   render() {
@@ -78,16 +101,16 @@ class LikeButton extends Component {
             <SignUpModal heading="Create an account to like this story."
               intro={`Liking shows ${this.state.post.author.name.full} how much you appreciate this story.`}
               doClose={() => this.setState({ signingUp: false })}
-              doGoogle={this.handleGoogleSignUp} 
-              doFacebook={this.handleFacebookSignup} 
+              doGoogle={this.handleSocialSignUp} 
+              doFacebook={this.handleSocialSignUp} 
               doSignIn={() => this.setState({ signingIn: true, signingUp: false })} />
             : null
         }
         {
           this.state.signingIn ?
             <SignInModal doClose={() => this.setState({ signingIn: false })}
-              doGoogle={this.handleGoogleSignUp}
-              doFacebook={this.handleFacebookSignup}
+              doGoogle={this.handleSocialSignIn}
+              doFacebook={this.handleSocialSignIn}
               doSignIn={this.handleSignIn} 
               doSignUp={() => this.setState({ signingIn: false, signingUp: true })}/> : null
         }
@@ -144,12 +167,12 @@ class LikeButton extends Component {
     });
   }
 
-  handleGoogleSignUp = () => {
-    this.props.authActions.doSignInWithGoogle();
+  handleSocialSignIn = provider => {
+    this.props.authActions.doSignInWithSocial(provider);
   }
 
-  handleFacebookSignup = () => {
-    this.props.authActions.doSignInWithFacebook();
+  handleSocialSignUp = provider => {
+    this.props.authActions.doSignUpWithSocial(provider);
   }
 
   handleErrorNotificationClose = () => {
