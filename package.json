@@ -13,6 +13,7 @@
     "feather-icons": "^4.7.0",
     "firebase": "^4.13.1",
     "history": "^4.7.2",
+    "immutable": "^3.8.2",
     "lodash": "^4.17.5",
     "moment": "^2.22.1",
     "rand-token": "^0.4.0",
