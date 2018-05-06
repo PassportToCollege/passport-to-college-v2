@@ -94,3 +94,76 @@ export const countLikes = likes => {
 
   return count;
 }
+
+export const initializeFacebook = (d, s, id) => {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = `https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0&appId=${process.env.REACT_APP_FACEBOOK_APP_ID}&autoLogAppEvents=1`;
+  fjs.parentNode.insertBefore(js, fjs);
+}
+
+export class User {
+  constructor(uid, email, name, options) {
+    this.uid = uid;
+    this.email = email;
+    this.isAdmin = options.admin || false;
+    this.isApplicant = options.applicant || false;
+    this.isStudent = options.student || false;
+    this.isStaff = options.staff || false;
+    this.emailConfirmed = options.emailConfirmed || false;
+    this.photo = options.photo || "";
+
+    let n = name.split(" ");
+    if (n.length === 3) {
+      this.name = {
+        first: n[0],
+        middle: n[1],
+        last: n[2],
+        full: [n[0], n[2]].join(" ")
+      }
+    } else {
+      this.name = {
+        first: n[0],
+        last: n[1],
+        full: name
+      }
+    }
+  }
+
+  get data() {   
+    return this.getData(); 
+  }
+
+  getData() {
+    const { uid, name, email, isAdmin, isApplicant, isStudent, isStaff, emailConfirmed, photo } = this;
+    return {
+      uid, name, email,
+      isAdmin, isApplicant, isStudent,
+      isStaff, emailConfirmed, photo
+    };
+  }
+}
+
+export class SSID {
+  constructor(user) {
+    this.user = user || {};
+  }
+
+  create() {
+    const d = {
+      uid: this.user.uid,
+      isAdmin: this.user.isAdmin,
+      isApplicant: this.user.isApplicant,
+      isStaff: this.user.isStaff,
+      isStudent: this.user.isStudent,
+      createdAt: new Date()
+    }
+
+    return cookies.set("ssid", d, { path: "/", maxAge: 60 * 60 * 24 });
+  }
+
+  destroy() {
+    return cookies.remove("ssid", { path: "/" });
+  }
+}

@@ -20,12 +20,12 @@ import {
   EMAIL_CONFIRMATION_SEND_INITIATED,
   EMAIL_CONFIRMATION_SENT,
   EMAIL_CONFIRMATION_SEND_FAILED,
-  SIGN_IN_WITH_GOOGLE_INITIATED, 
-  SIGN_IN_WITH_GOOGLE_FAILED,
-  SIGNED_IN_WITH_GOOGLE,
-  SIGN_IN_WITH_FACEBOOK_INITIATED,
-  SIGN_IN_WITH_FACEBOOK_FAILED,
-  SIGNED_IN_WITH_FACEBOOK
+  SIGN_IN_WITH_SOCIAL_INITIATED, 
+  SIGN_IN_WITH_SOCIAL_FAILED,
+  SIGNED_IN_WITH_SOCIAL,
+  SIGN_UP_WITH_SOCIAL_INITIATED,
+  SIGN_UP_WITH_SOCIAL_FAILED,
+  SIGNED_UP_WITH_SOCIAL
 } from "../actions/actionTypes";
 
 const auth = (state = initialState.auth, action) => {
@@ -36,8 +36,8 @@ const auth = (state = initialState.auth, action) => {
         hasFailed: false,
         isCreating: false,
         isAddingToDbs: false,
-        failedToSignInWithGoogle: false,
-        failedToSignInWithFacebook: false,
+        failedToSignInWithSocial: false,
+        failedToSignUpWithSocial: false,
         error: null
       });
     case SIGN_IN_AUTHORIZING:
@@ -74,49 +74,56 @@ const auth = (state = initialState.auth, action) => {
     case SIGNED_OUT:
       return Object.assign({}, state, {
         isAuthorizing: false,
+        hasAuthorized: false,
+        hasSignedInWithSocial: false,
         hasSignedOut: true,
         hasFailed: false,
         activeUser: false
       });
-    case SIGN_IN_WITH_GOOGLE_INITIATED:
+    case SIGN_IN_WITH_SOCIAL_INITIATED:
       return Object.assign({}, state, {
-        signingInWithGoogle: true,
-        hasSignedInWithGoogle: false,
-        failedToSignInWithGoogle: false
+        signingInWithSocial: true,
+        hasSignedInWithSocial: false,
+        failedToSignInWithSocial: false,
+        provider: action.provider
       });
-    case SIGN_IN_WITH_GOOGLE_FAILED:
+    case SIGN_IN_WITH_SOCIAL_FAILED:
       return Object.assign({}, state, {
-        signingInWithGoogle: false,
-        hasSignedInWithGoogle: false,
-        failedToSignInWithGoogle: true,
+        signingInWithSocial: false,
+        hasSignedInWithSocial: false,
+        failedToSignInWithSocial: true,
+        provider: action.provider,
         error: action.error
       });
-    case SIGNED_IN_WITH_GOOGLE:
+    case SIGNED_IN_WITH_SOCIAL:
       return Object.assign({}, state, {
-        signingInWithGoogle: false,
-        hasSignedInWithGoogle: true,
-        failedToSignInWithGoogle: false,
+        signingInWithSocial: false,
+        hasSignedInWithSocial: true,
+        failedToSignInWithSocial: false,
+        provider: action.provider,
         activeUser: action.user
       });
-    case SIGN_IN_WITH_FACEBOOK_INITIATED:
+    case SIGN_UP_WITH_SOCIAL_INITIATED:
       return Object.assign({}, state, {
-        signingInWithFacebook: true,
-        hasSignedInWithFacebook: false,
-        failedToSignInWithFacebook: false
+        signingUpWithSocial: true,
+        hasSignedUpWithSocial: false,
+        failedToSignUpWithSocial: false,
+        provider: action.provider
       });
-    case SIGN_IN_WITH_FACEBOOK_FAILED:
+    case SIGN_UP_WITH_SOCIAL_FAILED:
       return Object.assign({}, state, {
-        signingInWithFacebook: false,
-        hasSignedInWithFacebook: false,
-        failedToSignInWithFacebook: true,
+        signingUpWithSocial: false,
+        hasSignedUpWithSocial: false,
+        failedToSignUpWithSocial: true,
+        provider: action.provider,
         error: action.error
       });
-    case SIGNED_IN_WITH_FACEBOOK:
+    case SIGNED_UP_WITH_SOCIAL:
       return Object.assign({}, state, {
-        signingInWithFacebook: false,
-        hasSignedInWithFacebook: true,
-        failedToSignInWithFacebook: false,
-        activeUser: action.user
+        signingUpWithSocial: false,
+        hasSignedUpWithSocial: true,
+        failedToSignUpWithSocial: false,
+        provider: action.provider
       });
     case ACCOUNT_CREATION_INITIATED:
       return Object.assign({}, state, {

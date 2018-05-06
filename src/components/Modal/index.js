@@ -469,12 +469,12 @@ export const SignUpModal = ({ doClose, doGoogle, doFacebook, doSignIn, heading, 
 
   const handleGoogleSignUp = () => {
     if ("function" === typeof doGoogle)
-      return doGoogle();
+      return doGoogle("google");
   };
 
   const handleFacebookSignUp = () => {
     if ("function" === typeof doFacebook)
-      return doFacebook();
+      return doFacebook("facebook");
   };
 
   const handleSignInClick = () => {
@@ -522,12 +522,12 @@ export const SignInModal = ({ doClose, doGoogle, doFacebook, doSignIn, doSignUp 
 
   const handleGoogleSignIn = () => {
     if ("function" === typeof doGoogle)
-      return doGoogle();
+      return doGoogle("google");
   };
 
   const handleFacebookSignIn = () => {
     if ("function" === typeof doFacebook)
-      return doFacebook();
+      return doFacebook("facebook");
   };
 
   const handlleSignIn = (e) => {

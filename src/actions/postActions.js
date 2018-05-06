@@ -225,6 +225,7 @@ export const doPostUpdate = (id, data, options) => {
 
     options = options || {};
     data = data || {};
+
     db.collection("posts")
       .doc(id)
       .update(data)

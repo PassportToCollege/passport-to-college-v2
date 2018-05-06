@@ -15,6 +15,7 @@ import WYSIWYGEditor from "../../components/Editor";
 import PostCardGrid from "../../components/PostCardGrid";
 import BorderTopContainer from "../../components/BorderTopContainer";
 import LikeButton from "../LikeButton";
+import SocialShare from "../../components/SocialShare";
 
 class Story extends Component {
   constructor(props) {
@@ -159,6 +160,9 @@ class Story extends Component {
               }
               <BorderTopContainer classes="story__appreciate">
                 <LikeButton post={this.state.post} postId={this.state.id} />
+                <SocialShare facebook={{
+                  href: `${process.env.REACT_APP_URL}/${this.props.match.url}`
+                }}/>
               </BorderTopContainer>
             </section> :
             <LoadingPost />

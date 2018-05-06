@@ -1,6 +1,7 @@
 import "./Apply.css";
 
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
@@ -33,10 +34,15 @@ class Apply extends Component {
 
   componentWillUnmount() {
     this.props.authActions.removeAuthErrors();
-    this.setState({ hasSent: false, notificationClosed: true });
+    this.setState({ 
+      hasSent: false, 
+      notificationClosed: true,
+      email: "",
+      password: "" 
+    });
   }
 
-  static getDerivedStateFromProps(nextProps) {
+  static getDerivedStateFromProps(nextProps, prevState) {
     let newState = null;
 
     if (nextProps.auth.hasFailed) {
@@ -47,6 +53,21 @@ class Apply extends Component {
         loggingIn: false,
         creatingAccount: false
       };
+    }
+
+    if (nextProps.auth.failedToSignInWithSocial || nextProps.auth.failedToSignUpWithSocial) {
+      newState = {
+        hasError: true,
+        error: nextProps.auth.error.message,
+        notificationClosed: false,
+        loggingIn: false
+      };
+
+      if (nextProps.auth.error.message === "user type mismatch")
+        newState.error = "The account you used to sign in is not an applicant account. You must use an applicant account to access the application portal.";
+      
+      if (nextProps.auth.error.message === "user already exists")
+        newState.error = "A user was found linked to the account you provided. Try signing in instead.";
     }
 
     if (nextProps.auth.hasSent) {
@@ -67,26 +88,20 @@ class Apply extends Component {
       newState.creatingAccount = false;
     }
 
-    if (nextProps.auth.isAuthorizing) {
+    if (nextProps.auth.isAuthorizing || nextProps.auth.signingInWithSocial) {
       newState = {
         loggingIn: true
       };
     }
 
-    if (nextProps.auth.hasAuthorized) {
+    if ((nextProps.auth.hasAuthorized || nextProps.auth.hasSignedInWithSocial) &&
+      prevState.loggingIn) {
       newState = {
         loggingIn: false
       };
 
       const { activeUser } = nextProps.auth;
-
-      if (activeUser.isApplicant) {
-        nextProps.history.push(`/apply/p/${activeUser.uid}`);
-      } else if (activeUser.isAdmin) {
-        nextProps.history.push("/admin/dashboard");
-      } else {
-        nextProps.history.push("/");
-      }
+      nextProps.history.push(`/apply/p/${activeUser.uid}`);
     }
 
     return newState;
@@ -98,8 +113,10 @@ class Apply extends Component {
         <PageMeta route="APPLY" />
         <SignInForm 
           title="Continue Application"
+          subtitle="Or with your email"
           submitText="Continue"
           handleSubmit={this.handleSignIn}
+          handleSocialSignIn={this.handleSocialSignIn}
           updateEmail={this.updateEmail}
           updatePassword={this.updatePassword} 
           authError={this.state.hasError}
@@ -107,7 +124,9 @@ class Apply extends Component {
 
         <StartApplication
           title="Start New Application"
+          subtitle="Or with your email:"
           handleAccountCreation={this.handleAccountCreation}
+          handleSocialSignUp={this.handleSocialSignUp}
           updateName={this.updateName}
           updateEmail={this.updateEmail}
           updatePassword={this.updatePassword}
@@ -138,7 +157,22 @@ class Apply extends Component {
 
     const { email, password } = this.state;
 
-    this.props.authActions.doSignIn(email, password);
+    this.props.authActions.doSignIn(email, password, {
+      strict: "isApplicant"
+    });
+  }
+
+  handleSocialSignIn = provider => {
+    this.props.authActions.doSignInWithSocial(provider, {
+      strict: "isApplicant"
+    });
+  }
+
+  handleSocialSignUp = provider => {
+    this.props.authActions.doSignUpWithSocial(provider, {
+      applicant: true,
+      emailConfirmed: true
+    });
   }
 
   handleAccountCreation = (e) => {
@@ -182,7 +216,9 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Apply);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Apply)
+);
