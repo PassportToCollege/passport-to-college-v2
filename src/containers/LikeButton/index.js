@@ -78,18 +78,40 @@ class LikeButton extends Component {
 
     if (this.state.authorized !== prevState.authorized) {
       snapshot = {};
-      snapshot.authorized = true;
+      if (isAuthorized()) {
+        snapshot.wasAuthorized = true;
+      } else {
+        snapshot.wasUnauthorized = true;
+      }
     }
 
     return snapshot;
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (snapshot && snapshot.authorized) {
+    if (snapshot && snapshot.wasAuthorized) {
+      let liked = this.state.post.likes && this.state.post.likes[activeUser()];
       this.setState({
-        liked: this.state.post.likes && this.state.post.likes[activeUser()],
-        likes: countLikes(this.state.post.likes)
+        liked: true,
+        likes: !liked ? countLikes(this.state.post.likes) + 1 : countLikes(this.state.post.likes)
       });
+
+      if (!liked) {
+        this.props.postActions.doPostUpdate(this.state.id, {
+          likes: Object.assign({}, this.state.post.likes, {
+            [activeUser()]: true
+          })
+        }, {
+          refresh: false
+        });
+      }
+    }
+
+    if (snapshot && snapshot.wasUnauthorized) {
+      this.setState({
+        liked: isAuthorized() && this.state.post && this.state.post.likes && this.state.post.likes[activeUser()],
+        likes: countLikes(this.state.post.likes),
+      })
     }
   }
 
