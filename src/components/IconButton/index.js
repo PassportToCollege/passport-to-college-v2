@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import propTypes from "prop-types";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import { faTrashAlt, faEdit, faInfo, faExternalLinkAlt, faThumbsUp } from "@fortawesome/fontawesome-free-solid";
+import { faFacebookF } from "@fortawesome/fontawesome-free-brands";
 
 class IconButton extends Component {
   handleClick = (e) => {
@@ -17,7 +18,8 @@ class IconButton extends Component {
       delete: faTrashAlt,
       edit: faEdit,
       open: faExternalLinkAlt,
-      like: faThumbsUp
+      like: faThumbsUp,
+      facebook: faFacebookF
     };
     let buttonStyles = Object.assign({}, this.props.styles);
 

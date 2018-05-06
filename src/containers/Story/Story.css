@@ -50,6 +50,10 @@
 /* Appreciation section */
 .story .story__content .story__appreciate {
   padding: 1em;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center;
 }
 
 /* More stories */

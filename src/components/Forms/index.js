@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import propTypes from "prop-types";
 import moment from "moment";
 
+import TextedIconButton from "../TextedIconButton";
 import Button from "../Button";
 import Loader from "../Loader";
 
@@ -15,6 +16,18 @@ export class SignInForm extends Component {
     this.state = {
       tries: 0
     };
+  }
+
+  static propTypes = {
+    title: propTypes.string,
+    subtitle: propTypes.string,
+    submitText: propTypes.string,
+    handleSubmit: propTypes.func,
+    updateEmail: propTypes.func,
+    updatePassword: propTypes.func,
+    authError: propTypes.bool,
+    handleSocialSignIn: propTypes.func,
+    isWorking: propTypes.bool
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -29,7 +42,25 @@ export class SignInForm extends Component {
       <form className="form auth__form signin__form" method="post" onSubmit={this.props.handleSubmit}>
         {
           this.props.title ?
-          <h2 className="form__title">{this.props.title}</h2> :
+            <h2 className="form__title">{this.props.title}</h2> : null
+        }
+        <div className="form__social_signins">
+          <TextedIconButton icon="google" text="Google Account"
+            doClick={this.handleGoogleSignIn}
+            buttonStyles={{
+              margin: "2rem 0",
+              display: "inline-block"
+            }} />
+          <TextedIconButton icon="facebook" text="Facebook Account"
+            doClick={this.handleFacebookSignIn}
+            buttonStyles={{
+              margin: "2rem 0 2rem 2rem",
+              display: "inline-block"
+            }} />
+        </div>
+        {
+          this.props.subtitle ?
+          <h2 className="form__title">{this.props.subtitle}</h2> :
           null
         }
         <div className="form__input_container">
@@ -62,9 +93,28 @@ export class SignInForm extends Component {
       </form>
     );
   }
+
+  handleFacebookSignIn = () => {
+    if ("function" === typeof this.props.handleSocialSignIn)
+      this.props.handleSocialSignIn("facebook");
+  }
+
+  handleGoogleSignIn = () => {
+    if ("function" === typeof this.props.handleSocialSignIn)
+      this.props.handleSocialSignIn("google");
+  }
 }
 
 export class ResetPasswordForm extends Component {
+  static propTypes = {
+    title: propTypes.string,
+    submitText: propTypes.string,
+    handleSubmit: propTypes.func,
+    updateEmail: propTypes.func,
+    updatePassword: propTypes.func,
+    authError: propTypes.bool
+  }
+
   render() {
     return (
       <form className="form auth__form reset__form" method="post" onSubmit={this.props.handleSubmit}>
@@ -84,15 +134,6 @@ export class ResetPasswordForm extends Component {
     );
   }
 }
-
-SignInForm.propTypes = ResetPasswordForm.propTypes = {
-  title: propTypes.string,
-  submitText: propTypes.string,
-  handleSubmit: propTypes.func,
-  updateEmail: propTypes.func,
-  updatePassword: propTypes.func,
-  authError: propTypes.bool
-};
 
 export const SignUpForm = ({ user, handleSubmit, handleInputChange, isWorking }) => {
   return (
@@ -188,12 +229,40 @@ CreateUserForm.propTypes = {
 };
 
 export const StartApplication = props => {
+  const handleFacebookSignUp = () => {
+    if ("function" === typeof props.handleSocialSignUp)
+      props.handleSocialSignUp("facebook");
+  }
+
+  const handleGoogleSignUp = () => {
+    if ("function" === typeof props.handleSocialSignUp)
+      props.handleSocialSignUp("google");
+  }
 
   return (
     <form className="form auth__form start_application__form" method="post" onSubmit={props.handleAccountCreation}>
       {
         props.title ?
           <h2 className="form__title">{props.title}</h2> :
+          null
+      }
+      <div className="form__social_signins">
+        <TextedIconButton icon="google" text="Start with Google"
+          doClick={handleGoogleSignUp}
+          buttonStyles={{
+            margin: "2rem 0",
+            display: "inline-block"
+          }} />
+        <TextedIconButton icon="facebook" text="Start with Facebook"
+          doClick={handleFacebookSignUp}
+          buttonStyles={{
+            margin: "2rem 0 2rem 2rem",
+            display: "inline-block"
+          }} />
+      </div>
+      {
+        props.subtitle ?
+          <h2 className="form__title">{props.subtitle}</h2> :
           null
       }
       <div className="form__input_container">
@@ -227,11 +296,13 @@ export const StartApplication = props => {
 
 StartApplication.propTypes = {
   title: propTypes.string,
+  subtitle: propTypes.string,
   handleSignIn: propTypes.func,
   updateEmail: propTypes.func,
   updatePassword: propTypes.func,
   updateName: propTypes.func,
   handleAccountCreation: propTypes.func,
+  handleSocialSignUp: propTypes.func,
   isWorking: propTypes.bool
 };
 
