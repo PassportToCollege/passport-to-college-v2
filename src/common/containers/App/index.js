@@ -1,20 +1,26 @@
 import './App.css';
 
-import React, { Component } from 'react';
-import { Route, BrowserRouter, Redirect } from "react-router-dom";
+import React from 'react';
+import { Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
 
 import * as routes from "../../constants/routes";
 import * as postsActions from "../../actions/postsActions";
-import { isAuthorized, isApplicant, activeUser, initializeFacebook } from "../../utils";
+import {
+  isAuthorized,
+  initializeFacebook,
+  isBrowser,
+  activeUser,
+  isApplicant
+} from "../../utils";
 
 import Hamburger from "../Hamburger";
 import Navigation from "../Navigation";
 import Footer from "../Footer";
 
-import Home from "../Home";
+import Home from '../Home';
 import Stories from "../Stories";
 import Story from "../Story";
 import SignIn from "../Auth/SignIn";
@@ -26,7 +32,7 @@ import Dashboard from "../Dashboard";
 import Apply from "../Apply";
 import ApplicationPortal from "../Apply/Portal";
 
-class App extends Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
 
@@ -36,8 +42,18 @@ class App extends Component {
     };
   }
 
+  static propTypes = {
+    posts: propTypes.object,
+    postsActions: propTypes.object
+  }
+
   componentDidMount() {
-    this.props.postsActions.doPostsGetMostRecent();  
+    if (isBrowser) {
+      this.props.postsActions.doPostsGetMostRecent();
+    } else {
+      this.props.postsActions.postsGetMostRecentInitiated();
+    }
+
     initializeFacebook(document, "script", "facebook-jssdk");
   }
 
@@ -45,13 +61,13 @@ class App extends Component {
     let mainBg = {};
     let bodyStyles = {};
 
-    if(this.state.location === "sign-in" ||
+    if (this.state.location === "sign-in" ||
       this.state.location === "apply" ||
       this.state.location === "reset" ||
       this.state.location === "confirm-email" ||
       this.state.location === "sign-up") {
       mainBg.backgroundColor = "#FF6561";
-    } else if(this.state.location.indexOf("dashboard") > -1 || 
+    } else if (this.state.location.indexOf("dashboard") > -1 ||
       this.state.location === "application portal") {
       mainBg.backgroundColor = "#FFF";
       bodyStyles = {
@@ -62,33 +78,31 @@ class App extends Component {
     }
 
     return (
-      <BrowserRouter>
-        <div className="app">
-          {this.renderHamburger()}
-          <div className="app__main" data-hamburger={this.state.hamburgerState} style={mainBg}>
-            {this.selectNavigation()}
-            <div className={`app__body app__body_${this.state.location}`} style={bodyStyles}>
-              <Route exact path={routes.LANDING.route} render={props => this.landingMiddleware(props)}></Route>
-              <Route exact path={routes.STORIES.route} render={props => this.defaultRouteMiddleware(props, Stories)}></Route>
-              <Route exact path={routes.STORY.route} render={props => this.defaultRouteMiddleware(props, Story)}></Route>
-              <Route path={routes.STORIES_CATEGORY.route} render={props => this.defaultRouteMiddleware(props, Stories)}></Route>
-              <Route path={routes.SIGN_IN.route} render={(props) => this.authMiddleware(props, SignIn)}></Route>
-              <Route path={routes.SIGN_UP.route} render={props => this.authMiddleware(props, SignUp)}></Route>
-              <Route path={routes.RESET_PASSWORD.route} render={(props) => this.authMiddleware(props, ResetPassword)}></Route>
-              <Route path={routes.CONFIRM_EMAIL_ADDRESS.route} render={(props) => this.defaultRouteMiddleware(props, ConfirmEmail)}></Route>
-              <Route path={routes.DASHBOARD.route} render={props => this.protectedMiddleware(props, Dashboard)}></Route>
-              <Route exact path={routes.APPLY.route} render={props => this.applyLandingMiddleware(props, Apply)}></Route>
-              <Route path={routes.APPLY_PORTAL.route} render={props => this.applicationPortalMiddleware(props, ApplicationPortal)}></Route>
-            </div>
-            {
-              this.state.location !== "" &&
-              this.state.location !== "application portal" &&
-              this.state.location.indexOf("dashboard") === -1 ?
-                <Footer posts={this.props.posts} /> : null 
-            }
+      <div className="app">
+        {this.renderHamburger()}
+        <div className="app__main" data-hamburger={this.state.hamburgerState} style={mainBg}>
+          {this.selectNavigation()}
+          <div className={`app__body app__body_${this.state.location}`} style={bodyStyles}>
+            <Route exact path={routes.LANDING.route} render={props => this.landingMiddleware(props)}></Route>
+            <Route exact path={routes.STORIES.route} render={props => this.defaultRouteMiddleware(props, Stories)}></Route>
+            <Route exact path={routes.STORY.route} render={props => this.defaultRouteMiddleware(props, Story)}></Route>
+            <Route path={routes.STORIES_CATEGORY.route} render={props => this.defaultRouteMiddleware(props, Stories)}></Route>
+            <Route path={routes.SIGN_IN.route} render={(props) => this.authMiddleware(props, SignIn)}></Route>
+            <Route path={routes.SIGN_UP.route} render={props => this.authMiddleware(props, SignUp)}></Route>
+            <Route path={routes.RESET_PASSWORD.route} render={(props) => this.authMiddleware(props, ResetPassword)}></Route>
+            <Route path={routes.CONFIRM_EMAIL_ADDRESS.route} render={(props) => this.defaultRouteMiddleware(props, ConfirmEmail)}></Route>
+            <Route path={routes.DASHBOARD.route} render={props => this.protectedMiddleware(props, Dashboard)}></Route>
+            <Route exact path={routes.APPLY.route} render={props => this.applyLandingMiddleware(props, Apply)}></Route>
+            <Route path={routes.APPLY_PORTAL.route} render={props => this.applicationPortalMiddleware(props, ApplicationPortal)}></Route>
           </div>
+          {
+            this.state.location !== "" &&
+            this.state.location !== "application portal" &&
+            this.state.location.indexOf("dashboard") === -1 ?
+              <Footer posts={this.props.posts} /> : null 
+          }
         </div>
-      </BrowserRouter>
+      </div>
     );
   }
 
@@ -163,12 +177,6 @@ class App extends Component {
     return null;
   }
 }
-
-App.propTypes = {
-  posts: propTypes.object,
-  postsActions: propTypes.object
-};
-
 const mapStateToProps = state => {
   return {
     posts: state.posts
@@ -181,7 +189,9 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(App)
+);

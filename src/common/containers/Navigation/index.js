@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { withRouter } from "react-router-dom";
 import propTypes from "prop-types";
-
+import { isBrowser } from "../../utils";
 import * as routes from "../../constants/routes";
 import * as hamburgerActions from "../../actions/hamburgerActions";
 
@@ -28,18 +28,22 @@ class Navigation extends Component {
 
     this.state = {
       addBackground: false,
-      lastScroll: window.pageYOffset || document.documentElement.scrollTop,
+      lastScroll: 0,
       sDirection: "none",
       onWhite: props.onWhite
     };
   }
 
   componentDidMount() {
-    window.addEventListener("scroll", this.watchScroll);
+    if (isBrowser) {
+      this.setState({ lastScroll: window.pageYOffset || document.documentElement.scrollTop });
+      window.addEventListener("scroll", this.watchScroll);
+    }
   }
 
   componentWillUnmount() {
-    window.removeEventListener("scroll", this.watchScroll);
+    if (isBrowser)
+      window.removeEventListener("scroll", this.watchScroll);
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {

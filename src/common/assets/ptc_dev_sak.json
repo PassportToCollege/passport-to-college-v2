@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "passport-to-college-dev",
+  "private_key_id": "7867a9c21419d03af080ce76e576f8cafb55db0f",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDL11BlyM88Kz6D\n/FHAJD1AT9amGrvjpepe3RnOZyacz6UwkJ+ykrIeMQ/5hPs3IymQeEyF1856woyx\nXMZ6klFbQ9DzM9Wu0o7hHuQUpbVnmun4U4LPHn2jSjg7i6Yr3tBXuh4XEiRE4/Zh\nWDcxMZnIKabQ5Dsiu185lBcaRhHhgPJ6BPt1uo71H4X9lc8ZRZUgMAJJ0PPjdwMz\nd6q9Z3M1WN8cVBsBZU7txWqjlFxQFsbsHp7u3jdbIl6wX3nboUpw/MxvBzJnR7IB\n7bcqt233X6xOIEYXYttCmdK7PbpkLbf+49w3Pf+/m5ZaHMtFBFfgj2QuWkCN8HeA\nRYJbCj8lAgMBAAECggEACe4zpb3GcMs3iLUMY4SwcjdhgOaZBDJjTFtPpElMrYOF\nK+xDx26TnFpuCY0jsvA02Guv6K5Wig77zTE0nyiNK5nObma2UIXD/a4kVOgswf8f\nSmCBJSd6Xe/h9O6s+gKpGjkAOcYBu9RyPpROXghpUkHLNW6E/gBsV3ECPh6vRNHN\n261bbJby2qug/Yrl3s1tRnI5HPn/Xs+flYVJyx5iVTvsR6REiiv0aH5AHacL8+gK\n446msWZxbBYGzqb1Zq6CYydinx6BjBDIh8p6DBOL+a4QnLA4I75hI6X70Y9091Qp\nQ1/tz6jdjeasICMj0q+FsDF47h9fK3btzy9+LhH1CQKBgQDn3QXINn/LzpnOo2u6\nct3359UWcPuF+2YndVz2kQuD8ckDJSzSmeWbJKKHVU7Uu8AJeWIg8sNboNDh0Tr7\nOB7qNhItjztupqjW+0VCOiEid6TSjfv4LC4UEpv+3W2m+e3/Z5tPLo40ofjj5B57\nIf+hcad7JszeN7RsSlYT2lraaQKBgQDhD4TlHT4iarK5rwutwskHVKjQINP1Tv/j\naI+LG5Eedh2zEU8UFzKFYn20d6cAhGcxlVTbePT3d+RUOaqYIA8CTeXOwyku2W4o\nVdEaEdW8CSh0nwUwCLYj+bf99VLzQmNvQw6lFNHvBAoW1/RA4Ey0sSnFBTPrBQXM\nih8wzD7PXQKBgQCmjNlua9d4qrtI95KWp5RSUzF5oUbLgz5p8aAJbT78VF2z6Kw9\ny1ZnDvXAiMLLhOH47DxUto0l8GqbCxR3CGUMkDKWj2B9pzF4251waRkMDS1UIbFx\nHysqOAPeG2h8nOMcp2ukgSidHgwOhvpuMInTijRn/gMDTLhJYUxbjmncoQKBgQDC\n1Ip5RS1q4e9Cq3RywfMBc5qIQkL7U55VoUjSZdTlB9+CCvPoMoS7z51+wy5BVl13\nIQ1KyZVXPeTdvOYft3EGz6Snr29RbUzdghz4coQSueLZwmfdQ01aK23KXbundstZ\noDVnV3S9c0PArsZ1+zasHcpJEs31IG36uX9y4P1myQKBgQDOQPyGdutxNY81c59Z\nqeJ6x5D6oBmaTGg8A6P1LdOI4f8IYFyv4qH1UXIebZIFcJ/Vrfgq07myc5z3tt4z\nLEQsE1PElJ6zXhVM1uo7/sYhu2tvb+Z2SxZZGGqxES0mWAzamxaMcY79ANot6ETV\n4cUoEt6lUkz4gwVu6/CjbWUfIA==\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-q16hz@passport-to-college-dev.iam.gserviceaccount.com",
+  "client_id": "117359575473762565333",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-q16hz%40passport-to-college-dev.iam.gserviceaccount.com"
+}

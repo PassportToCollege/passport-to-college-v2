@@ -39,23 +39,28 @@ export const doPostsGet = () => {
         let heroPromises = [];
 
         snapshots.forEach(snapshot => {
-          heroPromises.push(storage.ref("posts/heros").child(`${snapshot.id}.png`).getDownloadURL());
-          let post = snapshot.data();
+          if (storage)
+            heroPromises.push(storage.ref("posts/heros").child(`${snapshot.id}.png`).getDownloadURL());
+          
+            let post = snapshot.data();
           post.id = snapshot.id;
 
           posts.push(post);
         });
 
-        Promise.all(heroPromises).then(urls => {
-          for (let post of posts) {
-            post.hero = urls.find(url => {
-              return url.indexOf(post.id) > -1;
-            });
-          }
+        if (storage) {
+          return Promise.all(heroPromises).then(urls => {
+            for (let post of posts) {
+              post.hero = urls.find(url => {
+                return url.indexOf(post.id) > -1;
+              });
+            }
+  
+            dispatch(postsGetDone(posts));
+          });
+        }
 
-          dispatch(postsGetDone(posts));
-        });
-
+        dispatch(postsGetDone(posts));
       })
       .catch(error => {
         Console.log(error);
@@ -105,32 +110,46 @@ export const doPostsGetMostRecent = () => {
           let post = snapshot.data();
           post.id = snapshot.id;
 
-          heroPromises.push(storage.ref("posts/heros").child(`${snapshot.id}.png`).getDownloadURL());
+          if (storage)
+            heroPromises.push(storage.ref("posts/heros").child(`${snapshot.id}.png`).getDownloadURL());
+          
           authorPromises.push(db.collection("users").doc(post.author).get());
-
           posts.push(post);
         });
 
-        Promise.all(heroPromises).then(urls => {
-          for (let post of posts) {
-            post.hero = urls.find(url => {
-              return url.indexOf(post.id) > -1;
+        if (storage) {
+          return Promise.all(heroPromises).then(urls => {
+            for (let post of posts) {
+              post.hero = urls.find(url => {
+                return url.indexOf(post.id) > -1;
+              });
+            }
+  
+            Promise.all(authorPromises).then(authors => {
+              for (let post of posts) {
+                post.author = authors.find(author => {
+                  return author.id === post.author;
+                });
+  
+                post.author = post.author.data();
+              }
+  
+              dispatch(postsGetMostRecentDone(posts));
             });
+          });
+        }
+
+        Promise.all(authorPromises).then(authors => {
+          for (let post of posts) {
+            post.author = authors.find(author => {
+              return author.id === post.author;
+            });
+
+            post.author = post.author.data();
           }
 
-          Promise.all(authorPromises).then(authors => {
-            for (let post of posts) {
-              post.author = authors.find(author => {
-                return author.id === post.author;
-              });
-
-              post.author = post.author.data();
-            }
-
-            dispatch(postsGetMostRecentDone(posts));
-          });
+          dispatch(postsGetMostRecentDone(posts));
         });
-
       })
       .catch(error => {
         Console.log(error)
@@ -193,7 +212,9 @@ export const doPostsGetMostRecentByCategory = (category, options) => {
           if (options.exclude.indexOf(post.id) > -1) {
             return null;
           } else {
-            heroPromises.push(storage.ref("posts/heros").child(`${snapshot.id}.png`).getDownloadURL());
+            if (storage)
+              heroPromises.push(storage.ref("posts/heros").child(`${snapshot.id}.png`).getDownloadURL());
+            
             posts.push(post);
           }
         });
@@ -201,15 +222,19 @@ export const doPostsGetMostRecentByCategory = (category, options) => {
         if (!posts.length)
           return dispatch(postsGetMostRecentByCategoryFailed({ message: "no posts found" }, category)); 
 
-        Promise.all(heroPromises).then(urls => {
-          for (let post of posts) {
-            post.hero = urls.find(url => {
-              return url.indexOf(post.id) > -1;
-            });
-          }
+        if (Storage) {
+          return Promise.all(heroPromises).then(urls => {
+            for (let post of posts) {
+              post.hero = urls.find(url => {
+                return url.indexOf(post.id) > -1;
+              });
+            }
+  
+            dispatch(postsGetMostRecentByCategoryDone(posts, category));
+          });
+        }
 
-          dispatch(postsGetMostRecentByCategoryDone(posts, category));
-        });
+        dispatch(postsGetMostRecentByCategoryDone(posts, category));
       })
       .catch(error => {
         Console.log(error);
@@ -273,32 +298,46 @@ export const doPostsPaginate = (page, category) => {
             let post = snapshot.data();
             post.id = snapshot.id;
 
-            heroPromises.push(storage.ref("posts/heros").child(`${snapshot.id}.png`).getDownloadURL());
+            if (storage)
+              heroPromises.push(storage.ref("posts/heros").child(`${snapshot.id}.png`).getDownloadURL());
+  
             authorPromises.push(db.collection("users").doc(post.author).get());
-
             posts.push(post);
           });
 
-          Promise.all(heroPromises).then(urls => {
-            for (let post of posts) {
-              post.hero = urls.find(url => {
-                return url.indexOf(post.id) > -1;
+          if (storage) {
+            return Promise.all(heroPromises).then(urls => {
+              for (let post of posts) {
+                post.hero = urls.find(url => {
+                  return url.indexOf(post.id) > -1;
+                });
+              }
+  
+              Promise.all(authorPromises).then(authors => {
+                for (let post of posts) {
+                  post.author = authors.find(author => {
+                    return author.id === post.author;
+                  });
+  
+                  post.author = post.author.data();
+                }
+  
+                dispatch(paginatePostsDone(posts, page));
               });
+            });
+          }
+
+          Promise.all(authorPromises).then(authors => {
+            for (let post of posts) {
+              post.author = authors.find(author => {
+                return author.id === post.author;
+              });
+
+              post.author = post.author.data();
             }
 
-            Promise.all(authorPromises).then(authors => {
-              for (let post of posts) {
-                post.author = authors.find(author => {
-                  return author.id === post.author;
-                });
-
-                post.author = post.author.data();
-              }
-
-              dispatch(paginatePostsDone(posts, page));
-            });
+            dispatch(paginatePostsDone(posts, page));
           });
-
         })
         .catch(error => {
           Console.log(error)
@@ -325,32 +364,47 @@ export const doPostsPaginate = (page, category) => {
                 let post = snapshot.data();
                 post.id = snapshot.id;
 
-                heroPromises.push(storage.ref("posts/heros").child(`${snapshot.id}.png`).getDownloadURL());
+                if (storage)
+                  heroPromises.push(storage.ref("posts/heros").child(`${snapshot.id}.png`).getDownloadURL());
+                
                 authorPromises.push(db.collection("users").doc(post.author).get());
-
                 posts.push(post);
               });
 
-              Promise.all(heroPromises).then(urls => {
-                for (let post of posts) {
-                  post.hero = urls.find(url => {
-                    return url.indexOf(post.id) > -1;
+              if (storage) {
+                return Promise.all(heroPromises).then(urls => {
+                  for (let post of posts) {
+                    post.hero = urls.find(url => {
+                      return url.indexOf(post.id) > -1;
+                    });
+                  }
+  
+                  Promise.all(authorPromises).then(authors => {
+                    for (let post of posts) {
+                      post.author = authors.find(author => {
+                        return author.id === post.author;
+                      });
+  
+                      post.author = post.author.data();
+                    }
+  
+                    dispatch(paginatePostsDone(posts, page));
                   });
+                });
+
+              }
+
+              Promise.all(authorPromises).then(authors => {
+                for (let post of posts) {
+                  post.author = authors.find(author => {
+                    return author.id === post.author;
+                  });
+
+                  post.author = post.author.data();
                 }
 
-                Promise.all(authorPromises).then(authors => {
-                  for (let post of posts) {
-                    post.author = authors.find(author => {
-                      return author.id === post.author;
-                    });
-
-                    post.author = post.author.data();
-                  }
-
-                  dispatch(paginatePostsDone(posts, page));
-                });
+                dispatch(paginatePostsDone(posts, page));
               });
-
             })
             .catch(error => {
               Console.log(error)

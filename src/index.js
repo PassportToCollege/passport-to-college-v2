@@ -1,20 +1,26 @@
-import './index.css';
+import app from './server';
+import http from 'http';
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from "react-redux";
+const server = http.createServer(app);
 
-import configureStore from "./store/configureStore";
-import App from "./containers/App";
-import registerServiceWorker from './utils/registerServiceWorker';
+let currentApp = app;
 
-const store = configureStore();
+server.listen(process.env.PORT || 3000, error => {
+  if (error) {
+    console.log(error);
+  }
 
-ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>    , 
-  document.getElementById('root')
-);
+  console.log('🚀 started');
+});
 
-registerServiceWorker();
+if (module.hot) {
+  console.log('✅  Server-side HMR Enabled!');
+
+  module.hot.accept('./server/index', () => {
+    console.log('🔁  HMR Reloading `./server`...');
+    server.removeListener('request', currentApp);
+    const newApp = require('./server').default;
+    server.on('request', newApp);
+    currentApp = newApp;
+  });
+}
