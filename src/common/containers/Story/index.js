@@ -116,7 +116,7 @@ class Story extends Component {
             <section className="story__content">
               <PageMeta>
                 <title>{this.state.post.title} | Stories | Passport to College</title>
-                <meta property="og:url" content={`${process.env.REACT_APP_URL}/${this.props.match.url}`} />
+                <meta property="og:url" content={`${process.env.RAZZLE_URL}/${this.props.match.url}`} />
                 <meta property="og:type" content="website" />
                 <meta property="og:title" content={`${this.state.post.title} | Stories | Passport to College`} />
                 <meta property="og:description" content={this.state.post.excerpt} />
@@ -161,7 +161,7 @@ class Story extends Component {
               <BorderTopContainer classes="story__appreciate">
                 <LikeButton post={this.state.post} postId={this.state.id} />
                 <SocialShare facebook={{
-                  href: `${process.env.REACT_APP_URL}/${this.props.match.url}`
+                  href: `https://ed5f9b40.ngrok.ioo/${this.props.match.url}`
                 }}/>
               </BorderTopContainer>
             </section> :
