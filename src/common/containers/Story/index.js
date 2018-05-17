@@ -16,6 +16,7 @@ import PostCardGrid from "../../components/PostCardGrid";
 import BorderTopContainer from "../../components/BorderTopContainer";
 import LikeButton from "../LikeButton";
 import SocialShare from "../../components/SocialShare";
+import Responder from "../Responder";
 
 class Story extends Component {
   constructor(props) {
@@ -168,12 +169,18 @@ class Story extends Component {
             <LoadingPost />
         }
         <BorderTopContainer classes="story__more">
-          <h2>more stories like this</h2>
           {
             this.state.more.length ?
             <PostCardGrid posts={this.state.more} /> : null
           }
         </BorderTopContainer>
+        <section className="story__responses">
+          <h4>Responses</h4>
+          {
+            this.state.post ?
+              <Responder post={this.state.post} /> : null
+          }
+        </section>
       </main>
     )
   }
