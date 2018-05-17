@@ -3,6 +3,8 @@ import moment from "moment";
 
 const cookies = new Cookies();
 
+export const isBrowser = typeof window !== "undefined";
+
 export const activeUser = () => {
   if (isAuthorized())
     return cookies.get("ssid").uid;
@@ -99,7 +101,7 @@ export const initializeFacebook = (d, s, id) => {
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) return;
   js = d.createElement(s); js.id = id;
-  js.src = `https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0&appId=${process.env.REACT_APP_FACEBOOK_APP_ID}&autoLogAppEvents=1`;
+  js.src = `https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0&appId=${process.env.RAZZLE_FACEBOOK_APP_ID}&autoLogAppEvents=1`;
   fjs.parentNode.insertBefore(js, fjs);
 }
 

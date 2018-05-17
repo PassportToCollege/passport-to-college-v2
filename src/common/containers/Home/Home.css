@@ -7,19 +7,20 @@
   padding: 5em 3em;
 }
 
-.home__container .home__section > .home__section_inner {
+.home__container .home__section>.home__section_inner {
   width: 1140px;
   max-width: 100%;
   margin: 0 auto;
 }
 
 /* Stats Section */
+
 .home__section.home__stats {
   background-color: #FF6561;
   padding: 5em 3em 285px;
 }
 
-.home__section.home__stats > .home__section_inner {
+.home__section.home__stats>.home__section_inner {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -29,12 +30,13 @@
 }
 
 /* About Section */
+
 .home__container .home__section.home__about {
   padding: 0;
   margin-top: -285px;
 }
 
-.home__section.home__about > .home__section_inner {
+.home__section.home__about>.home__section_inner {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -48,6 +50,7 @@
 }
 
 /* Featured Students Section */
+
 .home__section.home__featured_students_title {
   background-color: #53D1D7;
   padding: 5em 3em 285px;
@@ -66,7 +69,8 @@
   padding: 0;
   margin-top: -285px;
 }
-.home__section.home__section.home__featured_students > .home__section_inner {
+
+.home__section.home__section.home__featured_students>.home__section_inner {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -74,6 +78,7 @@
 }
 
 /* Posts section */
+
 .home__section.home__posts .home__section_inner>h1 {
   text-align: center;
   font-weight: bold;
@@ -83,28 +88,28 @@
   width: 100%;
 }
 
-.home__section.home__posts .home__section_inner > .home__most_recent_posts > .no__posts {
+.home__section.home__posts .home__section_inner>.home__most_recent_posts>.no__posts {
   text-align: center;
   color: #aaa;
 }
 
-.home__section.home__posts .home__section_inner > .home__most_recent_posts > .no__posts > img {
+.home__section.home__posts .home__section_inner>.home__most_recent_posts>.no__posts>img {
   max-width: 100%;
 }
 
-.home__section.home__posts .home__section_inner > .home__most_recent_posts > .no__posts > h4 {
+.home__section.home__posts .home__section_inner>.home__most_recent_posts>.no__posts>h4 {
   font-size: 2em;
   font-family: "Nunito", sans-serif;
   margin-top: 0;
 }
 
-.home__section.home__posts .home__section_inner > .all_posts__link {
+.home__section.home__posts .home__section_inner>.all_posts__link {
   display: block;
   width: 100%;
   color: #333;
   text-decoration: underline;
   font-family: "Muli", sans-serif;
-  font-size: 1.25em; 
+  font-size: 1.25em;
   font-weight: bold;
   text-align: center;
   margin: 2em auto 1em;
