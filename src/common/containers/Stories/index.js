@@ -77,8 +77,8 @@ class Stories extends Component {
 
   getSnapshotBeforeUpdate(prevProps) {
     let snapshot = null;
-
-    if (this.state.category !== prevProps.match.params.category) {
+    
+    if (this.props.match.params.category !== prevProps.match.params.category) {
       snapshot = {};
       snapshot.categoryChanged = true;
     }
