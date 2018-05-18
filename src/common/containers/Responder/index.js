@@ -4,10 +4,12 @@ import React, { Component} from "react";
 import { connect} from "react-redux";
 import { bindActionCreators } from "redux"
 import propTypes from "prop-types";
-import { isAuthorized, activeUser } from "../../utils";
+import { isAuthorized } from "../../utils";
+import _ from "lodash";
 
 import * as authActions from "../../actions/authActions";
 import * as userProfilePictureActions from "../../actions/userProfilePictureActions";
+import * as userActions from "../../actions/userActions";
 
 import Notification from "../../components/Notification";
 import { SignUpModal, SignInModal } from "../../components/Modal";
@@ -17,7 +19,6 @@ class Responder extends Component {
     super(props);
     this.state = {
       post: props.post,
-      user: activeUser(),
       active: false,
       authorized: isAuthorized(),
       signingUp: false,
@@ -32,7 +33,9 @@ class Responder extends Component {
     post: propTypes.object,
     authActions: propTypes.object,
     uppActions: propTypes.object,
-    picture: propTypes.object
+    picture: propTypes.object,
+    user: propTypes.object,
+    userActions: propTypes.object
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -42,6 +45,12 @@ class Responder extends Component {
       (prevState.profilePicture !== nextProps.picture.url)) {
       newState = {};
       newState.profilePicture = nextProps.picture.url;
+    }
+
+    if (nextProps.user.hasGotten &&
+      !_.isEqual(prevState.user, nextProps.user.user)) {
+      newState = newState || {};
+      newState.user = nextProps.user.user;
     }
 
     if (nextProps.auth.activeUser !== prevState.authorized) {
@@ -72,8 +81,7 @@ class Responder extends Component {
       newState = newState || {};
       newState = Object.assign({}, newState, {
         signingIn: false,
-        signingUp: false,
-        user: activeUser()
+        signingUp: false
       });
     }
 
@@ -83,6 +91,7 @@ class Responder extends Component {
   componentDidMount() {
     if (isAuthorized()) {
       this.props.uppActions.doAvatarGet();
+      this.props.userActions.doUserGet();
     }
   }
 
@@ -106,11 +115,16 @@ class Responder extends Component {
       if (!this.props.picture.isGetting) {
         this.props.uppActions.doAvatarGet();
       }
+
+      if (!this.props.user.isGetting) {
+        this.props.userActions.doUserGet();
+      }
     }
 
     if (snapshot && snapshot.wasUnauthorized) {
       this.setState({
-        profilePicture: null
+        profilePicture: null,
+        user: null
       });
     }
   }
@@ -141,7 +155,10 @@ class Responder extends Component {
             <Notification text={this.state.error}
               doClose={this.handleErrorNotificationClose} /> : null
         }
-        <div className="responder" onClick={this.handleResponderClick}>
+        <div className="responder"
+          tabIndex={0}
+          onClick={this.handleResponderClick}
+          onBlur={this.handleResponderBlur}>
           <section className="responder__meta">
             <span className="responder__meta_profile_pic">
               {
@@ -152,7 +169,11 @@ class Responder extends Component {
                     <span className="responder__meta_placeholder_profile_pic"></span>
               }
             </span>
-            <span className="responder__meta_ph">Write a response...</span>
+            {
+              this.state.user && this.state.active ?
+              <span className="responder__meta_username">{this.state.user.name.full}</span> :
+              <span className="responder__meta_ph">Write a response...</span>
+            }
           </section>
           <section className="responder__editor">
 
@@ -171,24 +192,32 @@ class Responder extends Component {
   }
 
   handleResponderClick = () => {
-    if (this.state.authorized)
-      return;
+    if (this.state.authorized) {
+      return this.setState({  active: true });
+    }
 
     this.setState({ signingUp: true });
+  }
+
+  handleResponderBlur = e => {
+    e.preventDefault();
+    this.setState({  active: false });
   }
 }
 
 const mapStateToProps = state => {
   return {
     auth: state.auth,
-    picture: state.userProfilePicture
+    picture: state.userProfilePicture,
+    user: state.user
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     authActions: bindActionCreators(authActions, dispatch),
-    uppActions: bindActionCreators(userProfilePictureActions, dispatch)
+    uppActions: bindActionCreators(userProfilePictureActions, dispatch),
+    userActions: bindActionCreators(userActions, dispatch)
   };
 };
 
