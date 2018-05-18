@@ -1,5 +1,5 @@
 import { db } from "../utils/firebase";
-import { Comment, Reply } from "../utils";
+import { Comment } from "../utils";
 import * as types from "./actionTypes";
 
 // Create actions

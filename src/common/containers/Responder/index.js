@@ -4,7 +4,7 @@ import React, { Component} from "react";
 import { connect} from "react-redux";
 import { bindActionCreators } from "redux"
 import propTypes from "prop-types";
-import { isAuthorized, getWordCount } from "../../utils";
+import { isAuthorized, getWordCount, isBrowser } from "../../utils";
 import _ from "lodash";
 
 import * as authActions from "../../actions/authActions";
@@ -19,6 +19,7 @@ import WYSIWYGEditor from "../../components/Editor";
 class Responder extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       post: props.post,
       postId: props.postId,
@@ -104,6 +105,14 @@ class Responder extends Component {
       this.props.uppActions.doAvatarGet();
       this.props.userActions.doUserGet();
     }
+
+    if (isBrowser) {
+      document.addEventListener("mousedown", this.listenOutsideClick);
+    }
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this.listenOutsideClick);
   }
 
   getSnapshotBeforeUpdate(prevProps, prevState) {
@@ -166,7 +175,8 @@ class Responder extends Component {
             <Notification text={this.state.error}
               doClose={this.handleErrorNotificationClose} /> : null
         }
-        <div className="responder" onClick={this.handleResponderClick}>
+        <div className="responder" onClick={this.handleResponderClick}
+          ref={div => this.responderRef = div}>
           <section className="responder__meta">
             <span className="responder__meta_profile_pic">
               {
@@ -179,7 +189,10 @@ class Responder extends Component {
             </span>
             {
               this.state.user && this.state.active ?
-              <span className="responder__meta_username">{this.state.user.name.full}</span> :
+              <span>
+                Commenting as
+                <span className="responder__meta_username"> {this.state.user.name.full}</span>
+              </span> :
               <span className="responder__meta_ph">Write a response...</span>
             }
           </section>
@@ -190,12 +203,20 @@ class Responder extends Component {
                 <WYSIWYGEditor focus saveButton
                   captureBlur={this.handleResponderBlur} 
                   saveButtonText="Post" 
-                  handleSave={this.handleResponseSave} /> : null
+                  handleSave={this.handleResponseSave} 
+                  controlStyles={{
+                    position: "relative"
+                  }}/> : null
             }
           </section>
         </div>
       </React.Fragment>
     );
+  }
+
+  listenOutsideClick = e => {
+    if (this.responderRef) 
+      this.setState({ clickedInside: this.responderRef.contains(e.target) });
   }
 
   handleSocialSignIn = provider => {
@@ -215,7 +236,7 @@ class Responder extends Component {
   }
 
   handleResponderBlur = ({ blocks }) => {
-    if (getWordCount(blocks)) 
+    if (getWordCount(blocks) || this.state.clickedInside) 
       return;
 
     this.setState({ active: false });
