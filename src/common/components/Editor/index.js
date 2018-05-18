@@ -27,7 +27,8 @@ class WYSIWYGEditor extends Component {
       isBold: false,
       isUnderline: false,
       isItalic: false,
-      words: content.length ? getWordCount(blocks) : 0
+      words: content.length ? getWordCount(blocks) : 0,
+      focus: props.focus
     };
   }
 
@@ -40,6 +41,11 @@ class WYSIWYGEditor extends Component {
     }
 
     return null;
+  }
+
+  componentDidMount() {
+    if (this.state.focus)
+      this.focusEditor()
   }
 
   render() {
@@ -154,7 +160,8 @@ class WYSIWYGEditor extends Component {
 }
 
 WYSIWYGEditor.defaultProps = {
-  limit: 1000
+  limit: 1000,
+  focus: false
 };
 
 WYSIWYGEditor.propTypes = {
@@ -166,7 +173,8 @@ WYSIWYGEditor.propTypes = {
   readonly: propTypes.bool,
   editorStyles: propTypes.object,
   controlStyles: propTypes.object,
-  captureBlur: propTypes.func
+  captureBlur: propTypes.func,
+  focus: propTypes.bool
 };
 
 export default WYSIWYGEditor;

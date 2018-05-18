@@ -6,11 +6,6 @@
   outline: none;
 }
 
-.responder:active,
-.responder:focus {
-  border: 1px solid #FF6561;
-}
-
 /* meta */
 .responder .responder__meta {
   display: flex;
@@ -41,4 +36,9 @@
 .responder .responder__meta .responder__meta_username {
   color: #FF6561;
   font-weight: bold;
+}
+
+/* editor */
+.responder .responder__editor[data-state="active"] {
+  padding-top: 1em;
 }

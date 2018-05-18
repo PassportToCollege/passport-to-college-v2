@@ -52,8 +52,13 @@ export const getWordCount = blocks => {
   if (blocks.length) {
     blocks.map(block => {
       let { text } = block;
+
+      if (!text.length)
+        return count;
+
       text = text.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, "")
         .replace(/\s{2,}/g, " ")
+        .trim()
         .split(" ");
 
       count += text.length;

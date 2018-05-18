@@ -4,7 +4,7 @@ import React, { Component} from "react";
 import { connect} from "react-redux";
 import { bindActionCreators } from "redux"
 import propTypes from "prop-types";
-import { isAuthorized } from "../../utils";
+import { isAuthorized, getWordCount } from "../../utils";
 import _ from "lodash";
 
 import * as authActions from "../../actions/authActions";
@@ -13,6 +13,7 @@ import * as userActions from "../../actions/userActions";
 
 import Notification from "../../components/Notification";
 import { SignUpModal, SignInModal } from "../../components/Modal";
+import WYSIWYGEditor from "../../components/Editor";
 
 class Responder extends Component {
   constructor(props) {
@@ -155,10 +156,7 @@ class Responder extends Component {
             <Notification text={this.state.error}
               doClose={this.handleErrorNotificationClose} /> : null
         }
-        <div className="responder"
-          tabIndex={0}
-          onClick={this.handleResponderClick}
-          onBlur={this.handleResponderBlur}>
+        <div className="responder" onClick={this.handleResponderClick}>
           <section className="responder__meta">
             <span className="responder__meta_profile_pic">
               {
@@ -175,8 +173,13 @@ class Responder extends Component {
               <span className="responder__meta_ph">Write a response...</span>
             }
           </section>
-          <section className="responder__editor">
-
+          <section className="responder__editor" 
+            data-state={this.state.active ? "active" : "inactive"}>
+            {
+              this.state.active ?
+                <WYSIWYGEditor focus
+                  captureBlur={this.handleResponderBlur} /> : null
+            }
           </section>
         </div>
       </React.Fragment>
@@ -199,8 +202,10 @@ class Responder extends Component {
     this.setState({ signingUp: true });
   }
 
-  handleResponderBlur = e => {
-    e.preventDefault();
+  handleResponderBlur = ({ blocks }) => {
+    if (getWordCount(blocks)) 
+      return;
+
     this.setState({  active: false });
   }
 }
