@@ -192,12 +192,13 @@ export class SSID {
 }
 
 export class Comment {
-  constructor(user = {}, content = {}) {
+  constructor(user = {}, content = {}, post) {
     this.user = user;
     this.message = {
       text: convertBlocksToText(content.blocks),
       html: content
     };
+    this.post = post;
     this.hasReplies = false;
     this.postedOn = new Date(moment.utc(moment()).toDate()).getTime();
   }
@@ -207,25 +208,25 @@ export class Comment {
   }
 
   getData() {
-    const { user, message, hasReplies, postedOn } = this;
+    const { user, message, hasReplies, postedOn, post } = this;
 
     return {
-      user, message, hasReplies, postedOn
+      user, message, hasReplies, postedOn, post
     };
   }
 }
 
 export class Reply extends Comment {
-  constructor(user = {}, content ={}, comment) {
-    super(user, content);
+  constructor(user = {}, content ={}, post, comment) {
+    super(user, content, post);
     this.parent = comment;
   }
 
   getData() {
-    const { user, message, hasReplies, postedOn, parent } = this;
+    const { user, message, hasReplies, postedOn, parent, post } = this;
 
     return {
-      user, message, hasReplies, postedOn, parent
+      user, message, hasReplies, postedOn, parent, post
     };
   }
 }
