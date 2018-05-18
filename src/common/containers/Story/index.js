@@ -179,7 +179,8 @@ class Story extends Component {
           <h4>Responses</h4>
           {
             this.state.post ?
-              <Responder post={this.state.post} /> : null
+              <Responder  postId={this.state.id}
+                post={this.state.post} /> : null
           }
         </section>
       </main>

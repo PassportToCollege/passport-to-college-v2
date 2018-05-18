@@ -10,6 +10,7 @@ import _ from "lodash";
 import * as authActions from "../../actions/authActions";
 import * as userProfilePictureActions from "../../actions/userProfilePictureActions";
 import * as userActions from "../../actions/userActions";
+import * as commentActions from "../../actions/commentActions";
 
 import Notification from "../../components/Notification";
 import { SignUpModal, SignInModal } from "../../components/Modal";
@@ -20,6 +21,7 @@ class Responder extends Component {
     super(props);
     this.state = {
       post: props.post,
+      postId: props.postId,
       active: false,
       authorized: isAuthorized(),
       signingUp: false,
@@ -32,11 +34,14 @@ class Responder extends Component {
 
   static propTypes = {
     post: propTypes.object,
+    postId: propTypes.string,
     authActions: propTypes.object,
     uppActions: propTypes.object,
     picture: propTypes.object,
     user: propTypes.object,
-    userActions: propTypes.object
+    userActions: propTypes.object,
+    comments: propTypes.object,
+    commentActions: propTypes.object
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -84,6 +89,11 @@ class Responder extends Component {
         signingIn: false,
         signingUp: false
       });
+    }
+
+    if (nextProps.comments.createdComment) {
+      newState = newState || {};
+      newState.active = false;
     }
 
     return newState;
@@ -212,7 +222,11 @@ class Responder extends Component {
   }
 
   handleResponseSave = content => {
-    this.setState({ active: false });
+    this.props.commentActions.doCommentCreate(
+      this.state.user,
+      content,
+      this.state.postId
+    );
   }
 }
 
@@ -220,7 +234,8 @@ const mapStateToProps = state => {
   return {
     auth: state.auth,
     picture: state.userProfilePicture,
-    user: state.user
+    user: state.user,
+    comments: state.comments
   };
 };
 
@@ -228,7 +243,8 @@ const mapDispatchToProps = dispatch => {
   return {
     authActions: bindActionCreators(authActions, dispatch),
     uppActions: bindActionCreators(userProfilePictureActions, dispatch),
-    userActions: bindActionCreators(userActions, dispatch)
+    userActions: bindActionCreators(userActions, dispatch),
+    commentActions: bindActionCreators(commentActions, dispatch)
   };
 };
 
