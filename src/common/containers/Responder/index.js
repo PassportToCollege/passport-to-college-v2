@@ -177,8 +177,10 @@ class Responder extends Component {
             data-state={this.state.active ? "active" : "inactive"}>
             {
               this.state.active ?
-                <WYSIWYGEditor focus
-                  captureBlur={this.handleResponderBlur} /> : null
+                <WYSIWYGEditor focus saveButton
+                  captureBlur={this.handleResponderBlur} 
+                  saveButtonText="Post" 
+                  handleSave={this.handleResponseSave} /> : null
             }
           </section>
         </div>
@@ -206,7 +208,12 @@ class Responder extends Component {
     if (getWordCount(blocks)) 
       return;
 
-    this.setState({  active: false });
+    this.setState({ active: false });
+  }
+
+  handleResponseSave = content => {
+    this.setState({ active: false });
+    debugger;
   }
 }
 

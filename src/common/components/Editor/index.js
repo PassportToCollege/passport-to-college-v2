@@ -79,7 +79,7 @@ class WYSIWYGEditor extends Component {
               </span>
               {
                 this.props.saveButton ?
-                  <Button type="button" text="Save" solid doClick={this._handleSave}/>
+                  <Button type="button" text={this.props.saveButtonText} solid doClick={this._handleSave}/>
                   :
                   null
               }
@@ -161,12 +161,15 @@ class WYSIWYGEditor extends Component {
 
 WYSIWYGEditor.defaultProps = {
   limit: 1000,
-  focus: false
+  focus: false,
+  saveButton: false,
+  saveButtonText: "Save"
 };
 
 WYSIWYGEditor.propTypes = {
   getContent: propTypes.func,
   saveButton: propTypes.bool,
+  saveButtonText: propTypes.string,
   handleSave: propTypes.func,
   content: propTypes.object,
   limit: propTypes.number,
