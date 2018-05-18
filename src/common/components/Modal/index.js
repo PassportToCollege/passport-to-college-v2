@@ -569,9 +569,9 @@ export class SignInModal extends Component {
         <div className="modal__content">
           <h3>Sign in</h3>
           <TextedIconButton doClick={this.handleGoogleSignIn}
-            icon="google" text="With Google" />
+            icon="google" text="Google account" />
           <TextedIconButton doClick={this.handleFacebookSignIn}
-            icon="facebook" text="With Facebook" />
+            icon="facebook" text="Facebook account" />
           <h3>Or with your email address:</h3>
           <form className="form form__signin"
             onSubmit={this.handlleSignIn}>
@@ -587,7 +587,7 @@ export class SignInModal extends Component {
             </div>
             <Button type="submit" text="sign in" solid 
               styles={{
-                backgroundColor: "#53D1D7"
+                backgroundColor: "#FF6561"
               }}/>
             <Button type="button" text="sign up instead" solid
               doClick={this.handleSignUpInstead} 
