@@ -213,7 +213,6 @@ class Responder extends Component {
 
   handleResponseSave = content => {
     this.setState({ active: false });
-    debugger;
   }
 }
 

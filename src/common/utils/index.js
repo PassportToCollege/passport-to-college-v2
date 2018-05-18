@@ -69,6 +69,22 @@ export const getWordCount = blocks => {
   return count;
 };
 
+export const convertBlocksToText = blocks => {
+  let result = "";
+
+  if (blocks.length) {
+    blocks.map(block => {
+      let { text } = block;
+      text = text.trim();
+      result = `${result} ${text}`;
+
+      return result;
+    })
+  }
+
+  return result;
+}
+
 export const queryToObject = query => {
   if (query) {
     query = query.replace("?", "")
@@ -172,5 +188,44 @@ export class SSID {
 
   destroy() {
     return cookies.remove("ssid", { path: "/" });
+  }
+}
+
+export class Comment {
+  constructor(user = {}, content = {}) {
+    this.user = user;
+    this.message = {
+      text: convertBlocksToText(content.blocks),
+      html: content
+    };
+    this.hasReplies = false;
+    this.postedOn = new Date(moment.utc(moment()).toDate()).getTime();
+  }
+
+  get data() {   
+    return this.getData(); 
+  }
+
+  getData() {
+    const { user, message, hasReplies, postedOn } = this;
+
+    return {
+      user, message, hasReplies, postedOn
+    };
+  }
+}
+
+export class Reply extends Comment {
+  constructor(user = {}, content ={}, comment) {
+    super(user, content);
+    this.parent = comment;
+  }
+
+  getData() {
+    const { user, message, hasReplies, postedOn, parent } = this;
+
+    return {
+      user, message, hasReplies, postedOn, parent
+    };
   }
 }
