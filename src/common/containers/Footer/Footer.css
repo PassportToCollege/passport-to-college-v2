@@ -11,7 +11,7 @@ footer.footer .footer__main {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-items: flex-start;
   padding: 2em 3em;
 }
