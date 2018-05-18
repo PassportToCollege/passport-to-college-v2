@@ -136,9 +136,10 @@ class Story extends Component {
                   border: "none",
                   margin: "0 auto",
                   lineHeight: "1.5em",
-                  fontSize: "1.15em",
+                  fontSize: "1.5em",
                   maxWidth: "100%",
-                  padding: "2em 3em"
+                  padding: "2em 3em",
+                  fontFamily: `"PlayFair Dislay", serif`
                 }} />
               {
                 this.state.post.category ?

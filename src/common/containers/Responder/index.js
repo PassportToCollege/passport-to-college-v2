@@ -31,7 +31,8 @@ class Responder extends Component {
   static propTypes = {
     post: propTypes.object,
     authActions: propTypes.object,
-    uppActions: propTypes.object
+    uppActions: propTypes.object,
+    picture: propTypes.object
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -85,6 +86,35 @@ class Responder extends Component {
     }
   }
 
+  getSnapshotBeforeUpdate(prevProps, prevState) {
+    let snapshot = null;
+
+    if (this.state.authorized !== prevState.authorized) {
+      snapshot = {};
+      if (isAuthorized()) {
+        snapshot.wasAuthorized = true;
+      } else {
+        snapshot.wasUnauthorized = true;
+      }
+    }
+
+    return snapshot;
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (snapshot && snapshot.wasAuthorized) {
+      if (!this.props.picture.isGetting) {
+        this.props.uppActions.doAvatarGet();
+      }
+    }
+
+    if (snapshot && snapshot.wasUnauthorized) {
+      this.setState({
+        profilePicture: null
+      });
+    }
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -113,9 +143,16 @@ class Responder extends Component {
         }
         <div className="responder" onClick={this.handleResponderClick}>
           <section className="responder__meta">
-            <span className="responder__meta_her">
-              
+            <span className="responder__meta_profile_pic">
+              {
+                this.state.profilePicture ?
+                  <img src={this.state.profilePicture} alt="Active user profile pic" /> :
+                  this.state.user && this.state.user.photo ?
+                    <img src={this.state.user.photo} alt="Active user profile pic" /> :
+                    <span className="responder__meta_placeholder_profile_pic"></span>
+              }
             </span>
+            <span className="responder__meta_ph">Write a response...</span>
           </section>
           <section className="responder__editor">
 
