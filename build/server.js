@@ -22,7 +22,7 @@ module.exports =
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "f7e6ae4cb27511ce5b4d"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "37a919241402c5e91f3c"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -25152,7 +25152,7 @@ var _jsxFileName = "C:\\Users\\thewa\\Documents\\Github\\passport-to-college-v2\
 
 var server = express__WEBPACK_IMPORTED_MODULE_4___default()();
 
-server.disable('x-powered-by').use(express__WEBPACK_IMPORTED_MODULE_4___default.a.static("C:\\Users\\thewa\\Documents\\Github\\passport-to-college-v2\\public")).use(cookie_parser__WEBPACK_IMPORTED_MODULE_5___default()()).get('/*', function (req, res, next) {
+server.disable('x-powered-by').use(express__WEBPACK_IMPORTED_MODULE_4___default.a.static("C:\\Users\\thewa\\Documents\\Github\\passport-to-college-v2\\public")).use(cookie_parser__WEBPACK_IMPORTED_MODULE_5___default()()).get('/*', function (req, res) {
   var context = {};
   var store = Object(redux__WEBPACK_IMPORTED_MODULE_1__["createStore"])(_common_reducers__WEBPACK_IMPORTED_MODULE_7__["default"]);
 

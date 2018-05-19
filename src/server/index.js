@@ -17,7 +17,7 @@ server
   .disable('x-powered-by')
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR))
   .use(cookieParser())
-  .get('/*', (req, res, next) => {
+  .get('/*', (req, res) => {
     const context = {};
     const store = createStore(reducers);
 
