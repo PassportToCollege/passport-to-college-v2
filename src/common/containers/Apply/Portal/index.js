@@ -163,6 +163,10 @@ class ApplicationPortal extends Component {
         newState.hasSent = true;
     }
 
+    if (nextProps.auth.hasSignedOut) {
+      nextProps.history.push("/");
+    }
+
     if (newState)
       return Object.assign({}, newState, { isComplete });
     
@@ -328,7 +332,6 @@ class ApplicationPortal extends Component {
     e.preventDefault();
 
     this.props.authActions.doSignOut(this.state.user);
-    window.location = routes.LANDING.route;
   }
 }
 

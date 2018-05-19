@@ -58,6 +58,10 @@ class NavigationAdmin extends Component {
       newState.username = nextProps.user.user.name.full;
     }
     
+    if (nextProps.auth.hasSignedOut) {
+      nextProps.history.push("/auth/sign-in");
+    }
+
     return newState;
   }
 
@@ -124,7 +128,6 @@ class NavigationAdmin extends Component {
 
     const user = cookies.get("ssid");
     this.props.authActions.doSignOut(user);
-    this.props.history.push("/")
   }
 
   renderMainNavElements = () => {
@@ -181,6 +184,7 @@ NavigationAdmin.propTypes = {
 
 const mapStateToProps = state => {
   return {
+    auth: state.auth,
     profilePicture: state.userProfilePicture,
     user: state.user
   };
