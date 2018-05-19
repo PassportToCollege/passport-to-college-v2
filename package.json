@@ -3,10 +3,10 @@
   "version": "2.0.0-alpha.8",
   "license": "MIT",
   "scripts": {
-    "start": "razzle start",
+    "start": "NODE_ENV=production node build/server.js",
     "build": "razzle build",
     "test": "razzle test --env=jsdom",
-    "start:prod": "NODE_ENV=production node build/server.js"
+    "start:dev": "razzle start"
   },
   "dependencies": {
     "@fortawesome/fontawesome": "^1.1.7",
