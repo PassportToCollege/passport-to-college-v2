@@ -263,7 +263,9 @@ export const doAccountCreate = (data) => {
     dispatch(accountCreationInitialized(data));
 
     auth.createUserWithEmailAndPassword(data.email, data.password)
-      .then(user => {
+      .then(userCredential => {
+        const { user } = userCredential;
+        
         // create user data object
         let userData = {
           uid: user.uid,
