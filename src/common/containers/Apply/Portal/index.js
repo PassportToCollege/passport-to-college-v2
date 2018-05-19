@@ -328,7 +328,7 @@ class ApplicationPortal extends Component {
     e.preventDefault();
 
     this.props.authActions.doSignOut(this.state.user);
-    this.props.history.push("/")
+    window.location = routes.LANDING.route;
   }
 }
 

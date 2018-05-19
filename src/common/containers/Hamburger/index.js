@@ -14,12 +14,7 @@ import * as routes from "../../constants/routes";
 import { isAuthorized, isAdmin } from "../../utils";
 
 const mainNavItems = [
-  routes.LANDING,
-  routes.ABOUT_US,
-  routes.SCHOLARS,
-  routes.EVENTS,
-  routes.STORIES,
-  routes.CONTACT_US
+  routes.LANDING
 ]
 
 const cookies = new Cookies();
@@ -46,12 +41,11 @@ class Hamburger extends Component {
               {mainNavItems.map((v) => {
                 return (
                   <li key={v.route}>
-                    <NavLink 
-                      exact to={v.route} 
-                      activeClassName="active" 
+                    <a 
+                      href={v.route}
                       onClick={this.handleCloseButtonClick}>
                       {v.name}
-                    </NavLink>
+                    </a>
                   </li>
                 )
               })}

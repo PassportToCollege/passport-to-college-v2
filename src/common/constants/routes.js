@@ -1,5 +1,5 @@
 // Main Routes
-export const LANDING = { name: "Home", route: "/" };
+export const LANDING = { name: "Home", route: process.env.RAZZLE_MAIN_URL };
 export const ABOUT_US = { name: "About Us", route: "/about-us" };
 export const SCHOLARS = { name: "Scholars", route: "/scholars" };
 export const EVENTS = { name: "Events", route: "/events" };
@@ -40,7 +40,7 @@ export const DASH_POSTS_SECTIONS = [
 ]
 
 // Student Application Routes
-export const APPLY = { name: "Apply", route: "/apply" };
+export const APPLY = { name: "Apply", route: "/" };
 export const APPLY_PORTAL = { name: "Application Portal | Apply", route: "/apply/p/:application_id" };
 
 // Auth Routes

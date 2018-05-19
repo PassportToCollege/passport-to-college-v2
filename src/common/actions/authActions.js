@@ -43,12 +43,12 @@ export const signInFailed = (error) => {
 export const doSignIn = (email, password) => {
   return dispatch => {
     dispatch(signInInitiated());
-
+    
     auth.signInWithEmailAndPassword(email, password)
-      .then(user => {
+      .then(userCredential => {
         dispatch(gettingSignedInUser());
 
-        const uid = user.uid;
+        const { uid } = userCredential.user;
 
         // get user
         db.collection("users")

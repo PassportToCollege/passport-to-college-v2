@@ -1,7 +1,7 @@
 import "./Navigation.css";
 
 import React, { Component } from "react";
-import { NavLink, Link } from "react-router-dom";
+// import { NavLink, Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { withRouter } from "react-router-dom";
@@ -13,14 +13,14 @@ import * as hamburgerActions from "../../actions/hamburgerActions";
 import logoWhite from "../../assets/images/logo__text__white.png";
 import logoDark from "../../assets/images/logo__text__dark.png";
 
-const mainNavItems = [
-  routes.LANDING,
-  routes.ABOUT_US,
-  routes.SCHOLARS,
-  routes.EVENTS,
-  routes.STORIES,
-  routes.CONTACT_US
-]
+// const mainNavItems = [
+//   routes.LANDING,
+//   routes.ABOUT_US,
+//   routes.SCHOLARS,
+//   routes.EVENTS,
+//   routes.STORIES,
+//   routes.CONTACT_US
+// ];
 
 class Navigation extends Component {
   constructor(props) {
@@ -61,12 +61,12 @@ class Navigation extends Component {
         data-on-white={this.state.onWhite ? "active" : "inactive"}>
         <div className="navigation__container">
           <div className="navigation__logo_container">
-            <Link to={routes.LANDING.route}>
+            <a href={routes.LANDING.route}>
               <img src={this.state.addBackground || this.state.onWhite ? logoDark : logoWhite} 
                 alt="Passport to College Logo" />
-            </Link>
+            </a>
           </div>
-          <nav className="navigation__nav_container">
+          {/* <nav className="navigation__nav_container">
             <ul>
               {mainNavItems.map(v => {
                 return (
@@ -82,7 +82,7 @@ class Navigation extends Component {
                 )
               })}            
             </ul>
-          </nav>
+          </nav> */}
           <div 
             className="navigation__hamburger"
             onClick={this.handleHamburgerOpenClick}>
