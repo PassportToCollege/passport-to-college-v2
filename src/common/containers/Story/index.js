@@ -8,6 +8,7 @@ import propTypes from "prop-types";
 
 import * as postActions from "../../actions/postActions";
 import * as postsActions from "../../actions/postsActions";
+import * as commentActions from "../../actions/commentActions";
 
 import PageMeta from "../../components/PageMeta";
 import LoadingPost from "../../components/LoadingPost";
@@ -30,12 +31,24 @@ class Story extends Component {
     }
   }
 
+  static propTypes = {
+    post: propTypes.object,
+    postActions: propTypes.object,
+    posts: propTypes.object,
+    postsActions: propTypes.object,
+    comments: propTypes.object,
+    commentActions: propTypes.object,
+    match: propTypes.object,
+    updateLocation: propTypes.func
+  };
+
   componentDidMount() {
     this.props.updateLocation("stories");
 
     const { id } = this.state;
     this.props.postActions.doPostGet(id);
     this.props.postActions.doHeroGet(id);
+    this.props.commentActions.doGetComments(id, 1);
   }
 
   getSnapshotBeforeUpdate(prevProps, prevState) {
@@ -188,26 +201,19 @@ class Story extends Component {
   }
 }
 
-Story.propTypes = {
-  post: propTypes.object,
-  postActions: propTypes.object,
-  posts: propTypes.object,
-  postsActions: propTypes.object,
-  match: propTypes.object,
-  updateLocation: propTypes.func
-};
-
 const mapStateToProps = state => {
   return {
     post: state.post,
-    posts: state.posts
+    posts: state.posts,
+    comments: state.comments
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     postActions: bindActionCreators(postActions, dispatch),
-    postsActions: bindActionCreators(postsActions, dispatch)
+    postsActions: bindActionCreators(postsActions, dispatch),
+    commentActions: bindActionCreators(commentActions, dispatch)
   };
 };
 

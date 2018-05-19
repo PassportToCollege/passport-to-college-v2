@@ -2,7 +2,10 @@ import initialState from "./initialState";
 import {
   CREATE_COMMENT_INITIATED,
   CREATE_COMMENT_FAILED,
-  COMMENT_CREATED
+  COMMENT_CREATED,
+  GET_COMMENT_INITIATED,
+  GET_COMMENT_FAILED,
+  GET_COMMENTS_DONE
 } from "../actions/actionTypes";
 
 const comments = (state = initialState.comments, action) => {
@@ -25,6 +28,26 @@ const comments = (state = initialState.comments, action) => {
         creatingComment: false,
         createdComment: true,
         failedToCreateComment: false
+      });
+    case GET_COMMENT_INITIATED:
+      return Object.assign({}, state, {
+        gettingComments: true,
+        gotComments: false,
+        failedToGetComments: false
+      });
+    case GET_COMMENT_FAILED:
+      return Object.assign({}, state, {
+        gettingComments: false,
+        gotComments: false,
+        failedToGetComments: true,
+        error: action.error
+      });
+    case GET_COMMENTS_DONE:
+      return Object.assign({}, state, {
+        gettingComments: false,
+        gotComments: true,
+        failedToGetComments: false,
+        comments: action.comments
       });
     default:
       return state;

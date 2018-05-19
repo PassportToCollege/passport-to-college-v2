@@ -199,6 +199,7 @@ export class Comment {
       html: content
     };
     this.post = post;
+    this.isConversation = true;
     this.hasReplies = false;
     this.postedOn = new Date(moment.utc(moment()).toDate()).getTime();
   }
@@ -208,10 +209,10 @@ export class Comment {
   }
 
   getData() {
-    const { user, message, hasReplies, postedOn, post } = this;
+    const { user, message, hasReplies, postedOn, post, isConversation } = this;
 
     return {
-      user, message, hasReplies, postedOn, post
+      user, message, hasReplies, postedOn, post, isConversation
     };
   }
 }
@@ -219,6 +220,7 @@ export class Comment {
 export class Reply extends Comment {
   constructor(user = {}, content ={}, post, comment) {
     super(user, content, post);
+    this.isConversation = false;
     this.parent = comment;
   }
 
