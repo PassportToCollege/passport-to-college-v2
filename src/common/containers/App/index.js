@@ -13,7 +13,8 @@ import {
   initializeFacebook,
   isBrowser,
   activeUser,
-  isApplicant
+  isApplicant,
+  isAdmin
 } from "../../utils";
 
 import Navigation from "../Navigation";
@@ -97,8 +98,12 @@ class App extends React.Component {
   }
 
   authMiddleware(props, Component) {
-    if(isAuthorized())
-      return <Redirect to="/"/>
+    if(isAuthorized()) {
+      if(isAdmin())
+        return <Redirect to="/admin/dashboard"/>
+
+      return <Redirect to="/" />
+    }
 
     return <Component {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }} />
   }
@@ -112,8 +117,11 @@ class App extends React.Component {
 
   applyLandingMiddleware(props) {
     if (isAuthorized()) {
-      if(isApplicant())
+      if (isApplicant())
         return <Redirect to={`/apply/p/${activeUser()}`} />
+
+      if (isAdmin())
+        return <Redirect to="/admin/dashboard" />
 
       return <Redirect to="/" />
     }

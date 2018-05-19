@@ -20,7 +20,7 @@ export const isAdmin = () => {
   if (isAuthorized())
     return cookies.get("ssid").isAdmin;
   
-    return false;
+  return false;
 };
 
 export const isApplicant = () => {
