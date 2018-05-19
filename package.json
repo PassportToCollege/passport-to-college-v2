@@ -1,12 +1,18 @@
 {
-  "name": "my-razzle-app",
+  "name": "passport-to-college-v2",
   "version": "2.0.0-alpha.8",
   "license": "MIT",
+  "engines": {
+    "node": "^8.1.x", 
+    "npm": "^5.4.0", 
+    "yarn": "^0.28.4"
+  },
   "scripts": {
     "start": "NODE_ENV=production node build/server.js",
     "build": "razzle build",
     "test": "razzle test --env=jsdom",
-    "start:dev": "razzle start"
+    "dev": "razzle start",
+    "heroku-postbuild": "yarn run build"
   },
   "dependencies": {
     "@fortawesome/fontawesome": "^1.1.7",
