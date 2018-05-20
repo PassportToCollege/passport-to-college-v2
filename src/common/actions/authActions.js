@@ -8,7 +8,7 @@ import { User, SSID } from "../utils";
 import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
-const EMAIL_API = process.env.REACT_APP_EMAIL_API;
+const EMAIL_API = process.env.RAZZLE_EMAIL_API;
 
 // @SIGN IN
 export const signInInitiated = () => {
@@ -265,7 +265,7 @@ export const doAccountCreate = (data) => {
     auth.createUserWithEmailAndPassword(data.email, data.password)
       .then(userCredential => {
         const { user } = userCredential;
-        
+
         // create user data object
         let userData = {
           uid: user.uid,

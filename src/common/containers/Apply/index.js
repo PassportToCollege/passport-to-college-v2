@@ -34,12 +34,6 @@ class Apply extends Component {
 
   componentWillUnmount() {
     this.props.authActions.removeAuthErrors();
-    this.setState({ 
-      hasSent: false, 
-      notificationClosed: true,
-      email: "",
-      password: "" 
-    });
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -70,10 +64,11 @@ class Apply extends Component {
         newState.error = "A user was found linked to the account you provided. Try signing in instead.";
     }
 
-    if (nextProps.auth.hasSent) {
+    if (nextProps.auth.hasSent && nextProps.auth.hasCreated) {
       newState = {
         hasSent: true,
-        notificationClosed: false
+        notificationClosed: false,
+        creatingAccount: false
       };
     }
 
@@ -81,11 +76,6 @@ class Apply extends Component {
       newState = {
         creatingAccount: true
       };
-    }
-
-    if (nextProps.auth.hasCreated) {
-      newState = newState || {};
-      newState.creatingAccount = false;
     }
 
     if (nextProps.auth.isAuthorizing || nextProps.auth.signingInWithSocial) {
