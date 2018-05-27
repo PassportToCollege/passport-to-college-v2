@@ -163,14 +163,28 @@ class ApplicationPortal extends Component {
         newState.hasSent = true;
     }
 
-    if (nextProps.auth.hasSignedOut) {
-      nextProps.history.push("/");
-    }
-
     if (newState)
       return Object.assign({}, newState, { isComplete });
     
     return null;
+  }
+
+  getSnapshotBeforeUpdate(prevProps) {
+    let snapshot = null;
+
+    if (prevProps.auth.isAuthorizing && this.props.auth.hasSignedOut) {
+      snapshot = {
+        wasUnauthorized: true
+      };
+    }
+
+    return snapshot;
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (snapshot && snapshot.wasUnauthorized) {
+      this.props.history.push("/");
+    }
   }
 
   render() {

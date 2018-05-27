@@ -42,20 +42,34 @@ class SignIn extends Component {
       };
     }
 
-    if (nextProps.auth.hasAuthorized ||
-      nextProps.auth.hasSignedInWithSocial) {
-      const { activeUser } = nextProps.auth;
+    return newState;
+  }
 
-      if (activeUser.isAdmin) {
-        nextProps.history.push("/admin/dashboard");
-      } else if (activeUser.isApplicant) {
-        nextProps.history.push(`/apply/p/${activeUser.uid}`);
-      } else {
-        nextProps.history.push("/");
-      }
+  getSnapshotBeforeUpdate(prevProps) {
+    let snapshot = null;
+
+    if ((prevProps.auth.isAuthorizing || prevProps.auth.signingInWithSocial) &&
+    (this.props.auth.hasAuthorized || this.props.auth.hasSignedInWithSocial)) {
+      snapshot = {
+        wasAuthorized: true
+      };
     }
 
-    return newState;
+    return snapshot;
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (snapshot && snapshot.wasAuthorized) {
+      const { activeUser } = this.props.auth;
+
+      if (activeUser.isAdmin) {
+        this.props.history.push("/admin/dashboard");
+      } else if (activeUser.isApplicant) {
+        this.props.history.push(`/apply/p/${activeUser.uid}`);
+      } else {
+        this.props.history.push("/");
+      }
+    }
   }
 
   render() {

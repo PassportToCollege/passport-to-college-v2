@@ -57,14 +57,27 @@ class NavigationAdmin extends Component {
       newState = newState || {};
       newState.username = nextProps.user.user.name.full;
     }
-    
-    if (nextProps.auth.hasSignedOut) {
-      nextProps.history.push("/auth/sign-in");
-    }
 
     return newState;
   }
 
+  getSnapshotBeforeUpdate(prevProps) {
+    let snapshot = null;
+
+    if (prevProps.auth.isAuthorizing && this.props.auth.hasSignedOut) {
+      snapshot = {
+        wasUnauthorized: true
+      };
+    }
+
+    return snapshot;
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (snapshot && snapshot.wasUnauthorized) {
+      this.props.history.push("/auth/sign-in");
+    }
+  }
 
   render() {
     return (
@@ -175,6 +188,7 @@ class NavigationAdmin extends Component {
 
 NavigationAdmin.propTypes = {
   userProfilePictureActions: propTypes.object,
+  auth: propTypes.object,
   authActions: propTypes.object,
   profilePicture: propTypes.object,
   userActions: propTypes.object,

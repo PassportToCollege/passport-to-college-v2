@@ -13,7 +13,7 @@ export const activeUser = () => {
 };
 
 export const isAuthorized = () => {
-  return !!cookies.get("ssid");
+  return "object" === typeof cookies.get("ssid");
 };
 
 export const isAdmin = () => {

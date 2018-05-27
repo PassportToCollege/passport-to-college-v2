@@ -52,7 +52,7 @@ const auth = (state = initialState.auth, action) => {
       });
     case SIGN_IN_GETTING_USER:
       return Object.assign({}, state, {
-        isAuthorizing: false,
+        isAuthorizing: true,
         hasAuthorized: false,
         hasFailed: false,
         activeUser: null

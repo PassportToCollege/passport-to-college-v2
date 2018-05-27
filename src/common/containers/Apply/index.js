@@ -89,12 +89,29 @@ class Apply extends Component {
       newState = {
         loggingIn: false
       };
-
-      const { activeUser } = nextProps.auth;
-      nextProps.history.push(`/apply/p/${activeUser.uid}`);
     }
 
     return newState;
+  }
+
+  getSnapshotBeforeUpdate(prevProps) {
+    let snapshot = null;
+
+    if ((prevProps.auth.isAuthorizing || prevProps.auth.signingInWithSocial) &&
+    (this.props.auth.hasAuthorized || this.props.auth.hasSignedInWithSocial)) {
+      snapshot = {
+        wasAuthorized: true
+      };
+    }
+
+    return snapshot;
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (snapshot && snapshot.wasAuthorized) {
+      const { activeUser } = this.props.auth;
+      this.props.history.push(`/apply/p/${activeUser.uid}`);
+    }
   }
 
   render() {
