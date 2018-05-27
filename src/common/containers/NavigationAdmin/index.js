@@ -119,10 +119,10 @@ class NavigationAdmin extends Component {
               </NavLink>
             </li>
             <li>
-              <NavLink exact to={routes.LANDING.route}>
+              <a href={routes.LANDING.route}>
                 <FontAwesomeIcon icon={faHome}/>
                 <span>Back To Website</span>
-              </NavLink>
+              </a>
             </li>
             <li>
               <NavLink to={routes.SIGN_OUT.route} onClick={this.handleSignOutClick}>
