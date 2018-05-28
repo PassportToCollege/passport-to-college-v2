@@ -176,7 +176,7 @@ class Story extends Component {
               <BorderTopContainer classes="story__appreciate">
                 <LikeButton post={this.state.post} postId={this.state.id} />
                 <SocialShare facebook={{
-                  href: `https://ed5f9b40.ngrok.ioo/${this.props.match.url}`
+                  href: `${process.env.RAZZLE_URL}/${this.props.match.url}`
                 }}/>
               </BorderTopContainer>
             </section> :
@@ -195,6 +195,7 @@ class Story extends Component {
               <Responder  postId={this.state.id}
                 post={this.state.post} /> : null
           }
+          
         </section>
       </main>
     )

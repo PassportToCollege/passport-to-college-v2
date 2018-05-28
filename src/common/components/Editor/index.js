@@ -162,6 +162,7 @@ class WYSIWYGEditor extends Component {
 WYSIWYGEditor.defaultProps = {
   limit: 1000,
   focus: false,
+  readonly: false,
   saveButton: false,
   saveButtonText: "Save"
 };

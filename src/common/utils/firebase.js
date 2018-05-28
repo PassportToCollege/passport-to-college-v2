@@ -1,6 +1,5 @@
 import "firebase/firestore";
 import firebase from "firebase";
-import { isBrowser } from "../utils";
 
 global.XMLHttpRequest = require("xhr2");
 
@@ -22,7 +21,4 @@ const settings = {
 db.settings(settings);
 
 export const auth = firebase.auth();
-export let storage = false;
-
-if (isBrowser)
-  storage = firebase.storage();
+export const storage = firebase.storage();

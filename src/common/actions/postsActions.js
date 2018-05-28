@@ -110,45 +110,30 @@ export const doPostsGetMostRecent = () => {
           let post = snapshot.data();
           post.id = snapshot.id;
 
-          if (storage)
-            heroPromises.push(storage.ref("posts/heros").child(`${snapshot.id}.png`).getDownloadURL());
-          
+          heroPromises.push(storage.ref("posts/heros").child(`${snapshot.id}.png`).getDownloadURL());
           authorPromises.push(db.collection("users").doc(post.author).get());
+          
           posts.push(post);
         });
 
-        if (storage) {
-          return Promise.all(heroPromises).then(urls => {
-            for (let post of posts) {
-              post.hero = urls.find(url => {
-                return url.indexOf(post.id) > -1;
-              });
-            }
-  
-            Promise.all(authorPromises).then(authors => {
-              for (let post of posts) {
-                post.author = authors.find(author => {
-                  return author.id === post.author;
-                });
-  
-                post.author = post.author.data();
-              }
-  
-              dispatch(postsGetMostRecentDone(posts));
-            });
-          });
-        }
-
-        Promise.all(authorPromises).then(authors => {
+        Promise.all(heroPromises).then(urls => {
           for (let post of posts) {
-            post.author = authors.find(author => {
-              return author.id === post.author;
+            post.hero = urls.find(url => {
+              return url.indexOf(post.id) > -1;
             });
-
-            post.author = post.author.data();
           }
 
-          dispatch(postsGetMostRecentDone(posts));
+          Promise.all(authorPromises).then(authors => {
+            for (let post of posts) {
+              post.author = authors.find(author => {
+                return author.id === post.author;
+              });
+
+              post.author = post.author.data();
+            }
+
+            dispatch(postsGetMostRecentDone(posts));
+          });
         });
       })
       .catch(error => {
