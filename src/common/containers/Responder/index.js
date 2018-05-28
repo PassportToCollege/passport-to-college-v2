@@ -139,6 +139,8 @@ class Responder extends Component {
       if (!this.props.user.isGetting) {
         this.props.userActions.doUserGet();
       }
+
+      this.setState({ active: true });
     }
 
     if (snapshot && snapshot.wasUnauthorized) {
