@@ -1,0 +1,13 @@
+.comment {
+  padding: 2em;
+  background-color: white;
+  border: 1px solid #eee;
+}
+
+.comment > .editor__container > .editor__editor {
+  padding: 1em 0 0;
+  border: none;
+  min-height: auto;
+  font-family: "PlayFair Dislay", serif;
+  font-size: 1.25em;
+}

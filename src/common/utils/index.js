@@ -192,6 +192,7 @@ export class SSID {
 }
 
 export class Comment {
+  // TODO: search messages for bad words and censor
   constructor(user = {}, content = {}, post) {
     this.user = user;
     this.message = {
@@ -201,6 +202,7 @@ export class Comment {
     this.post = post;
     this.isConversation = true;
     this.hasReplies = false;
+    this.replies = 0;
     this.postedOn = new Date(moment.utc(moment()).toDate()).getTime();
   }
 

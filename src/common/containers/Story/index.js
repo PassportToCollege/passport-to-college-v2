@@ -8,7 +8,6 @@ import propTypes from "prop-types";
 
 import * as postActions from "../../actions/postActions";
 import * as postsActions from "../../actions/postsActions";
-import * as commentActions from "../../actions/commentActions";
 
 import PageMeta from "../../components/PageMeta";
 import LoadingPost from "../../components/LoadingPost";
@@ -18,6 +17,7 @@ import BorderTopContainer from "../../components/BorderTopContainer";
 import LikeButton from "../LikeButton";
 import SocialShare from "../../components/SocialShare";
 import Responder from "../Responder";
+import CommentSection from "../CommentSection";
 
 class Story extends Component {
   constructor(props) {
@@ -48,7 +48,6 @@ class Story extends Component {
     const { id } = this.state;
     this.props.postActions.doPostGet(id);
     this.props.postActions.doHeroGet(id);
-    this.props.commentActions.doGetComments(id, 1);
   }
 
   getSnapshotBeforeUpdate(prevProps, prevState) {
@@ -195,7 +194,11 @@ class Story extends Component {
               <Responder  postId={this.state.id}
                 post={this.state.post} /> : null
           }
-          
+          {
+            this.state.post ?
+              <CommentSection post={this.state.post} /> :
+              null
+          }
         </section>
       </main>
     )
@@ -205,8 +208,7 @@ class Story extends Component {
 const mapStateToProps = state => {
   return {
     post: state.post,
-    posts: state.posts,
-    comments: state.comments
+    posts: state.posts
   };
 };
 
@@ -214,7 +216,6 @@ const mapDispatchToProps = dispatch => {
   return {
     postActions: bindActionCreators(postActions, dispatch),
     postsActions: bindActionCreators(postsActions, dispatch),
-    commentActions: bindActionCreators(commentActions, dispatch)
   };
 };
 

@@ -3,8 +3,8 @@ import {
   CREATE_COMMENT_INITIATED,
   CREATE_COMMENT_FAILED,
   COMMENT_CREATED,
-  GET_COMMENT_INITIATED,
-  GET_COMMENT_FAILED,
+  GET_COMMENTS_INITIATED,
+  GET_COMMENTS_FAILED,
   GET_COMMENTS_DONE
 } from "../actions/actionTypes";
 
@@ -29,13 +29,13 @@ const comments = (state = initialState.comments, action) => {
         createdComment: true,
         failedToCreateComment: false
       });
-    case GET_COMMENT_INITIATED:
+    case GET_COMMENTS_INITIATED:
       return Object.assign({}, state, {
         gettingComments: true,
         gotComments: false,
         failedToGetComments: false
       });
-    case GET_COMMENT_FAILED:
+    case GET_COMMENTS_FAILED:
       return Object.assign({}, state, {
         gettingComments: false,
         gotComments: false,
@@ -47,7 +47,7 @@ const comments = (state = initialState.comments, action) => {
         gettingComments: false,
         gotComments: true,
         failedToGetComments: false,
-        comments: action.comments
+        comments: (action.page === 1) ? action.comments : state.comments.concat(action.comments)
       });
     default:
       return state;

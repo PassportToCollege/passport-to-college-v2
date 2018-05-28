@@ -127,8 +127,9 @@ export const doPostGet = id => {
       .get()
       .then(post => {
         if (post.exists) {
-          const postData = post.data();
-
+          let postData = post.data();
+          postData.id = post.id;
+          
           // get user if author is uid
           if ("string" === typeof postData.author) {
             return db.collection("users")

@@ -51,17 +51,17 @@ export const getCommentsFailed = error => {
   };
 };
 
-export const getCommentsDone = comments => {
+export const getCommentsDone = (comments, page) => {
   return {
     type: types.GET_COMMENTS_DONE,
-    comments
+    comments, page
   };
 };
 
 export const doGetComments = (post, page = 1) => {
   return dispatch => {
     dispatch(getCommentsInitiated());
-
+    
     if (page === 1) {
       return db.collection("comments")
         .where("post", "==", post)
@@ -90,15 +90,18 @@ export const doGetComments = (post, page = 1) => {
             return Promise.all(ppPromises).then(urls => {
               for (let comment of comments) {
                 comment.user.profilePicture = urls.find(url => {
-                  return url.indexOf(comment.user.uid) > -1;
+                  if (url.exists)
+                    return url.indexOf(comment.user.uid) > -1;
+                  
+                  return "";
                 });
               }
 
-              dispatch(getCommentsDone(comments));
+              dispatch(getCommentsDone(comments, page));
             });
           }
 
-          dispatch(getCommentsDone(comments));
+          dispatch(getCommentsDone(comments, page));
         })
         .catch(error => {
           dispatch(getCommentsFailed(error));

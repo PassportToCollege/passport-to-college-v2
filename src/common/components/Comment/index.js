@@ -6,12 +6,12 @@ import propTypes from "prop-types";
 import CommentHeader from "../CommentHeader";
 import WYSIWYGEditor from "../Editor";
 
-const Comment = ({ comment, }) => {
-
+const Comment = ({ comment }) => {
+  
   return (
     <div className="comment">
       <CommentHeader comment={comment} />
-      <WYSIWYGEditor readonly content={comment.mesage.html} />
+      <WYSIWYGEditor readonly content={comment.message.html} />
     </div>
   )
 }
