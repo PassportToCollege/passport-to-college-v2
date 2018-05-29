@@ -81,7 +81,7 @@ export const doGetComments = (post, page = 1) => {
             comment.id = snapshot.id;
 
             if (storage && !comment.user.photo)
-              ppPromises.push(storage.ref("posts/heros").child(`${comment.user.uid}.png`));
+              ppPromises.push(storage.ref("users/profile_images").child(`${comment.user.uid}.png`).getDownloadURL());
             
             comments.push(comment);
           });
@@ -90,10 +90,7 @@ export const doGetComments = (post, page = 1) => {
             return Promise.all(ppPromises).then(urls => {
               for (let comment of comments) {
                 comment.user.profilePicture = urls.find(url => {
-                  if (url.exists)
                     return url.indexOf(comment.user.uid) > -1;
-                  
-                  return "";
                 });
               }
 

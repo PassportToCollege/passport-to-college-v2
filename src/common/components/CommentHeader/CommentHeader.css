@@ -11,6 +11,12 @@
   margin-right: 1em;
 }
 
+.comment_header > img {
+  width: 32px;
+  max-width: 100%;
+  border-radius: 50%;
+}
+
 .comment_header .comment_header__text > span {
   display: block;
 }

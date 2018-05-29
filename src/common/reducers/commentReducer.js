@@ -40,7 +40,8 @@ const comments = (state = initialState.comments, action) => {
         gettingComments: false,
         gotComments: false,
         failedToGetComments: true,
-        error: action.error
+        error: action.error,
+        comments: null
       });
     case GET_COMMENTS_DONE:
       return Object.assign({}, state, {
