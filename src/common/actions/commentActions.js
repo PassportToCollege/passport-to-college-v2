@@ -16,9 +16,10 @@ export const createCommentFailed = error => {
   };
 };
 
-export const commentCreated = () => {
+export const commentCreated = newCommentId => {
   return {
-    type: types.COMMENT_CREATED
+    type: types.COMMENT_CREATED,
+    newCommentId
   };
 };
 
@@ -29,14 +30,72 @@ export const doCommentCreate = (user = {}, content = {}, post, options = {}) => 
     const comment = new Comment(user, content, post);
     return db.collection("comments")
       .add(comment.data)
-      .then(() => {
-        dispatch(commentCreated());
+      .then(comment => {
+        dispatch(commentCreated(comment.id));
       })
       .catch(error => {
         dispatch(createCommentFailed(error));
       });
   }
 };
+
+// GET actions
+export const getCommentInitiated = () => {
+  return {
+    type: types.GET_COMMENT_INITIATED
+  };
+};
+
+export const getCommentFailed = error => {
+  return {
+    type: types.GET_COMMENT_FAILED,
+    error
+  };
+};
+
+export const getCommentDone = comment => {
+  return {
+    type: types.COMMENT_GET_DONE,
+    comment
+  };
+};
+
+export const doGetComment = (comment, options = {}) => {
+  return dispatch => {
+    dispatch(getCommentInitiated());
+
+    return db.collection("comments")
+      .doc(comment)
+      .get()
+      .then(snapshot => {
+        if (snapshot.exists) {
+          let comment = snapshot.data();
+          comment.id = snapshot.id;
+
+          if (storage) {
+            return storage.ref("users/profile_images")
+              .child(`${comment.user.uid}.png`)
+              .getDownloadURL()
+              .then(url => {
+                comment.user.profilePicture = url;
+                dispatch(getCommentDone(comment));
+              })
+              .catch(error => {
+                console.log(error);
+                dispatch(getCommentDone(comment));
+              });
+          }
+          
+          return dispatch(getCommentDone(comment));
+        }
+
+        dispatch(getCommentFailed({ message: "no comment found" }));
+      })
+      .catch(error => {
+        dispatch(getCommentFailed(error));
+      });
+  }
+}
 
 export const getCommentsInitiated = () => {
   return {

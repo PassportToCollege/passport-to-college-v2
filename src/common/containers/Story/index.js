@@ -27,7 +27,8 @@ class Story extends Component {
       post: props.post.post,
       hero: props.post.hero,
       id: props.match.params.post_id,
-      more: props.posts.moreByCategory || []
+      more: props.posts.moreByCategory || [],
+      newResponse: ""
     }
   }
 
@@ -192,16 +193,22 @@ class Story extends Component {
           {
             this.state.post ?
               <Responder  postId={this.state.id}
-                post={this.state.post} /> : null
+                post={this.state.post} 
+                onResponse={this.handleResponse} /> : null
           }
           {
             this.state.post ?
-              <CommentSection post={this.state.post} /> :
+              <CommentSection post={this.state.post} 
+                newComment={this.state.newResponse} /> :
               null
           }
         </section>
       </main>
     )
+  }
+
+  handleResponse = commentId => {
+    this.setState({ newResponse: commentId });
   }
 }
 

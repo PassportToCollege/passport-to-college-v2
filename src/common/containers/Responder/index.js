@@ -42,19 +42,20 @@ class Responder extends Component {
     user: propTypes.object,
     userActions: propTypes.object,
     comments: propTypes.object,
-    commentActions: propTypes.object
+    commentActions: propTypes.object,
+    onResponse: propTypes.func
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
     let newState = null;
 
-    if (nextProps.picture.hasGotten &&
+    if (isAuthorized() && nextProps.picture.hasGotten &&
       (prevState.profilePicture !== nextProps.picture.url)) {
       newState = {};
       newState.profilePicture = nextProps.picture.url;
     }
 
-    if (nextProps.user.hasGotten &&
+    if (isAuthorized() && nextProps.user.hasGotten &&
       !_.isEqual(prevState.user, nextProps.user.user)) {
       newState = newState || {};
       newState.user = nextProps.user.user;
@@ -92,9 +93,10 @@ class Responder extends Component {
       });
     }
 
-    if (nextProps.comments.createdComment) {
+    if (nextProps.comments.createdComment && prevState.createdComment !== nextProps.comments.newCommentId) {
       newState = newState || {};
       newState.active = false;
+      newState.createdComment = nextProps.comments.newCommentId;
     }
 
     return newState;
@@ -127,6 +129,11 @@ class Responder extends Component {
       }
     }
 
+    if (prevProps.comments.creatingComment && this.props.comments.createdComment) {
+      snapshot = snapshot || {};
+      snapshot.createdComment = true;
+    }
+
     return snapshot;
   }
 
@@ -148,6 +155,11 @@ class Responder extends Component {
         profilePicture: null,
         user: null
       });
+    }
+
+    if (snapshot && snapshot.createdComment) {
+      if ("function" === typeof this.props.onResponse)
+        this.props.onResponse(this.state.createdComment);
     }
   }
 

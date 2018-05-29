@@ -22,7 +22,8 @@ class CommentSection extends Component {
   static propTypes = {
     post: propTypes.object,
     comments: propTypes.object,
-    commentActions: propTypes.object
+    commentActions: propTypes.object,
+    newComment: propTypes.string
   }
 
   componentDidMount() {
@@ -50,6 +51,22 @@ class CommentSection extends Component {
       newState.post = nextProps.post;
     }
 
+    if (nextProps.newComment !== prevState.newComment) {
+      newState = newState || {};
+      newState.newComment = nextProps.newComment;
+    }
+
+    if (nextProps.comments.gotComment) {
+      if (prevState.comments && !_.isEqual(prevState.comments[0], nextProps.comments.comment)) {
+        newState = newState || {};
+        newState.comments = prevState.comments;
+        newState.comments.unshift(nextProps.comments.comment);
+      } else if (!prevState.comments) {
+        newState = newState || {};
+        newState.comments = [nextProps.comments.comment];
+      }
+    }
+
     return newState;
   }
 
@@ -62,6 +79,12 @@ class CommentSection extends Component {
       };
     }
 
+    if (prevProps.newComment !== this.props.newComment) {
+      snapshot = {
+        commentAdded: true
+      };
+    }
+
     return snapshot;
   }
 
@@ -69,6 +92,11 @@ class CommentSection extends Component {
     if (snapshot && snapshot.postChanged) {
       if (!this.props.comments.gettingComments)
         this.props.commentActions.doGetComments(this.state.post.id, 1);
+    }
+
+    if (snapshot && snapshot.commentAdded) {
+      if (!this.props.commentActions.gettingComment)
+        this.props.commentActions.doGetComment(this.state.newComment);
     }
   }
 
