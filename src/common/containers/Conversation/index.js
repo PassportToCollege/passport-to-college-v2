@@ -3,7 +3,7 @@ import "./Conversation.css";
 import React, { Component } from "react";
 import propTypes from "prop-types";
 
-import Comment from "../../components/Comment";
+import Comment from "../Comment";
 
 class Conversation extends Component {
   constructor(props) {

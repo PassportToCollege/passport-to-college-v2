@@ -11,3 +11,7 @@
   font-family: "PlayFair Dislay", serif;
   font-size: 1.25em;
 }
+
+.comment > .responder {
+  margin-top: 1em;
+}

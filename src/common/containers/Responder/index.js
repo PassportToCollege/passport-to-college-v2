@@ -23,7 +23,7 @@ class Responder extends Component {
     this.state = {
       post: props.post,
       postId: props.postId,
-      active: false,
+      active: props.type === "comment" ? true : false,
       authorized: isAuthorized(),
       signingUp: false,
       signingIn: false,
@@ -43,7 +43,13 @@ class Responder extends Component {
     userActions: propTypes.object,
     comments: propTypes.object,
     commentActions: propTypes.object,
-    onResponse: propTypes.func
+    onResponse: propTypes.func,
+    onOutsideClick: propTypes.func,
+    type: propTypes.string
+  }
+
+  static defaultProps = {
+    type: "post"
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -164,12 +170,15 @@ class Responder extends Component {
   }
 
   render() {
+    const heading = this.props.type === "post" ? "Create an account to respond to this story." : "Create an account to write a response.";
+    const intro = this.props.type === "post" ? `Responding is a great way to show ${this.state.post.author.name.full} what you think of this story.` : "Responding is a great way to share your view."
+
     return (
       <React.Fragment>
         {
           this.state.signingUp ?
-            <SignUpModal heading="Create an account to respond to this story."
-              intro={`Responding is a great way to show ${this.state.post.author.name.full} what you think of this story.`}
+            <SignUpModal heading={heading}
+              intro={intro}
               doClose={() => this.setState({ signingUp: false })}
               doGoogle={this.handleSocialSignUp} 
               doFacebook={this.handleSocialSignUp} 
@@ -229,8 +238,14 @@ class Responder extends Component {
   }
 
   listenOutsideClick = e => {
-    if (this.responderRef) 
+    if (this.responderRef) {
+      if (this.props.type === "comment") {
+        if ("function" === typeof this.props.onOutsideClick)
+          return this.props.onOutsideClick();
+      }
+
       this.setState({ clickedInside: this.responderRef.contains(e.target) });
+    }
   }
 
   handleSocialSignIn = provider => {

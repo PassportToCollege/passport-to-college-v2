@@ -211,10 +211,10 @@ export class Comment {
   }
 
   getData() {
-    const { user, message, hasReplies, postedOn, post, isConversation } = this;
+    const { user, message, hasReplies, postedOn, post, isConversation, replies } = this;
 
     return {
-      user, message, hasReplies, postedOn, post, isConversation
+      user, message, hasReplies, postedOn, post, isConversation, replies
     };
   }
 }
