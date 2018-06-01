@@ -243,7 +243,7 @@ class Responder extends Component {
         if ("function" === typeof this.props.onOutsideClick)
           return this.props.onOutsideClick();
       }
-
+      
       this.setState({ clickedInside: this.responderRef.contains(e.target) });
     }
   }

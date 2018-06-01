@@ -12,6 +12,13 @@
   font-size: 1.25em;
 }
 
-.comment > .responder {
+.comment > .responder,
+.comment > .icon_button {
   margin-top: 1em;
+}
+
+.comment > .icon_button {
+  font-size: 1em;
+  width: 32px;
+  height: 32px;
 }
