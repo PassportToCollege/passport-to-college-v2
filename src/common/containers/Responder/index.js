@@ -23,7 +23,7 @@ class Responder extends Component {
     this.state = {
       post: props.post,
       postId: props.postId,
-      active: props.type === "comment" ? true : false,
+      active: props.active,
       authorized: isAuthorized(),
       signingUp: false,
       signingIn: false,
@@ -34,6 +34,7 @@ class Responder extends Component {
   }
 
   static propTypes = {
+    active: propTypes.bool,
     post: propTypes.object,
     postId: propTypes.string,
     authActions: propTypes.object,
@@ -45,11 +46,13 @@ class Responder extends Component {
     commentActions: propTypes.object,
     onResponse: propTypes.func,
     onOutsideClick: propTypes.func,
-    type: propTypes.string
+    type: propTypes.string,
+    height: propTypes.string
   }
 
   static defaultProps = {
-    type: "post"
+    type: "post",
+    active: false
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -152,8 +155,6 @@ class Responder extends Component {
       if (!this.props.user.isGetting) {
         this.props.userActions.doUserGet();
       }
-
-      this.setState({ active: true });
     }
 
     if (snapshot && snapshot.wasUnauthorized) {
@@ -226,7 +227,10 @@ class Responder extends Component {
                 <WYSIWYGEditor focus saveButton
                   captureBlur={this.handleResponderBlur} 
                   saveButtonText="Post" 
-                  handleSave={this.handleResponseSave} 
+                  handleSave={this.handleResponseSave}
+                  editorStyles={{
+                    minHeight: `${this.props.height}px`
+                  }} 
                   controlStyles={{
                     position: "relative"
                   }}/> : null
@@ -241,7 +245,7 @@ class Responder extends Component {
     if (this.responderRef) {
       if (this.props.type === "comment") {
         if ("function" === typeof this.props.onOutsideClick)
-          return this.props.onOutsideClick();
+          return this.props.onOutsideClick(e);
       }
       
       this.setState({ clickedInside: this.responderRef.contains(e.target) });

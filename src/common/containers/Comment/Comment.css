@@ -22,3 +22,16 @@
   width: 32px;
   height: 32px;
 }
+
+.comment > .responder {
+  padding: 0.5em;
+}
+
+.comment > .responder > .responder__meta .responder__meta_profile_pic {
+  width: 32px;
+  height: 32px;
+}
+
+.comment > .responder > .responder__editor .editor__editor {
+  border: none;
+}

@@ -23,7 +23,11 @@ class Comment extends Component {
     this.state = {
       replying: false,
       signingUp: false,
-      signingIn: false
+      signingIn: false,
+      authorized: isAuthorized(),
+      hasError: false,
+      notificationClosed: true,
+      error: null
     }
   }
 
@@ -31,6 +35,44 @@ class Comment extends Component {
     comment: propTypes.object,
     auth: propTypes.object,
     authActions: propTypes.object
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    let newState = null;
+
+    if (nextProps.auth.activeUser !== prevState.authorized) {
+      newState = newState || {};
+      newState = Object.assign({}, newState, {
+        authorized: isAuthorized()
+      });
+    }
+
+    if (nextProps.auth.failedToSignInWithSocial ||
+      nextProps.auth.failedToSignUpWithSocial ||
+      nextProps.auth.hasFailed) {
+      newState = newState || {};
+      newState = Object.assign({}, newState, {
+        hasError: true,
+        notificationClosed: false,
+        error: nextProps.auth.error.message
+      });
+
+      if (nextProps.auth.error.message === "user already exists")
+        newState.error = "A user was found linked to the account you provided. Try signing in instead.";
+    }
+
+    if ((nextProps.auth.hasAuthorized ||
+      nextProps.auth.hasSignedInWithSocial ||
+      nextProps.auth.hasSignedUpWithSocial) &&
+      (prevState.signingUp || prevState.signingIn)) {
+      newState = newState || {};
+      newState = Object.assign({}, newState, {
+        signingIn: false,
+        signingUp: false
+      });
+    }
+
+    return newState;
   }
 
   render() {
@@ -65,14 +107,22 @@ class Comment extends Component {
         <div className="comment">
           <CommentHeader comment={this.props.comment} />
           <WYSIWYGEditor readonly content={this.props.comment.message.html} />
-          <IconButton icon="reply" solid
-            doClick={this.handleReplyClick} />
           {
-            this.state.replying ?
+            !this.props.comment.isConversation ? 
+              <IconButton icon="reply" solid
+                doClick={this.handleReplyClick} /> : null
+          }
+          {
+            this.props.comment.isConversation ?
               <Responder type="comment"
-                postId={this.props.comment.post} 
-                onResponse={this.handleReply} 
-                onOutsideClick={ () => this.setState({ replying: false }) }/> : null
+                postId={this.props.comment.post}
+                onResponse={this.handleReply}
+                height="100" /> :
+              this.state.replying ?
+                <Responder type="comment"
+                  postId={this.props.comment.post} 
+                  onResponse={this.handleReply}
+                  height="100" /> : null
           }
         </div>
       </React.Fragment>
@@ -80,8 +130,8 @@ class Comment extends Component {
   }
 
   handleReplyClick = () => {
-    if (isAuthorized()) {
-      return this.setState({  replying: true });
+    if (this.state.authorized) {
+      return this.setState({  replying: !this.state.replying });
     }
 
     this.setState({ signingUp: true });
@@ -93,6 +143,10 @@ class Comment extends Component {
 
   handleSocialSignUp = provider => {
     this.props.authActions.doSignUpWithSocial(provider);
+  }
+
+  handleReply = content => {
+    
   }
 }
 
