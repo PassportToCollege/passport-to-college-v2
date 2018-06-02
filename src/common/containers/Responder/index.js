@@ -36,6 +36,7 @@ class Responder extends Component {
   static propTypes = {
     active: propTypes.bool,
     post: propTypes.object,
+    comment: propTypes.string,
     postId: propTypes.string,
     authActions: propTypes.object,
     uppActions: propTypes.object,
@@ -276,11 +277,23 @@ class Responder extends Component {
   }
 
   handleResponseSave = content => {
-    this.props.commentActions.doCommentCreate(
-      this.state.user,
-      content,
-      this.state.postId
-    );
+    if (this.props.type === "comment") {
+      this.props.commentActions.doCommentCreate(
+        this.state.user,
+        content,
+        this.state.postId,
+        {
+          isReply: true,
+          comment: this.props.comment
+        }
+      );
+    } else {
+      this.props.commentActions.doCommentCreate(
+        this.state.user,
+        content,
+        this.state.postId
+      );
+    }
   }
 }
 

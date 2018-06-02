@@ -8,7 +8,10 @@ import {
   GET_COMMENTS_DONE,
   GET_COMMENT_INITIATED,
   GET_COMMENT_FAILED,
-  COMMENT_GET_DONE
+  COMMENT_GET_DONE,
+  GET_REPLIES_INITIATED,
+  GET_REPLIES_FAILED,
+  GET_REPLIES_DONE
 } from "../actions/actionTypes";
 
 const comments = (state = initialState.comments, action) => {
@@ -74,6 +77,30 @@ const comments = (state = initialState.comments, action) => {
         failedToGetComment: false,
         comment: action.comment
       });
+    case GET_REPLIES_INITIATED:
+      return Object.assign({}, state, {
+        gettingReplies: true,
+        gotReplies: false,
+        failedToGetReplies: false
+      });
+    case GET_REPLIES_FAILED:
+      return Object.assign({}, state, {
+        gettingReplies: false,
+        gotReplies: false,
+        failedToGetReplies: true,
+        error: action.error
+      });
+    case GET_REPLIES_DONE:
+      return Object.assign({}, state, {
+        gettingReplies: false,
+        gotReplies: true,
+        failedToGetReplies: false,
+        replies: (action.page === 1) ? Object.assign({}, state.replies, {
+          [action.parent]: action.replies
+        }) : Object.assign({}, state.replies, {
+          [action.parent]: state.replies[action.parent].concat(action.replies)
+        })
+      })
     default:
       return state;
   }

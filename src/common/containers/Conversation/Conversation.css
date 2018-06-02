@@ -1,3 +1,16 @@
 .conversation {
   margin-top: 1em;
 }
+
+.conversation > .responder {
+  padding: 0.5em;
+}
+
+.conversation > .responder > .responder__meta .responder__meta_profile_pic {
+  width: 32px;
+  height: 32px;
+}
+
+.conversation > .responder > .responder__editor .editor__editor {
+  border: none;
+}
