@@ -11,7 +11,10 @@ import {
   COMMENT_GET_DONE,
   GET_REPLIES_INITIATED,
   GET_REPLIES_FAILED,
-  GET_REPLIES_DONE
+  GET_REPLIES_DONE,
+  GET_REPLY_INITIATED,
+  GET_REPLY_FAILED,
+  GET_REPLY_DONE
 } from "../actions/actionTypes";
 
 const comments = (state = initialState.comments, action) => {
@@ -100,7 +103,27 @@ const comments = (state = initialState.comments, action) => {
         }) : Object.assign({}, state.replies, {
           [action.parent]: state.replies[action.parent].concat(action.replies)
         })
-      })
+      });
+    case GET_REPLY_INITIATED:
+      return Object.assign({}, state, {
+        gettingReply: true,
+        gotReply: false,
+        failedToGetReply: false
+      });
+    case GET_REPLY_FAILED:
+      return Object.assign({}, state, {
+        gettingReply: false,
+        gotReply: false,
+        failedToGetReply: true,
+        error: action.error
+      });
+    case GET_REPLY_DONE:
+      return Object.assign({}, state, {
+        gettingReply: false,
+        gotReply: true,
+        failedToGetReply: false,
+        reply: action.reply
+      });
     default:
       return state;
   }

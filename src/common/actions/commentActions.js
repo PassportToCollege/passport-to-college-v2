@@ -241,4 +241,61 @@ export const doGetReplies = (parent, page = 1) => {
 
     // TODO: get other reply pages
   }
-}
+};
+
+export const getReplyInitiated = () => {
+  return {
+    type: types.GET_REPLY_INITIATED
+  };
+};
+
+export const getReplyFailed = error => {
+  return {
+    type: types.GET_REPLY_FAILED,
+    error
+  };
+};
+
+export const gotReply = (parent, reply) => {
+  return {
+    type: types.GET_REPLY_DONE,
+    parent, reply
+  };
+};
+
+export const doGetReply = (parent, reply) => {
+  return dispatch => {
+    dispatch(getReplyInitiated());
+
+    return db.collection("comments")
+      .doc(reply)
+      .get()
+      .then(snapshot => {
+        if (snapshot.exists) {
+          let reply = snapshot.data();
+          reply.id = snapshot.id;
+
+          if (storage) {
+            return storage.ref("users/profile_images")
+              .child(`${reply.user.uid}.png`)
+              .getDownloadURL()
+              .then(url => {
+                reply.user.profilePicture = url;
+                dispatch(getCommentDone(reply));
+              })
+              .catch(error => {
+                console.log(error);
+                dispatch(getReplyFailed(error));
+              });
+          }
+          
+          return dispatch(gotReply(reply));
+        }
+
+        dispatch(getReplyFailed({ message: "no reply found" }));
+      })
+      .catch(error => {
+        dispatch(getReplyFailed(error));
+      })
+  }
+};
