@@ -167,7 +167,7 @@ class Responder extends Component {
 
     if (snapshot && snapshot.createdComment) {
       if ("function" === typeof this.props.onResponse)
-        this.props.onResponse(this.state.createdComment);
+        this.props.onResponse(this.state.createdComment, this.props.comments.isReply);
     }
   }
 

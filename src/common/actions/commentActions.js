@@ -16,10 +16,10 @@ export const createCommentFailed = error => {
   };
 };
 
-export const commentCreated = newCommentId => {
+export const commentCreated = (newCommentId, isReply = false) => {
   return {
     type: types.COMMENT_CREATED,
-    newCommentId
+    newCommentId, isReply
   };
 };
 
@@ -28,13 +28,13 @@ export const doCommentCreate = (user = {}, content = {}, post, options = {}) => 
     dispatch(createCommentInitiated());
 
     const comment = options.isReply ? 
-      new Comment(user, content, post) : 
-      new Reply(user, content, post, options.comment);
+      new Reply(user, content, post, options.comment) :
+      new Comment(user, content, post);
 
     return db.collection("comments")
       .add(comment.data)
       .then(comment => {
-        dispatch(commentCreated(comment.id));
+        dispatch(commentCreated(comment.id, options.isReply || false));
       })
       .catch(error => {
         dispatch(createCommentFailed(error));
@@ -268,9 +268,10 @@ export const doGetReply = (parent, reply) => {
     dispatch(getReplyInitiated());
 
     return db.collection("comments")
-      .doc(reply)
-      .get()
-      .then(snapshot => {
+    .doc(reply)
+    .get()
+    .then(snapshot => {
+        debugger;
         if (snapshot.exists) {
           let reply = snapshot.data();
           reply.id = snapshot.id;
@@ -281,16 +282,16 @@ export const doGetReply = (parent, reply) => {
               .getDownloadURL()
               .then(url => {
                 reply.user.profilePicture = url;
-                dispatch(getCommentDone(reply));
+                dispatch(gotReply(parent, reply));
               })
               .catch(error => {
                 console.log(error);
                 dispatch(getReplyFailed(error));
               });
+            }
+            
+            return dispatch(gotReply(parent, reply));
           }
-          
-          return dispatch(gotReply(reply));
-        }
 
         dispatch(getReplyFailed({ message: "no reply found" }));
       })

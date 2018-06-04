@@ -37,7 +37,8 @@ const comments = (state = initialState.comments, action) => {
         creatingComment: false,
         createdComment: true,
         failedToCreateComment: false,
-        newCommentId: action.newCommentId
+        newCommentId: action.newCommentId,
+        isReply: action.isReply
       });
     case GET_COMMENTS_INITIATED:
       return Object.assign({}, state, {

@@ -1,7 +1,11 @@
 import "./Conversation.css";
 
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
+
+import * as commentActions from "../../actions/commentActions";
 
 import Comment from "../Comment";
 import Responder from "../Responder";
@@ -17,7 +21,8 @@ class Conversation extends Component {
 
   static propTypes = {
     comment: propTypes.object,
-    auth: propTypes.object
+    comments: propTypes.object,
+    commentActions: propTypes.object
   }
 
   render() {
@@ -32,6 +37,26 @@ class Conversation extends Component {
       </div>
     )
   }
+
+  handleReply = reply => {
+    if (!this.props.comments.gettingReply)
+      this.props.commentActions.doGetReply(this.state.comment.id, reply);
+  }
 }
 
-export default Conversation;
+const mapStateToProps = state => {
+  return {
+    comments: state.comments
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    commentActions: bindActionCreators(commentActions, dispatch)
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Conversation);
