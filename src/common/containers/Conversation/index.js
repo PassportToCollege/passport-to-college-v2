@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
+import _ from "lodash";
 
 import * as commentActions from "../../actions/commentActions";
 
@@ -38,7 +39,31 @@ class Conversation extends Component {
       newState.replies = nextProps.comments.replies[prevState.comment.id];
     }
 
+    if (nextProps.comments.gotReply && 
+      nextProps.comments.reply.parent === prevState.comment.id) {
+      newState = newState || {};
+      newState.newReply = nextProps.comments.reply;
+    }
+
     return newState;
+  }
+
+  getSnapshotBeforeUpdate(prevProps, prevState) {
+    let snapshot = null;
+
+    if (!_.isEqual(prevState.newReply, this.state.newReply)) {
+      snapshot = {
+        replied: true
+      };
+    }
+
+    return snapshot;
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (snapshot && snapshot.replied) {
+      this.state.replies.unshift(this.state.newReply);
+    }
   }
 
   render() {
@@ -47,7 +72,7 @@ class Conversation extends Component {
         <Comment comment={this.state.comment} />
         {
           this.state.replies ?
-            this.state.replies.map(reply => {
+            this.state.replies.slice(0).reverse().map(reply => {
               return (
                 <Comment key={reply.id} comment={reply} reply />
               )
