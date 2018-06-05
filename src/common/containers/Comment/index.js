@@ -30,7 +30,12 @@ class Comment extends Component {
   static propTypes = {
     comment: propTypes.object,
     auth: propTypes.object,
-    authActions: propTypes.object
+    authActions: propTypes.object,
+    reply: propTypes.bool
+  }
+
+  static defaultProps = {
+    reply: false
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -73,7 +78,7 @@ class Comment extends Component {
 
   render() {
     return (
-      <div className="comment">
+      <div className={`comment ${this.props.reply ? "comment__reply" : ""}`}>
         <CommentHeader comment={this.props.comment} />
         <WYSIWYGEditor readonly content={this.props.comment.message.html} />
       </div>

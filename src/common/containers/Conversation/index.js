@@ -25,10 +25,34 @@ class Conversation extends Component {
     commentActions: propTypes.object
   }
 
+  componentDidMount() {
+    if (!this.state.replies && this.state.comment.hasReplies)
+      this.props.commentActions.doGetReplies(this.state.comment.id, 1);
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    let newState = null;
+
+    if (nextProps.comments.gotReplies && nextProps.comments.replies[prevState.comment.id]) {
+      newState = {};
+      newState.replies = nextProps.comments.replies[prevState.comment.id];
+    }
+
+    return newState;
+  }
+
   render() {
     return (
       <div className="conversation">
         <Comment comment={this.state.comment} />
+        {
+          this.state.replies ?
+            this.state.replies.map(reply => {
+              return (
+                <Comment key={reply.id} comment={reply} reply />
+              )
+            }) : null
+        }
         <Responder type="comment"
           comment={this.props.comment}
           postId={this.props.comment.post}

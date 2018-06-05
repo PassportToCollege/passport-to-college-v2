@@ -203,10 +203,9 @@ export const doGetReplies = (parent, page = 1) => {
 
     if (page === 1) {
       return db.collection("comments")
-        .where("isConversation", "==", false)
         .where("parent", "==", parent)
         .orderBy("postedOn", "desc")
-        .limit(10)
+        .limit(5)
         .get()
         .then(snapshots => {
           if (snapshots.empty) {
@@ -277,27 +276,26 @@ export const doGetReply = (parent, reply) => {
     .doc(reply)
     .get()
     .then(snapshot => {
-        debugger;
-        if (snapshot.exists) {
-          let reply = snapshot.data();
-          reply.id = snapshot.id;
+      if (snapshot.exists) {
+        let reply = snapshot.data();
+        reply.id = snapshot.id;
 
-          if (storage) {
-            return storage.ref("users/profile_images")
-              .child(`${reply.user.uid}.png`)
-              .getDownloadURL()
-              .then(url => {
-                reply.user.profilePicture = url;
-                dispatch(gotReply(parent, reply));
-              })
-              .catch(error => {
-                console.log(error);
-                dispatch(getReplyFailed(error));
-              });
-            }
-            
-            return dispatch(gotReply(parent, reply));
+        if (storage) {
+          return storage.ref("users/profile_images")
+            .child(`${reply.user.uid}.png`)
+            .getDownloadURL()
+            .then(url => {
+              reply.user.profilePicture = url;
+              dispatch(gotReply(parent, reply));
+            })
+            .catch(error => {
+              console.log(error);
+              dispatch(getReplyFailed(error));
+            });
           }
+          
+          return dispatch(gotReply(parent, reply));
+        }
 
         dispatch(getReplyFailed({ message: "no reply found" }));
       })

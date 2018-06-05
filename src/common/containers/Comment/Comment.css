@@ -12,6 +12,10 @@
   font-size: 1.25em;
 }
 
+.comment__reply > .editor__container > .editor__editor {
+  font-size: 1.15em;
+}
+
 .comment > .responder,
 .comment > .icon_button {
   margin-top: 1em;
