@@ -28,12 +28,18 @@ export const doCommentCreate = (user = {}, content = {}, post, options = {}) => 
     dispatch(createCommentInitiated());
 
     const comment = options.isReply ? 
-      new Reply(user, content, post, options.comment) :
+      new Reply(user, content, post, options.comment.id) :
       new Comment(user, content, post);
 
     return db.collection("comments")
       .add(comment.data)
       .then(comment => {
+        if (options.isReply && !options.comment.hasReplies) {
+          dispatch(doUpdateComment(options.comment.id, {  
+            hasReplies: true
+          }));
+        }
+
         dispatch(commentCreated(comment.id, options.isReply || false));
       })
       .catch(error => {
@@ -299,4 +305,40 @@ export const doGetReply = (parent, reply) => {
         dispatch(getReplyFailed(error));
       })
   }
+};
+
+// UPDATE actions
+export const updateCommentInitiated = () => {
+  return {
+    type: types.UPDATE_COMMENT_INITIATED
+  };
+};
+
+export const updateCommentFailed = error => {
+  return {
+    type: types.UPDATE_COMMENT_FAILED,
+    error
+  };
+};
+
+export const commentUpdated = () => {
+  return {
+    type: types.COMMENT_UPDATED
+  };
+};
+
+export const doUpdateComment = (comment, data = {}) => {
+  return dispatch => {
+    dispatch(updateCommentInitiated());
+
+    return db.collection("comments")
+      .doc(comment)
+      .update(data)
+      .then(() => {
+        dispatch(commentUpdated());
+      })
+      .catch(error => {
+        dispatch(updateCommentFailed(error));
+      })
+  };
 };

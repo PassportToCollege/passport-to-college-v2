@@ -14,7 +14,10 @@ import {
   GET_REPLIES_DONE,
   GET_REPLY_INITIATED,
   GET_REPLY_FAILED,
-  GET_REPLY_DONE
+  GET_REPLY_DONE,
+  UPDATE_COMMENT_INITIATED,
+  UPDATE_COMMENT_FAILED,
+  COMMENT_UPDATED
 } from "../actions/actionTypes";
 
 const comments = (state = initialState.comments, action) => {
@@ -125,6 +128,25 @@ const comments = (state = initialState.comments, action) => {
         failedToGetReply: false,
         reply: action.reply
       });
+    case UPDATE_COMMENT_INITIATED:
+      return Object.assign({}, state, {
+        updatingComment: true,
+        updatedComment: false,
+        failedToUpdateComment: false
+      });
+    case UPDATE_COMMENT_FAILED:
+      return Object.assign({}, state, {
+        updatingComment: false,
+        updatedComment: false,
+        failedToUpdateComment: true,
+        error: action.error
+      });
+    case COMMENT_UPDATED:
+       return Object.assign({}, state, {
+         updatingComment: false,
+         updatedComment: true,
+         failedToUpdateComment: false
+       });
     default:
       return state;
   }

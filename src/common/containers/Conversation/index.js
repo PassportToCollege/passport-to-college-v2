@@ -30,7 +30,7 @@ class Conversation extends Component {
       <div className="conversation">
         <Comment comment={this.state.comment} />
         <Responder type="comment"
-          comment={this.props.comment.id}
+          comment={this.props.comment}
           postId={this.props.comment.post}
           onResponse={this.handleReply}
           height="100" />

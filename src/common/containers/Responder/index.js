@@ -36,7 +36,7 @@ class Responder extends Component {
   static propTypes = {
     active: propTypes.bool,
     post: propTypes.object,
-    comment: propTypes.string,
+    comment: propTypes.oneOfType([propTypes.string, propTypes.object]),
     postId: propTypes.string,
     authActions: propTypes.object,
     uppActions: propTypes.object,
