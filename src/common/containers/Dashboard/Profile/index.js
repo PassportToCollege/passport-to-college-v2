@@ -33,10 +33,8 @@ class Profile extends Component {
 
   componentDidMount() {
     // get user avatar
-    this.props.userProfilePictureActions.doAvatarGet();
-
-    // get user data
-    this.props.userActions.doUserGet();
+    if (!this.state.profilePicture)
+      this.props.userProfilePictureActions.doAvatarGet();
   }
 
   static getDerivedStateFromProps(nextProps) {

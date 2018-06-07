@@ -1,10 +1,13 @@
 import "./Dashboard.css";
 
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import { Route } from "react-router-dom";
 import propTypes from "prop-types";
 
 import * as routes from "../../constants/routes";
+import * as userActions from "../../actions/userActions";
 
 import PageMeta from "../../components/PageMeta";
 import NavigationAdmin from "../NavigationAdmin";
@@ -16,23 +19,50 @@ import Application from "./Application";
 import User from "./User";
 import DashPosts from "./DashPosts";
 
-export default class Dashboard extends Component {
+class Dashboard extends Component {
+  state = {
+    user: this.props.user.user
+  }
+
+  static propTypes = {
+    updateLocation: propTypes.func,
+    match: propTypes.object,
+    user: propTypes.object,
+    userActions: propTypes.object,
+  };
+
   componentDidMount() {
     this.props.updateLocation("dashboard home");
+
+    if (!this.state.user)
+      this.props.userActions.doUserGet();
+  }
+
+  static getDerivedStateFromProps(nextProps) {
+    if (nextProps.user.hasGotten) {
+      return {
+        user: nextProps.user.user
+      }
+    }
+
+    return null;
   }
 
   render() {
     return (
       <div className="dashboard">
         <PageMeta route="DASHBOARD" />
-        <NavigationAdmin />
+        <NavigationAdmin user={this.props.user} />
         <main className="dashboard__main">
           <SearchBar />
           <Route exact path={this.props.match.url} 
             render={this.renderDashboard}></Route>
           <Route exact path={routes.APPLICATIONS.route} component={Applications}></Route>
           <Route exact path={routes.USERS.route} component={Users}></Route>
-          <Route path={routes.PROFILE.route} component={Profile}></Route>
+          <Route path={routes.PROFILE.route}
+            render={props => {
+              return <Profile {...props} user={this.props.user} />
+            }}></Route>
           <Route path={routes.VIEW_APPLICATION.route} component={Application}></Route>
           <Route path={routes.VIEW_USER.route} component={User}></Route>
           <Route path={routes.DASH_POSTS.route} component={DashPosts}></Route>
@@ -52,7 +82,19 @@ export default class Dashboard extends Component {
   }
 }
 
-Dashboard.propTypes = {
-  updateLocation: propTypes.func,
-  match: propTypes.object
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  };
 };
+
+const mapDispatchToProps = dispatch => {
+  return {
+    userActions: bindActionCreators(userActions, dispatch)
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Dashboard);

@@ -16,7 +16,6 @@ import Loader from "../../components/Loader";
 
 import * as userProfilePictureActions from "../../actions/userProfilePictureActions";
 import * as authActions from "../../actions/authActions";
-import * as userActions from "../../actions/userActions";
 import * as routes from "../../constants/routes";
 
 const defAvatar = require("../../assets/images/default-gravatar.png");
@@ -36,8 +35,6 @@ class NavigationAdmin extends Component {
   componentDidMount() {
     // get user avatar
     this.props.userProfilePictureActions.doAvatarGet();
-    // get active user
-    this.props.userActions.doUserGet();
   }
 
   static getDerivedStateFromProps(nextProps) {
@@ -191,7 +188,6 @@ NavigationAdmin.propTypes = {
   auth: propTypes.object,
   authActions: propTypes.object,
   profilePicture: propTypes.object,
-  userActions: propTypes.object,
   user: propTypes.object,
   history: propTypes.object
 };
@@ -199,16 +195,14 @@ NavigationAdmin.propTypes = {
 const mapStateToProps = state => {
   return {
     auth: state.auth,
-    profilePicture: state.userProfilePicture,
-    user: state.user
+    profilePicture: state.userProfilePicture
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     userProfilePictureActions: bindActionCreators(userProfilePictureActions, dispatch),
-    authActions: bindActionCreators(authActions, dispatch),
-    userActions: bindActionCreators(userActions, dispatch)
+    authActions: bindActionCreators(authActions, dispatch)
   };
 };
 
