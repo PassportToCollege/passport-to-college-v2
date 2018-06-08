@@ -127,7 +127,7 @@ class Profile extends Component {
        { label: "gender", data: gender },
        { label: "country", data: address.country },
        { label: "phone", data: phone },
-       { label: "dob", data: moment(dob).format("M/D/Y") }
+       { label: "dob", data: moment.utc(moment(dob)).format("M/D/Y") }
       ]
   
       return dt.map((v, i) => {

@@ -57,7 +57,8 @@ class Dashboard extends Component {
         <NavigationAdmin user={this.props.user} />
         {
           this.props.user.hasGotten && this.state.user && !isProfileComplete(this.state.user) ?
-            <CompleteProfileModal user={this.state.user} /> : null
+            <CompleteProfileModal user={this.state.user} 
+              doSubmit={this.handleProfileComplete} /> : null
         }
         <main className="dashboard__main">
           <SearchBar />
@@ -85,6 +86,33 @@ class Dashboard extends Component {
         </div>
       </div>
     )
+  }
+
+  handleProfileComplete = state => {
+    let data = {};
+
+    Object.keys(state).map(key => {
+      if (key === "country" && state[key]) {
+        return data.address = {
+          [key]: state[key]
+        }
+      }
+
+      if (key === "dob" && state[key]) {
+        return data.dob = new Date(state[key]).getTime();
+      }
+
+      if (state[key])
+        return data[key] = state[key];
+
+      return null;
+    });
+
+    this.props.userActions.doUserUpdate(data);
+
+    return new Promise(resolve => {
+      resolve({ message: "done!" });
+    });
   }
 }
 

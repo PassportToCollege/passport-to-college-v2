@@ -655,7 +655,8 @@ export class CompleteProfileModal extends Component {
           <form className="form form__signin"
             onSubmit={this.handleSubmit}>
             {
-              !this.props.user.address ?
+              !this.props.user.address || 
+              (this.props.user.address && !this.props.user.address.country) ?
                 <div className="form__input_container">
                   <label htmlFor="country">Country</label>
                   <input type="text" id="country" name="country" 
@@ -710,8 +711,12 @@ export class CompleteProfileModal extends Component {
   handleSubmit = e => {
     e.preventDefault();
 
-    if ("function" === typeof this.props.doSubmit)
-      this.props.doSubmit(this.state);
+    if ("function" === typeof this.props.doSubmit) {
+      this.props.doSubmit(this.state)
+        .then(() => {
+          this.closeModal();
+        });
+    }
   }
 
   handleFieldChange = e => {
