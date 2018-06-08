@@ -153,7 +153,7 @@ class UserSection extends Component {
                 <title>Education | {this.state.user.name.full} | User | Dashboard | Passport to College</title>
               } />
               <div className="user__not_student">
-                <h4>user is no a student</h4>
+                <h4>user type does not support education information</h4>
               </div>
             </section>
           )
@@ -233,6 +233,20 @@ class UserSection extends Component {
           </section>
         )
       case "profile-picture":
+        if (this.props.user.hasGottenUser && this.state.user &&
+          !this.state.user.isStudent) {
+          return (
+            <section className = "user__section profile_picture__section">
+              <PageMeta more={
+                  <title>Profile Picture | {this.state.user.name.full} | User | Dashboard | Passport to College</title>
+                } />
+              <div className="user__not_student">
+                <h4>user type does not support a profile picture</h4>
+              </div>
+            </section>
+          )
+        }
+
         return (
           <section className="user__section profile_picture__section">
             {
@@ -255,6 +269,20 @@ class UserSection extends Component {
           </section>
         )
       case "bio":
+        if (this.props.user.hasGottenUser && this.state.user &&
+          !this.state.user.isStudent) {
+          return (
+            <section className = "user__section bio__section">
+              <PageMeta more={
+                  <title>Bio | {this.state.user.name.full} | User | Dashboard | Passport to College</title>
+                } />
+              <div className="user__not_student">
+                <h4>user type does not support a bio</h4>
+              </div>
+            </section>
+          )
+        }
+
         return (
           <section className="user__section bio__section">
             {
@@ -307,7 +335,7 @@ class UserSection extends Component {
                 <title>Accomplishments | {this.state.user.name.full} | User | Dashboard | Passport to College</title>
               } />
               <div className="user__not_student">
-                <h4>user is no a student</h4>
+                <h4>user type does not supprt accomplishments</h4>
               </div>
             </section>
           )
@@ -387,7 +415,7 @@ class UserSection extends Component {
                 <title>Features | {this.state.user.name.full} | User | Dashboard | Passport to College</title>
               } />
               <div className="user__not_student">
-                <h4>user is no a student</h4>
+                <h4>user type does not support features</h4>
               </div>
             </section>
           )

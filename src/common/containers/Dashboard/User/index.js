@@ -46,6 +46,15 @@ class User extends Component {
         }
         <Button text="back to all users" solid
           doClick={() => this.props.history.push("/admin/dashboard/users")} />
+        {
+          this.props.users.hasGottenUser && this.state.user && this.state.user.isApplicant ?
+            <Button text="view application"
+              styles={{
+                marginLeft: "1em"
+              }}
+              doClick={() => this.props.history.push(`/admin/dashboard/applications/view/${this.state.user.uid}`)} /> :
+              null
+        }
         <div className="user__container">
           <header>
             {

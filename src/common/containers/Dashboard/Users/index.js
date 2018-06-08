@@ -35,13 +35,16 @@ class Users extends Component {
   }
 
   componentDidMount() {
-    const { search } = this.props.location;
-    const { page } = queryToObject(search) || { page: 1 };
+    if (!this.state.users) {
+      const { search } = this.props.location;
+      const { page } = queryToObject(search) || { page: 1 };
+  
+      this.props.usersActions.doUsersGet(parseInt(page, 10));
+      this.setState({ page });
+    }
 
-    this.props.usersActions.doUsersGet(parseInt(page, 10));
-    this.setState({ page });
-
-    this.props.statsActions.doStatsGet();
+    if (!this.state.stats)
+      this.props.statsActions.doStatsGet();
   }
 
   static getDerivedStateFromProps(nextProps) {
@@ -153,20 +156,15 @@ class Users extends Component {
                       <tr key={user.uid}>
                         <td>
                           {
-                            user.isApplicant ?
-                              <Link className="users__name"
-                                to={`/admin/dashboard/applications/view/${user.uid}`}>
-                                {user.name.full}
+                            cookies.get("ssid").uid === user.uid ?
+                              <Link className="users__name current_user"
+                                to={"/admin/dashboard/profile"}>
+                                {user.name.full} (you)
                               </Link> :
-                              cookies.get("ssid").uid === user.uid ?
-                                <Link className="users__name current_user"
-                                  to={"/admin/dashboard/profile"}>
-                                  {user.name.full} (you)
-                                </Link> :
-                                <Link className="users__name"
-                                  to={`/admin/dashboard/users/view/${user.uid}`}>
-                                  {user.name.full}
-                                </Link>
+                              <Link className="users__name"
+                                to={`/admin/dashboard/users/view/${user.uid}`}>
+                                {user.name.full}
+                              </Link>
                           }
                           <span>id: {user.uid}</span>
                         </td>

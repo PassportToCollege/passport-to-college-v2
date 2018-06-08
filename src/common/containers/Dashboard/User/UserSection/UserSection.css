@@ -61,7 +61,7 @@
   text-transform: uppercase;
 }
 
-.user__section.education__section > div,
+.user__section.education__section>div:not([class="user__not_student"]),
 .user__section.personal__section > div {
   padding: 5em 0 2em;
 }
