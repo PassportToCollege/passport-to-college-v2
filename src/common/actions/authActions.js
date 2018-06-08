@@ -1,6 +1,5 @@
 import axios from "axios";
 import firebase from "firebase";
-import moment from "moment";
 
 import * as types from "./actionTypes";
 import { auth, db } from "../utils/firebase";
@@ -441,7 +440,7 @@ export const doSignUpWithSocial = (provider, options) => {
                   accepted: false,
                   rejected: false
                 },
-                startedOn: new Date(moment.utc(moment()).toDate()).getTime()
+                startedOn: new Date().getTime()
               }, { merge: true });
             }
 
