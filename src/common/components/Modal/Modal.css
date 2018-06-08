@@ -224,3 +224,29 @@
   font-weight: bold;
   color: rgba(128, 150, 162, 0.85);
 }
+
+/* Complete profile modal */
+.modal__container.modal__complete_profile .modal__content>form input[type],
+.modal__container.modal__complete_profile .modal__content>form select {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 100%;
+  outline: none;
+  border: 2px solid rgba(128, 150, 162, 0.35);
+  padding: 1em;
+  font-family: "Roboto", sans-serif;
+  margin: 0 0 1em;
+}
+
+.modal__container.modal__complete_profile .modal__content>form select {
+  cursor: pointer;
+}
+
+.modal__container.modal__complete_profile .modal__content>form label {
+  display: block;
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+  font-weight: bold;
+  color: rgba(128, 150, 162, 0.85);
+}

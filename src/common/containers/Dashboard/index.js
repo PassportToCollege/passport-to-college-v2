@@ -8,7 +8,9 @@ import propTypes from "prop-types";
 
 import * as routes from "../../constants/routes";
 import * as userActions from "../../actions/userActions";
+import { isProfileComplete } from "../../utils";
 
+import { CompleteProfileModal } from "../../components/Modal";
 import PageMeta from "../../components/PageMeta";
 import NavigationAdmin from "../NavigationAdmin";
 import SearchBar from "../SearchBar";
@@ -53,6 +55,10 @@ class Dashboard extends Component {
       <div className="dashboard">
         <PageMeta route="DASHBOARD" />
         <NavigationAdmin user={this.props.user} />
+        {
+          this.props.user.hasGotten && this.state.user && !isProfileComplete(this.state.user) ?
+            <CompleteProfileModal user={this.state.user} /> : null
+        }
         <main className="dashboard__main">
           <SearchBar />
           <Route exact path={this.props.match.url} 

@@ -630,3 +630,85 @@ export class SignInModal extends Component {
       return this.props.doSignUp();
   }
 }
+
+export class CompleteProfileModal extends Component {
+  state = {
+    address: {
+      country: ""
+    },
+    dob: "",
+    gender: "",
+    phone: ""
+  }
+
+  static propTypes = {
+    doClose: propTypes.func,
+    doSubmit: propTypes.func,
+    user: propTypes.object
+  }
+
+  render() {
+    return (
+      <div className="modal__container modal__complete_profile"
+        ref={div => this.modalContainer = div}>
+        <div className="modal__bg" onClick={this.closeModal}></div>
+        <div className="modal__content">
+          <h2>Complete your profile</h2>
+          <form className="form form__signin"
+            onSubmit={this.handleSubmit}>
+            {
+              !this.props.user.address ?
+                <div className="form__input_container">
+                  <label htmlFor="country">Country</label>
+                  <input type="text" id="country" name="country" />
+                </div> : null
+            }
+            {
+              !this.props.user.dob ?
+                <div className="form__input_container">
+                  <label htmlFor="dob">Date of Birth</label>
+                  <input id="dob" type="date" name="dob" />
+                </div> : null
+            }
+            {
+              !this.props.user.gender ?
+                <div className="form__input_container">
+                  <label htmlFor="gender">Gender</label>
+                  <select id="gender" name="gender" defaultValue="">
+                    <option value="" disabled>Select One</option>
+                    <option value="female">Female</option>
+                    <option value="male">Male</option>
+                  </select>
+                </div> : null
+            }
+            {
+              !this.props.user.phone ?
+                <div className="form__input_container">
+                  <label htmlFor="phone">Phone</label>
+                  <input id="phone" type="tel" name="phone" />
+                </div> : null
+            }
+            <Button type="submit" text="done" solid 
+              styles={{
+                backgroundColor: "#FF6561"
+              }}/>
+          </form>
+        </div>
+      </div>
+    )
+  }
+
+  closeModal = () => {
+    this.modalContainer.classList.add("close");
+
+    if ("function" === typeof this.props.doClose)
+      this.props.doClose();
+  };
+
+  handleSubmit = e => {
+    e.preventDefault();
+
+    if ("function" === typeof this.props.doSubmit)
+      this.props.doSubmit(this.state);
+  }
+}

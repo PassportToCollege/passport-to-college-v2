@@ -30,6 +30,14 @@ export const isApplicant = () => {
     return false;
 };
 
+export const isProfileComplete = (user = {}) => {
+  return (
+    (user.name && user.name.first && user.name.last && user.name.full) &&
+    (user.address && user.address.country) &&
+    user.dob && user.gender && user.email
+  )
+}
+
 export const sessionAge = () => {
   const { createdAt } = cookies.get("ssid");
   const end = moment(new Date());
@@ -104,6 +112,8 @@ export const initializeFacebook = (d, s, id) => {
   js.src = `https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0&appId=${process.env.RAZZLE_FACEBOOK_APP_ID}&autoLogAppEvents=1`;
   fjs.parentNode.insertBefore(js, fjs);
 }
+
+// Classes
 
 export class User {
   constructor(uid, email, name, options) {
