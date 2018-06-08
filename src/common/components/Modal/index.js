@@ -633,9 +633,7 @@ export class SignInModal extends Component {
 
 export class CompleteProfileModal extends Component {
   state = {
-    address: {
-      country: ""
-    },
+    country: "",
     dob: "",
     gender: "",
     phone: ""
@@ -660,21 +658,24 @@ export class CompleteProfileModal extends Component {
               !this.props.user.address ?
                 <div className="form__input_container">
                   <label htmlFor="country">Country</label>
-                  <input type="text" id="country" name="country" />
+                  <input type="text" id="country" name="country" 
+                    onChange={this.handleFieldChange} />
                 </div> : null
             }
             {
               !this.props.user.dob ?
                 <div className="form__input_container">
                   <label htmlFor="dob">Date of Birth</label>
-                  <input id="dob" type="date" name="dob" />
+                  <input id="dob" type="date" name="dob" 
+                    onChange={this.handleFieldChange}/>
                 </div> : null
             }
             {
               !this.props.user.gender ?
                 <div className="form__input_container">
                   <label htmlFor="gender">Gender</label>
-                  <select id="gender" name="gender" defaultValue="">
+                  <select id="gender" name="gender" defaultValue=""
+                    onChange={this.handleFieldChange}>
                     <option value="" disabled>Select One</option>
                     <option value="female">Female</option>
                     <option value="male">Male</option>
@@ -685,7 +686,8 @@ export class CompleteProfileModal extends Component {
               !this.props.user.phone ?
                 <div className="form__input_container">
                   <label htmlFor="phone">Phone</label>
-                  <input id="phone" type="tel" name="phone" />
+                  <input id="phone" type="tel" name="phone"
+                    onChange={this.handleFieldChange} />
                 </div> : null
             }
             <Button type="submit" text="done" solid 
@@ -710,5 +712,9 @@ export class CompleteProfileModal extends Component {
 
     if ("function" === typeof this.props.doSubmit)
       this.props.doSubmit(this.state);
+  }
+
+  handleFieldChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
   }
 }
