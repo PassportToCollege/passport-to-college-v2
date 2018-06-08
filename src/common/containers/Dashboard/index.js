@@ -21,6 +21,8 @@ import Application from "./Application";
 import User from "./User";
 import DashPosts from "./DashPosts";
 
+import UnderConstruction from "../../assets/images/under_construction__default.png"
+
 class Dashboard extends Component {
   state = {
     user: this.props.user.user
@@ -82,7 +84,7 @@ class Dashboard extends Component {
     return (
       <div className="dashboard__container dashboard__home">
         <div className="dashboard__welcome">
-          home
+          <img className="dashboard__under_construction" src={UnderConstruction} alt="under construction" />
         </div>
       </div>
     )

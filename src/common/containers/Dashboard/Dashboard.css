@@ -21,6 +21,12 @@
   padding: 0;
 }
 
+.dashboard__home .dashboard__under_construction {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
 @media (min-width: 768px) {
   .dashboard__main {
     padding-left: 220px;
