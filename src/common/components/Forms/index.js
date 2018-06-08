@@ -439,7 +439,7 @@ export const Miscellaneous = ({ application, updateApplicationField, disabled })
             onChange={updateApplicationField}>
             <option value="" disabled>Select One</option>
             <option value="10000">Less than $10,000</option>
-            <option value="34999">Less than $35,000 but more tha $10,000</option>
+            <option value="34999">Less than $35,000 but more than $10,000</option>
             <option value="49999">Less than $50,000 but more than $35,000</option>
             <option value="74999">Less than $75,000 but more than $50,000</option>
             <option value="99999">Less than $100,000 but more than $75,000</option>
@@ -447,7 +447,7 @@ export const Miscellaneous = ({ application, updateApplicationField, disabled })
             <option value="150000">More than $150,000</option>
           </select>
           <label htmlFor="income">
-            Which of these categories best describe your family&apos;s combined annual income (USD)?
+            Which of these categories best describe your family&apos;s combined annual income (figures are in US dollars)?
           </label>
         </div>
         <div className="form__input_container">

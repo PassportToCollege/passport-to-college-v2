@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import propTypes from 'prop-types';
 import _ from "lodash";
+import moment from "moment";
 
 import * as applicationActions from "../../../../actions/applicationActions";
 import * as userActions from "../../../../actions/userActions";
@@ -34,9 +35,10 @@ class ApplicationTask extends Component {
       email: "",
       isAddingTest: false,
       addTestModal: {},
-      hasChanged: false, // flag to tell if user changed any fields so new application is fetched on component update
+      hasChanged: false,
       complete: this.props.complete,
-      notificationClosed: false
+      notificationClosed: false,
+      submitting: false
     };
   }
 
@@ -72,12 +74,22 @@ class ApplicationTask extends Component {
     if (nextProps.application.hasGotten) {
       newState = newState || {};
       newState.application = nextProps.application.application;
-      newState.uid = nextProps.application.user
+      newState.uid = nextProps.application.user;
     }
 
     if (nextProps.complete && !_.isEqual(nextProps.complete, prevState.complete)) {
       newState = newState || {};
       newState.complete = nextProps.complete;
+    }
+
+    if (nextProps.application.isSubmitting) {
+      newState = newState || {};
+      newState.submitting = true;
+    }
+
+    if (nextProps.application.hasSubmitted && nextProps.application.hasSent) {
+      newState = newState || {};
+      newState.submitting = false;
     }
 
     return newState;
@@ -252,7 +264,7 @@ class ApplicationTask extends Component {
               { name: "email", value: user.email },
               { name: "phone", value: user.phone },
               { name: "gender", value: user.gender },
-              { name: "dob", value: user.dob },
+              { name: "dob", value: moment.utc(moment(user.dob)).format("M/D/Y") },
               { name: "country", value: user.address.country }
             ];
   
@@ -387,7 +399,9 @@ class ApplicationTask extends Component {
                     given accurate and correct information click the button below to submit your
                     application for review.
                   </p>
-                  <Button type="button" solid text="Submit Application" doClick={this.handleApplicationSubmit} />
+                  <Button type="button" solid text="Submit Application"
+                    disabled={this.state.submitting} 
+                    doClick={this.handleApplicationSubmit} />
                 </span>
               :
                 this.props.application.isGetting ?
@@ -429,6 +443,7 @@ class ApplicationTask extends Component {
                 null
             }
             {
+              !this.state.notificationClosed &&
               this.props.application.hasSubmitted &&
               this.props.application.emailHasFailed ?
                 <Notification text="Application submitted! We will be in touch."
@@ -516,7 +531,7 @@ class ApplicationTask extends Component {
   }
 
   handleApplicationSubmit = () => {
-    const submittedOn = new Date();
+    const submittedOn = new Date().getTime();
     this.props.applicationActions.doApplicationSubmit(this.state.uid, submittedOn);
   }
 

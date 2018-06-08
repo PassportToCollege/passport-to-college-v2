@@ -234,6 +234,7 @@ export const doApplicationSubmit = (user, date) => {
           .catch(error => {
             Console.error(error);
             dispatch(sendSubmittedEmailFailed(error, user));
+            dispatch(doApplicationGet(user));
           });
       })
       .catch(error => {
