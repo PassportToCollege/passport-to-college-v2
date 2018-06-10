@@ -11,7 +11,6 @@ import WYSIWYGEditor from "../../components/Editor";
 import { isAuthorized } from "../../utils";
 
 import * as authActions from "../../actions/authActions";
-import * as commentActions from "../../actions/commentActions";
 
 class Comment extends Component {
   constructor(props) {

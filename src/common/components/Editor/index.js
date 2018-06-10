@@ -10,7 +10,6 @@ import {
   convertFromRaw, 
   convertFromHTML, 
   ContentState,
-  SelectionState 
 } from "draft-js";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import { faBold, faItalic, faUnderline, faRedoAlt, faUndoAlt } from "@fortawesome/fontawesome-free-solid";
@@ -120,10 +119,16 @@ class WYSIWYGEditor extends Component {
   }
 
   onChange = editorState => {
-    this.setState({ editorState });
-    
+    let orderedSet = editorState.getCurrentInlineStyle().toString();
+
     let content = convertToRaw(editorState.getCurrentContent());
-    this.setState({ words: getWordCount(content.blocks) });
+    this.setState({ 
+      words: getWordCount(content.blocks),
+      editorState,
+      isBold: orderedSet.indexOf("BOLD") > -1,
+      isItalic: orderedSet.indexOf("ITALIC") > -1,
+      isUnderline: orderedSet.indexOf("UNDERLINE") > -1
+    });
   }
 
   _handleSave = () => {
