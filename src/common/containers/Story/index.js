@@ -91,7 +91,11 @@ class Story extends Component {
     }
 
     if (snapshot && snapshot.toTop) {
-      document.scrollingElement.scrollTo(0, 0);
+      if ("function" === typeof document.scrollingElement.scrollTo) {
+        document.scrollingElement.scrollTo(0, 0);
+      } else {
+        document.scrollingElement.scrollTop = 0;
+      }
     }
   }
   
