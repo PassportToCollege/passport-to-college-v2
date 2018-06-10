@@ -43,3 +43,17 @@
 .comment > .responder > .responder__editor .editor__editor {
   border: none;
 }
+
+.comment .comment__view_all {
+  margin-top: 1em;
+  display: block;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 0.9em;
+}
+
+.comment .comment__view_all::after {
+  font-family: FontAwesome;
+  content: "\f078";
+  margin-left: 0.5em;
+}

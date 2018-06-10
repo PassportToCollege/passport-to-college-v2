@@ -16,7 +16,8 @@ class Conversation extends Component {
     super(props);
 
     this.state = {
-      comment: props.comment
+      comment: props.comment,
+      replies: []
     };
   }
 
@@ -27,7 +28,7 @@ class Conversation extends Component {
   }
 
   componentDidMount() {
-    if (!this.state.replies && this.state.comment.hasReplies)
+    if (!this.state.replies.length && this.state.comment.hasReplies)
       this.props.commentActions.doGetReplies(this.state.comment.id, 1);
   }
 
@@ -69,7 +70,9 @@ class Conversation extends Component {
   render() {
     return (
       <div className="conversation">
-        <Comment comment={this.state.comment} />
+        <Comment comment={this.state.comment} 
+          viewAll={this.state.comment.hasReplies && this.state.comment.replies > this.state.replies.length} 
+          doViewAll={this.handleViewAllClick}/>
         {
           this.state.replies ?
             this.state.replies.slice(0).reverse().map(reply => {
@@ -90,6 +93,10 @@ class Conversation extends Component {
   handleReply = reply => {
     if (!this.props.comments.gettingReply)
       this.props.commentActions.doGetReply(this.state.comment.id, reply);
+  }
+
+  handleViewAllClick = () => {
+    this.props.commentActions.doGetReplies(this.state.comment.id, 2);
   }
 }
 

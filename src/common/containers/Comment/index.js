@@ -11,6 +11,7 @@ import WYSIWYGEditor from "../../components/Editor";
 import { isAuthorized } from "../../utils";
 
 import * as authActions from "../../actions/authActions";
+import * as commentActions from "../../actions/commentActions";
 
 class Comment extends Component {
   constructor(props) {
@@ -31,7 +32,9 @@ class Comment extends Component {
     comment: propTypes.object,
     auth: propTypes.object,
     authActions: propTypes.object,
-    reply: propTypes.bool
+    reply: propTypes.bool,
+    viewAll: propTypes.bool,
+    doViewAll: propTypes.func
   }
 
   static defaultProps = {
@@ -81,6 +84,12 @@ class Comment extends Component {
       <div className={`comment ${this.props.reply ? "comment__reply" : ""}`}>
         <CommentHeader comment={this.props.comment} />
         <WYSIWYGEditor readonly content={this.props.comment.message.html} />
+        {
+          this.props.viewAll ?
+            <span className="comment__view_all" onClick={this.handleViewAllClick}>
+              view all {this.props.comment.replies} responses
+            </span> : null
+        }
       </div>
     )
   }
@@ -99,6 +108,11 @@ class Comment extends Component {
 
   handleSocialSignUp = provider => {
     this.props.authActions.doSignUpWithSocial(provider);
+  }
+
+  handleViewAllClick = () => {
+    if ("function" === typeof this.props.doViewAll)
+      this.props.doViewAll();
   }
 
   handleReply = content => {

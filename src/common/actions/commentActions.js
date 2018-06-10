@@ -244,7 +244,55 @@ export const doGetReplies = (parent, page = 1) => {
         })
     }
 
-    // TODO: get other reply pages
+   db.collection("comments")
+    .where("parent", "==", parent)
+    .orderBy("postedOn", "desc")
+    .limit(5)
+    .get()
+    .then(tempSnapshots => {
+      const lv = tempSnapshots.docs[tempSnapshots.docs.length - 1];
+
+      return db.collection("comments")
+        .where("parent", "==", parent)
+        .orderBy("postedOn", "desc")
+        .startAfter(lv)
+        .get()
+        .then(snapshots => {
+          if (snapshots.empty) {
+            return dispatch(getRepliesFailed({ message: "no replies found" }));
+          }
+
+          let replies = [];
+          let ppPromises = [];
+
+          snapshots.forEach(snapshot => {
+            let reply = snapshot.data();
+            reply.id = snapshot.id;
+
+            if (storage && !reply.user.photo)
+              ppPromises.push(storage.ref("users/profile_images").child(`${reply.user.uid}.png`).getDownloadURL());
+            
+            replies.push(reply);
+          });
+
+          if (storage) {
+            return Promise.all(ppPromises).then(urls => {
+              for (let reply of replies) {
+                reply.user.profilePicture = urls.find(url => {
+                    return url.indexOf(reply.user.uid) > -1;
+                });
+              }
+
+              dispatch(gotReplies(parent, replies, page));
+            });
+          }
+
+          dispatch(gotReplies(parent, replies, page));
+        })
+        .catch(error => {
+          dispatch(getRepliesFailed(error));
+        });
+    });
   }
 };
 
