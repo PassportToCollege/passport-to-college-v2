@@ -225,7 +225,7 @@ class Responder extends Component {
             data-state={this.state.active ? "active" : "inactive"}>
             {
               this.state.active ?
-                <WYSIWYGEditor focus saveButton
+                <WYSIWYGEditor focus saveButton cancelButton
                   wordCounter={false}
                   content={
                     this.props.type === "comment" ?
@@ -234,6 +234,7 @@ class Responder extends Component {
                   captureBlur={this.handleResponderBlur} 
                   saveButtonText="Post" 
                   handleSave={this.handleResponseSave}
+                  handleCancel={this.handleResponseCancel}
                   editorStyles={{
                     minHeight: `${this.props.height}px`
                   }} 
@@ -275,6 +276,10 @@ class Responder extends Component {
   }
 
   handleResponderBlur = ({ blocks }) => {
+    if ((blocks.length === 1 && this.props.type === "comment" &&
+      blocks[0].text === `${this.state.user.name.full} `) && !this.state.clickedInside)
+      return this.setState({ active: false });
+
     if (getWordCount(blocks) || this.state.clickedInside) 
       return;
 
@@ -299,6 +304,11 @@ class Responder extends Component {
         this.state.postId
       );
     }
+  }
+
+  handleResponseCancel = (e) => {
+    e.stopPropagation();
+    this.setState({ active: false });
   }
 }
 
