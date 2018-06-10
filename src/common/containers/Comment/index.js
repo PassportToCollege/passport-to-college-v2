@@ -34,7 +34,9 @@ class Comment extends Component {
     authActions: propTypes.object,
     reply: propTypes.bool,
     viewAll: propTypes.bool,
-    doViewAll: propTypes.func
+    doViewAll: propTypes.func,
+    hideAll: propTypes.bool,
+    doHideAll: propTypes.func
   }
 
   static defaultProps = {
@@ -90,6 +92,12 @@ class Comment extends Component {
               view all {this.props.comment.replies} responses
             </span> : null
         }
+        {
+          this.props.hideAll ?
+          <span className="comment__hide_all" onClick={this.handleHideAllClick}>
+              hide all responses
+            </span> : null
+        }
       </div>
     )
   }
@@ -113,6 +121,11 @@ class Comment extends Component {
   handleViewAllClick = () => {
     if ("function" === typeof this.props.doViewAll)
       this.props.doViewAll();
+  }
+
+  handleHideAllClick = () => {
+    if ("function" === typeof this.props.doHideAll)
+      this.props.doHideAll();
   }
 
   handleReply = content => {

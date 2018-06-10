@@ -17,7 +17,9 @@ class Conversation extends Component {
 
     this.state = {
       comment: props.comment,
-      replies: []
+      replies: [],
+      viewAll: props.comment.hasReplies && props.comment.replies > 5,
+      hideAll: false
     };
   }
 
@@ -71,10 +73,12 @@ class Conversation extends Component {
     return (
       <div className="conversation">
         <Comment comment={this.state.comment} 
-          viewAll={this.state.comment.hasReplies && this.state.comment.replies > this.state.replies.length} 
-          doViewAll={this.handleViewAllClick}/>
+          viewAll={this.state.viewAll} 
+          doViewAll={this.handleViewAllClick} 
+          hideAll={this.state.hideAll && this.state.comment.hasReplies} 
+          doHideAll={this.handleHideAllClick} />
         {
-          this.state.replies ?
+          (this.state.replies.length && this.state.replies.length < this.state.comment.replies) || !this.state.viewAll ?
             this.state.replies.slice(0).reverse().map(reply => {
               return (
                 <Comment key={reply.id} comment={reply} reply />
@@ -96,7 +100,15 @@ class Conversation extends Component {
   }
 
   handleViewAllClick = () => {
-    this.props.commentActions.doGetReplies(this.state.comment.id, 2);
+    if (this.state.comment.replies > this.state.replies.length) {
+      this.props.commentActions.doGetReplies(this.state.comment.id, 2);
+    }
+
+    this.setState({ viewAll: false, hideAll: true });
+  }
+
+  handleHideAllClick = () => {
+    this.setState({ hideAll: false, viewAll: true });
   }
 }
 
