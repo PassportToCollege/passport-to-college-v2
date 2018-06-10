@@ -493,7 +493,8 @@ class UserSection extends Component {
                   {
                     this.props.user.hasGottenUser && this.state.user ?
                       <Toggler state={this.state.user.isAdmin ? "yes" : "no"} 
-                        doClick={this.toggleAdminSetting} /> :
+                        doClick={this.toggleAdminSetting} 
+                        disabled={this.state.user.isApplicant} /> :
                       <Loader width="16px" styles={{
                         margin: "0"
                       }} />
@@ -504,7 +505,8 @@ class UserSection extends Component {
                   {
                     this.props.user.hasGottenUser && this.state.user ?
                       <Toggler state={this.state.user.isStaff ? "yes" : "no"}
-                        doClick={this.toggleStaffSetting} /> :
+                        doClick={this.toggleStaffSetting} 
+                        disabled={this.state.user.isApplicant} /> :
                       <Loader width="16px" styles={{
                         margin: "0"
                       }} />
