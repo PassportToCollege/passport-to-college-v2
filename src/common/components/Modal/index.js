@@ -723,3 +723,30 @@ export class CompleteProfileModal extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 }
+
+export class PendingApplicationModal extends Component {
+  static propTypes = {
+    doClose: propTypes.func
+  }
+
+  render() {
+    return (
+      <div className="modal__container modal__pending_application"
+        ref={div => this.modalContainer = div}>
+        <div className="modal__bg" onClick={this.closeModal}></div>
+        <div className="modal__content">
+          <h2>Draft Application</h2>
+          <p>This application has not been submitted by the applicant. Viewing has been restricted to superusers only.</p>
+          <p>Contact a superuser to view this application</p>
+        </div>
+      </div>
+    )
+  }
+
+  closeModal = () => {
+    this.modalContainer.classList.add("close");
+
+    if ("function" === typeof this.props.doClose)
+      this.props.doClose();
+  };
+}

@@ -13,6 +13,7 @@ import PageMeta from "../../../components/PageMeta";
 import ApplicationSection from "./ApplicationSection";
 import Button from "../../../components/Button";
 import LoadingText from "../../../components/LoadingText";
+import { PendingApplicationModal } from "../../../components/Modal";
 
 class Application extends Component {
   constructor(props) {
@@ -36,6 +37,19 @@ class Application extends Component {
   }
 
   render() {
+    if (this.props.application.hasGotten && this.state.application && this.state.application.state.draft) {
+      return (
+        <div className="dashboard__container">
+          <PageMeta more={
+              <title>{this.props.application.application.user.name.full} | Application | Dashboard</title>
+            } />
+          <Button text="back to all applications" solid 
+          doClick={() => this.props.history.push("/admin/dashboard/applications")}/>
+          <PendingApplicationModal doClose={() => this.props.history.push("/admin/dashboard/applications")} />
+        </div>
+      )
+    }
+
     return (
       <div className="dashboard__container">
         {
