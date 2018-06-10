@@ -189,7 +189,12 @@ class Story extends Component {
           }
         </BorderTopContainer>
         <section className="story__responses">
-          <h4>Responses</h4>
+          <h4> 
+            Responses 
+            {
+              this.state.post.conversations ? ` (${this.state.post.conversations})` : ""
+            } 
+          </h4>
           {
             this.state.post ?
               <Responder  postId={this.state.id}
