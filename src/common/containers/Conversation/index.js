@@ -19,7 +19,7 @@ class Conversation extends Component {
       comment: props.comment,
       replies: [],
       viewAll: props.comment.hasReplies && props.comment.replies > 5,
-      hideAll: false
+      hideAll: props.comment.hasReplies && props.comment.replies < 5
     };
   }
 

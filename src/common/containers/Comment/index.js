@@ -89,13 +89,29 @@ class Comment extends Component {
         {
           this.props.viewAll ?
             <span className="comment__view_all" onClick={this.handleViewAllClick}>
-              view all {this.props.comment.replies} responses
+              {
+                this.props.comment.replies > 1 ?
+                  <React.Fragment>
+                    view all {this.props.comment.replies} responses
+                  </React.Fragment> :
+                  <React.Fragment>
+                    view response
+                  </React.Fragment>
+              }
             </span> : null
         }
         {
           this.props.hideAll ?
           <span className="comment__hide_all" onClick={this.handleHideAllClick}>
-              hide all responses
+              {
+                this.props.comment.replies > 1 ?
+                  <React.Fragment>
+                    hide all responses
+                  </React.Fragment> :
+                  <React.Fragment>
+                    hide response
+                  </React.Fragment>
+              }
             </span> : null
         }
       </div>
