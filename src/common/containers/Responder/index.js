@@ -226,6 +226,11 @@ class Responder extends Component {
             {
               this.state.active ?
                 <WYSIWYGEditor focus saveButton
+                  wordCounter={false}
+                  content={
+                    this.props.type === "comment" ?
+                      `<b>${this.state.user.name.full}</b><span> </span>` : null
+                  }
                   captureBlur={this.handleResponderBlur} 
                   saveButtonText="Post" 
                   handleSave={this.handleResponseSave}

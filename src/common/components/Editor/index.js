@@ -2,7 +2,16 @@ import "./Editor.css";
 
 import React, { Component } from "react";
 import propTypes from "prop-types";
-import { Editor, EditorState, RichUtils, convertToRaw, convertFromRaw } from "draft-js";
+import { 
+  Editor, 
+  EditorState, 
+  RichUtils, 
+  convertToRaw, 
+  convertFromRaw, 
+  convertFromHTML, 
+  ContentState,
+  SelectionState 
+} from "draft-js";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import { faBold, faItalic, faUnderline, faRedoAlt, faUndoAlt } from "@fortawesome/fontawesome-free-solid";
 
@@ -17,17 +26,24 @@ class WYSIWYGEditor extends Component {
     let content = [];
     let blocks = [];
 
-    if ("object" === typeof props.content) {
+    if ("object" === typeof props.content && props.content !== null) {
       blocks = props.content.blocks;
       content = convertFromRaw(props.content);
+    } else if ("string" === typeof props.content && props.content.length) {
+      const processedHtml = convertFromHTML(props.content);
+      content = ContentState.createFromBlockArray(
+        processedHtml.contentBlocks,
+        processedHtml.entityMap
+      );
     }
 
     this.state = {
-      editorState: content.length ? EditorState.createWithContent(content) : EditorState.createEmpty(),
+      editorState: content.length ? 
+        EditorState.moveFocusToEnd(EditorState.createWithContent(content)) : EditorState.createEmpty(),
       isBold: false,
       isUnderline: false,
       isItalic: false,
-      words: content.length ? getWordCount(blocks) : 0,
+      words: props.wordCounter && content.length ? getWordCount(blocks) : 0,
       focus: props.focus
     };
   }
@@ -83,7 +99,11 @@ class WYSIWYGEditor extends Component {
                   :
                   null
               }
-              <span className="editor__word_count">{this.state.words} { this.state.words === 1 ? "word" : "words" }</span>
+              {
+                this.props.wordCounter ?
+                <span className="editor__word_count">{this.state.words} { this.state.words === 1 ? "word" : "words" }</span> : null
+
+              }
             </div>
         }
         <div className="editor__editor" style={ this.props.editorStyles || null }
@@ -164,7 +184,8 @@ WYSIWYGEditor.defaultProps = {
   focus: false,
   readonly: false,
   saveButton: false,
-  saveButtonText: "Save"
+  saveButtonText: "Save",
+  wordCounter: true
 };
 
 WYSIWYGEditor.propTypes = {
@@ -172,13 +193,14 @@ WYSIWYGEditor.propTypes = {
   saveButton: propTypes.bool,
   saveButtonText: propTypes.string,
   handleSave: propTypes.func,
-  content: propTypes.object,
+  content: propTypes.oneOfType([propTypes.object, propTypes.string]),
   limit: propTypes.number,
   readonly: propTypes.bool,
   editorStyles: propTypes.object,
   controlStyles: propTypes.object,
   captureBlur: propTypes.func,
-  focus: propTypes.bool
+  focus: propTypes.bool,
+  wordCounter: propTypes.bool
 };
 
 export default WYSIWYGEditor;
