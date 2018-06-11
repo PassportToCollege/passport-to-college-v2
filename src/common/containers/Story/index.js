@@ -218,8 +218,14 @@ class Story extends Component {
   }
 
   handleResponse = (commentId, isReply) => {
-    if (!isReply)
-      this.setState({ newResponse: commentId });
+    if (!isReply) {
+      this.setState({ 
+        newResponse: commentId,
+        post: Object.assign({}, this.state.post, {
+          conversations: this.state.post.conversations + 1
+        }) 
+      });
+    }
   }
 }
 

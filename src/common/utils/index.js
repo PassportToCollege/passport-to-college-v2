@@ -183,7 +183,7 @@ export class SSID {
       createdAt: new Date()
     }
 
-    return cookies.set("ssid", d, { path: "/", maxAge: 60 * 60 * 24 });
+    return cookies.set("ssid", d, { path: "/", maxAge: 60 * 60 * 24 * 3 });
   }
 
   destroy() {

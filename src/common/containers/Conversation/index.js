@@ -10,6 +10,7 @@ import * as commentActions from "../../actions/commentActions";
 
 import Comment from "../Comment";
 import Responder from "../Responder";
+import Loader from "../../components/Loader";
 
 class Conversation extends Component {
   constructor(props) {
@@ -77,6 +78,12 @@ class Conversation extends Component {
           doViewAll={this.handleViewAllClick} 
           hideAll={this.state.hideAll && this.state.comment.hasReplies} 
           doHideAll={this.handleHideAllClick} />
+        {
+          this.props.comments.gettingReplies ?
+            <Loader width="32px" styles={{
+              margin: "1em auto"
+            }} /> : null
+        }
         {
           (this.state.replies.length && this.state.replies.length < this.state.comment.replies) || !this.state.viewAll ?
             this.state.replies.slice(0).reverse().map(reply => {
