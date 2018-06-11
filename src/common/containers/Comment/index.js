@@ -7,6 +7,7 @@ import propTypes from "prop-types";
 
 import CommentHeader from "../../components/CommentHeader";
 import WYSIWYGEditor from "../../components/Editor";
+import LikeComment from "../LikeComment";
 
 import { isAuthorized } from "../../utils";
 
@@ -85,6 +86,7 @@ class Comment extends Component {
       <div className={`comment ${this.props.reply ? "comment__reply" : ""}`}>
         <CommentHeader comment={this.props.comment} />
         <WYSIWYGEditor readonly content={this.props.comment.message.html} />
+        <LikeComment comment={this.props.comment} />
         {
           this.props.viewAll ?
             <span className="comment__view_all" onClick={this.handleViewAllClick}>
