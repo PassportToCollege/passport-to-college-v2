@@ -115,6 +115,9 @@ class Responder extends Component {
 
       if (!isAuthorized()) {
         newState.signingIn = true;
+
+        if ("function" === typeof nextProps.doClose)
+          nextProps.doClose();
       } else {
         newState.active = true;
       }
@@ -125,8 +128,11 @@ class Responder extends Component {
 
   componentDidMount() {
     if (isAuthorized()) {
-      this.props.uppActions.doAvatarGet();
-      this.props.userActions.doUserGet();
+      if (!this.state.user)
+        this.props.uppActions.doAvatarGet();
+      
+      if (!this.state.profilePicture)
+        this.props.userActions.doUserGet();
     }
 
     if (isBrowser) {
@@ -241,7 +247,7 @@ class Responder extends Component {
                   wordCounter={false}
                   content={
                     this.props.type === "comment" ?
-                      `<b>${this.state.user.name.full}</b><span> </span>` : null
+                      `<b>${this.props.comment.user.name.full}</b><span> </span>` : null
                   }
                   captureBlur={this.handleResponderBlur} 
                   saveButtonText="Post" 
@@ -279,6 +285,10 @@ class Responder extends Component {
     this.props.authActions.doSignUpWithSocial(provider);
   }
 
+  handleSignIn = (email, password) => {
+    this.props.authActions.doSignIn(email.value, password.value);
+  }
+
   handleResponderClick = () => {
     if (this.state.authorized) {
       return this.setState({  active: true });
@@ -289,7 +299,7 @@ class Responder extends Component {
 
   handleResponderBlur = ({ blocks }) => {
     if ((blocks.length === 1 && this.props.type === "comment" &&
-      blocks[0].text === `${this.state.user.name.full} `) && !this.state.clickedInside) {
+      blocks[0].text === `${this.props.comment.user.name.full} `) && !this.state.clickedInside) {
       if ("function" === typeof this.props.doClose)
         this.props.doClose();
 
@@ -307,13 +317,23 @@ class Responder extends Component {
 
   handleResponseSave = content => {
     if (this.props.type === "comment") {
+      let comment = {
+        hasReplies: false
+      };
+
+      if (this.props.comment.parent) {
+        comment.id = this.props.comment.parent;
+      } else {
+        comment = this.props.comment;
+      }
+
       this.props.commentActions.doCommentCreate(
         this.state.user,
         content,
         this.state.postId,
         {
           isReply: true,
-          comment: this.props.comment
+          comment
         }
       );
     } else {
@@ -327,6 +347,10 @@ class Responder extends Component {
 
   handleResponseCancel = (e) => {
     e.stopPropagation();
+
+    if ("function" === typeof this.props.doClose)
+      this.props.doClose();
+
     this.setState({ active: false });
   }
 }

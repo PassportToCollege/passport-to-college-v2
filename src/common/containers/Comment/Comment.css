@@ -33,6 +33,12 @@
   padding: 0.5em;
 }
 
+.comment__reply > .responder {
+  padding: 1em 0 0;
+  border: none;
+  border-top: 2px solid rgba(51, 51, 51, 0.05);
+}
+
 .comment > .responder > .responder__meta .responder__meta_profile_pic {
   width: 32px;
   height: 32px;

@@ -91,7 +91,7 @@ class LikeComment extends Component {
       let liked = this.state.comment.likes && this.state.comment.likes[activeUser()];
       this.setState({
         liked,
-        likes: !liked ? countLikes(this.state.comment.likes) + 1 : countLikes(this.state.comment.likes)
+        likes: liked ? countLikes(this.state.comment.likes) + 1 : countLikes(this.state.comment.likes)
       });
     }
 

@@ -1,85 +1,35 @@
 import "./Comment.css";
 
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
 
+import Responder from "../Responder";
 import CommentHeader from "../../components/CommentHeader";
 import WYSIWYGEditor from "../../components/Editor";
 import LikeComment from "../LikeComment";
-
-import { isAuthorized } from "../../utils";
-
-import * as authActions from "../../actions/authActions";
 
 class Comment extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      replying: false,
-      signingUp: false,
-      signingIn: false,
-      authorized: isAuthorized(),
-      hasError: false,
-      notificationClosed: true,
-      error: null
+      replying: false
     }
   }
 
   static propTypes = {
     comment: propTypes.object,
-    auth: propTypes.object,
-    authActions: propTypes.object,
     reply: propTypes.bool,
     viewAll: propTypes.bool,
     doViewAll: propTypes.func,
     hideAll: propTypes.bool,
     doHideAll: propTypes.func,
-    onReplyClick: propTypes.func
+    onReplyClick: propTypes.func,
+    onReply: propTypes.func
   }
 
   static defaultProps = {
     reply: false
-  }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    let newState = null;
-
-    if (nextProps.auth.activeUser !== prevState.authorized) {
-      newState = newState || {};
-      newState = Object.assign({}, newState, {
-        authorized: isAuthorized()
-      });
-    }
-
-    if (nextProps.auth.failedToSignInWithSocial ||
-      nextProps.auth.failedToSignUpWithSocial ||
-      nextProps.auth.hasFailed) {
-      newState = newState || {};
-      newState = Object.assign({}, newState, {
-        hasError: true,
-        notificationClosed: false,
-        error: nextProps.auth.error.message
-      });
-
-      if (nextProps.auth.error.message === "user already exists")
-        newState.error = "A user was found linked to the account you provided. Try signing in instead.";
-    }
-
-    if ((nextProps.auth.hasAuthorized ||
-      nextProps.auth.hasSignedInWithSocial ||
-      nextProps.auth.hasSignedUpWithSocial) &&
-      (prevState.signingUp || prevState.signingIn)) {
-      newState = newState || {};
-      newState = Object.assign({}, newState, {
-        signingIn: false,
-        signingUp: false
-      });
-    }
-
-    return newState;
   }
 
   render() {
@@ -93,7 +43,16 @@ class Comment extends Component {
           Reply
         </span>
         {
-          this.props.viewAll ?
+          !this.props.comment.isConversation && this.state.replying ?
+            <Responder type="comment" active={this.state.replying}
+              comment={this.props.comment}
+              postId={this.props.comment.post}
+              onResponse={this.handleReply}
+              height="50" 
+              doClose={this.listenResponderClose} /> : null
+        }
+        {
+          this.props.comment.isConversation && this.props.viewAll ?
             <span className="comment__view_all" onClick={this.handleViewAllClick}>
               {
                 this.props.comment.replies > 1 ?
@@ -107,7 +66,7 @@ class Comment extends Component {
             </span> : null
         }
         {
-          this.props.hideAll ?
+          this.props.comment.isConversation && this.props.hideAll ?
           <span className="comment__hide_all" onClick={this.handleHideAllClick}>
               {
                 this.props.comment.replies > 1 ?
@@ -130,19 +89,19 @@ class Comment extends Component {
       return this.props.onReplyClick();
     }
 
-    if (this.state.authorized) {
-      return this.setState({  replying: !this.state.replying });
-    }
-
-    this.setState({ signingUp: true });
+    this.setState({ replying: !this.state.replying });
   }
 
-  handleSocialSignIn = provider => {
-    this.props.authActions.doSignInWithSocial(provider);
+  listenResponderClose = () => {
+    if (this.state.replying)
+      this.setState({ replying: false });
   }
 
-  handleSocialSignUp = provider => {
-    this.props.authActions.doSignUpWithSocial(provider);
+  handleReply = reply => {
+    this.setState({ replying: false });
+    
+    if ("function" === typeof this.props.onReply)
+      this.props.onReply(reply);
   }
 
   handleViewAllClick = () => {
@@ -154,25 +113,6 @@ class Comment extends Component {
     if ("function" === typeof this.props.doHideAll)
       this.props.doHideAll();
   }
-
-  handleReply = content => {
-    console.log(content)
-  }
 }
 
-const mapStateToProps = state => {
-  return {
-    auth: state.auth
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    authActions: bindActionCreators(authActions, dispatch)
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Comment);
+export default Comment;
