@@ -48,7 +48,8 @@ class Responder extends Component {
     onResponse: propTypes.func,
     onOutsideClick: propTypes.func,
     type: propTypes.string,
-    height: propTypes.string
+    height: propTypes.string,
+    doClose: propTypes.func
   }
 
   static defaultProps = {
@@ -109,6 +110,16 @@ class Responder extends Component {
       newState.createdComment = nextProps.comments.newCommentId;
     }
 
+    if (nextProps.active) {
+      newState = newState || {};
+
+      if (!isAuthorized()) {
+        newState.signingIn = true;
+      } else {
+        newState.active = true;
+      }
+    }
+
     return newState;
   }
 
@@ -161,7 +172,8 @@ class Responder extends Component {
     if (snapshot && snapshot.wasUnauthorized) {
       this.setState({
         profilePicture: null,
-        user: null
+        user: null,
+        active: false
       });
     }
 
@@ -224,7 +236,7 @@ class Responder extends Component {
           <section className="responder__editor" 
             data-state={this.state.active ? "active" : "inactive"}>
             {
-              this.state.active ?
+              this.state.active && this.props.user.hasGotten && this.state.user ?
                 <WYSIWYGEditor focus saveButton cancelButton
                   wordCounter={false}
                   content={
@@ -277,11 +289,18 @@ class Responder extends Component {
 
   handleResponderBlur = ({ blocks }) => {
     if ((blocks.length === 1 && this.props.type === "comment" &&
-      blocks[0].text === `${this.state.user.name.full} `) && !this.state.clickedInside)
+      blocks[0].text === `${this.state.user.name.full} `) && !this.state.clickedInside) {
+      if ("function" === typeof this.props.doClose)
+        this.props.doClose();
+
       return this.setState({ active: false });
+    }
 
     if (getWordCount(blocks) || this.state.clickedInside) 
       return;
+    
+    if ("function" === typeof this.props.doClose)
+      this.props.doClose();
 
     this.setState({ active: false });
   }

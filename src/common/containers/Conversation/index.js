@@ -20,7 +20,8 @@ class Conversation extends Component {
       comment: props.comment,
       replies: [],
       viewAll: props.comment.hasReplies && props.comment.replies > 5,
-      hideAll: props.comment.hasReplies && props.comment.replies < 5
+      hideAll: props.comment.hasReplies && props.comment.replies < 5,
+      responderActive: false
     };
   }
 
@@ -77,9 +78,10 @@ class Conversation extends Component {
           viewAll={this.state.viewAll} 
           doViewAll={this.handleViewAllClick} 
           hideAll={this.state.hideAll && this.state.comment.hasReplies} 
-          doHideAll={this.handleHideAllClick} />
+          doHideAll={this.handleHideAllClick} 
+          onReplyClick={() => this.setState({ responderActive: !this.state.responderActive })} />
         {
-          this.props.comments.gettingReplies ?
+          this.props.comments.gettingReplies && this.state.comment.hasReplies ?
             <Loader width="32px" styles={{
               margin: "1em auto"
             }} /> : null
@@ -92,11 +94,12 @@ class Conversation extends Component {
               )
             }) : null
         }
-        <Responder type="comment"
+        <Responder type="comment" active={this.state.responderActive}
           comment={this.props.comment}
           postId={this.props.comment.post}
           onResponse={this.handleReply}
-          height="100" />
+          height="100" 
+          doClose={this.listenResponderClose} />
       </div>
     )
   }
@@ -104,6 +107,10 @@ class Conversation extends Component {
   handleReply = reply => {
     if (!this.props.comments.gettingReply)
       this.props.commentActions.doGetReply(this.state.comment.id, reply);
+  }
+
+  listenResponderClose = () => {
+    this.setState({ responderActive: false });
   }
 
   handleViewAllClick = () => {

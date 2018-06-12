@@ -36,7 +36,8 @@ class Comment extends Component {
     viewAll: propTypes.bool,
     doViewAll: propTypes.func,
     hideAll: propTypes.bool,
-    doHideAll: propTypes.func
+    doHideAll: propTypes.func,
+    onReplyClick: propTypes.func
   }
 
   static defaultProps = {
@@ -87,6 +88,10 @@ class Comment extends Component {
         <CommentHeader comment={this.props.comment} />
         <WYSIWYGEditor readonly content={this.props.comment.message.html} />
         <LikeComment comment={this.props.comment} />
+        <span className="comment__reply_button"
+          onClick={this.handleReplyClick}>
+          Reply
+        </span>
         {
           this.props.viewAll ?
             <span className="comment__view_all" onClick={this.handleViewAllClick}>
@@ -120,6 +125,11 @@ class Comment extends Component {
   }
 
   handleReplyClick = () => {
+    if (this.props.comment.isConversation &&
+      "function" === typeof this.props.onReplyClick) {
+      return this.props.onReplyClick();
+    }
+
     if (this.state.authorized) {
       return this.setState({  replying: !this.state.replying });
     }
