@@ -21,7 +21,8 @@ class Conversation extends Component {
       replies: [],
       viewAll: props.comment.hasReplies && props.comment.replies > 5,
       hideAll: props.comment.hasReplies && props.comment.replies <= 5,
-      responderActive: false
+      responderActive: false,
+      gettingReplies: props.comment.hasReplies
     };
   }
 
@@ -42,6 +43,7 @@ class Conversation extends Component {
     if (nextProps.comments.gotReplies && nextProps.comments.replies[prevState.comment.id]) {
       newState = {};
       newState.replies = nextProps.comments.replies[prevState.comment.id];
+      newState.gettingReplies = false;
     }
 
     if (nextProps.comments.gotReply && 
@@ -62,15 +64,28 @@ class Conversation extends Component {
       };
     }
 
+    if (this.props.comments.gettingReplies && !prevState.gettingReplies &&
+      this.state.comment.hasReplies && this.props.comments.parent === this.state.comment.id) {
+      snapshot = {
+        gettingReplies: true
+      };
+    }
+
     return snapshot;
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (snapshot && snapshot.replied) {
-      this.state.replies.unshift(this.state.newReply);
+      this.setState({
+        replies: this.state.replies.unshift(this.state.newReply)
+      });
       
       if (prevState.replies.length === 0)
         this.setState({ hideAll: true });
+    }
+
+    if (snapshot && snapshot.gettingReplies) {
+      this.setState({ gettingReplies: true });
     }
   }
 
@@ -85,7 +100,7 @@ class Conversation extends Component {
           onReplyClick={() => this.setState({ responderActive: !this.state.responderActive })} 
           onReply={this.handleReply} />
         {
-          this.props.comments.gettingReplies && this.state.comment.hasReplies ?
+          this.state.gettingReplies ?
             <Loader width="32px" styles={{
               margin: "1em auto"
             }} /> : null

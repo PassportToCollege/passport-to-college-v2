@@ -67,3 +67,18 @@
   max-width: 100%;
   margin: 2em auto;
 }
+
+.story .story__responses .story__response_view_all {
+  margin-top: 1em;
+  display: block;
+  background-color: white;
+  border: 1px solid #eee;
+  cursor: pointer;
+  padding: 2em;
+  text-align: center;
+}
+
+.story .story__responses .story__response_view_all:hover {
+  border-color: #FF6561;
+}
+

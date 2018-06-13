@@ -8,6 +8,7 @@ import _ from "lodash";
 
 import * as commentActions from "../../actions/commentActions";
 
+import Loader from "../../components/Loader";
 import Conversation from "../Conversation";
 
 class CommentSection extends Component {
@@ -15,7 +16,8 @@ class CommentSection extends Component {
     super(props);
 
     this.state = {
-      post: props.post
+      post: props.post,
+      comments: []
     }
   }
 
@@ -23,7 +25,8 @@ class CommentSection extends Component {
     post: propTypes.object,
     comments: propTypes.object,
     commentActions: propTypes.object,
-    newComment: propTypes.string
+    newComment: propTypes.string,
+    all: propTypes.bool
   }
 
   componentDidMount() {
@@ -34,9 +37,18 @@ class CommentSection extends Component {
     let newState = null;
 
     if (nextProps.comments.gotComments) {
-      newState = {
-        comments: nextProps.comments.comments
-      };
+      if (!prevState.comments.length) {
+        newState = {
+          comments: nextProps.comments.comments
+        };
+      }
+
+      if (prevState.comments.length > 0 && 
+        prevState.comments.length < nextProps.comments.comments.length) {
+        newState = {
+          comments: prevState.comments.concat(nextProps.comments.comments.slice(prevState.comments.length))
+        }
+      }
     }
 
     if (nextProps.comments.failedToGetComments 
@@ -85,6 +97,12 @@ class CommentSection extends Component {
       };
     }
 
+    if (!prevProps.all && this.props.all) {
+      snapshot = {
+        getAll: true
+      };
+    }
+
     return snapshot;
   }
 
@@ -98,17 +116,29 @@ class CommentSection extends Component {
       if (!this.props.commentActions.gettingComment)
         this.props.commentActions.doGetComment(this.state.newComment);
     }
+
+    if (snapshot && snapshot.getAll) {
+      if (!this.props.comments.gettingComments) {
+        this.props.commentActions.doGetComments(this.state.post.id, 2);
+      }
+    }
   }
 
   render() {
     return (
       <div className={`comment_section comment_section__${this.state.post.id}`}>
         {
-          this.props.comments.gotComments && this.state.comments ?
+          this.state.comments.length ?
             this.state.comments.map(comment => {
               return <Conversation key={comment.id} comment={comment} />
             }): this.props.comments.failedToGetComments && this.props.comments.error.message === "no comments found" ?
               <span className="comment_section__no_comments">Be the first to respond!</span> : null
+        }
+        {
+          this.props.comments.gettingComments ?
+            <Loader width="32px" styles={{
+              margin: "1em auto"
+            }} /> : null
         }
       </div>
     )

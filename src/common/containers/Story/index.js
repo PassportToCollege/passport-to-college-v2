@@ -8,6 +8,7 @@ import propTypes from "prop-types";
 
 import * as postActions from "../../actions/postActions";
 import * as postsActions from "../../actions/postsActions";
+import * as commentActions from "../../actions/commentActions";
 
 import PageMeta from "../../components/PageMeta";
 import LoadingPost from "../../components/LoadingPost";
@@ -28,7 +29,8 @@ class Story extends Component {
       hero: props.post.hero,
       id: props.match.params.post_id,
       more: props.posts.moreByCategory || [],
-      newResponse: ""
+      newResponse: "",
+      allConversations: false
     }
   }
 
@@ -194,7 +196,7 @@ class Story extends Component {
         </BorderTopContainer>
         <section className="story__responses">
           <h4> 
-            Responses 
+            Conversations 
             {
               this.state.post && this.state.post.conversations ? 
                 ` (${this.state.post.conversations})` : ""
@@ -209,8 +211,17 @@ class Story extends Component {
           {
             this.state.post ?
               <CommentSection post={this.state.post} 
-                newComment={this.state.newResponse} /> :
+                newComment={this.state.newResponse} 
+                all={this.state.allConversations} /> :
               null
+          }
+          {
+            this.state.post && this.props.comments.gotComments &&
+            this.props.comments.comments.length < this.state.post.conversations ?
+              <span className="story__response_view_all"
+                onClick={() => this.setState({ allConversations: true })}>
+                view all conversations
+              </span> : null
           }
         </section>
       </main>
@@ -232,7 +243,8 @@ class Story extends Component {
 const mapStateToProps = state => {
   return {
     post: state.post,
-    posts: state.posts
+    posts: state.posts,
+    comments: state.comments
   };
 };
 
@@ -240,6 +252,7 @@ const mapDispatchToProps = dispatch => {
   return {
     postActions: bindActionCreators(postActions, dispatch),
     postsActions: bindActionCreators(postsActions, dispatch),
+    commentActions: bindActionCreators(commentActions, dispatch)
   };
 };
 

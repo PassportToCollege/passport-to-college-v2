@@ -294,7 +294,7 @@ class Responder extends Component {
       return this.setState({  active: true });
     }
 
-    this.setState({ signingUp: true });
+    this.setState({ signingIn: true });
   }
 
   handleResponderBlur = ({ blocks }) => {

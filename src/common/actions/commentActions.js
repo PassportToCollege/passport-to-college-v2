@@ -135,7 +135,7 @@ export const doGetComments = (post, page = 1) => {
         .where("post", "==", post)
         .where("isConversation", "==", true)
         .orderBy("postedOn", "desc")
-        .limit(10)
+        .limit(5)
         .get()
         .then(snapshots => {
           if (snapshots.empty)
@@ -174,19 +174,70 @@ export const doGetComments = (post, page = 1) => {
     }
 
      // TODO: get other comment pages
+     db.collection("comments")
+      .where("post", "==", post)
+      .where("isConversation", "==", true)
+      .orderBy("postedOn", "desc")
+      .limit(5)
+      .get()
+      .then(tempSnapshots => {
+        const lv = tempSnapshots.docs[tempSnapshots.docs.length - 1];
+
+        return db.collection("comments")
+          .where("post", "==", post)
+          .where("isConversation", "==", true)
+          .orderBy("postedOn", "desc")
+          .startAfter(lv)
+          .get()
+          .then(snapshots => {
+            if (snapshots.empty)
+              return dispatch(getCommentsFailed({ message: "no comments found" }));
+            
+            let comments = [];
+            let ppPromises = [];
+
+            snapshots.forEach(snapshot => {
+              let comment = snapshot.data();
+              comment.id = snapshot.id;
+
+              if (storage && !comment.user.photo)
+                ppPromises.push(storage.ref("users/profile_images").child(`${comment.user.uid}.png`).getDownloadURL());
+              
+              comments.push(comment);
+            });
+
+            if (storage) {
+              return Promise.all(ppPromises).then(urls => {
+                for (let comment of comments) {
+                  comment.user.profilePicture = urls.find(url => {
+                      return url.indexOf(comment.user.uid) > -1;
+                  });
+                }
+
+                dispatch(getCommentsDone(comments, page));
+              });
+            }
+
+            dispatch(getCommentsDone(comments, page));
+          })
+          .catch(error => {
+            dispatch(getCommentsFailed(error));
+          });
+      });
   };
 };
 
-export const getRepliesInitiated = () => {
+export const getRepliesInitiated = parent => {
   return {
-    type: types.GET_REPLIES_INITIATED
+    type: types.GET_REPLIES_INITIATED,
+    parent
   };
 };
 
-export const getRepliesFailed = error => {
+export const getRepliesFailed = (error, parent) => {
   return {
     type: types.GET_REPLIES_FAILED,
-    error
+    error, parent
   };
 };
 
@@ -199,7 +250,7 @@ export const gotReplies = (parent, replies, page) => {
 
 export const doGetReplies = (parent, page = 1) => {
   return dispatch => {
-    dispatch(getRepliesInitiated());
+    dispatch(getRepliesInitiated(parent));
 
     if (page === 1) {
       return db.collection("comments")

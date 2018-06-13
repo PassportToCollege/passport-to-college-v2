@@ -88,13 +88,15 @@ const comments = (state = initialState.comments, action) => {
       return Object.assign({}, state, {
         gettingReplies: true,
         gotReplies: false,
-        failedToGetReplies: false
+        failedToGetReplies: false,
+        parent: action.parent
       });
     case GET_REPLIES_FAILED:
       return Object.assign({}, state, {
         gettingReplies: false,
         gotReplies: false,
         failedToGetReplies: true,
+        parent: action.parent,
         error: action.error
       });
     case GET_REPLIES_DONE:
@@ -102,6 +104,7 @@ const comments = (state = initialState.comments, action) => {
         gettingReplies: false,
         gotReplies: true,
         failedToGetReplies: false,
+        parent: action.parent,
         replies: (action.page === 1) ? Object.assign({}, state.replies, {
           [action.parent]: action.replies
         }) : Object.assign({}, state.replies, {
