@@ -69,7 +69,7 @@ class Stories extends Component {
   componentDidMount() {
     window.addEventListener("scroll", this.fetchPostsOnScroll);
 
-    this.props.updateLocation("stories");
+    this.props.updateLocation("stories on-white");
     this.props.postsActions.doPostsPaginate(1, this.state.category);
     this.props.postCategoryActions.doCategoriesGet();
     this.props.statsActions.doStatsGet();

@@ -1,6 +1,7 @@
 import "./Editor.css";
 
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import propTypes from "prop-types";
 import { 
   Editor, 
@@ -126,6 +127,14 @@ class WYSIWYGEditor extends Component {
             readOnly={this.props.readonly} 
             ref={ref => this.domEditor = ref} />
         </div>
+        {
+            this.props.communityGuidlines ?
+              <section className="editor__guidlines">
+                <Link to="/stories/community-guidlines">
+                  View Our Community Guidlines
+                </Link>
+              </section> : null
+          }
       </div>
     )
   }
@@ -209,7 +218,8 @@ WYSIWYGEditor.defaultProps = {
   saveButtonText: "Save",
   cancelButton: false,
   cancelButtonText: "Cancel",
-  wordCounter: true
+  wordCounter: true,
+  communityGuidlines: false
 };
 
 WYSIWYGEditor.propTypes = {
@@ -227,7 +237,8 @@ WYSIWYGEditor.propTypes = {
   controlStyles: propTypes.object,
   captureBlur: propTypes.func,
   focus: propTypes.bool,
-  wordCounter: propTypes.bool
+  wordCounter: propTypes.bool,
+  communityGuidlines: propTypes.bool
 };
 
 export default WYSIWYGEditor;

@@ -46,7 +46,7 @@ class Story extends Component {
   };
 
   componentDidMount() {
-    this.props.updateLocation("stories");
+    this.props.updateLocation("stories on-white");
 
     const { id } = this.state;
     this.props.postActions.doPostGet(id);

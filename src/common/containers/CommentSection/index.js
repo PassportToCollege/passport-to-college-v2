@@ -128,7 +128,7 @@ class CommentSection extends Component {
     return (
       <div className={`comment_section comment_section__${this.state.post.id}`}>
         {
-          this.state.comments.length ?
+          this.state.comments && this.state.comments.length ?
             this.state.comments.map(comment => {
               return <Conversation key={comment.id} comment={comment} />
             }): this.props.comments.failedToGetComments && this.props.comments.error.message === "no comments found" ?

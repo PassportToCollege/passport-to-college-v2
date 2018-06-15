@@ -49,12 +49,14 @@ class Responder extends Component {
     onOutsideClick: propTypes.func,
     type: propTypes.string,
     height: propTypes.string,
-    doClose: propTypes.func
+    doClose: propTypes.func,
+    guidlines: propTypes.bool
   }
 
   static defaultProps = {
     type: "post",
-    active: false
+    active: false,
+    guidlines: true
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -244,6 +246,7 @@ class Responder extends Component {
             {
               this.state.active && this.props.user.hasGotten && this.state.user ?
                 <WYSIWYGEditor focus saveButton cancelButton
+                  communityGuidlines={this.props.guidlines}
                   wordCounter={false}
                   content={
                     this.props.type === "comment" ?
