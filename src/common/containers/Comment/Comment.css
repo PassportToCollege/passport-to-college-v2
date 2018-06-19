@@ -2,6 +2,7 @@
   padding: 2em;
   background-color: white;
   border: 1px solid #eee;
+  position: relative;
 }
 
 .comment__reply {
@@ -80,4 +81,11 @@
 
 .comment .comment__reply_button:hover {
   color: rgba(51,51,51,0.85);
+}
+
+/* More menu */
+.comment .comment__more_menu_container {
+  position: absolute;
+  top: 2em;
+  right: 1em;
 }

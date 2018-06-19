@@ -3,6 +3,8 @@ import "./Comment.css";
 import React, { Component } from "react";
 import propTypes from "prop-types";
 
+import MoreMenu from "../../components/MoreMenu";
+
 import Responder from "../Responder";
 import CommentHeader from "../../components/CommentHeader";
 import WYSIWYGEditor from "../../components/Editor";
@@ -13,7 +15,9 @@ class Comment extends Component {
     super(props);
 
     this.state = {
-      replying: false
+      replying: false,
+      showMoreMenu: false,
+      reporting: false
     }
   }
 
@@ -34,7 +38,9 @@ class Comment extends Component {
 
   render() {
     return (
-      <div className={`comment ${this.props.reply ? "comment__reply" : ""}`}>
+      <div className={`comment ${this.props.reply ? "comment__reply" : ""}`}
+        onMouseEnter={() => this.setState({ showMoreMenu: true })}
+        onMouseLeave={() => this.setState({ showMoreMenu: false })}>
         <CommentHeader comment={this.props.comment} />
         <WYSIWYGEditor readonly content={this.props.comment.message.html} />
         <LikeComment comment={this.props.comment} />
@@ -79,6 +85,14 @@ class Comment extends Component {
               }
             </span> : null
         }
+        {
+          this.state.showMoreMenu ?
+            <div className="comment__more_menu_container">
+              <MoreMenu menuItems={[
+                { label: "Report spam or abuse", doClick: this.handleReportClick }
+              ]}/>
+            </div> : null
+        }
       </div>
     )
   }
@@ -112,6 +126,10 @@ class Comment extends Component {
   handleHideAllClick = () => {
     if ("function" === typeof this.props.doHideAll)
       this.props.doHideAll();
+  }
+
+  handleReportClick = () => {
+    this.setState({ reporting: true });
   }
 }
 
