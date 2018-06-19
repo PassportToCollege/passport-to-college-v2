@@ -9,6 +9,32 @@ import WYSIWYGEditor from "../Editor";
 import Button from "../Button";
 import TextedIconButton from "../TextedIconButton";
 
+export default class Modal extends Component {
+  static propTypes = {
+    children: propTypes.any,
+    doClose: propTypes.func
+  }
+
+  render() {
+    return (
+      <div className="modal__container modal"
+        ref={div => this.modal = div}>
+        <div className="modal__bg" onClick={this.closeModal}></div>
+        <div className="modal__content">
+          {this.props.children}
+        </div>
+      </div>
+    )
+  }
+
+  closeModal = () => {
+    this.modal.classList.add("close");
+
+    if ("function" === typeof this.props.doClose)
+      this.props.doClose();
+  }
+}
+
 export class ReauthenticateModal extends Component {
   static propTypes = {
     doAuthenticate: propTypes.func

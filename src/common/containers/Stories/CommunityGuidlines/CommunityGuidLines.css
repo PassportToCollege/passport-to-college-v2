@@ -5,17 +5,21 @@
   padding: 2em;
 }
 
-.community_guidlines > h3 {
-  margin: 2em 0 1em;
+.community_guidlines h3 {
+  margin: 1em 0;
   text-transform: uppercase;
   font-weight: 500;
 }
 
-.community_guidlines > h3:first-of-type {
-  margin-top: 4em;
+.community_guidlines h3:first-of-type {
+  margin-top: 2em;
 }
 
 .community_guidlines .community_guidlines__p {
   max-width: 600px;
   line-height: 1.5;
+}
+
+.community_guidlines .modal .modal__content {
+  padding: 2em 3em 3em;
 }
