@@ -17,7 +17,7 @@ class CommentSection extends Component {
 
     this.state = {
       post: props.post,
-      comments: []
+      comments: false
     }
   }
 
@@ -37,24 +37,17 @@ class CommentSection extends Component {
     let newState = null;
 
     if (nextProps.comments.gotComments) {
-      if (!prevState.comments.length) {
+      if (!prevState.comments) {
         newState = {
           comments: nextProps.comments.comments
         };
       }
 
-      if (prevState.comments.length > 0 && 
+      if (prevState.comments && prevState.comments.length > 0 && 
         prevState.comments.length < nextProps.comments.comments.length) {
         newState = {
           comments: prevState.comments.concat(nextProps.comments.comments.slice(prevState.comments.length))
         }
-      }
-    }
-
-    if (nextProps.comments.failedToGetComments 
-      && nextProps.comments.error.message === "no comments found") {
-      newState = {
-        comments: nextProps.comments.comments
       }
     }
 
