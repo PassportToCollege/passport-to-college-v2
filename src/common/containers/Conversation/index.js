@@ -19,10 +19,10 @@ class Conversation extends Component {
     this.state = {
       comment: props.comment,
       replies: [],
-      viewAll: props.comment.hasReplies && props.comment.replies > 5,
-      hideAll: props.comment.hasReplies && props.comment.replies <= 5,
+      viewAll: props.comment.hasReplies,
+      hideAll: false,
       responderActive: false,
-      gettingReplies: props.comment.hasReplies
+      gettingReplies: false
     };
   }
 
@@ -32,15 +32,12 @@ class Conversation extends Component {
     commentActions: propTypes.object
   }
 
-  componentDidMount() {
-    if (!this.state.replies.length && this.state.comment.hasReplies)
-      this.props.commentActions.doGetReplies(this.state.comment.id, 1);
-  }
-
   static getDerivedStateFromProps(nextProps, prevState) {
     let newState = null;
 
-    if (nextProps.comments.gotReplies && nextProps.comments.replies[prevState.comment.id]) {
+    if (nextProps.comments.gotReplies && 
+      nextProps.comments.replies[prevState.comment.id] &&
+      !_.isEqual(prevState.replies, nextProps.comments.replies[prevState.comment.id])) {
       newState = {};
       newState.replies = nextProps.comments.replies[prevState.comment.id];
       newState.gettingReplies = false;
@@ -106,7 +103,7 @@ class Conversation extends Component {
             }} /> : null
         }
         {
-          (this.state.replies.length && this.state.replies.length < this.state.comment.replies) || !this.state.viewAll ?
+          ((this.state.replies.length && this.state.replies.length < this.state.comment.replies) || !this.state.viewAll) && "object" === typeof this.state.replies ?
             this.state.replies.slice(0).reverse().map(reply => {
               return (
                 <Comment key={reply.id} comment={reply} reply />
@@ -137,7 +134,7 @@ class Conversation extends Component {
 
   handleViewAllClick = () => {
     if (this.state.comment.replies > this.state.replies.length) {
-      this.props.commentActions.doGetReplies(this.state.comment.id, 2);
+      this.props.commentActions.doGetReplies(this.state.comment.id, "all");
     }
 
     this.setState({ viewAll: false, hideAll: true });

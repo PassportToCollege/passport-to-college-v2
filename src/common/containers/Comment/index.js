@@ -1,7 +1,11 @@
 import "./Comment.css";
 
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
+
+import * as commentActions from "../../actions/commentActions";
 
 import Modal from "../../components/Modal";
 import RadioList from "../../components/RadioList";
@@ -27,6 +31,8 @@ class Comment extends Component {
 
   static propTypes = {
     comment: propTypes.object,
+    comments: propTypes.object,
+    commentActions: propTypes.object,
     reply: propTypes.bool,
     viewAll: propTypes.bool,
     doViewAll: propTypes.func,
@@ -180,6 +186,25 @@ class Comment extends Component {
     console.log(reportingFor);
     this.setState({ reporting: false, reportingFor: null });
   }
+
+  handleCommentDelete = () => {
+    this.props.commentActions.doDeleteComment(this.props.comment);
+  }
 }
 
-export default Comment;
+const mapStateToProps = state => {
+  return {
+    comments: state.comments
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    commentActions: bindActionCreators(commentActions, dispatch)
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Comment);

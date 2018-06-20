@@ -199,7 +199,7 @@ class Story extends Component {
             Conversations 
             {
               this.state.post && this.state.post.conversations ? 
-                ` (${this.state.post.conversations})` : ""
+                ` (${this.props.post.post.conversations})` : ""
             } 
           </h4>
           {

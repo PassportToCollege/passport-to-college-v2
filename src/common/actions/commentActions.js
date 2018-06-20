@@ -1,6 +1,10 @@
 import { db, storage } from "../utils/firebase";
 import { Comment, Reply } from "../utils";
+
 import * as types from "./actionTypes";
+import { doUpdateConversationsCount } from "./postActions";
+
+const Console = console;
 
 // Create actions
 export const createCommentInitiated = () => {
@@ -33,14 +37,18 @@ export const doCommentCreate = (user = {}, content = {}, post, options = {}) => 
 
     return db.collection("comments")
       .add(comment.data)
-      .then(comment => {
+      .then(commentSnapshot => {
         if (options.isReply && !options.comment.hasReplies) {
           dispatch(doUpdateComment(options.comment.id, {  
             hasReplies: true
           }));
         }
 
-        dispatch(commentCreated(comment.id, options.isReply || false));
+        const { isConversation } = comment.data;
+        if (isConversation)
+          dispatch(doUpdateConversationsCount("inc"));
+
+        dispatch(commentCreated(commentSnapshot.id, options.isReply || false));
       })
       .catch(error => {
         dispatch(createCommentFailed(error));
@@ -293,23 +301,64 @@ export const doGetReplies = (parent, page = 1) => {
         .catch(error => {
           dispatch(getRepliesFailed(error));
         })
+    } else if (page === 2) {
+      return db.collection("comments")
+       .where("parent", "==", parent)
+       .orderBy("postedOn", "desc")
+       .limit(5)
+       .get()
+       .then(tempSnapshots => {
+         const lv = tempSnapshots.docs[tempSnapshots.docs.length - 1];
+   
+         return db.collection("comments")
+           .where("parent", "==", parent)
+           .orderBy("postedOn", "desc")
+           .startAfter(lv)
+           .get()
+           .then(snapshots => {
+             if (snapshots.empty) {
+               return dispatch(getRepliesFailed({ message: "no replies found" }));
+             }
+   
+             let replies = [];
+             let ppPromises = [];
+   
+             snapshots.forEach(snapshot => {
+               let reply = snapshot.data();
+               reply.id = snapshot.id;
+   
+               if (storage && !reply.user.photo)
+                 ppPromises.push(storage.ref("users/profile_images").child(`${reply.user.uid}.png`).getDownloadURL());
+               
+               replies.push(reply);
+             });
+   
+             if (storage) {
+               return Promise.all(ppPromises).then(urls => {
+                 for (let reply of replies) {
+                   reply.user.profilePicture = urls.find(url => {
+                       return url.indexOf(reply.user.uid) > -1;
+                   });
+                 }
+   
+                 dispatch(gotReplies(parent, replies, page));
+               });
+             }
+   
+             dispatch(gotReplies(parent, replies, page));
+           })
+           .catch(error => {
+             dispatch(getRepliesFailed(error));
+           });
+       });
     }
 
-   db.collection("comments")
-    .where("parent", "==", parent)
-    .orderBy("postedOn", "desc")
-    .limit(5)
-    .get()
-    .then(tempSnapshots => {
-      const lv = tempSnapshots.docs[tempSnapshots.docs.length - 1];
-
-      return db.collection("comments")
-        .where("parent", "==", parent)
-        .orderBy("postedOn", "desc")
-        .startAfter(lv)
-        .get()
-        .then(snapshots => {
-          if (snapshots.empty) {
+    db.collection("comments")
+      .where("parent", "==", parent)
+      .orderBy("postedOn", "desc")
+      .get()
+      .then(snapshots => {
+        if (snapshots.empty) {
             return dispatch(getRepliesFailed({ message: "no replies found" }));
           }
 
@@ -339,11 +388,11 @@ export const doGetReplies = (parent, page = 1) => {
           }
 
           dispatch(gotReplies(parent, replies, page));
-        })
-        .catch(error => {
-          dispatch(getRepliesFailed(error));
-        });
-    });
+      })
+      .catch(error => {
+        Console.log(error);
+        dispatch(getRepliesFailed(error));
+      });
   }
 };
 
@@ -439,3 +488,102 @@ export const doUpdateComment = (comment, data = {}) => {
       })
   };
 };
+
+// DELETE actions
+export const deleteCommentInitiated = comment => {
+  return {
+    type: types.DELETE_COMMENT_INITIATED,
+    comment
+  };
+};
+
+export const deleteCommentFailed = (comment, error) => {
+  return {
+    type: types.DELETE_COMMENT_FAILED,
+    error, comment
+  };
+};
+
+export const commentDeleted = comment => {
+  return {
+    type: types.COMMENT_DELETED,
+    comment
+  };
+};
+
+export const doDeleteComment = (comment = {}, options = {}) => {
+  return dispatch => {
+    dispatch(deleteCommentInitiated(comment));
+
+    if (comment.isConversation) {
+      const convoRef = db.collection("comments").doc(comment.id);
+
+      if (comment.hasReplies) {
+        return db.collection("comments")
+          .where("parent", "==", comment.id)
+          .get()
+          .then(snapshots => {
+            if (snapshots.empty) {
+              if (options.forceDelete) {
+                return convoRef.delete().then(() => {
+                  dispatch(commentDeleted(comment));
+
+                  if (comment.isConversation)
+                    return dispatch(doUpdateConversationsCount("dec"));
+                }).catch(error => {
+                  Console.log(error);
+                  dispatch(deleteCommentFailed(comment, error));
+                });
+              }
+
+              return dispatch(deleteCommentFailed(comment, { message: "no children found" }));
+            }
+
+            let batch = db.batch();
+            batch.delete(convoRef);
+
+            snapshots.forEach(snapshot => {
+              let ref = db.collection("comments").doc(snapshot.id);
+              batch.delete(ref);
+            });
+
+            batch.commit().then(() => {
+              dispatch(commentDeleted(comment));
+
+              if (comment.isConversation)
+                return dispatch(doUpdateConversationsCount("dec"));
+            })
+            .catch(error => {
+              Console.log(error);
+              dispatch(deleteCommentFailed(comment, error));
+            });
+          })
+          .catch(error => {
+            Console.log(error);
+            dispatch(deleteCommentFailed(comment, error));
+          })
+      }
+
+      return convoRef.delete().then(() => {
+        dispatch(commentDeleted(comment));
+
+        if (comment.isConversation)
+          return dispatch(doUpdateConversationsCount("dec"));
+      }).catch(error => {
+        Console.log(error);
+        dispatch(deleteCommentFailed(comment, error));
+      });
+    }
+
+    const commentRef = db.collection("comments").doc(comment.id);
+    commentRef.delete().then(() => {
+      dispatch(commentDeleted(comment));
+
+      if (comment.isConversation)
+        return dispatch(doUpdateConversationsCount("dec"));
+    }).catch(error => {
+      Console.log(error);
+      dispatch(deleteCommentFailed(comment, error));
+    });
+  }
+}

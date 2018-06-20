@@ -76,27 +76,32 @@ class CommentSection extends Component {
   }
 
   getSnapshotBeforeUpdate(prevProps) {
-    let snapshot = null;
-
     if (prevProps.post.id !== this.props.post.id) {
-      snapshot = {
+      return {
         postChanged: true
       };
     }
 
     if (prevProps.newComment !== this.props.newComment) {
-      snapshot = {
+      return {
         commentAdded: true
       };
     }
 
     if (!prevProps.all && this.props.all) {
-      snapshot = {
+      return {
         getAll: true
       };
     }
 
-    return snapshot;
+    if(prevProps.comments.deletingComment && this.props.comments.deletedComment &&
+      this.state.comments) {
+      return {
+        deletedComment: true
+      } 
+    }
+
+    return null;
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -115,11 +120,25 @@ class CommentSection extends Component {
         this.props.commentActions.doGetComments(this.state.post.id, 2);
       }
     }
+
+    if (snapshot && snapshot.deletedComment) {
+      const newCommentsState = this.state.comments.filter(comment => {
+        return comment.id !== this.props.comments.dComment.id;
+      });
+
+      this.setState({ comments: newCommentsState });
+    }
   }
 
   render() {
     return (
       <div className={`comment_section comment_section__${this.state.post.id}`}>
+        {
+          this.props.comments.gettingComment ?
+             <Loader width="32px" styles={{
+              margin: "1em auto"
+            }} /> : null
+        }
         {
           this.state.comments && this.state.comments.length ?
             this.state.comments.map(comment => {

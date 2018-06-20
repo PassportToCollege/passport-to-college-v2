@@ -244,3 +244,10 @@ export const doPostUpdate = (id, data, options) => {
       });
   };
 };
+
+export const doUpdateConversationsCount = updateType => {
+  return {
+    type: types.POST_UPDATE_LOCAL_CONVERSATIONS_COUNT,
+    updateType
+  };
+};

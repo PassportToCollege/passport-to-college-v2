@@ -17,7 +17,10 @@ import {
   GET_REPLY_DONE,
   UPDATE_COMMENT_INITIATED,
   UPDATE_COMMENT_FAILED,
-  COMMENT_UPDATED
+  COMMENT_UPDATED,
+  DELETE_COMMENT_INITIATED,
+  DELETE_COMMENT_FAILED,
+  COMMENT_DELETED
 } from "../actions/actionTypes";
 
 const comments = (state = initialState.comments, action) => {
@@ -105,11 +108,12 @@ const comments = (state = initialState.comments, action) => {
         gotReplies: true,
         failedToGetReplies: false,
         parent: action.parent,
-        replies: (action.page === 1) ? Object.assign({}, state.replies, {
-          [action.parent]: action.replies
-        }) : Object.assign({}, state.replies, {
-          [action.parent]: state.replies[action.parent].concat(action.replies)
-        })
+        replies: (action.page === 1 || action.page === "all") ? 
+          Object.assign({}, state.replies, {
+            [action.parent]: action.replies
+          }) : Object.assign({}, state.replies, {
+            [action.parent]: state.replies[action.parent].concat(action.replies)
+          })
       });
     case GET_REPLY_INITIATED:
       return Object.assign({}, state, {
@@ -150,6 +154,28 @@ const comments = (state = initialState.comments, action) => {
          updatedComment: true,
          failedToUpdateComment: false
        });
+    case DELETE_COMMENT_INITIATED:
+      return Object.assign({}, state, {
+        deletingComment: true,
+        deletedComment: false,
+        failedToDeleteComment: false,
+        dComment: action.comment
+      });
+    case DELETE_COMMENT_FAILED:
+      return Object.assign({}, state, {
+        deletingComment: false,
+        deletedComment: false,
+        failedToDeleteComment: true,
+        dComment: action.comment,
+        error: action.error
+      });
+    case COMMENT_DELETED:
+      return Object.assign({}, state, {
+        deletingComment: false,
+        deletedComment: true,
+        failedToDeleteComment: false,
+        dComment: action.comment
+      });
     default:
       return state;
   }
