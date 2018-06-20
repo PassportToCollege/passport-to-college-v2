@@ -2,6 +2,20 @@
   margin-top: 1em;
 }
 
+.conversation > .modal__container.modal > .modal__content > h3 {
+  padding-left: 1em;
+}
+
+.conversation > .modal__container.modal > .modal__content > .modal__buttons {
+  padding-top:  1em;
+  text-align: right;
+  border-top: 1px solid rgba(51,51,51,0.15);
+}
+
+.conversation > .modal__container.modal > .modal__content > .modal__buttons button:first-child {
+  margin-right: 1em;
+}
+
 .conversation > .responder {
   padding: 0.5em;
 }

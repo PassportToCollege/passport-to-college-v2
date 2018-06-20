@@ -3,12 +3,16 @@ import "./Comment.css";
 import React, { Component } from "react";
 import propTypes from "prop-types";
 
+import Modal from "../../components/Modal";
+import RadioList from "../../components/RadioList";
 import MoreMenu from "../../components/MoreMenu";
-
 import Responder from "../Responder";
 import CommentHeader from "../../components/CommentHeader";
 import WYSIWYGEditor from "../../components/Editor";
 import LikeComment from "../LikeComment";
+import Button from "../../components/Button";
+
+import { isAuthorized, activeUser } from "../../utils";
 
 class Comment extends Component {
   constructor(props) {
@@ -37,63 +41,100 @@ class Comment extends Component {
   }
 
   render() {
+    let menuItems = [];
+
+    if (isAuthorized() && this.props.comment.user.uid === activeUser()) {
+      menuItems.push({
+        label: "Delete",
+        doClick: this.handleCommentDelete
+      });
+    } else if (isAuthorized() && this.props.comment.user.uid !== activeUser()) {
+      menuItems.push({
+        label: "Report spam or abuse",
+        doClick: this.handleReportClick
+      })
+    }
+
     return (
-      <div className={`comment ${this.props.reply ? "comment__reply" : ""}`}
-        onMouseEnter={() => this.setState({ showMoreMenu: true })}
-        onMouseLeave={() => this.setState({ showMoreMenu: false })}>
-        <CommentHeader comment={this.props.comment} />
-        <WYSIWYGEditor readonly content={this.props.comment.message.html} />
-        <LikeComment comment={this.props.comment} />
-        <span className="comment__reply_button"
-          onClick={this.handleReplyClick}>
-          Reply
-        </span>
+      <React.Fragment>
         {
-          !this.props.comment.isConversation && this.state.replying ?
-            <Responder type="comment" active={this.state.replying}
-              comment={this.props.comment}
-              postId={this.props.comment.post}
-              onResponse={this.handleReply}
-              height="50" 
-              doClose={this.listenResponderClose} /> : null
+          this.state.reporting ?
+            <Modal doClose={() => this.setState({ reporting: false, reportingFor: null })}>
+              <h3>Report this comment</h3>
+              <RadioList
+                onRadioChange={value => this.setState({ reportingFor: value })}
+                radios={[
+                  { label: "Commercial content or spam", value: "commercial-or-spam" },
+                  { label: "Sexually explicit material", value: "sexual" },
+                  { label: "Hate speech or graphic violence", value: "hate-or-violence" },
+                  { label: "Harassment or bullying", value: "harassment-or-bullying" }
+                ]} />
+              <div className="modal__buttons">
+                <Button type="button" text="cancel" solid
+                  doClick={() => this.setState({ reporting: false, reportingFor: null }) } 
+                  styles={{ backgroundColor: "#bbb" }}/>
+                <Button type="button" text="report" solid
+                  disabled={!this.state.reportingFor}
+                  doClick={this.handleCommentReport} />
+              </div>
+            </Modal> : null
+
         }
-        {
-          this.props.comment.isConversation && this.props.viewAll ?
-            <span className="comment__view_all" onClick={this.handleViewAllClick}>
-              {
-                this.props.comment.replies > 1 ?
-                  <React.Fragment>
-                    view all {this.props.comment.replies} responses
-                  </React.Fragment> :
-                  <React.Fragment>
-                    view response
-                  </React.Fragment>
-              }
-            </span> : null
-        }
-        {
-          this.props.comment.isConversation && this.props.hideAll ?
-          <span className="comment__hide_all" onClick={this.handleHideAllClick}>
-              {
-                this.props.comment.replies > 1 ?
-                  <React.Fragment>
-                    hide all responses
-                  </React.Fragment> :
-                  <React.Fragment>
-                    hide response
-                  </React.Fragment>
-              }
-            </span> : null
-        }
-        {
-          this.state.showMoreMenu ?
-            <div className="comment__more_menu_container">
-              <MoreMenu menuItems={[
-                { label: "Report spam or abuse", doClick: this.handleReportClick }
-              ]}/>
-            </div> : null
-        }
-      </div>
+        <div className={`comment ${this.props.reply ? "comment__reply" : ""}`}
+          onMouseEnter={() => this.setState({ showMoreMenu: true })}
+          onMouseLeave={() => this.setState({ showMoreMenu: false })}>
+          <CommentHeader comment={this.props.comment} />
+          <WYSIWYGEditor readonly content={this.props.comment.message.html} />
+          <LikeComment comment={this.props.comment} />
+          <span className="comment__reply_button"
+            onClick={this.handleReplyClick}>
+            Reply
+          </span>
+          {
+            !this.props.comment.isConversation && this.state.replying ?
+              <Responder type="comment" active={this.state.replying}
+                comment={this.props.comment}
+                postId={this.props.comment.post}
+                onResponse={this.handleReply}
+                height="50" 
+                doClose={this.listenResponderClose} /> : null
+          }
+          {
+            this.props.comment.isConversation && this.props.viewAll ?
+              <span className="comment__view_all" onClick={this.handleViewAllClick}>
+                {
+                  this.props.comment.replies > 1 ?
+                    <React.Fragment>
+                      view all {this.props.comment.replies} responses
+                    </React.Fragment> :
+                    <React.Fragment>
+                      view response
+                    </React.Fragment>
+                }
+              </span> : null
+          }
+          {
+            this.props.comment.isConversation && this.props.hideAll ?
+            <span className="comment__hide_all" onClick={this.handleHideAllClick}>
+                {
+                  this.props.comment.replies > 1 ?
+                    <React.Fragment>
+                      hide all responses
+                    </React.Fragment> :
+                    <React.Fragment>
+                      hide response
+                    </React.Fragment>
+                }
+              </span> : null
+          }
+          {
+            this.state.showMoreMenu && isAuthorized() ?
+              <div className="comment__more_menu_container">
+                <MoreMenu menuItems={menuItems}/>
+              </div> : null
+          }
+        </div>
+      </React.Fragment>
     )
   }
 
@@ -130,6 +171,14 @@ class Comment extends Component {
 
   handleReportClick = () => {
     this.setState({ reporting: true });
+  }
+
+  handleCommentReport = () => {
+    const { reportingFor } = this.state;
+
+    // TODO: report comment
+    console.log(reportingFor);
+    this.setState({ reporting: false, reportingFor: null });
   }
 }
 
