@@ -37,7 +37,7 @@ class CommentSection extends Component {
     let newState = null;
 
     if (nextProps.comments.gotComments) {
-      if (!prevState.comments) {
+      if (!prevState.comments.length) {
         newState = {
           comments: nextProps.comments.comments
         };
@@ -48,6 +48,13 @@ class CommentSection extends Component {
         newState = {
           comments: prevState.comments.concat(nextProps.comments.comments.slice(prevState.comments.length))
         }
+      }
+    }
+
+    if (nextProps.comments.failedToGetComments && 
+      nextProps.comments.error.message === "no comments found") {
+      newState = {
+        comments: []
       }
     }
 
@@ -122,11 +129,13 @@ class CommentSection extends Component {
     }
 
     if (snapshot && snapshot.deletedComment) {
-      const newCommentsState = this.state.comments.filter(comment => {
+      const i = this.state.comments.findIndex(comment => {
         return comment.id !== this.props.comments.dComment.id;
       });
 
-      this.setState({ comments: newCommentsState });
+      this.setState({ 
+        comments: this.state.comments.splice(i, 1)
+      });
     }
   }
 

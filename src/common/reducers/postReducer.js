@@ -86,7 +86,6 @@ const post = (state = initialState.post, action) => {
         postUpdateFailed: false
       });
     case POST_UPDATE_LOCAL_CONVERSATIONS_COUNT:
-      debugger;
       return Object.assign({}, state, {
         updatedLocalConversationsCount: true,
         post: Object.assign({}, state.post, {

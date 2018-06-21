@@ -19,6 +19,7 @@ class Conversation extends Component {
     this.state = {
       comment: props.comment,
       replies: [],
+      newReplies: [],
       viewAll: props.comment.hasReplies,
       hideAll: false,
       responderActive: false,
@@ -53,36 +54,48 @@ class Conversation extends Component {
   }
 
   getSnapshotBeforeUpdate(prevProps, prevState) {
-    let snapshot = null;
-
     if (!_.isEqual(prevState.newReply, this.state.newReply)) {
-      snapshot = {
+      return {
         replied: true
       };
     }
 
     if (this.props.comments.gettingReplies && !prevState.gettingReplies &&
       this.state.comment.hasReplies && this.props.comments.parent === this.state.comment.id) {
-      snapshot = {
+      return {
         gettingReplies: true
       };
     }
 
-    return snapshot;
+    if (prevProps.comments.deletingComment && this.props.comments.deletedComment &&
+      this.state.replies && !this.props.comments.dComment.isConversation) {
+      return {
+        deletedReply: true
+      };
+    }
+
+    return null;
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (snapshot && snapshot.replied) {
       this.setState({
-        replies: this.state.replies.unshift(this.state.newReply)
+        newReplies: [...this.state.newReplies ,this.state.newReply]
       });
-      
-      if (prevState.replies.length === 0)
-        this.setState({ hideAll: true });
     }
 
     if (snapshot && snapshot.gettingReplies) {
       this.setState({ gettingReplies: true });
+    }
+
+    if (snapshot && snapshot.deletedReply) {
+      const i = this.state.replies.findIndex(reply => {
+        return reply.id !== this.props.comments.dComment.id;
+      });
+
+      this.setState({
+        replies: this.state.replies.splice(i, 1)
+      });
     }
   }
 
@@ -92,7 +105,7 @@ class Conversation extends Component {
         <Comment comment={this.state.comment} 
           viewAll={this.state.viewAll} 
           doViewAll={this.handleViewAllClick} 
-          hideAll={this.state.hideAll && this.state.comment.hasReplies} 
+          hideAll={this.state.hideAll} 
           doHideAll={this.handleHideAllClick} 
           onReplyClick={() => this.setState({ responderActive: !this.state.responderActive })} 
           onReply={this.handleReply} />
@@ -103,8 +116,16 @@ class Conversation extends Component {
             }} /> : null
         }
         {
-          ((this.state.replies.length && this.state.replies.length < this.state.comment.replies) || !this.state.viewAll) && "object" === typeof this.state.replies ?
+          !this.state.viewAll && this.state.replies.length ?
             this.state.replies.slice(0).reverse().map(reply => {
+              return (
+                <Comment key={reply.id} comment={reply} reply />
+              )
+            }) : null
+        }
+        {
+          this.state.newReplies.length && this.state.viewAll ?
+            this.state.newReplies.map(reply => {
               return (
                 <Comment key={reply.id} comment={reply} reply />
               )
