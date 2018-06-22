@@ -79,8 +79,11 @@ class Conversation extends Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (snapshot && snapshot.replied) {
+      const { newReply, replies, newReplies } = this.state;
+
       this.setState({
-        newReplies: [...this.state.newReplies ,this.state.newReply]
+        newReplies: [...newReplies, newReply],
+        replies: replies.length ? [newReply, ...replies] : replies
       });
     }
 
@@ -107,7 +110,7 @@ class Conversation extends Component {
           doViewAll={this.handleViewAllClick} 
           hideAll={this.state.hideAll} 
           doHideAll={this.handleHideAllClick} 
-          onReplyClick={() => this.setState({ responderActive: !this.state.responderActive })} 
+          onReplyClick={() => this.setState({ responderActive: !this.state.responderActive })}
           onReply={this.handleReply} />
         {
           this.state.gettingReplies ?

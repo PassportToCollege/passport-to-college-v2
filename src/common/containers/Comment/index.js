@@ -48,7 +48,6 @@ class Comment extends Component {
 
   render() {
     let menuItems = [];
-
     if (isAuthorized() && this.props.comment.user.uid === activeUser()) {
       menuItems.push({
         label: "Delete",
