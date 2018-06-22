@@ -100,13 +100,18 @@ class Conversation extends Component {
     }
 
     if (snapshot && snapshot.deletedReply) {
-      const i = this.state.replies.findIndex(reply => {
-        return reply.id !== this.props.comments.dComment.id;
+      let { replies, newReplies } = this.state;
+      const ir = this.state.replies.findIndex(reply => {
+        return reply.id === this.props.comments.dComment.id;
+      });
+      const inr = this.state.newReplies.findIndex(reply => {
+        return reply.id === this.props.comments.dComment.id;
       });
 
-      this.setState({
-        replies: this.state.replies.splice(i, 1)
-      });
+      replies.splice(ir, 1);
+      newReplies.splice(inr, 1);
+
+      this.setState({ replies, newReplies });
     }
   }
 
