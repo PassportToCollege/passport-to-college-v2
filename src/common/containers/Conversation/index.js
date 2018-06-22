@@ -49,6 +49,13 @@ class Conversation extends Component {
       newState = newState || {};
       newState.newReply = nextProps.comments.reply;
     }
+    
+    if (nextProps.comments.updatedCommentLocal && 
+      nextProps.comments.uComment.id === prevState.comment.id &&
+      !_.isEqual(nextProps.comments.uComment, prevState.comment)) {
+      newState = newState || {};
+      newState.comment = nextProps.comments.uComment;
+    }
 
     return newState;
   }

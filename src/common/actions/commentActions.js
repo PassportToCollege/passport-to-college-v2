@@ -39,8 +39,9 @@ export const doCommentCreate = (user = {}, content = {}, post, options = {}) => 
       .add(comment.data)
       .then(commentSnapshot => {
         if (options.isReply && !options.comment.hasReplies) {
-          dispatch(doUpdateComment(options.comment.id, {  
-            hasReplies: true
+          dispatch(doUpdateCommentLocal(options.comment, {  
+            hasReplies: true,
+            replies: 1
           }));
         }
 
@@ -489,6 +490,13 @@ export const doUpdateComment = (comment, data = {}) => {
   };
 };
 
+export const doUpdateCommentLocal = (comment, data = {}) => {
+  return {
+    type: types.UPDATE_COMMENT_LOCAL,
+    nComment: Object.assign({}, comment, data)
+  };
+};
+
 // DELETE actions
 export const deleteCommentInitiated = comment => {
   return {
@@ -578,9 +586,6 @@ export const doDeleteComment = (comment = {}, options = {}) => {
     const commentRef = db.collection("comments").doc(comment.id);
     commentRef.delete().then(() => {
       dispatch(commentDeleted(comment));
-
-      if (comment.isConversation)
-        return dispatch(doUpdateConversationsCount("dec"));
     }).catch(error => {
       Console.log(error);
       dispatch(deleteCommentFailed(comment, error));

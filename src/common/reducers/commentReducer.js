@@ -20,7 +20,8 @@ import {
   COMMENT_UPDATED,
   DELETE_COMMENT_INITIATED,
   DELETE_COMMENT_FAILED,
-  COMMENT_DELETED
+  COMMENT_DELETED,
+  UPDATE_COMMENT_LOCAL
 } from "../actions/actionTypes";
 
 const comments = (state = initialState.comments, action) => {
@@ -149,11 +150,16 @@ const comments = (state = initialState.comments, action) => {
         error: action.error
       });
     case COMMENT_UPDATED:
-       return Object.assign({}, state, {
-         updatingComment: false,
-         updatedComment: true,
-         failedToUpdateComment: false
-       });
+      return Object.assign({}, state, {
+        updatingComment: false,
+        updatedComment: true,
+        failedToUpdateComment: false
+      });
+    case UPDATE_COMMENT_LOCAL:
+      return Object.assign({}, state, {
+        updatedCommentLocal: true,
+        uComment: action.nComment
+      });
     case DELETE_COMMENT_INITIATED:
       return Object.assign({}, state, {
         deletingComment: true,
