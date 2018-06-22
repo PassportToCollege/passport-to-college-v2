@@ -22,6 +22,7 @@ class Conversation extends Component {
       newReplies: [],
       viewAll: props.comment.hasReplies,
       hideAll: false,
+      showNew: true,
       responderActive: false,
       gettingReplies: false
     };
@@ -134,7 +135,7 @@ class Conversation extends Component {
             }) : null
         }
         {
-          this.state.newReplies.length && this.state.viewAll ?
+          this.state.newReplies.length && this.state.showNew ?
             this.state.newReplies.map(reply => {
               return (
                 <Comment key={reply.id} comment={reply} reply />
@@ -168,11 +169,11 @@ class Conversation extends Component {
       this.props.commentActions.doGetReplies(this.state.comment.id, "all");
     }
 
-    this.setState({ viewAll: false, hideAll: true });
+    this.setState({ viewAll: false, hideAll: true, showNew: false });
   }
 
   handleHideAllClick = () => {
-    this.setState({ hideAll: false, viewAll: true });
+    this.setState({ hideAll: false, viewAll: true, showNew: true });
   }
 }
 
