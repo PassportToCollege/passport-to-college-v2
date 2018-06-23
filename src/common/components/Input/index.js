@@ -9,6 +9,7 @@ class Input extends Component {
       <input className="input" 
         ref={input => this.input = input}
         type={this.props.inputType}
+        defaultValue={this.props.inputDefault}
         placeholder={this.props.inputPlaceholder}
         disabled={this.props.inputDisabled}
         name={this.props.inputName}
@@ -37,6 +38,7 @@ Input.propTypes = {
   inputType: propTypes.string,
   inputName: propTypes.string,
   inputDisabled: propTypes.bool,
+  inputDefault: propTypes.string,
   inputPlaceholder: propTypes.string,
   whenChange: propTypes.func,
   whenBlur: propTypes.func

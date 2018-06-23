@@ -32,6 +32,20 @@ export const isApplicant = () => {
     return false;
 };
 
+export const isEmail = str => {
+  // eslint-disable-next-line no-useless-escape
+  const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  
+  let emails = str.split(",");
+
+  for (let email of emails) {
+    if (!re.test(email))
+      return re.test(email);
+  }
+
+  return true;
+}
+
 export const sessionAge = () => {
   const { createdAt } = cookies.get("ssid");
   const end = moment(new Date());
