@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import propTypes from "prop-types";
 import axios from "axios";
 
+import Loader from "../Loader";
 import Notification from "../Notification";
 import IconButton from "../IconButton";
 import Input from "../Input";
@@ -22,7 +23,8 @@ class SocialShare extends Component {
     emails: "",
     notificationClosed: true,
     hasNotification: false,
-    message: ""
+    message: "",
+    loading: false
   }
 
   render() {
@@ -48,10 +50,19 @@ class SocialShare extends Component {
                   backgroundColor: "rgba(51,51,51)",
                   marginRight: "1em"
                 }} />
-                <Button type="button" solid
-                  doClick={this.doEmailShare}
-                  text="Share"
-                  disabled={!this.state.name.length || !this.state.emails.length} />
+              <Button type="button" solid
+                doClick={this.doEmailShare}
+                text="Share"
+                disabled={!this.state.name.length || !this.state.emails.length} />
+              {
+              this.state.loading ?
+                <Loader width="24px"
+                  styles={{
+                    display: "inline-block",
+                    verticalAlign: "middle",
+                    margin: "0 0 0 1em"
+                  }} /> : null
+              }
             </Modal> : null
         }
         {
@@ -124,11 +135,14 @@ class SocialShare extends Component {
   }
 
   doEmailShare = () => {
+    this.setState({ loading: true });
+
     if(!isEmail(this.state.emails)) {
       return this.setState({
         hasNotification: true,
         notificationClosed: false,
-        message: "One or more of the email addresses you entered is invalid."
+        message: "One or more of the email addresses you entered is invalid.",
+        loading: false
       });
     }
 
@@ -139,6 +153,7 @@ class SocialShare extends Component {
     .then(() => {
       this.setState({
         emailing: false,
+        loading: false,
         hasNotification: true,
         notificationClosed: false,
         message: "You just shared this story with your friends."
