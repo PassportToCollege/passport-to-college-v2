@@ -493,7 +493,9 @@ export const doUpdateComment = (comment, data = {}) => {
 export const doUpdateCommentLocal = (comment, data = {}) => {
   return {
     type: types.UPDATE_COMMENT_LOCAL,
-    nComment: Object.assign({}, comment, data)
+    nComment: Object.assign({}, data, {
+      id: comment.id
+    })
   };
 };
 
@@ -584,11 +586,33 @@ export const doDeleteComment = (comment = {}, options = {}) => {
     }
 
     const commentRef = db.collection("comments").doc(comment.id);
-    commentRef.delete().then(() => {
-      dispatch(commentDeleted(comment));
-    }).catch(error => {
-      Console.log(error);
-      dispatch(deleteCommentFailed(comment, error));
-    });
+    db.collection("comments")
+      .doc(comment.parent)
+      .get()
+      .then(snapshot => {
+        let parent = snapshot.data();
+        parent.id = snapshot.id;
+
+        let { replies, hasReplies } = parent;
+
+        commentRef.delete().then(() => {
+          dispatch(commentDeleted(comment));
+
+          replies -= 1;
+
+          if (replies === 0)
+            hasReplies = false;
+
+          dispatch(doUpdateCommentLocal(parent, {
+            hasReplies, replies
+          }));
+        }).catch(error => {
+          Console.log(error);
+          dispatch(deleteCommentFailed(comment, error));
+        });
+      })
+      .catch(error => {
+        Console.log(error);
+      })
   }
 }

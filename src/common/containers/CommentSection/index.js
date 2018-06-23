@@ -102,7 +102,7 @@ class CommentSection extends Component {
     }
 
     if(prevProps.comments.deletingComment && this.props.comments.deletedComment &&
-      this.state.comments) {
+      this.state.comments && this.props.comments.dComment.isConversation) {
       return {
         deletedComment: true
       } 

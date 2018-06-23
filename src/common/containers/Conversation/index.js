@@ -55,7 +55,7 @@ class Conversation extends Component {
       nextProps.comments.uComment.id === prevState.comment.id &&
       !_.isEqual(nextProps.comments.uComment, prevState.comment)) {
       newState = newState || {};
-      newState.comment = nextProps.comments.uComment;
+      newState.comment = Object.assign({}, prevState.comment, nextProps.comments.uComment);
     }
 
     return newState;
@@ -79,6 +79,12 @@ class Conversation extends Component {
       this.state.replies && !this.props.comments.dComment.isConversation) {
       return {
         deletedReply: true
+      };
+    }
+    
+    if (prevProps.comment.hasReplies && !this.state.comment.hasReplies) {
+      return {
+        repliesReomved: true
       };
     }
 
@@ -112,6 +118,11 @@ class Conversation extends Component {
       newReplies.splice(inr, 1);
 
       this.setState({ replies, newReplies });
+    }
+
+    if (snapshot && snapshot.repliesReomved && 
+      (this.state.viewAll || this.state.hideAll)) {
+      this.setState({ viewAll: false, hideAll: false });
     }
   }
 
