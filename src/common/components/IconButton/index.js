@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import propTypes from "prop-types";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import { faTrashAlt, faEdit, faInfo, faExternalLinkAlt, faThumbsUp, faReply } from "@fortawesome/fontawesome-free-solid";
-import { faFacebookF } from "@fortawesome/fontawesome-free-brands";
+import { faFacebookF, faTwitter } from "@fortawesome/fontawesome-free-brands";
 
 class IconButton extends Component {
   handleClick = (e) => {
@@ -20,6 +20,7 @@ class IconButton extends Component {
       open: faExternalLinkAlt,
       like: faThumbsUp,
       facebook: faFacebookF,
+      twitter: faTwitter,
       reply: faReply
     };
     let buttonStyles = Object.assign({}, this.props.styles);
@@ -43,7 +44,8 @@ class IconButton extends Component {
     return (
       <button className="icon_button" type={this.props.type} onClick={this.handleClick}
         style={buttonStyles}
-        disabled={this.props.disabled}>
+        disabled={this.props.disabled}
+        title={this.props.buttonTitle}>
         <FontAwesomeIcon icon={icons[this.props.icon]} />
       </button>
     )
@@ -53,7 +55,8 @@ class IconButton extends Component {
 IconButton.defaultProps = {
   styles: {},
   icon: "default",
-  type: "button"
+  type: "button",
+  buttonTitle: ""
 };
 
 IconButton.propTypes = {
@@ -63,7 +66,8 @@ IconButton.propTypes = {
   text: propTypes.string,
   solid: propTypes.bool,
   disabled: propTypes.bool,
-  icon: propTypes.string
+  icon: propTypes.string,
+  buttonTitle: propTypes.string
 };
 
 export default IconButton;
