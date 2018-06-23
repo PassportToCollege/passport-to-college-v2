@@ -110,7 +110,7 @@ class Comment extends Component {
                 {
                   this.props.comment.replies > 1 ?
                     <React.Fragment>
-                      view all {this.props.comment.replies} responses
+                      view all responses
                     </React.Fragment> :
                     <React.Fragment>
                       view response

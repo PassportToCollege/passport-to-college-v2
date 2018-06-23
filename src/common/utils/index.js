@@ -1,6 +1,8 @@
 import Cookies from "universal-cookie";
 import moment from "moment";
 
+import BadWords from "./badwords.en";
+
 const cookies = new Cookies();
 
 export const isBrowser = typeof window !== "undefined";
@@ -196,8 +198,11 @@ export class Comment {
   constructor(user = {}, content = {}, post) {
     this.user = user;
     this.message = {
-      text: convertBlocksToText(content.blocks),
-      html: content
+      text: this.censorText(convertBlocksToText(content.blocks)),
+      html: {
+        entityMap: content.entityMap,
+        blocks: this.censorBlocks(content.blocks)
+      }
     };
     this.post = post;
     this.isConversation = true;
@@ -208,6 +213,51 @@ export class Comment {
 
   get data() {   
     return this.getData(); 
+  }
+
+  censorBlocks(blocks) {
+    const bwKeys = Object.keys(BadWords);
+    
+    for (let badword of bwKeys) {
+      const re = new RegExp(badword, "gi");
+      const hearts = this.heartify(badword.length);
+
+      for (let block of blocks) {
+        let { text } = block;
+        const bwi = text.toLowerCase().indexOf(badword);
+
+        if (bwi > -1) {
+          block.text = text.toLowerCase().replace(re, hearts);
+        }
+      }
+    }
+
+    return blocks;
+  }
+
+  censorText(text) {
+    const bwKeys = Object.keys(BadWords);
+
+    for (let badword of bwKeys) {
+      const re = new RegExp(badword, "gi");
+      const hearts = this.heartify(badword.length);
+      const bwi = text.toLowerCase().indexOf(badword)
+
+      if (bwi > -1) {
+        text = text.toLowerCase().replace(re, hearts);
+      }
+    }
+
+    return text;
+  }
+
+  heartify(length) {
+    let r = "";
+
+    for (let i = 0; i < length; i++)
+      r += "*";
+
+    return r;
   }
 
   getData() {

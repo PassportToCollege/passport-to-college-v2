@@ -39,7 +39,8 @@ class Conversation extends Component {
 
     if (nextProps.comments.gotReplies && 
       nextProps.comments.replies[prevState.comment.id] &&
-      !_.isEqual(prevState.replies, nextProps.comments.replies[prevState.comment.id])) {
+      !_.isEqual(prevState.replies, nextProps.comments.replies[prevState.comment.id]) &&
+      !prevState.replies.length) {
       newState = {};
       newState.replies = nextProps.comments.replies[prevState.comment.id];
       newState.gettingReplies = false;
