@@ -15,6 +15,7 @@ import features from "./featuresReducer";
 import post from "./postReducer";
 import posts from "./postsReducer";
 import postCategories from "./postCategoriesReducer";
+import comments from "./commentReducer";
 
 const rootReducer = combineReducers({
   hamburgerState,
@@ -31,7 +32,8 @@ const rootReducer = combineReducers({
   features,
   post,
   posts,
-  postCategories
+  postCategories,
+  comments
 });
 
 export default rootReducer;

@@ -12,7 +12,11 @@ class ToTopContainer extends Component {
   }
 
   componentDidMount() {
-    document.scrollingElement.scrollTo(0, 0);
+    if ("function" === typeof document.scrollingElement.scrollTo) {
+      document.scrollingElement.scrollTo(0, 0);
+    } else {
+      document.scrollingElement.scrollTop = 0;
+    }
   }
 
   render() {

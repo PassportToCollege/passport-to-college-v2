@@ -127,8 +127,9 @@ export const doPostGet = id => {
       .get()
       .then(post => {
         if (post.exists) {
-          const postData = post.data();
-
+          let postData = post.data();
+          postData.id = post.id;
+          
           // get user if author is uid
           if ("string" === typeof postData.author) {
             return db.collection("users")
@@ -241,5 +242,12 @@ export const doPostUpdate = (id, data, options) => {
       .catch(error => {
         dispatch(updatePostFailed(error, id, data));
       });
+  };
+};
+
+export const doUpdateConversationsCount = updateType => {
+  return {
+    type: types.POST_UPDATE_LOCAL_CONVERSATIONS_COUNT,
+    updateType
   };
 };

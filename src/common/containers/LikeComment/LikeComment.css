@@ -1,0 +1,22 @@
+.like_comment {
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+}
+
+.like_comment .like_comment__button {
+  color: rgba(51,51,51,0.45);
+  cursor: pointer;
+  padding: 1em 0.5em 0 0;
+}
+
+.like_comment .like_comment__button:hover,
+.like_comment .like_comment__liked {
+  color: rgba(51,51,51,0.75);
+}
+
+.like_comment .like_comment__likes {
+  color: rgba(51, 51, 51, 0.45);
+  font-family: "Nunito", sans-serif;
+  line-height: 1;
+}

@@ -6,6 +6,7 @@ export const EVENTS = { name: "Events", route: "/events" };
 export const STORIES = { name: "Stories", route: "/stories" };
 export const STORIES_CATEGORY = { name: "Stories by Category", route: "/stories/cat/:category" };
 export const STORY = { name: "Story", route: "/stories/read/:post_id" };
+export const COMMUNITY_GUIDLINES = { name: "Community Guidlines", route: "/stories/community-guidlines" };
 export const CONTACT_US = { name: "Contact Us", route: "/contact-us" };
 
 // Admin Routes

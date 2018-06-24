@@ -8,6 +8,7 @@ import propTypes from "prop-types";
 
 import * as postActions from "../../actions/postActions";
 import * as postsActions from "../../actions/postsActions";
+import * as commentActions from "../../actions/commentActions";
 
 import PageMeta from "../../components/PageMeta";
 import LoadingPost from "../../components/LoadingPost";
@@ -16,6 +17,8 @@ import PostCardGrid from "../../components/PostCardGrid";
 import BorderTopContainer from "../../components/BorderTopContainer";
 import LikeButton from "../LikeButton";
 import SocialShare from "../../components/SocialShare";
+import Responder from "../Responder";
+import CommentSection from "../CommentSection";
 
 class Story extends Component {
   constructor(props) {
@@ -25,12 +28,25 @@ class Story extends Component {
       post: props.post.post,
       hero: props.post.hero,
       id: props.match.params.post_id,
-      more: props.posts.moreByCategory || []
+      more: props.posts.moreByCategory || [],
+      newResponse: "",
+      allConversations: false
     }
   }
 
+  static propTypes = {
+    post: propTypes.object,
+    postActions: propTypes.object,
+    posts: propTypes.object,
+    postsActions: propTypes.object,
+    comments: propTypes.object,
+    commentActions: propTypes.object,
+    match: propTypes.object,
+    updateLocation: propTypes.func
+  };
+
   componentDidMount() {
-    this.props.updateLocation("stories");
+    this.props.updateLocation("stories on-white");
 
     const { id } = this.state;
     this.props.postActions.doPostGet(id);
@@ -77,7 +93,11 @@ class Story extends Component {
     }
 
     if (snapshot && snapshot.toTop) {
-      document.scrollingElement.scrollTo(0, 0);
+      if ("function" === typeof document.scrollingElement.scrollTo) {
+        document.scrollingElement.scrollTo(0, 0);
+      } else {
+        document.scrollingElement.scrollTop = 0;
+      }
     }
   }
   
@@ -135,9 +155,10 @@ class Story extends Component {
                   border: "none",
                   margin: "0 auto",
                   lineHeight: "1.5em",
-                  fontSize: "1.15em",
+                  fontSize: "1.5em",
                   maxWidth: "100%",
-                  padding: "2em 3em"
+                  padding: "2em 3em",
+                  fontFamily: `"PlayFair Dislay", serif`
                 }} />
               {
                 this.state.post.category ?
@@ -160,45 +181,86 @@ class Story extends Component {
               }
               <BorderTopContainer classes="story__appreciate">
                 <LikeButton post={this.state.post} postId={this.state.id} />
-                <SocialShare facebook={{
-                  href: `https://ed5f9b40.ngrok.ioo/${this.props.match.url}`
-                }}/>
+                <SocialShare 
+                  mail={{
+                    post: this.state.post
+                  }}
+                  facebook={{
+                    href: `${process.env.RAZZLE_URL}/${this.props.match.url}`
+                  }}
+                  twitter={{
+                    href: `${process.env.RAZZLE_URL}/${this.props.match.url}`,
+                    title: `${this.state.post.title} - Passport to College`
+                  }} />
               </BorderTopContainer>
             </section> :
             <LoadingPost />
         }
         <BorderTopContainer classes="story__more">
-          <h2>more stories like this</h2>
           {
             this.state.more.length ?
             <PostCardGrid posts={this.state.more} /> : null
           }
         </BorderTopContainer>
+        <section className="story__responses">
+          <h4> 
+            Conversations 
+            {
+              this.state.post && this.state.post.conversations ? 
+                ` (${this.props.post.post.conversations})` : ""
+            } 
+          </h4>
+          {
+            this.state.post ?
+              <Responder  postId={this.state.id}
+                post={this.state.post} 
+                onResponse={this.handleResponse} /> : null
+          }
+          {
+            this.state.post ?
+              <CommentSection post={this.state.post} 
+                newComment={this.state.newResponse} 
+                all={this.state.allConversations} /> :
+              null
+          }
+          {
+            this.state.post && this.props.comments.gotComments &&
+            this.props.comments.comments.length < this.state.post.conversations ?
+              <span className="story__response_view_all"
+                onClick={() => this.setState({ allConversations: true })}>
+                view all conversations
+              </span> : null
+          }
+        </section>
       </main>
     )
   }
-}
 
-Story.propTypes = {
-  post: propTypes.object,
-  postActions: propTypes.object,
-  posts: propTypes.object,
-  postsActions: propTypes.object,
-  match: propTypes.object,
-  updateLocation: propTypes.func
-};
+  handleResponse = (commentId, isReply) => {
+    if (!isReply) {
+      this.setState({ 
+        newResponse: commentId,
+        post: Object.assign({}, this.state.post, {
+          conversations: this.state.post.conversations + 1
+        }) 
+      });
+    }
+  }
+}
 
 const mapStateToProps = state => {
   return {
     post: state.post,
-    posts: state.posts
+    posts: state.posts,
+    comments: state.comments
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     postActions: bindActionCreators(postActions, dispatch),
-    postsActions: bindActionCreators(postsActions, dispatch)
+    postsActions: bindActionCreators(postsActions, dispatch),
+    commentActions: bindActionCreators(commentActions, dispatch)
   };
 };
 
