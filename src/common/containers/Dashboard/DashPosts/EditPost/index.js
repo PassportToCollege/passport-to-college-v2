@@ -173,14 +173,14 @@ class EditPost extends Component {
             }
           </div>
           <div className="edit_post__excerpt">
-            <label>Post excerpt</label>
+            <h2>Excerpt</h2>
             <span>This will appear in the blog homepage and landing page of the website.</span>
             <textarea name="excerpt" rows="5"
               value={this.state.postChanges.excerpt}
               onChange={this.handleExcerptChange}></textarea>
           </div>
           <div className="edit_post__editor">
-            <label>Full post</label>
+            <h2>Full Post</h2>
             <span>This will appear in the blog exactly as it looks here.</span>
             {
               this.props.post.hasGotten && this.state.post ?
@@ -188,7 +188,9 @@ class EditPost extends Component {
                   <WYSIWYGEditor saveButton
                     content={this.state.post.full} 
                     editorStyles={{
-                      maxWidth: "1170px"
+                      maxWidth: "1170px",
+                      fontFamily: "PlayFair Dislay, serif",
+                      fontSize: "1.5em"
                     }}
                     controlStyles={{
                       maxWidth: "1170px"

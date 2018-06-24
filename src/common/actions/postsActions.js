@@ -73,8 +73,14 @@ export const doGetPostsByState = (state = "all") => {
   return dispatch => {
     if (state === "all")
       return doPostsGet();
+    
+    const acceptedStates = {
+      archived: true,
+      published: true,
+      draft: true
+    }
 
-    if (state !== "archived" || state !== "draft")
+    if (!acceptedStates[state])
       return dispatch(postsGetFailed({ message: "unknown post state provided" }));
     
     dispatch(postsGetInitiated());
@@ -83,6 +89,9 @@ export const doGetPostsByState = (state = "all") => {
     if (state === "archived") {
       postRef = db.collection("posts")
         .where("state.archived", "==", true)
+    } else if (state === "published") {
+      postRef = db.collection("posts")
+        .where("state.published", "==", true)
     } else {
       postRef = db.collection("posts")
         .where("state.draft", "==", true)
