@@ -40,6 +40,7 @@
 .form.drop__uploader .drop__area>input[type="file"] {
   max-width: 0;
   max-height: 0;
+  overflow: hidden;
 }
 
 .form.drop__uploader .drop__area>label {
