@@ -1,6 +1,7 @@
 import "./NavigationEditPost.css";
 
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import propTypes from "prop-types";
 
 import Toggler from "../../components/Toggler";
@@ -61,6 +62,14 @@ class NavigationEditPost extends Component {
                 )
               }) : null
           }
+        </ul>
+        <h4>settings</h4>
+        <ul className="edit_post__nav_list settings_list">
+          <li className="edit_post__comments">
+            <Link to={`/admin/dashboard/post/${this.props.post ? this.props.post.id : ""}/comments`}>
+              comments
+            </Link>
+          </li>
         </ul>
       </nav>
     )

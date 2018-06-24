@@ -95,3 +95,21 @@
   align-items: center;
   justify-content: space-between;
 }
+
+.edit_post__nav .edit_post__nav_list.settings_list a {
+  display: block;
+  position: relative;
+  color: rgba(255, 255, 255, 0.75);
+  cursor: pointer;
+  transition: color 200ms linear;
+}
+
+.edit_post__nav .edit_post__nav_list.settings_list a::before {
+  content: "\f0c1";
+  font-family: FontAwesome;
+  color: inherit;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: -1.75em;
+}
