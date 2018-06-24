@@ -15,5 +15,6 @@ export default {
   features: {},
   post: {},
   posts: {},
-  postCategories: {}
+  postCategories: {},
+  comments: {}
 }

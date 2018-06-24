@@ -1,0 +1,45 @@
+.comment_header {
+  display: block;
+}
+
+.comment_header > * {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.comment_header > :first-child {
+  margin-right: 1em;
+}
+
+.comment_header > img {
+  width: 32px;
+  max-width: 100%;
+  border-radius: 50%;
+}
+
+.comment__reply > .comment_header > img {
+  width: 24px;
+}
+
+.comment_header .comment_header__text > span {
+  display: block;
+}
+
+.comment_header .comment_header__text .comment_header__name {
+  font-size: 1.125em;
+  font-weight: bold;
+  color: #FF6561;
+}
+
+.comment__reply > .comment_header .comment_header__text .comment_header__name {
+  font-size: 1em;
+}
+
+.comment_header .comment_header__text .comment_header__posted_on {
+  font-size: 0.9em;
+  color: #888;
+}
+
+.comment__reply > .comment_header .comment_header__text .comment_header__posted_on {
+  font-size: 0.8em;
+}

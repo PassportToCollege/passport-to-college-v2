@@ -1,0 +1,91 @@
+.comment {
+  padding: 2em;
+  background-color: white;
+  border: 1px solid #eee;
+  position: relative;
+}
+
+.comment__reply {
+  padding: 1em 2em;
+}
+
+.comment > .editor__container > .editor__editor {
+  padding: 1em 0 0;
+  border: none;
+  min-height: auto;
+}
+
+.comment__reply > .editor__container > .editor__editor {
+  font-size: 0.9em;
+}
+
+.comment > .responder,
+.comment > .icon_button {
+  margin-top: 1em;
+}
+
+.comment > .icon_button {
+  font-size: 1em;
+  width: 32px;
+  height: 32px;
+}
+
+.comment > .responder {
+  padding: 0.5em;
+}
+
+.comment__reply > .responder {
+  padding: 1em 0 0;
+  border: none;
+  border-top: 2px solid rgba(51, 51, 51, 0.05);
+}
+
+.comment > .responder > .responder__meta .responder__meta_profile_pic {
+  width: 32px;
+  height: 32px;
+}
+
+.comment > .responder > .responder__editor .editor__editor {
+  border: none;
+}
+
+.comment .comment__view_all,
+.comment .comment__hide_all {
+  margin-top: 1em;
+  display: block;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 0.9em;
+}
+
+.comment .comment__view_all::after {
+  font-family: FontAwesome;
+  content: "\f078";
+  margin-left: 0.5em;
+}
+
+.comment .comment__hide_all::after {
+  font-family: FontAwesome;
+  content: "\f077";
+  margin-left: 0.5em;
+}
+
+.comment .comment__reply_button {
+  line-height: 1;
+  margin-left: 1em;
+  cursor: pointer;
+  font-family: "Muli", sans-serif;
+  font-weight: 600;
+  color: rgba(51, 51, 51, 0.65);
+}
+
+.comment .comment__reply_button:hover {
+  color: rgba(51,51,51,0.85);
+}
+
+/* More menu */
+.comment .comment__more_menu_container {
+  position: absolute;
+  top: 2em;
+  right: 1em;
+}

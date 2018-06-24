@@ -45,3 +45,13 @@
   border-bottom: 2px solid rgba(51, 51, 51, 0.05);
   border-right: 2px solid rgba(51, 51, 51, 0.05);
 }
+
+.editor__container .editor__guidlines {
+  margin-top: 1em;
+}
+
+.editor__container .editor__guidlines > a {
+  color: #FF6561;
+  font-size: 0.85em;
+  font-weight: bold;
+}

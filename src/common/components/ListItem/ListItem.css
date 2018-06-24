@@ -1,0 +1,3 @@
+.list_item[data-bullet="true"] {
+  list-style-type: disc;
+}

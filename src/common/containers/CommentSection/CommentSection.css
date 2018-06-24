@@ -1,0 +1,5 @@
+.comment_section>.comment_section__no_comments {
+  display: block;
+  padding: 2em 2em 0;
+  text-align: center;
+}

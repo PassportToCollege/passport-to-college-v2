@@ -23,7 +23,7 @@ export default (req, res, markup) => {
                   ${helmet.meta.toString()}
                   ${helmet.title.toString()}
                   <meta name="viewport" content="width=device-width, initial-scale=1">
-                  <link href="//fonts.googleapis.com/css?family=Muli:400,600,700,800,900|Nunito:200,400,800,900|Roboto:100,400,400i,500,700,900" rel="stylesheet" />
+                  <link href="//fonts.googleapis.com/css?family=Muli:400,600,700,800,900|Nunito:200,400,800,900|Roboto:100,400,400i,500,700,900|Playfair+Display:400,400i,700,700i,900,900i" rel="stylesheet" />
                   ${assets.client.css
                     ? `<link rel="stylesheet" href="${assets.client.css}">`
                     : ''}
@@ -49,7 +49,7 @@ export default (req, res, markup) => {
                   <meta property="og:url" content="${process.env.RAZZLE_URL}/${url}" />
                   ${results.metas}
                   <meta name="viewport" content="width=device-width, initial-scale=1">
-                  <link href="//fonts.googleapis.com/css?family=Muli:400,600,700,800,900|Nunito:200,400,800,900|Roboto:100,400,400i,500,700,900" rel="stylesheet" />
+                  <link href="//fonts.googleapis.com/css?family=Muli:400,600,700,800,900|Nunito:200,400,800,900|Roboto:100,400,400i,500,700,900|Playfair+Display:400,400i,700,700i,900,900i" rel="stylesheet" />
                   ${assets.client.css
                     ? `<link rel="stylesheet" href="${assets.client.css}">`
                     : ''}
@@ -76,7 +76,7 @@ export default (req, res, markup) => {
               ${helmet.meta.toString()}
               ${helmet.title.toString()}
               <meta name="viewport" content="width=device-width, initial-scale=1">
-              <link href="//fonts.googleapis.com/css?family=Muli:400,600,700,800,900|Nunito:200,400,800,900|Roboto:100,400,400i,500,700,900" rel="stylesheet" />
+              <link href="//fonts.googleapis.com/css?family=Muli:400,600,700,800,900|Nunito:200,400,800,900|Roboto:100,400,400i,500,700,900|Playfair+Display:400,400i,700,700i,900,900i" rel="stylesheet" />
               ${assets.client.css
                 ? `<link rel="stylesheet" href="${assets.client.css}">`
                 : ''}

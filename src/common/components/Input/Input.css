@@ -1,0 +1,11 @@
+input.input {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 100%;
+  outline: none;
+  border: 2px solid rgba(128, 150, 162, 0.35);
+  padding: 1em;
+  font-family: "Roboto", sans-serif;
+  margin: 0 0 1em;
+}

@@ -55,8 +55,10 @@ class Stories extends Component {
       !_.isEqual(stats, nextProps.stats.stats))
       newState.stats = nextProps.stats.stats;
     
-    if (nextProps.match.params.category)
+    if (nextProps.match.params.category && 
+      (prevState.category !== nextProps.match.params.category)) {
       newState.category = nextProps.match.params.category;
+    }
     
     if (_.isEqual(newState, prevState))
       return null;
@@ -67,10 +69,29 @@ class Stories extends Component {
   componentDidMount() {
     window.addEventListener("scroll", this.fetchPostsOnScroll);
 
-    this.props.updateLocation("stories");
+    this.props.updateLocation("stories on-white");
     this.props.postsActions.doPostsPaginate(1, this.state.category);
     this.props.postCategoryActions.doCategoriesGet();
     this.props.statsActions.doStatsGet();
+  }
+
+  getSnapshotBeforeUpdate(prevProps) {
+    let snapshot = null;
+    
+    if (this.props.match.params.category !== prevProps.match.params.category) {
+      snapshot = {};
+      snapshot.categoryChanged = true;
+    }
+
+    return snapshot;
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (snapshot && snapshot.categoryChanged) {
+      if (!this.props.posts.paginatingPosts) {
+        this.props.postsActions.doPostsPaginate(1, this.state.category);
+      }
+    }
   }
 
   componentWillUnmount() {

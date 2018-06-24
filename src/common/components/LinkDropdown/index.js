@@ -50,12 +50,13 @@ class LinkDropdown extends Component {
     if ("function" === typeof this.props.doClick)
       this.props.doClick(e)
   }
-};
+}
 
 LinkDropdown.propTypes = {
   name: propTypes.string,
   data: propTypes.arrayOf(propTypes.object),
-  doClick: propTypes.func
+  doClick: propTypes.func,
+  handleLinkClick: propTypes.func
 };
 
 export default withRouter(LinkDropdown);

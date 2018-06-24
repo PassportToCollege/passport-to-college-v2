@@ -1,6 +1,6 @@
 .post_card_grid {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-items: flex-start;
   flex-wrap: wrap;
   padding: 0 2em;

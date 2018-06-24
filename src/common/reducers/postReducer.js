@@ -14,7 +14,8 @@ import {
   POST_HERO_UPLOADED,
   POST_GET_HERO_INITIATED,
   POST_GET_HERO_DONE,
-  POST_GET_HERO_FAILED
+  POST_GET_HERO_FAILED,
+  POST_UPDATE_LOCAL_CONVERSATIONS_COUNT
 } from "../actions/actionTypes";
 
 const post = (state = initialState.post, action) => {
@@ -83,6 +84,13 @@ const post = (state = initialState.post, action) => {
         isUpdating: false,
         hasUpdated: true,
         postUpdateFailed: false
+      });
+    case POST_UPDATE_LOCAL_CONVERSATIONS_COUNT:
+      return Object.assign({}, state, {
+        updatedLocalConversationsCount: true,
+        post: Object.assign({}, state.post, {
+          conversations: action.updateType === "inc" ? state.post.conversations + 1 : state.post.conversations - 1
+        })
       });
     case POST_UPLOAD_HERO_INITIATED:
       return Object.assign({}, state, {

@@ -1,6 +1,8 @@
 import Cookies from "universal-cookie";
 import moment from "moment";
 
+import BadWords from "./badwords.en";
+
 const cookies = new Cookies();
 
 export const isBrowser = typeof window !== "undefined";
@@ -30,6 +32,20 @@ export const isApplicant = () => {
     return false;
 };
 
+export const isEmail = str => {
+  // eslint-disable-next-line no-useless-escape
+  const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  
+  let emails = str.split(",");
+
+  for (let email of emails) {
+    if (!re.test(email))
+      return re.test(email);
+  }
+
+  return true;
+}
+
 export const sessionAge = () => {
   const { createdAt } = cookies.get("ssid");
   const end = moment(new Date());
@@ -52,8 +68,13 @@ export const getWordCount = blocks => {
   if (blocks.length) {
     blocks.map(block => {
       let { text } = block;
+
+      if (!text.length)
+        return count;
+
       text = text.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, "")
         .replace(/\s{2,}/g, " ")
+        .trim()
         .split(" ");
 
       count += text.length;
@@ -63,6 +84,22 @@ export const getWordCount = blocks => {
 
   return count;
 };
+
+export const convertBlocksToText = blocks => {
+  let result = "";
+
+  if (blocks.length) {
+    blocks.map(block => {
+      let { text } = block;
+      text = text.trim();
+      result = `${result} ${text}`;
+
+      return result;
+    })
+  }
+
+  return result;
+}
 
 export const queryToObject = query => {
   if (query) {
@@ -162,10 +199,102 @@ export class SSID {
       createdAt: new Date()
     }
 
-    return cookies.set("ssid", d, { path: "/", maxAge: 60 * 60 * 24 });
+    return cookies.set("ssid", d, { path: "/", maxAge: 60 * 60 * 24 * 3 });
   }
 
   destroy() {
     return cookies.remove("ssid", { path: "/" });
+  }
+}
+
+export class Comment {
+  // TODO: search messages for bad words and censor
+  constructor(user = {}, content = {}, post) {
+    this.user = user;
+    this.message = {
+      text: this.censorText(convertBlocksToText(content.blocks)),
+      html: {
+        entityMap: content.entityMap,
+        blocks: this.censorBlocks(content.blocks)
+      }
+    };
+    this.post = post;
+    this.isConversation = true;
+    this.hasReplies = false;
+    this.replies = 0;
+    this.postedOn = new Date(moment.utc(moment()).toDate()).getTime();
+  }
+
+  get data() {   
+    return this.getData(); 
+  }
+
+  censorBlocks(blocks) {
+    const bwKeys = Object.keys(BadWords);
+    
+    for (let badword of bwKeys) {
+      const re = new RegExp(badword, "gi");
+      const hearts = this.heartify(badword.length);
+
+      for (let block of blocks) {
+        let { text } = block;
+        const bwi = text.toLowerCase().indexOf(badword);
+
+        if (bwi > -1) {
+          block.text = text.toLowerCase().replace(re, hearts);
+        }
+      }
+    }
+
+    return blocks;
+  }
+
+  censorText(text) {
+    const bwKeys = Object.keys(BadWords);
+
+    for (let badword of bwKeys) {
+      const re = new RegExp(badword, "gi");
+      const hearts = this.heartify(badword.length);
+      const bwi = text.toLowerCase().indexOf(badword)
+
+      if (bwi > -1) {
+        text = text.toLowerCase().replace(re, hearts);
+      }
+    }
+
+    return text;
+  }
+
+  heartify(length) {
+    let r = "";
+
+    for (let i = 0; i < length; i++)
+      r += "*";
+
+    return r;
+  }
+
+  getData() {
+    const { user, message, hasReplies, postedOn, post, isConversation, replies } = this;
+
+    return {
+      user, message, hasReplies, postedOn, post, isConversation, replies
+    };
+  }
+}
+
+export class Reply extends Comment {
+  constructor(user = {}, content ={}, post, comment) {
+    super(user, content, post);
+    this.isConversation = false;
+    this.parent = comment;
+  }
+
+  getData() {
+    const { user, message, hasReplies, postedOn, parent, post } = this;
+
+    return {
+      user, message, hasReplies, postedOn, parent, post
+    };
   }
 }
