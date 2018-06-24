@@ -145,9 +145,9 @@ class LikeButton extends Component {
           <IconButton icon="like" 
             solid={this.state.liked} 
             styles={{
-              backgroundColor: this.state.liked ? "#7DE2E7" : "transparent",
-              borderColor: "#7DE2E7",
-              color: this.state.liked ? "#fff" : "#7DE2E7"
+              backgroundColor: this.state.liked ? "#FF6561" : "transparent",
+              borderColor: "#FF6561",
+              color: this.state.liked ? "#fff" : "#FF6561"
             }} 
             doClick={this.handleLike} />
           {
