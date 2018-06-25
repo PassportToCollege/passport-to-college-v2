@@ -143,12 +143,12 @@ class Applications extends Component {
     }
 
     return (
-        <TableRow>
-          <TableData span="4" classes={["table__center_data"]}>
-            Fetching applications...
-          </TableData>
-        </TableRow>
-      )
+      <TableRow>
+        <TableData span="4" classes={["table__center_data"]}>
+          Fetching applications...
+        </TableData>
+      </TableRow>
+    )
   }
 }
 
