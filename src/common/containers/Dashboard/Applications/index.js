@@ -13,6 +13,7 @@ import * as statsActions from "../../../actions/statsActions";
 
 import PageMeta from "../../../components/PageMeta";
 import LoadingText from "../../../components/LoadingText";
+import { Table, TableData, TableHeader, TableRow } from "../../../components/Table";
 
 class Applications extends Component {
   constructor(props) {
@@ -86,54 +87,68 @@ class Applications extends Component {
           }
         </header>
         <div className="applications__main">
-          <table className="table table__default" cellSpacing="0">
-            <thead>
-              <tr>
-                <th></th>
-                <th>name</th>
-                <th>email</th>
-                <th>phone</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                this.props.applications.hasGotten && !this.state.applications.empty ?
-                  this.state.applications.map(application => {
-                    return (
-                      <tr key={application.uid}>
-                        <td>
-                          <span className="applications__state_indicator"
-                            data-state={application.state.accepted ? "accepted" : application.state.rejected ? "rejected" : "pending"}></span>
-                        </td>
-                        <td>
-                          <Link className="applications__name" 
-                            to={`/admin/dashboard/applications/view/${application.uid}`}>
-                            {application.user.name.full}
-                          </Link>
-                          <span>{application.user.address.country}</span>
-                        </td>
-                        <td>
-                          {/* TODO: clicking should open send email modal */}
-                          <span className="applications__email"> 
-                            {application.user.email}
-                          </span>
-                        </td>
-                        <td>{application.user.phone}</td>
-                      </tr>
-                    )
-                  }) : this.props.applications.hasGotten && this.state.applications.empty ?
-                    <tr>
-                      <td colSpan="4" style={{textAlign: "center"}}>No applications found.</td>
-                    </tr> :
-                    <tr>
-                      <td colSpan="4" style={{textAlign: "center"}}>Fetching applications...</td>
-                    </tr>
-              } 
-            </tbody>
-          </table>
+          <Table classes={["table__default"]}
+            headers={
+              <TableRow>
+                <TableHeader />
+                <TableHeader heading="name" />
+                <TableHeader heading="email" />
+                <TableHeader heading="phone" />
+              </TableRow>
+            }
+            rows={this._renderTableData()} />
         </div>
       </div>
     )
+  }
+
+  _renderTableData = () => {
+    if (this.props.applications.hasGotten &&
+      !this.state.applications.empty) {
+      return this.state.applications.map(application => {
+        return (
+          <TableRow key={application.uid}>
+            <TableData>
+              <span className="applications__state_indicator"
+                data-state={application.state.accepted ? "accepted" : application.state.rejected ? "rejected" : "pending"}></span>
+            </TableData>
+            <TableData>
+              <Link className="applications__name" 
+                to={`/admin/dashboard/applications/view/${application.uid}`}>
+                {application.user.name.full}
+              </Link>
+            </TableData>
+            <TableData>
+              {/* TODO: clicking should open send email modal */}
+              <span className="applications__email"> 
+                {application.user.email}
+              </span>
+            </TableData>
+            <TableData>
+              {application.user.email}
+            </TableData>
+          </TableRow>
+        )
+      });
+    }
+
+    if (this.props.applications.hasGotten && this.state.applications.empty) {
+      return (
+        <TableRow>
+          <TableData span="4" classes={["table__center_data"]}>
+            No applications found.
+          </TableData>
+        </TableRow>
+      )
+    }
+
+    return (
+        <TableRow>
+          <TableData span="4" classes={["table__center_data"]}>
+            Fetching applications...
+          </TableData>
+        </TableRow>
+      )
   }
 }
 

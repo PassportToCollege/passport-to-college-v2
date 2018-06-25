@@ -46,6 +46,19 @@ export const isEmail = str => {
   return true;
 }
 
+export const makeClassString = (classes = []) => {
+  let str = "";
+  
+  if (!classes.length)
+    return str;
+    
+  for (let c of classes) {
+    str += `${c} `;
+  }
+
+  return str.trimRight();
+}
+
 export const sessionAge = () => {
   const { createdAt } = cookies.get("ssid");
   const end = moment(new Date());
