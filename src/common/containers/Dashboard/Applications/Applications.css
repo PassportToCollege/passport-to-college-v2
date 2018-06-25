@@ -11,18 +11,6 @@
 .applications__state_indicator[data-state="rejected"] { background-color: tomato }
 
 /* Header */
-.applications__container header {
-  position: relative;
-  padding: 1em 0;
-}
-
-.applications__container header > h1 {
-  font-family: "Muli", "Nunito", "Roboto", sans-serif;
-  font-weight: lighter;
-  margin: 0;
-  color: rgb(58, 58, 58);
-}
-
 .applications__container header > .applications__stats {
   color: rgba(51,51,51,0.85);
   font-size: 0.85em;
