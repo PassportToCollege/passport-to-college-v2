@@ -32,7 +32,7 @@ class DashComments extends Component {
 
   componentDidMount() {
     this.props.postActions.doPostGet(this.state.post);
-    this.props.commentActions.doGetComments(this.state.post, 1);
+    this.props.commentActions.doGetConversations(this.state.post);
   }
   
   render() {
@@ -42,12 +42,12 @@ class DashComments extends Component {
           this.props.post.hasGotten ?
             <PageMeta more={
               <title>
-                {this.props.post.post.title || this.state.post} | Comments | Dashboard | Passport to College
+                {this.props.post.post.title || this.state.post} | Conversations | Dashboard | Passport to College
               </title>
             } /> :
             <PageMeta more={
               <title>
-                {this.state.post} | Comments | Dashboard | Passport to College
+                {this.state.post} | Conversations | Dashboard | Passport to College
               </title>
             } />
         }

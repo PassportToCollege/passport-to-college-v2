@@ -236,6 +236,74 @@ export const doGetComments = (post, page = 1) => {
   };
 };
 
+export const getConversationsInitiated = parent => {
+  return {
+    type: types.GET_CONVERSATIONS_INITIATED,
+    parent
+  };
+};
+
+export const getConversationsFailed = (error, parent) => {
+  return {
+    type: types.GET_CONVERSATIONS_FAILED,
+    error, parent
+  };
+};
+
+export const gotConversations = conversations => {
+  return {
+    type: types.GOT_CONVERSATIONS,
+    conversations
+  };
+};
+
+export const doGetConversations = (parent, options = {}) => {
+  return dispatch => {
+    dispatch(getConversationsInitiated(parent));
+
+    return db.collection("comments")
+      .where("post", "==", parent)
+      .where("isConversation", "==", true)
+      .orderBy("postedOn", "desc")
+      .get()
+      .then(snapshots => {
+        if (snapshots.empty)
+          return dispatch(getConversationsFailed({ message: "no conversations found" }, parent));
+
+        let conversations = [];
+        let ppPromises = [];
+
+        snapshots.forEach(snapshot => {
+          let conversation = snapshot.data();
+          conversation.id = snapshot.id;
+
+          if (storage && options.getUserPicture && !conversation.user.photo)
+            ppPromises.push(storage.ref("users/profile_images").child(`${conversation.user.uid}.png`).getDownloadURL());
+
+          conversations.push(conversation);
+        });
+
+        if (storage && options.getUserPicture) {
+          return Promise.all(ppPromises).then(urls => {
+            for (let conversation of conversations) {
+              conversation.user.profilePicture = urls.find(url => {
+                return url.indexOf(conversation.user.uid) > -1;
+              });
+            }
+
+            dispatch(gotConversations(conversations));
+          });
+        }
+
+        dispatch(gotConversations(conversations));
+      })
+      .catch(error => {
+        Console.log(error);
+        dispatch(getConversationsFailed(error, parent));
+      })
+  }
+}
+
 export const getRepliesInitiated = parent => {
   return {
     type: types.GET_REPLIES_INITIATED,

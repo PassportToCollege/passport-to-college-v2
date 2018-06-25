@@ -21,7 +21,10 @@ import {
   DELETE_COMMENT_INITIATED,
   DELETE_COMMENT_FAILED,
   COMMENT_DELETED,
-  UPDATE_COMMENT_LOCAL
+  UPDATE_COMMENT_LOCAL,
+  GET_CONVERSATIONS_INITIATED,
+  GET_CONVERSATIONS_FAILED,
+  GOT_CONVERSATIONS
 } from "../actions/actionTypes";
 
 const comments = (state = initialState.comments, action) => {
@@ -181,6 +184,28 @@ const comments = (state = initialState.comments, action) => {
         deletedComment: true,
         failedToDeleteComment: false,
         dComment: action.comment
+      });
+    case GET_CONVERSATIONS_INITIATED:
+      return Object.assign({}, state, {
+        gettingConversations: true,
+        gotConversations: false,
+        failedToGetConversations: false,
+        parent: action.parent
+      });
+    case GET_CONVERSATIONS_FAILED:
+      return Object.assign({}, state, {
+        gettingConversations: false,
+        gotConversations: false,
+        failedToGetConversations: true,
+        error: action.error,
+        parent: action.parent
+      });
+    case GOT_CONVERSATIONS:
+      return Object.assign({}, state, {
+        gettingConversations: false,
+        gotConversations: true,
+        failedToGetConversations: false,
+        conversations: action.conversations
       });
     default:
       return state;
