@@ -241,7 +241,7 @@ class Users extends Component {
     if (this.props.users.hasGottenUsers && this.state.users.empty) {
       return (
         <TableRow>
-          <TableData span="4" classes={["table__center_data"]}>
+          <TableData span="6" classes={["table__center_data"]}>
             No users found.
           </TableData>
         </TableRow>
@@ -250,7 +250,7 @@ class Users extends Component {
 
     return (
       <TableRow>
-        <TableData span="4" classes={["table__center_data"]}>
+        <TableData span="6" classes={["table__center_data"]}>
           Fetching users...
         </TableData>
       </TableRow>
