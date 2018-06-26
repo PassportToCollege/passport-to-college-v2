@@ -8,6 +8,7 @@ import _ from "lodash";
 
 import Modal from "../../../../../components/Modal";
 import Loader from "../../../../../components/Loader";
+import UsernameCard from "../../../../../components/UsernameCard";
 import Comment from "../../../../Comment";
 
 import * as commentActions from "../../../../../actions/commentActions";
@@ -44,9 +45,9 @@ class CommentLikes extends Component {
     }
 
     if (nextProps.users.hasGottenUsersByUid &&
-      !_.isEqual(state.users, nextProps.users.users)) {
+      !_.isEqual(state.users, nextProps.users.usersByUid)) {
         return {
-          users: nextProps.users.users
+          users: nextProps.users.usersByUid
         };
       }
 
@@ -92,8 +93,11 @@ class CommentLikes extends Component {
         <h2>Likes</h2>
         {
           this.props.users.hasGottenUsersByUid && this.state.users ?
-            <p>users</p> :
-            <Loader width="24px" />
+            this.state.users.map(user => {
+              return (
+                <UsernameCard key={user.uid} user={user} />
+              )
+            }) : <Loader width="24px" />
         }
       </Modal>
     )

@@ -162,7 +162,18 @@ class DashComments extends Component {
               {conversation.message.text}
             </TableData>
             <TableData>
-              {countLikes(conversation.likes)}
+              {
+                countLikes(conversation.likes) ?
+                  <Link className="dash_comments__likes"
+                    to={{
+                      pathname: `/admin/dashboard/post/${this.state.post}/comments/${conversation.id}/likes`,
+                      state: {
+                        referrer: this.props.location.pathname
+                      }
+                    }} >
+                    {countLikes(conversation.likes)}
+                  </Link> : countLikes(conversation.likes)
+              }
             </TableData>
             <TableData>
               {

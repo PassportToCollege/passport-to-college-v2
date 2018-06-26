@@ -9,7 +9,8 @@
   color: #333;
 }
 
-.dash_comments > table .dash_comments__replies {
+.dash_comments > table .dash_comments__replies,
+.dash_comments > table .dash_comments__likes {
   font-weight: bold;
   color: #FF6561;
 }

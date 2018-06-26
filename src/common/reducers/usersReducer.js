@@ -119,7 +119,7 @@ const users = (state = initialState.users, action) => {
         isGettingUsers: true,
         hasGottenUsersByUid: false,
         hasFailed: false,
-        users: action.users
+        usersByUid: action.users
       });
     case USERS_GET_BY_ID_FAILED:
       return Object.assign({}, state, {
@@ -134,7 +134,7 @@ const users = (state = initialState.users, action) => {
         isGettingUsers: false,
         hasGottenUsersByUid: true,
         hasFailed: false,
-        users: action.users
+        usersByUid: action.users
       });
     case USERS_UPDATE_INITIATED:
       return Object.assign({}, state, {
