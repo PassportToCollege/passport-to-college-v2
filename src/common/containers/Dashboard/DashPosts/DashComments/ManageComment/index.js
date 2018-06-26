@@ -6,6 +6,8 @@ import propTypes from "prop-types";
 
 import Modal from "../../../../../components/Modal";
 import AnnotatedList from "../../../../../components/AnnotatedList";
+import Toggler from "../../../../../components/Toggler";
+import Button from "../../../../../components/Button";
 import Comment from "../../../../Comment"
 
 import { countLikes } from "../../../../../utils";
@@ -44,6 +46,7 @@ class ManageComment extends Component {
               this.state.conversation ?
                 <React.Fragment>
                   <Comment readonly comment={this.state.conversation} />
+                  <h3>Stats</h3>
                   <AnnotatedList data={[
                     { label: "likes", text: countLikes(this.state.conversation.likes) },
                     { label: "replies", text: this.state.conversation.replies },
@@ -55,6 +58,25 @@ class ManageComment extends Component {
           </section>
           <section className="manage_comment__tasks">
             <h3>Actions</h3>
+            {
+              this.state.conversation ?
+                <AnnotatedList data={[
+                  {
+                    label: "Delete (Safe)",
+                    text: <Toggler state={this.state.conversation.isDeleted}
+                      doClick={this.handleSafeDelete} />
+                  },
+                  {
+                    label: "Delete (Permanent)",
+                    text: <Button solid type="button"
+                      text="Delete"
+                      doClick={this.handlePermaDelete}
+                      styles={{
+                        backgroundColor: "tomato"
+                      }} />
+                  }
+                ]} /> : null
+            }
           </section>
         </main>
       </Modal>

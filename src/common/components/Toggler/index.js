@@ -22,7 +22,7 @@ const Toggler = ({ state, doClick, options }) => {
 }
 
 Toggler.defaultProps = {
-  state: "off",
+  state: "no",
   options: {}
 };
 
