@@ -20,6 +20,7 @@ class ManageComment extends Component {
   static propTypes = {
     history: propTypes.object,
     match: propTypes.object,
+    location: propTypes.object,
     conversations: propTypes.arrayOf(propTypes.object)
   }
 
@@ -85,7 +86,7 @@ class ManageComment extends Component {
   }
 
   handleModalClose = () => {
-    this.props.history.push(this.props.history.location.state.referrer);
+    this.props.history.push(`/admin/dashboard/post/${this.state.conversation.post}/comments`);
   }
 
   getLikesLink = () => {
@@ -93,7 +94,12 @@ class ManageComment extends Component {
 
     if (likes) {
       return (
-        <Link to={`/admin/dashboard/post/${this.state.conversation.post}/comments/${this.state.conversation.id}/likes`}>
+        <Link to={{
+          pathname: `/admin/dashboard/post/${this.state.conversation.post}/comments/${this.state.conversation.id}/likes`,
+          state: {
+            referrer: this.props.location.pathname
+          }
+        }}>
           likes
         </Link>
       )

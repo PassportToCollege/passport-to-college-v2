@@ -9,12 +9,15 @@ import {
   USERS_SEND_SIGNUP_EMAIL_INITIATED,
   USERS_SEND_SIGNUP_EMAIL_FAILED,
   USERS_SIGNUP_EMAIL_SENT,
-  USERS_GET_BY_ID_INITIATED,
-  USERS_GET_BY_ID_FAILED,
-  USERS_GET_BY_ID_SUCCESS,
+  USER_GET_BY_ID_INITIATED,
+  USER_GET_BY_ID_FAILED,
+  USER_GET_BY_ID_SUCCESS,
   USERS_UPDATE_INITIATED,
   USERS_UPDATE_FAILED,
-  USERS_UPDATED
+  USERS_UPDATED,
+  USERS_GET_BY_ID_INITIATED,
+  USERS_GET_BY_ID_FAILED,
+  USERS_GET_BY_ID_SUCCESS
 } from "../actions/actionTypes";
 
 const users = (state = initialState.users, action) => {
@@ -89,14 +92,14 @@ const users = (state = initialState.users, action) => {
         hasFailed: false,
         email: action.email
       });
-    case USERS_GET_BY_ID_INITIATED:
+    case USER_GET_BY_ID_INITIATED:
       return Object.assign({}, state, {
         isGettingUser: true,
         hasGottenUser: false,
         hasFailed: false,
         user: action.user
       });
-    case USERS_GET_BY_ID_FAILED:
+    case USER_GET_BY_ID_FAILED:
       return Object.assign({}, state, {
         isGettingUser: false,
         hasGottenUser: false,
@@ -104,12 +107,34 @@ const users = (state = initialState.users, action) => {
         user: action.user,
         error: action.error
       });
-    case USERS_GET_BY_ID_SUCCESS:
+    case USER_GET_BY_ID_SUCCESS:
       return Object.assign({}, state, {
         isGettingUser: false,
         hasGottenUser: true,
         hasFailed: false,
         user: action.user
+      });
+    case USERS_GET_BY_ID_INITIATED:
+      return Object.assign({}, state, {
+        isGettingUsers: true,
+        hasGottenUsersByUid: false,
+        hasFailed: false,
+        users: action.users
+      });
+    case USERS_GET_BY_ID_FAILED:
+      return Object.assign({}, state, {
+        isGettingUsers: false,
+        hasGottenUsersByUid: false,
+        hasFailed: true,
+        users: action.users,
+        error: action.error
+      });
+    case USERS_GET_BY_ID_SUCCESS:
+      return Object.assign({}, state, {
+        isGettingUsers: false,
+        hasGottenUsersByUid: true,
+        hasFailed: false,
+        users: action.users
       });
     case USERS_UPDATE_INITIATED:
       return Object.assign({}, state, {

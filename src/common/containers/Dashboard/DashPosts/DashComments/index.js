@@ -9,6 +9,7 @@ import moment from "moment";
 import _ from "lodash";
 
 import ManageComment from "./ManageComment";
+import CommentLikes from "./CommentLikes";
 import PageMeta from "../../../../components/PageMeta";
 import LoadingText from "../../../../components/LoadingText";
 import Loader from "../../../../components/Loader";
@@ -118,6 +119,10 @@ class DashComments extends Component {
               render={props => {
                 return <ManageComment {...props} conversations={this.state.conversations} />
               }} />
+            
+            <Route exact
+              path={`/admin/dashboard/post/:post_id/comments/:comment_id/likes`}
+              component={CommentLikes} />
         </main>
       </div>
     )
