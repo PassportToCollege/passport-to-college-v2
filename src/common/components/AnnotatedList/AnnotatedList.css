@@ -17,8 +17,14 @@
   border-bottom: 1px solid rgba(26, 25, 25, 0.15);
 }
 
-.annotated_list > li .annotated_list__label {
+.annotated_list > li .annotated_list__label,
+.annotated_list > li .annotated_list__label > a {
   width: 45%;
   color: rgb(128, 150, 162);
   font-weight: bold;
+}
+
+.annotated_list > li .annotated_list__label > a:hover,
+.annotated_list > li .annotated_list__label > a:focus {
+  text-decoration: underline;
 }

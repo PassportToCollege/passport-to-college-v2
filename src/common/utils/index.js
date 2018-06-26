@@ -233,6 +233,7 @@ export class Comment {
     };
     this.post = post;
     this.isConversation = true;
+    this.isDeleted = false;
     this.hasReplies = false;
     this.replies = 0;
     this.postedOn = new Date(moment.utc(moment()).toDate()).getTime();
@@ -288,10 +289,14 @@ export class Comment {
   }
 
   getData() {
-    const { user, message, hasReplies, postedOn, post, isConversation, replies } = this;
+    const { 
+      user, message, hasReplies, postedOn, post, isConversation, replies,
+      isDeleted
+    } = this;
 
     return {
-      user, message, hasReplies, postedOn, post, isConversation, replies
+      user, message, hasReplies, postedOn, post, isConversation, replies,
+      isDeleted
     };
   }
 }
@@ -304,10 +309,10 @@ export class Reply extends Comment {
   }
 
   getData() {
-    const { user, message, hasReplies, postedOn, parent, post } = this;
+    const { user, message, hasReplies, postedOn, parent, post, isDeleted } = this;
 
     return {
-      user, message, hasReplies, postedOn, parent, post
+      user, message, hasReplies, postedOn, parent, post, isDeleted
     };
   }
 }

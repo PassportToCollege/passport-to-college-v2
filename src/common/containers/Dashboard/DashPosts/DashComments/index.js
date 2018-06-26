@@ -136,7 +136,8 @@ class DashComments extends Component {
               <IconButton type="button" icon="cog" solid
                 doClick={
                   () => this.props.history.push(
-                    `/admin/dashboard/post/${this.state.post}/comments/${conversation.id}`
+                    `/admin/dashboard/post/${this.state.post}/comments/${conversation.id}`,
+                    { referrer:  `/admin/dashboard/post/${this.state.post}/comments` }
                   )
                 } 
                 buttonTitle="Manage this Comment" 

@@ -1,7 +1,7 @@
 import "./ManageComment.css";
 
 import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import propTypes from "prop-types";
 
 import Modal from "../../../../../components/Modal";
@@ -48,7 +48,8 @@ class ManageComment extends Component {
                   <Comment readonly comment={this.state.conversation} />
                   <h3>Stats</h3>
                   <AnnotatedList data={[
-                    { label: "likes", text: countLikes(this.state.conversation.likes) },
+                    { 
+                      label: this.getLikesLink(), text: countLikes(this.state.conversation.likes) },
                     { label: "replies", text: this.state.conversation.replies },
                     { label: "reports", text: "0" }
                   ]} />
@@ -84,7 +85,21 @@ class ManageComment extends Component {
   }
 
   handleModalClose = () => {
-    this.props.history.goBack();
+    this.props.history.push(this.props.history.location.state.referrer);
+  }
+
+  getLikesLink = () => {
+    const likes = countLikes(this.state.conversation.likes);
+
+    if (likes) {
+      return (
+        <Link to={`/admin/dashboard/post/${this.state.conversation.post}/comments/${this.state.conversation.id}/likes`}>
+          likes
+        </Link>
+      )
+    }
+
+    return "likes"
   }
 }
 
