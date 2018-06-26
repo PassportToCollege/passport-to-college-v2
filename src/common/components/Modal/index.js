@@ -9,15 +9,18 @@ import WYSIWYGEditor from "../Editor";
 import Button from "../Button";
 import TextedIconButton from "../TextedIconButton";
 
+import { makeClassString } from "../../utils"; 
+
 export default class Modal extends Component {
   static propTypes = {
     children: propTypes.any,
-    doClose: propTypes.func
+    doClose: propTypes.func,
+    classes: propTypes.arrayOf(propTypes.string)
   }
 
   render() {
     return (
-      <div className="modal__container modal"
+      <div className={`modal__container modal ${makeClassString(this.props.classes)}`}
         ref={div => this.modal = div}>
         <div className="modal__bg" onClick={this.closeModal}></div>
         <div className="modal__content">

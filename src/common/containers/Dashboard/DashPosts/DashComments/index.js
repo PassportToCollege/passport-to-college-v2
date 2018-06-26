@@ -1,17 +1,19 @@
 import "./DashComments.css";
 
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, Route } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux"
 import propTypes from "prop-types";
 import moment from "moment";
 import _ from "lodash";
 
+import ManageComment from "./ManageComment";
 import PageMeta from "../../../../components/PageMeta";
 import LoadingText from "../../../../components/LoadingText";
 import Loader from "../../../../components/Loader";
 import Button from "../../../../components/Button";
+import IconButton from "../../../../components/IconButton";
 import { Table, TableData, TableHeader, TableRow } from "../../../../components/Table";
 
 import { countLikes } from "../../../../utils";
@@ -39,7 +41,9 @@ class DashComments extends Component {
 
   componentDidMount() {
     this.props.postActions.doPostGet(this.state.post);
-    this.props.commentActions.doGetConversations(this.state.post);
+    this.props.commentActions.doGetConversations(this.state.post, {
+      getUserPicture: true
+    });
   }
   
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -98,6 +102,7 @@ class DashComments extends Component {
           <Table classes={["table__default"]}
             headers={
               <TableRow>
+                <TableHeader />
                 <TableHeader heading="user" />
                 <TableHeader heading="comment" />
                 <TableHeader heading="likes" />
@@ -107,6 +112,12 @@ class DashComments extends Component {
               </TableRow>
             }
             rows={this._renderTableDate()} />
+
+            <Route exact
+              path={`/admin/dashboard/post/:post_id/comments/:conversation_id`}
+              render={props => {
+                return <ManageComment {...props} conversations={this.state.conversations} />
+              }} />
         </main>
       </div>
     )
@@ -121,6 +132,20 @@ class DashComments extends Component {
       return this.state.conversations.map(conversation => {
         return (
           <TableRow key={conversation.id}>
+            <TableData>
+              <IconButton type="button" icon="cog" solid
+                doClick={
+                  () => this.props.history.push(
+                    `/admin/dashboard/post/${this.state.post}/comments/${conversation.id}`
+                  )
+                } 
+                buttonTitle="Manage this Comment" 
+                styles={{
+                  width: "24px",
+                  height: "24px",
+                  fontSize: "1em"
+                }} />
+            </TableData>
             <TableData>
               <Link className="dash_comments__user"
                 to={`/admin/dashboard/users/view/${conversation.user.uid}`}>
@@ -137,7 +162,7 @@ class DashComments extends Component {
               {
                 conversation.replies ?
                   <Link className="dash_comments__replies"
-                    to={`${this.props.location.pathname}/replies`}>
+                    to={`${this.props.location.pathname}/${conversation.id}/replies`}>
                     {conversation.replies}
                   </Link> :
                   <span>0</span>
@@ -158,7 +183,7 @@ class DashComments extends Component {
     if (this.props.comments.failedToGetConversations) {
       return (
         <TableRow>
-          <TableData span="6" classes={["table__center_data"]}>
+          <TableData span="7" classes={["table__center_data"]}>
             {this.props.comments.error.message}
           </TableData>
         </TableRow>
@@ -167,7 +192,7 @@ class DashComments extends Component {
 
     return (
       <TableRow>
-        <TableData span="6" classes={["table__center_data"]}>
+        <TableData span="7" classes={["table__center_data"]}>
           <Loader width="24px"
             styles={{
               display: "inline-block",

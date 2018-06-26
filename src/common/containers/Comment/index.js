@@ -39,11 +39,13 @@ class Comment extends Component {
     hideAll: propTypes.bool,
     doHideAll: propTypes.func,
     onReplyClick: propTypes.func,
-    onReply: propTypes.func
+    onReply: propTypes.func,
+    readonly: propTypes.bool
   }
 
   static defaultProps = {
-    reply: false
+    reply: false,
+    readonly: false
   }
 
   render() {
@@ -90,13 +92,16 @@ class Comment extends Component {
           onMouseLeave={() => this.setState({ showMoreMenu: false })}>
           <CommentHeader comment={this.props.comment} />
           <WYSIWYGEditor readonly content={this.props.comment.message.html} />
-          <LikeComment comment={this.props.comment} />
-          <span className="comment__reply_button"
-            onClick={this.handleReplyClick}>
-            Reply
-          </span>
+          <LikeComment comment={this.props.comment} readonly={this.props.readonly} />
           {
-            !this.props.comment.isConversation && this.state.replying ?
+            !this.props.readonly ?
+              <span className="comment__reply_button"
+                onClick={this.handleReplyClick}>
+                Reply
+              </span> : null
+          }
+          {
+            !this.props.readonly && !this.props.comment.isConversation && this.state.replying ?
               <Responder type="comment" active={this.state.replying}
                 comment={this.props.comment}
                 postId={this.props.comment.post}
@@ -105,7 +110,7 @@ class Comment extends Component {
                 doClose={this.listenResponderClose} /> : null
           }
           {
-            this.props.comment.isConversation && this.props.viewAll ?
+            !this.props.readonly && this.props.comment.isConversation && this.props.viewAll ?
               <span className="comment__view_all" onClick={this.handleViewAllClick}>
                 {
                   this.props.comment.replies > 1 ?
@@ -119,7 +124,7 @@ class Comment extends Component {
               </span> : null
           }
           {
-            this.props.comment.isConversation && this.props.hideAll ?
+            !this.props.readonly && this.props.comment.isConversation && this.props.hideAll ?
             <span className="comment__hide_all" onClick={this.handleHideAllClick}>
                 {
                   this.props.comment.replies > 1 ?
@@ -133,7 +138,7 @@ class Comment extends Component {
               </span> : null
           }
           {
-            this.state.showMoreMenu && isAuthorized() ?
+            !this.props.readonly && this.state.showMoreMenu && isAuthorized() ?
               <div className="comment__more_menu_container">
                 <MoreMenu menuItems={menuItems}/>
               </div> : null
