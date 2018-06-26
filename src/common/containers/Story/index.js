@@ -198,7 +198,7 @@ class Story extends Component {
         }
         <BorderTopContainer classes="story__more">
           {
-            this.state.more.length ?
+            this.props.posts.gotMostRecentByCategory && this.state.more.length ?
             <PostCardGrid posts={this.state.more} /> : null
           }
         </BorderTopContainer>
@@ -206,25 +206,25 @@ class Story extends Component {
           <h4> 
             Conversations 
             {
-              this.state.post && this.state.post.conversations ? 
+              this.props.post.hasGotten && this.state.post && this.state.post.conversations ? 
                 ` (${this.props.post.post.conversations})` : ""
             } 
           </h4>
           {
-            this.state.post ?
+            this.props.post.hasGotten && this.state.post ?
               <Responder  postId={this.state.id}
                 post={this.state.post} 
                 onResponse={this.handleResponse} /> : null
           }
           {
-            this.state.post ?
+            this.props.post.hasGotten && this.state.post ?
               <CommentSection post={this.state.post} 
                 newComment={this.state.newResponse} 
                 all={this.state.allConversations} /> :
               null
           }
           {
-            this.state.post && this.props.comments.gotComments &&
+            this.props.post.hasGotten && this.state.post && this.props.comments.gotComments &&
             this.props.comments.comments.length < this.state.post.conversations ?
               <span className="story__response_view_all"
                 onClick={() => this.setState({ allConversations: true })}>

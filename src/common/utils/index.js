@@ -255,7 +255,7 @@ export class Comment {
         const bwi = text.toLowerCase().indexOf(badword);
 
         if (bwi > -1) {
-          block.text = text.toLowerCase().replace(re, hearts);
+          block.text = text.replace(re, hearts);
         }
       }
     }
@@ -272,7 +272,7 @@ export class Comment {
       const bwi = text.toLowerCase().indexOf(badword)
 
       if (bwi > -1) {
-        text = text.toLowerCase().replace(re, hearts);
+        text = text.replace(re, hearts);
       }
     }
 

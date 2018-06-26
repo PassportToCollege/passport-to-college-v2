@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import { withRouter, Link } from "react-router-dom";
 import propTypes from "prop-types";
 
+import PageMeta from "../../../../../components/PageMeta";
 import Modal from "../../../../../components/Modal";
 import AnnotatedList from "../../../../../components/AnnotatedList";
 import Toggler from "../../../../../components/Toggler";
@@ -38,6 +39,10 @@ class ManageComment extends Component {
 
   render() {
     return (
+      <React.Fragment>
+      {
+        
+      }
       <Modal doClose={this.handleModalClose}
         classes={["modal__manage_comment"]}>
         <h2>Manage this Conversation</h2>
@@ -65,7 +70,7 @@ class ManageComment extends Component {
                 <AnnotatedList data={[
                   {
                     label: "Delete (Safe)",
-                    text: <Toggler state={this.state.conversation.isDeleted}
+                    text: <Toggler state={this.state.conversation.isDeleted ? "yes" : "no"}
                       doClick={this.handleSafeDelete} />
                   },
                   {
@@ -82,6 +87,7 @@ class ManageComment extends Component {
           </section>
         </main>
       </Modal>
+      </React.Fragment>
     )
   }
 
