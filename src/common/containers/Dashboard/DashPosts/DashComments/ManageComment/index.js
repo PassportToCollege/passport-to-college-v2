@@ -41,7 +41,11 @@ class ManageComment extends Component {
     return (
       <React.Fragment>
       {
-        
+        <PageMeta more={
+          <title>
+            Manage Comment | {this.state.conversationId} | Dashboard | Passport to College
+          </title>
+        } />
       }
       <Modal doClose={this.handleModalClose}
         classes={["modal__manage_comment"]}>

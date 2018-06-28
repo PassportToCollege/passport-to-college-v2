@@ -10,6 +10,7 @@ import Modal from "../../../../../components/Modal";
 import Loader from "../../../../../components/Loader";
 import UsernameCard from "../../../../../components/UsernameCard";
 import Comment from "../../../../Comment";
+import PageMeta from "../../../../../components/PageMeta";
 
 import * as commentActions from "../../../../../actions/commentActions";
 import * as usersActions from "../../../../../actions/usersActions";
@@ -19,7 +20,9 @@ class CommentLikes extends Component {
     super(props);
 
     this.state = {
-      commentId: props.match.params.comment_id
+      commentId: props.match.params.comment_id,
+      comment: props.comments.comment,
+      users: props.users.usersByUid
     }
   }
 
@@ -33,7 +36,10 @@ class CommentLikes extends Component {
   }
 
   componentDidMount() {
-    this.props.commentActions.doGetComment(this.state.commentId);
+    if (!this.state.comment ||
+      (this.state.comment && this.state.comment.id !== this.state.commentId)) {
+      this.props.commentActions.doGetComment(this.state.commentId);
+    }
   }
 
   static getDerivedStateFromProps(nextProps, state) {
@@ -83,23 +89,30 @@ class CommentLikes extends Component {
 
   render() {
     return (
-      <Modal doClose={this.handleModalClose}
-        classes={["modal__comment_likes"]}>
-        {
-          this.props.comments.gotComment && this.state.comment ?
-            <Comment readonly={true} comment={this.state.comment} /> :
-            <Loader width="24px" />
-        }
-        <h2>Likes</h2>
-        {
-          this.props.users.hasGottenUsersByUid && this.state.users ?
-            this.state.users.map(user => {
-              return (
-                <UsernameCard key={user.uid} user={user} />
-              )
-            }) : <Loader width="24px" />
-        }
-      </Modal>
+      <React.Fragment>
+        <PageMeta more={
+          <title>
+            Likes | {this.state.commentId} | Dashboard | Passport to College 
+          </title>
+        } />
+        <Modal doClose={this.handleModalClose}
+          classes={["modal__comment_likes"]}>
+          {
+            this.props.comments.gotComment && this.state.comment ?
+              <Comment readonly={true} comment={this.state.comment} /> :
+              <Loader width="24px" />
+          }
+          <h2>Likes</h2>
+          {
+            this.props.users.hasGottenUsersByUid && this.state.users ?
+              this.state.users.map(user => {
+                return (
+                  <UsernameCard key={user.uid} user={user} />
+                )
+              }) : <Loader width="24px" />
+          }
+        </Modal>
+      </React.Fragment>
     )
   }
 
