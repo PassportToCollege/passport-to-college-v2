@@ -163,6 +163,7 @@ export class User {
     this.isApplicant = options.applicant || false;
     this.isStudent = options.student || false;
     this.isStaff = options.staff || false;
+    this.hasProfilePicture = options.hasProfilePicture || !!options.photo || false;
     this.emailConfirmed = options.emailConfirmed || false;
     this.photo = options.photo || "";
 
@@ -188,11 +189,11 @@ export class User {
   }
 
   getData() {
-    const { uid, name, email, isAdmin, isApplicant, isStudent, isStaff, emailConfirmed, photo } = this;
+    const { uid, name, email, isAdmin, isApplicant, isStudent, isStaff, emailConfirmed, photo, hasProfilePicture } = this;
     return {
       uid, name, email,
       isAdmin, isApplicant, isStudent,
-      isStaff, emailConfirmed, photo
+      isStaff, emailConfirmed, photo, hasProfilePicture
     };
   }
 }

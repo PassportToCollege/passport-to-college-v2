@@ -90,7 +90,7 @@ export const doGetComment = (comment, options = {}) => {
           let comment = snapshot.data();
           comment.id = snapshot.id;
 
-          if (storage) {
+          if (storage && comment.user.hasProfilePicture) {
             return storage.ref("users/profile_images")
               .child(`${comment.user.uid}.png`)
               .getDownloadURL()
@@ -157,13 +157,13 @@ export const doGetComments = (post, page = 1) => {
             let comment = snapshot.data();
             comment.id = snapshot.id;
 
-            if (storage && !comment.user.photo)
+            if (storage && comment.user.hasProfilePicture)
               ppPromises.push(storage.ref("users/profile_images").child(`${comment.user.uid}.png`).getDownloadURL());
             
             comments.push(comment);
           });
 
-          if (storage) {
+          if (storage && ppPromises.length) {
             return Promise.all(ppPromises).then(urls => {
               for (let comment of comments) {
                 comment.user.profilePicture = urls.find(url => {
@@ -209,13 +209,13 @@ export const doGetComments = (post, page = 1) => {
               let comment = snapshot.data();
               comment.id = snapshot.id;
 
-              if (storage && !comment.user.photo)
+              if (storage && comment.user.hasProfilePicture)
                 ppPromises.push(storage.ref("users/profile_images").child(`${comment.user.uid}.png`).getDownloadURL());
               
               comments.push(comment);
             });
 
-            if (storage) {
+            if (storage && ppPromises.length) {
               return Promise.all(ppPromises).then(urls => {
                 for (let comment of comments) {
                   comment.user.profilePicture = urls.find(url => {
@@ -277,13 +277,13 @@ export const doGetConversations = (parent, options = {}) => {
           let conversation = snapshot.data();
           conversation.id = snapshot.id;
 
-          if (storage && options.getUserPicture && !conversation.user.photo)
+          if (storage && options.getUserPicture && conversation.user.hasProfilePicture)
             ppPromises.push(storage.ref("users/profile_images").child(`${conversation.user.uid}.png`).getDownloadURL());
 
           conversations.push(conversation);
         });
 
-        if (storage && options.getUserPicture) {
+        if (storage && options.getUserPicture && ppPromises.length) {
           return Promise.all(ppPromises).then(urls => {
             for (let conversation of conversations) {
               conversation.user.profilePicture = urls.find(url => {
@@ -347,13 +347,13 @@ export const doGetReplies = (parent, page = 1) => {
             let reply = snapshot.data();
             reply.id = snapshot.id;
 
-            if (storage && !reply.user.photo)
+            if (storage && reply.user.hasProfilePicture)
               ppPromises.push(storage.ref("users/profile_images").child(`${reply.user.uid}.png`).getDownloadURL());
             
             replies.push(reply);
           });
 
-          if (storage) {
+          if (storage && ppPromises.length) {
             return Promise.all(ppPromises).then(urls => {
               for (let reply of replies) {
                 reply.user.profilePicture = urls.find(url => {
@@ -396,13 +396,13 @@ export const doGetReplies = (parent, page = 1) => {
                let reply = snapshot.data();
                reply.id = snapshot.id;
    
-               if (storage && !reply.user.photo)
+               if (storage && reply.user.hasProfilePicture)
                  ppPromises.push(storage.ref("users/profile_images").child(`${reply.user.uid}.png`).getDownloadURL());
                
                replies.push(reply);
              });
    
-             if (storage) {
+             if (storage && ppPromises.length) {
                return Promise.all(ppPromises).then(urls => {
                  for (let reply of replies) {
                    reply.user.profilePicture = urls.find(url => {
@@ -438,13 +438,13 @@ export const doGetReplies = (parent, page = 1) => {
             let reply = snapshot.data();
             reply.id = snapshot.id;
 
-            if (storage && !reply.user.photo)
+            if (storage && reply.user.hasProfilePicture)
               ppPromises.push(storage.ref("users/profile_images").child(`${reply.user.uid}.png`).getDownloadURL());
             
             replies.push(reply);
           });
 
-          if (storage) {
+          if (storage && ppPromises.length) {
             return Promise.all(ppPromises).then(urls => {
               for (let reply of replies) {
                 reply.user.profilePicture = urls.find(url => {
@@ -497,7 +497,7 @@ export const doGetReply = (parent, reply) => {
         let reply = snapshot.data();
         reply.id = snapshot.id;
 
-        if (storage) {
+        if (storage && reply.user.hasProfilePicture) {
           return storage.ref("users/profile_images")
             .child(`${reply.user.uid}.png`)
             .getDownloadURL()
@@ -506,7 +506,7 @@ export const doGetReply = (parent, reply) => {
               dispatch(gotReply(parent, reply));
             })
             .catch(error => {
-              console.log(error);
+              Console.log(error);
               dispatch(getReplyFailed(error));
             });
           }
