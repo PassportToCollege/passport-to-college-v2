@@ -5,6 +5,7 @@ import { connect} from "react-redux";
 import { bindActionCreators } from "redux";
 import { Link } from "react-router-dom";
 import propTypes from "prop-types";
+import _ from "lodash";
 
 import * as postActions from "../../actions/postActions";
 import * as postsActions from "../../actions/postsActions";
@@ -87,7 +88,7 @@ class Story extends Component {
     }
 
     if (snapshot && snapshot.getMore) {
-      this.props.postsActions.doPostsGetMostRecentByCategory(this.state.post.category, {
+      this.props.postsActions.doPostsGetMostRecentByCategory(this.props.post.post.category, {
         exclude: this.state.id
       });
     }
@@ -102,30 +103,40 @@ class Story extends Component {
   }
   
   static getDerivedStateFromProps(nextProps, prevState) {
-    let newState = null;
-
-    if (nextProps.post.hasGotten) {
-      newState = {};
-      newState.post = nextProps.post.post;
+    if (nextProps.post.hasGotten && !_.isEqual(prevState.post, nextProps.post.post)) {
+      return {
+        post: nextProps.post.post
+      };
     }
 
-    if (nextProps.post.gotHero) {
-      newState = newState || {};
-      newState.hero = nextProps.post.hero;
+    if (nextProps.post.updatedLocalConversationsCount && 
+      !_.isEqual(prevState.post, nextProps.post.post)) {
+      return {
+        post: nextProps.post.post
+      };
+    }
+
+    if (nextProps.post.gotHero && (prevState.hero !== nextProps.post.hero)) {
+      return {
+        hero: nextProps.post.hero
+      };
     }
     
-    if (nextProps.posts.gotMostRecentByCategory) {
-      newState = newState || {};
-      newState.more = nextProps.posts.moreByCategory;
+    if (nextProps.posts.gotMostRecentByCategory && 
+      !_.isEqual(prevState.more, nextProps.posts.moreByCategory)) {
+      return {
+        more: nextProps.posts.moreByCategory
+      };
     }
 
     if (nextProps.match.params && nextProps.match.params.post_id 
       && (nextProps.match.params.post_id !== prevState.id)) {
-      newState = newState || {};  
-      newState.id = nextProps.match.params.post_id;
+      return {
+        id: nextProps.match.params.post_id
+      };
     }
 
-    return newState;
+    return null;
   }
 
   render() {
