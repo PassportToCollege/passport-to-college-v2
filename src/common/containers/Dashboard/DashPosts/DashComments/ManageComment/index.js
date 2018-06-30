@@ -40,13 +40,11 @@ class ManageComment extends Component {
   render() {
     return (
       <React.Fragment>
-      {
-        <PageMeta more={
-          <title>
-            Manage Comment | {this.state.conversationId} | Dashboard | Passport to College
-          </title>
-        } />
-      }
+      <PageMeta more={
+        <title>
+          Manage Comment | {this.state.conversationId} | Dashboard | Passport to College
+        </title>
+      } />
       <Modal doClose={this.handleModalClose}
         classes={["modal__manage_comment"]}>
         <h2>Manage this Conversation</h2>
@@ -60,7 +58,7 @@ class ManageComment extends Component {
                   <AnnotatedList data={[
                     { 
                       label: this.getLikesLink(), text: countLikes(this.state.conversation.likes) },
-                    { label: "replies", text: this.state.conversation.replies },
+                    { label: this.getRepliesLink(), text: this.state.conversation.replies },
                     { label: "reports", text: "0" }
                   ]} />
                 </React.Fragment> 
@@ -114,8 +112,25 @@ class ManageComment extends Component {
         </Link>
       )
     }
-
+    
     return "likes"
+  }
+
+  getRepliesLink = () => {
+    if (this.state.conversation && this.state.conversation.hasReplies) {
+      return (
+        <Link to={{
+          pathname: `/admin/dashboard/post/${this.state.conversation.post}/comments/${this.state.conversation.id}/replies`,
+          state: {
+            referrer: this.props.location.pathname
+          }
+        }}>
+          replies
+        </Link>
+      )
+    }
+
+    return "replies"
   }
 }
 

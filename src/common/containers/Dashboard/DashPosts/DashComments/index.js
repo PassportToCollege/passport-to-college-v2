@@ -10,6 +10,7 @@ import _ from "lodash";
 
 import ManageComment from "./ManageComment";
 import CommentLikes from "./CommentLikes";
+import DashReplies from "./DashReplies";
 import PageMeta from "../../../../components/PageMeta";
 import LoadingText from "../../../../components/LoadingText";
 import Loader from "../../../../components/Loader";
@@ -112,16 +113,20 @@ class DashComments extends Component {
                 <TableHeader heading="posted on?" />
               </TableRow>
             }
-            rows={this._renderTableDate()} />
+            rows={this._renderTableData()} />
 
             <Route exact
-              path={`/admin/dashboard/post/:post_id/comments/:conversation_id`}
+              path="/admin/dashboard/post/:post_id/comments/:conversation_id"
               render={props => {
                 return <ManageComment {...props} conversations={this.state.conversations} />
               }} />
             
             <Route exact
-              path={`/admin/dashboard/post/:post_id/comments/:comment_id/likes`}
+              path="/admin/dashboard/post/:post_id/comments/:conversation_id/replies"
+              component={DashReplies} />
+
+            <Route exact
+              path="/admin/dashboard/post/:post_id/comments/:comment_id/likes"
               component={CommentLikes} />
         </main>
       </div>
@@ -132,7 +137,7 @@ class DashComments extends Component {
     this.props.history.push(`/admin/dashboard/posts/e/${this.state.post}`);
   }
 
-  _renderTableDate = () => {
+  _renderTableData = () => {
     if (this.props.comments.gotConversations && this.state.conversations) {
       return this.state.conversations.map(conversation => {
         return (
@@ -179,7 +184,12 @@ class DashComments extends Component {
               {
                 conversation.replies ?
                   <Link className="dash_comments__replies"
-                    to={`${this.props.location.pathname}/${conversation.id}/replies`}>
+                    to={{
+                      pathname: `/admin/dashboard/post/${this.state.post}/comments/${conversation.id}/replies`,
+                      state: {
+                        referrer: this.props.location.pathname
+                      }
+                    }}>
                     {conversation.replies}
                   </Link> :
                   <span>0</span>
