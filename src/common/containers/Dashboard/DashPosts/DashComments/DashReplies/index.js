@@ -1,7 +1,7 @@
 import "./DashReplies.css";
 
 import React, { Component } from "react";
-import { Link, Route } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux"
 import propTypes from "prop-types";
@@ -10,9 +10,7 @@ import _ from "lodash";
 
 import PageMeta from "../../../../../components/PageMeta";
 import Modal from "../../../../../components/Modal";
-import LoadingText from "../../../../../components/LoadingText";
 import Loader from "../../../../../components/Loader";
-import Button from "../../../../../components/Button";
 import IconButton from "../../../../../components/IconButton";
 import { Table, TableData, TableHeader, TableRow } from "../../../../../components/Table";
 
@@ -24,7 +22,8 @@ class DashReplies extends Component {
     super(props);
 
     this.state = {
-      conversation: props.match.params.conversation_id
+      conversation: props.match.params.conversation_id,
+      post: props.post
     }
   }
 
@@ -33,7 +32,8 @@ class DashReplies extends Component {
     commentActions: propTypes.object,
     history: propTypes.object,
     match: propTypes.object,
-    location: propTypes.object
+    location: propTypes.object,
+    post: propTypes.string
   }
 
   componentDidMount() {
@@ -89,7 +89,11 @@ class DashReplies extends Component {
   }
 
   handleModalClose = () => {
-    this.props.history.push(this.props.history.location.state.referrer);
+    if (this.props.location && this.props.location.state) {
+      return this.props.history.push(this.props.history.location.state.referrer);
+    }
+
+    this.props.history.push(`/admin/dashboard/post/${this.state.post}/comments`);
   }
 
   _renderTableData = () => {
@@ -144,6 +148,29 @@ class DashReplies extends Component {
         )
       })
     }
+
+    if (this.props.comments.failedToGetReplies && !this.state.replies) {
+      return (
+        <TableRow>
+          <TableData span="7" classes={["table__center_data"]}>
+            {this.props.comments.error.message}
+          </TableData>
+        </TableRow>
+      )
+    }
+
+    return (
+      <TableRow>
+        <TableData span="7" classes={["table__center_data"]}>
+          <Loader width="24px"
+            styles={{
+              display: "inline-block",
+              verticalAlign: "middle",
+              margin: "0 0 0 1em"
+            }} />
+        </TableData>
+      </TableRow>
+    )
   }
 }
 

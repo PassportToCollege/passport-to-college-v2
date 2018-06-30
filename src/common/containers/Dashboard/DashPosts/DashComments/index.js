@@ -123,7 +123,9 @@ class DashComments extends Component {
             
             <Route exact
               path="/admin/dashboard/post/:post_id/comments/:conversation_id/replies"
-              component={DashReplies} />
+              render={props => {
+                return <DashReplies {...props} post={this.state.post} />
+              }} />
 
             <Route exact
               path="/admin/dashboard/post/:post_id/comments/:comment_id/likes"
