@@ -134,7 +134,7 @@ class ManageComment extends Component {
     if (this.props.location && this.props.location.state) {
       return this.props.history.push(this.props.history.location.state.referrer);
     }
-    
+
     this.props.history.push(`/admin/dashboard/post/${this.state.comment.post}/comments`);
   }
 
@@ -144,7 +144,9 @@ class ManageComment extends Component {
     if (likes) {
       return (
         <Link to={{
-          pathname: `/admin/dashboard/post/${this.props.post}/comments/${this.state.conversationId || this.state.replyId}/likes`,
+          pathname: this.state.replyId ? 
+            `/admin/dashboard/post/${this.props.post}/comments/${this.state.replyId}/likes` : 
+            `/admin/dashboard/post/${this.props.post}/comments/${this.state.conversationId}/likes`,
           state: {
             referrer: this.props.location.pathname
           }
