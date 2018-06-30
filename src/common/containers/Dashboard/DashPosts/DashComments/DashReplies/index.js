@@ -105,7 +105,7 @@ class DashReplies extends Component {
               <IconButton type="button" icon="cog" solid
                 doClick={
                   () => this.props.history.push(
-                    `/admin/dashboard/post/${reply.post}/comments/${this.state.conversation}`,
+                    `/admin/dashboard/post/${reply.post}/comments/${this.state.conversation}/reply/${reply.id}`,
                     { referrer:  this.props.location.pathname }
                   )
                 } 
@@ -130,7 +130,7 @@ class DashReplies extends Component {
                 countLikes(reply.likes) ?
                   <Link className="dash_comments__likes"
                     to={{
-                      pathname: `/admin/dashboard/post/${reply.post}/comments/${this.state.conversation}/likes`,
+                      pathname: `/admin/dashboard/post/${reply.post}/comments/${reply.id}/likes`,
                       state: { referrer: this.props.location.pathname }
                     }} >
                     {countLikes(reply.likes)}

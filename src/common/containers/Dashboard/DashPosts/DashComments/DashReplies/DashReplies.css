@@ -2,3 +2,15 @@
   width: 1170px;
   padding: 2em; 
 }
+
+/* Table */
+.conversation_replies > table .dash_comments__user {
+  display: block;
+  font-weight: bold;
+  color: #333;
+}
+
+.conversation_replies > table .dash_comments__likes {
+  font-weight: bold;
+  color: #FF6561;
+}
