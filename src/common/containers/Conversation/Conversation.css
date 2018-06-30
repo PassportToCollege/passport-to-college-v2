@@ -20,9 +20,14 @@
   padding: 0.5em;
 }
 
-.conversation > .responder > .responder__meta .responder__meta_profile_pic {
+.conversation > .responder > .responder__meta .responder__meta_profile_pic,
+.conversation > .responder .responder__meta .initials_avatar {
   width: 32px;
   height: 32px;
+}
+
+.conversation > .responder .responder__meta .initials_avatar {
+  font-size: 1.25em;
 }
 
 .conversation > .responder > .responder__editor .editor__editor {
