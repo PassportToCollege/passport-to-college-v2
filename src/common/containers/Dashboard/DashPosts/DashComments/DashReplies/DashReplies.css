@@ -3,6 +3,15 @@
   padding: 2em; 
 }
 
+.modal__conversation_replies > .modal__content > h2 {
+  margin-bottom: 0;
+}
+
+.modal__conversation_replies > .modal__content > h5 {
+  margin-top: 0;
+  font-family: "Nunito", sans-serif;
+}
+
 /* Table */
 .conversation_replies > table .dash_comments__user {
   display: block;

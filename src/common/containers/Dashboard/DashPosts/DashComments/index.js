@@ -89,16 +89,21 @@ class DashComments extends Component {
                 ]
               }} />
           }
-          <Button type="button" solid
-            text="back to post"
-            doClick={this.goBackToPost}
-            styles={{
-              position: "absolute",
-              right: "2em",
-              top: "50%",
-              transform: "translateY(-50%)",
-              backgroundColor: "#FFCB61"
-            }} />
+          <div className="header_buttons">
+            <Button type="button" solid
+              text="back to post"
+              doClick={this.goBackToPost}
+              styles={{
+                marginRight: "1em",
+                backgroundColor: "#FFCB61"
+              }} />
+            <Button type="button" solid
+              text="back to all posts"
+              doClick={this.goBackToPosts}
+              styles={{
+                backgroundColor: "#FF6561"
+              }} />
+          </div>
         </header>
         <main className="dash_comments">
           <Table classes={["table__default"]}
@@ -143,6 +148,10 @@ class DashComments extends Component {
 
   goBackToPost = () => {
     this.props.history.push(`/admin/dashboard/posts/e/${this.state.post}`);
+  }
+
+  goBackToPosts = () => {
+    this.props.history.push("/admin/dashboard/posts");
   }
 
   _renderTableData = () => {
