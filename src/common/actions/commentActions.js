@@ -684,3 +684,46 @@ export const doDeleteComment = (comment = {}, options = {}) => {
       })
   }
 }
+
+export const safeDeleteInitiated = comment => {
+  return {
+    type: types.SAFE_DELETE_COMMENT_INITIATED,
+    comment
+  };
+};
+
+export const safeDeleteFailed = (error, comment) => {
+  return {
+    type: types.SAFE_DELETE_COMMENT_FAILED,
+    error, comment
+  };
+};
+
+export const safelyDeleted = comment => {
+  return {
+    type: types.SAFELY_DELETED_COMMENT,
+    comment
+  };
+};
+
+export const doDeleteCommentSafe = (comment = {}, options = {}) => {
+  return dispatch => {
+    if (!Object.keys(comment).length)
+      return dispatch(safeDeleteFailed({ message: "no comment provided" }, null));
+
+    dispatch(safeDeleteInitiated(comment));
+    const isDeleted = !!options.undelete;
+
+    return db.collection("comments")
+      .doc(comment.id)
+      .update({ isDeleted })
+      .then(() => {
+        comment.isDeleted = isDeleted;
+        dispatch(safelyDeleted(comment));
+      })
+      .catch(error => {
+        Console.log(error);
+        dispatch(safeDeleteFailed(error, comment));
+      });
+  };
+};

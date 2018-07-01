@@ -8,6 +8,7 @@ import propTypes from "prop-types";
 import _ from "lodash";
 
 import PageMeta from "../../../../../components/PageMeta";
+import Loader from "../../../../../components/Loader";
 import Modal from "../../../../../components/Modal";
 import AnnotatedList from "../../../../../components/AnnotatedList";
 import Toggler from "../../../../../components/Toggler";
@@ -46,8 +47,7 @@ class ManageComment extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, state) {
-    if (nextProps.conversations &&
-      !_.isEqual(state.comment, nextProps.conversation)) {
+    if (nextProps.conversations) {
       return {
         comment: nextProps.conversations.find(el => {
           return el.id === state.conversationId
@@ -60,6 +60,13 @@ class ManageComment extends Component {
       return {
         comment: nextProps.comments.reply
       }
+    }
+
+    if (nextProps.comments.safelyDeletedComment &&
+      !_.isEqual(state.comment, nextProps.comments.dComment)) {
+      return {
+        comment: nextProps.comments.dComment
+      };
     }
 
     return null;
@@ -110,20 +117,33 @@ class ManageComment extends Component {
                   {
                     label: "Delete (Safe)",
                     text: <Toggler state={this.state.comment.isDeleted ? "yes" : "no"}
-                      doClick={this.handleSafeDelete} />
+                      doClick={this.handleSafeDelete} 
+                      disabled={this.props.comments.safelyDeletingComment} 
+                      options={{
+                        title: this.state.comment.isDeleted ? "Comment is deleted" : "Make this comment deleted"
+                      }} />
                   },
                   {
                     label: "Delete (Permanent)",
                     text: <Button solid type="button"
                       text="Delete"
-                      doClick={this.handlePermaDelete}
-                      styles={{
-                        backgroundColor: "tomato"
-                      }} />
+                      doClick={this.handlePermaDelete} />
                   }
                 ]} /> : null
             }
           </section>
+          {
+            this.props.comments.safelyDeletingComment ?
+              <Loader width="24px"
+                styles={{
+                  display: "inline-block",
+                  verticalAlign: "middle",
+                  margin: "0 0 0 1em",
+                  position: "absolute",
+                  right: "2em",
+                  bottom: "2em"
+                }} /> : null
+          }
         </main>
       </Modal>
       </React.Fragment>
@@ -174,6 +194,14 @@ class ManageComment extends Component {
     }
 
     return "replies"
+  }
+
+  handleSafeDelete = () => {
+    if (!this.props.comments.safelyDeletingComment) {
+      this.props.commentActions.doDeleteCommentSafe(this.state.comment, {
+        undelete: !this.state.comment.isDeleted
+      });
+    }
   }
 }
 

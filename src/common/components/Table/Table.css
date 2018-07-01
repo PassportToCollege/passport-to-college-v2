@@ -25,6 +25,11 @@ table.table>thead>tr>th {
 table.table>tbody>tr>td {
   padding: 1em;
   background-color: #fff;
+  vertical-align: top;
+}
+
+table.table>tbody>tr>td.table__max_300 {
+  max-width: 300px;
 }
 
 table.table>tbody>tr:not(:last-child)>td {

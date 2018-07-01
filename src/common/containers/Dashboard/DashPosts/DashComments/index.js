@@ -180,7 +180,7 @@ class DashComments extends Component {
                 {conversation.user.name.full}
               </Link>
             </TableData>
-            <TableData>
+            <TableData classes={["table__max_300"]}>
               {conversation.message.text}
             </TableData>
             <TableData>

@@ -24,7 +24,10 @@ import {
   UPDATE_COMMENT_LOCAL,
   GET_CONVERSATIONS_INITIATED,
   GET_CONVERSATIONS_FAILED,
-  GOT_CONVERSATIONS
+  GOT_CONVERSATIONS,
+  SAFE_DELETE_COMMENT_INITIATED,
+  SAFE_DELETE_COMMENT_FAILED,
+  SAFELY_DELETED_COMMENT
 } from "../actions/actionTypes";
 
 const comments = (state = initialState.comments, action) => {
@@ -177,6 +180,28 @@ const comments = (state = initialState.comments, action) => {
         failedToDeleteComment: true,
         dComment: action.comment,
         error: action.error
+      });
+    case SAFE_DELETE_COMMENT_INITIATED:
+      return Object.assign({}, state, {
+        safelyDeletingComment: true,
+        safelyDeletedComment: false,
+        failedToSafelyDeleteComment: false,
+        dComment: action.comment
+      });
+    case SAFE_DELETE_COMMENT_FAILED:
+      return Object.assign({}, state, {
+        safelyDeletingComment: false,
+        safelyDeletedComment: true,
+        failedToSafelyDeleteComment: false,
+        error: action.error,
+        dComment: action.comment
+      });
+    case SAFELY_DELETED_COMMENT:
+      return Object.assign({}, state, {
+        safelyDeletingComment: false,
+        safelyDeletedComment: true,
+        failedToSafelyDeleteComment: false,
+        dComment: action.comment
       });
     case COMMENT_DELETED:
       return Object.assign({}, state, {

@@ -122,7 +122,7 @@ class DashReplies extends Component {
                 {reply.user.name.full}
               </Link>
             </TableData>
-            <TableData>
+            <TableData classes={["table__max_300"]}>
               {reply.message.text}
             </TableData>
             <TableData>
