@@ -91,7 +91,11 @@ class Comment extends Component {
           onMouseEnter={() => this.setState({ showMoreMenu: true })}
           onMouseLeave={() => this.setState({ showMoreMenu: false })}>
           <CommentHeader comment={this.props.comment} />
-          <WYSIWYGEditor readonly content={this.props.comment.message.html} />
+          <WYSIWYGEditor readonly 
+            content={
+              this.props.comment.isDeleted ?
+                "<small><i>This message was deleted</i></small>" :
+                this.props.comment.message.html} />
           <LikeComment comment={this.props.comment} readonly={this.props.readonly} />
           {
             !this.props.readonly ?
