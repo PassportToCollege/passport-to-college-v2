@@ -94,7 +94,7 @@ class Comment extends Component {
           <WYSIWYGEditor readonly 
             content={
               this.props.comment.isDeleted ?
-                "<small><i>This message was deleted</i></small>" :
+                "<small><i>This comment was deleted or is being reviewed because of reports.</i></small>" :
                 this.props.comment.message.html} />
           <LikeComment comment={this.props.comment} readonly={this.props.readonly} />
           {
