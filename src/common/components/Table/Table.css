@@ -3,6 +3,10 @@ table.table {
   margin: 2em 0;
 }
 
+table.table .table__row_highlight > td:last-child {
+  border-right: 5px solid #FF6561;
+}
+
 table.table>thead>tr>th {
   background-color: rgb(234, 238, 240);
 }

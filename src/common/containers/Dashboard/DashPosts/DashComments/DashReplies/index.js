@@ -100,7 +100,8 @@ class DashReplies extends Component {
     if (this.props.comments.gotReplies && this.state.replies) {
       return this.state.replies.map(reply => {
         return (
-          <TableRow key={reply.id}>
+          <TableRow key={reply.id}
+            classes={reply.isDeleted ? ["table__row_highlight"] : []}>
             <TableData>
               <IconButton type="button" icon="cog" solid
                 doClick={

@@ -158,7 +158,8 @@ class DashComments extends Component {
     if (this.props.comments.gotConversations && this.state.conversations) {
       return this.state.conversations.map(conversation => {
         return (
-          <TableRow key={conversation.id}>
+          <TableRow key={conversation.id} 
+            classes={conversation.isDeleted ? ["table__row_highlight"] : []}>
             <TableData>
               <IconButton type="button" icon="cog" solid
                 doClick={
