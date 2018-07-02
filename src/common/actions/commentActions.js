@@ -604,10 +604,8 @@ export const doDeleteComment = (comment = {}, options = {}) => {
             if (snapshots.empty) {
               if (options.forceDelete) {
                 return convoRef.delete().then(() => {
-                  if (comment.isConversation)
-                    return dispatch(doUpdateConversationsCount("dec"));
-                    
-                  dispatch(commentDeleted(comment));
+                    dispatch(doUpdateConversationsCount("dec"));
+                    dispatch(commentDeleted(comment));
                 }).catch(error => {
                   Console.log(error);
                   dispatch(deleteCommentFailed(comment, error));
@@ -626,9 +624,7 @@ export const doDeleteComment = (comment = {}, options = {}) => {
             });
 
             batch.commit().then(() => {
-              if (comment.isConversation)
-                return dispatch(doUpdateConversationsCount("dec"));
-
+              dispatch(doUpdateConversationsCount("dec"));
               dispatch(commentDeleted(comment));
             })
             .catch(error => {
@@ -643,9 +639,7 @@ export const doDeleteComment = (comment = {}, options = {}) => {
       }
 
       return convoRef.delete().then(() => {
-        if (comment.isConversation)
-          return dispatch(doUpdateConversationsCount("dec"));
-        
+        dispatch(doUpdateConversationsCount("dec"));
         dispatch(commentDeleted(comment));
       }).catch(error => {
         Console.log(error);
