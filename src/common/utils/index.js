@@ -46,6 +46,19 @@ export const isEmail = str => {
   return true;
 }
 
+export const makeClassString = (classes = []) => {
+  let str = "";
+  
+  if (!classes.length)
+    return str;
+    
+  for (let c of classes) {
+    str += `${c} `;
+  }
+
+  return str.trimRight();
+}
+
 export const sessionAge = () => {
   const { createdAt } = cookies.get("ssid");
   const end = moment(new Date());
@@ -150,6 +163,7 @@ export class User {
     this.isApplicant = options.applicant || false;
     this.isStudent = options.student || false;
     this.isStaff = options.staff || false;
+    this.hasProfilePicture = options.hasProfilePicture || !!options.photo || false;
     this.emailConfirmed = options.emailConfirmed || false;
     this.photo = options.photo || "";
 
@@ -175,11 +189,11 @@ export class User {
   }
 
   getData() {
-    const { uid, name, email, isAdmin, isApplicant, isStudent, isStaff, emailConfirmed, photo } = this;
+    const { uid, name, email, isAdmin, isApplicant, isStudent, isStaff, emailConfirmed, photo, hasProfilePicture } = this;
     return {
       uid, name, email,
       isAdmin, isApplicant, isStudent,
-      isStaff, emailConfirmed, photo
+      isStaff, emailConfirmed, photo, hasProfilePicture
     };
   }
 }
@@ -220,6 +234,7 @@ export class Comment {
     };
     this.post = post;
     this.isConversation = true;
+    this.isDeleted = false;
     this.hasReplies = false;
     this.replies = 0;
     this.postedOn = new Date(moment.utc(moment()).toDate()).getTime();
@@ -241,7 +256,7 @@ export class Comment {
         const bwi = text.toLowerCase().indexOf(badword);
 
         if (bwi > -1) {
-          block.text = text.toLowerCase().replace(re, hearts);
+          block.text = text.replace(re, hearts);
         }
       }
     }
@@ -258,7 +273,7 @@ export class Comment {
       const bwi = text.toLowerCase().indexOf(badword)
 
       if (bwi > -1) {
-        text = text.toLowerCase().replace(re, hearts);
+        text = text.replace(re, hearts);
       }
     }
 
@@ -275,10 +290,14 @@ export class Comment {
   }
 
   getData() {
-    const { user, message, hasReplies, postedOn, post, isConversation, replies } = this;
+    const { 
+      user, message, hasReplies, postedOn, post, isConversation, replies,
+      isDeleted
+    } = this;
 
     return {
-      user, message, hasReplies, postedOn, post, isConversation, replies
+      user, message, hasReplies, postedOn, post, isConversation, replies,
+      isDeleted
     };
   }
 }
@@ -291,10 +310,10 @@ export class Reply extends Comment {
   }
 
   getData() {
-    const { user, message, hasReplies, postedOn, parent, post } = this;
+    const { user, message, hasReplies, postedOn, parent, post, isDeleted } = this;
 
     return {
-      user, message, hasReplies, postedOn, parent, post
+      user, message, hasReplies, postedOn, parent, post, isDeleted
     };
   }
 }

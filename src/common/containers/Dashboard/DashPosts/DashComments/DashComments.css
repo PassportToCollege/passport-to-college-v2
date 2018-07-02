@@ -1,0 +1,22 @@
+.dash_comments__container  > header .dash_comments__post_title {
+  font-family: "Nunito", sans-serif;
+}
+
+.dash_comments__container > header .header_buttons {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+/* Table */
+.dash_comments > table .dash_comments__user {
+  display: block;
+  font-weight: bold;
+  color: #333;
+}
+
+.dash_comments > table .dash_comments__replies,
+.dash_comments > table .dash_comments__likes {
+  font-weight: bold;
+  color: #FF6561;
+}

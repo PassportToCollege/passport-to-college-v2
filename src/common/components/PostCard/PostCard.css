@@ -99,3 +99,9 @@
   vertical-align: middle;
   padding-left: 1em; 
 }
+
+@media screen and (max-width: 1345px) {
+  .post_card > a > img {
+    max-width: 100%;
+  }
+}

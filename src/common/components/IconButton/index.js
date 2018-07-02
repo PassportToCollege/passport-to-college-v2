@@ -3,7 +3,7 @@ import "./IconButton.css";
 import React, { Component } from "react";
 import propTypes from "prop-types";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
-import { faTrashAlt, faEdit, faInfo, faExternalLinkAlt, faThumbsUp, faReply, faEnvelope } from "@fortawesome/fontawesome-free-solid";
+import { faTrashAlt, faEdit, faInfo, faExternalLinkAlt, faThumbsUp, faReply, faEnvelope, faCog } from "@fortawesome/fontawesome-free-solid";
 import { faFacebookF, faTwitter } from "@fortawesome/fontawesome-free-brands";
 
 class IconButton extends Component {
@@ -22,7 +22,8 @@ class IconButton extends Component {
       facebook: faFacebookF,
       twitter: faTwitter,
       email: faEnvelope,
-      reply: faReply
+      reply: faReply,
+      cog: faCog
     };
     let buttonStyles = Object.assign({}, this.props.styles);
 

@@ -90,7 +90,7 @@ export const doGetComment = (comment, options = {}) => {
           let comment = snapshot.data();
           comment.id = snapshot.id;
 
-          if (storage) {
+          if (storage && comment.user.hasProfilePicture) {
             return storage.ref("users/profile_images")
               .child(`${comment.user.uid}.png`)
               .getDownloadURL()
@@ -157,13 +157,13 @@ export const doGetComments = (post, page = 1) => {
             let comment = snapshot.data();
             comment.id = snapshot.id;
 
-            if (storage && !comment.user.photo)
+            if (storage && comment.user.hasProfilePicture)
               ppPromises.push(storage.ref("users/profile_images").child(`${comment.user.uid}.png`).getDownloadURL());
             
             comments.push(comment);
           });
 
-          if (storage) {
+          if (storage && ppPromises.length) {
             return Promise.all(ppPromises).then(urls => {
               for (let comment of comments) {
                 comment.user.profilePicture = urls.find(url => {
@@ -209,13 +209,13 @@ export const doGetComments = (post, page = 1) => {
               let comment = snapshot.data();
               comment.id = snapshot.id;
 
-              if (storage && !comment.user.photo)
+              if (storage && comment.user.hasProfilePicture)
                 ppPromises.push(storage.ref("users/profile_images").child(`${comment.user.uid}.png`).getDownloadURL());
               
               comments.push(comment);
             });
 
-            if (storage) {
+            if (storage && ppPromises.length) {
               return Promise.all(ppPromises).then(urls => {
                 for (let comment of comments) {
                   comment.user.profilePicture = urls.find(url => {
@@ -235,6 +235,74 @@ export const doGetComments = (post, page = 1) => {
       });
   };
 };
+
+export const getConversationsInitiated = parent => {
+  return {
+    type: types.GET_CONVERSATIONS_INITIATED,
+    parent
+  };
+};
+
+export const getConversationsFailed = (error, parent) => {
+  return {
+    type: types.GET_CONVERSATIONS_FAILED,
+    error, parent
+  };
+};
+
+export const gotConversations = conversations => {
+  return {
+    type: types.GOT_CONVERSATIONS,
+    conversations
+  };
+};
+
+export const doGetConversations = (parent, options = {}) => {
+  return dispatch => {
+    dispatch(getConversationsInitiated(parent));
+
+    return db.collection("comments")
+      .where("post", "==", parent)
+      .where("isConversation", "==", true)
+      .orderBy("postedOn", "desc")
+      .get()
+      .then(snapshots => {
+        if (snapshots.empty)
+          return dispatch(getConversationsFailed({ message: "no conversations found" }, parent));
+
+        let conversations = [];
+        let ppPromises = [];
+
+        snapshots.forEach(snapshot => {
+          let conversation = snapshot.data();
+          conversation.id = snapshot.id;
+
+          if (storage && options.getUserPicture && conversation.user.hasProfilePicture)
+            ppPromises.push(storage.ref("users/profile_images").child(`${conversation.user.uid}.png`).getDownloadURL());
+
+          conversations.push(conversation);
+        });
+
+        if (storage && options.getUserPicture && ppPromises.length) {
+          return Promise.all(ppPromises).then(urls => {
+            for (let conversation of conversations) {
+              conversation.user.profilePicture = urls.find(url => {
+                return url.indexOf(conversation.user.uid) > -1;
+              });
+            }
+
+            dispatch(gotConversations(conversations));
+          });
+        }
+
+        dispatch(gotConversations(conversations));
+      })
+      .catch(error => {
+        Console.log(error);
+        dispatch(getConversationsFailed(error, parent));
+      })
+  }
+}
 
 export const getRepliesInitiated = parent => {
   return {
@@ -279,13 +347,13 @@ export const doGetReplies = (parent, page = 1) => {
             let reply = snapshot.data();
             reply.id = snapshot.id;
 
-            if (storage && !reply.user.photo)
+            if (storage && reply.user.hasProfilePicture)
               ppPromises.push(storage.ref("users/profile_images").child(`${reply.user.uid}.png`).getDownloadURL());
             
             replies.push(reply);
           });
 
-          if (storage) {
+          if (storage && ppPromises.length) {
             return Promise.all(ppPromises).then(urls => {
               for (let reply of replies) {
                 reply.user.profilePicture = urls.find(url => {
@@ -328,13 +396,13 @@ export const doGetReplies = (parent, page = 1) => {
                let reply = snapshot.data();
                reply.id = snapshot.id;
    
-               if (storage && !reply.user.photo)
+               if (storage && reply.user.hasProfilePicture)
                  ppPromises.push(storage.ref("users/profile_images").child(`${reply.user.uid}.png`).getDownloadURL());
                
                replies.push(reply);
              });
    
-             if (storage) {
+             if (storage && ppPromises.length) {
                return Promise.all(ppPromises).then(urls => {
                  for (let reply of replies) {
                    reply.user.profilePicture = urls.find(url => {
@@ -370,13 +438,13 @@ export const doGetReplies = (parent, page = 1) => {
             let reply = snapshot.data();
             reply.id = snapshot.id;
 
-            if (storage && !reply.user.photo)
+            if (storage && reply.user.hasProfilePicture)
               ppPromises.push(storage.ref("users/profile_images").child(`${reply.user.uid}.png`).getDownloadURL());
             
             replies.push(reply);
           });
 
-          if (storage) {
+          if (storage && ppPromises.length) {
             return Promise.all(ppPromises).then(urls => {
               for (let reply of replies) {
                 reply.user.profilePicture = urls.find(url => {
@@ -429,7 +497,7 @@ export const doGetReply = (parent, reply) => {
         let reply = snapshot.data();
         reply.id = snapshot.id;
 
-        if (storage) {
+        if (storage && reply.user.hasProfilePicture) {
           return storage.ref("users/profile_images")
             .child(`${reply.user.uid}.png`)
             .getDownloadURL()
@@ -438,7 +506,7 @@ export const doGetReply = (parent, reply) => {
               dispatch(gotReply(parent, reply));
             })
             .catch(error => {
-              console.log(error);
+              Console.log(error);
               dispatch(getReplyFailed(error));
             });
           }
@@ -536,10 +604,8 @@ export const doDeleteComment = (comment = {}, options = {}) => {
             if (snapshots.empty) {
               if (options.forceDelete) {
                 return convoRef.delete().then(() => {
-                  dispatch(commentDeleted(comment));
-
-                  if (comment.isConversation)
-                    return dispatch(doUpdateConversationsCount("dec"));
+                    dispatch(doUpdateConversationsCount("dec"));
+                    dispatch(commentDeleted(comment));
                 }).catch(error => {
                   Console.log(error);
                   dispatch(deleteCommentFailed(comment, error));
@@ -558,10 +624,8 @@ export const doDeleteComment = (comment = {}, options = {}) => {
             });
 
             batch.commit().then(() => {
+              dispatch(doUpdateConversationsCount("dec"));
               dispatch(commentDeleted(comment));
-
-              if (comment.isConversation)
-                return dispatch(doUpdateConversationsCount("dec"));
             })
             .catch(error => {
               Console.log(error);
@@ -575,10 +639,8 @@ export const doDeleteComment = (comment = {}, options = {}) => {
       }
 
       return convoRef.delete().then(() => {
+        dispatch(doUpdateConversationsCount("dec"));
         dispatch(commentDeleted(comment));
-
-        if (comment.isConversation)
-          return dispatch(doUpdateConversationsCount("dec"));
       }).catch(error => {
         Console.log(error);
         dispatch(deleteCommentFailed(comment, error));
@@ -596,16 +658,16 @@ export const doDeleteComment = (comment = {}, options = {}) => {
         let { replies, hasReplies } = parent;
 
         commentRef.delete().then(() => {
-          dispatch(commentDeleted(comment));
-
           replies -= 1;
-
+          
           if (replies === 0)
-            hasReplies = false;
-
+          hasReplies = false;
+          
           dispatch(doUpdateCommentLocal(parent, {
             hasReplies, replies
           }));
+
+          dispatch(commentDeleted(comment));
         }).catch(error => {
           Console.log(error);
           dispatch(deleteCommentFailed(comment, error));
@@ -616,3 +678,46 @@ export const doDeleteComment = (comment = {}, options = {}) => {
       })
   }
 }
+
+export const safeDeleteInitiated = comment => {
+  return {
+    type: types.SAFE_DELETE_COMMENT_INITIATED,
+    comment
+  };
+};
+
+export const safeDeleteFailed = (error, comment) => {
+  return {
+    type: types.SAFE_DELETE_COMMENT_FAILED,
+    error, comment
+  };
+};
+
+export const safelyDeleted = comment => {
+  return {
+    type: types.SAFELY_DELETED_COMMENT,
+    comment
+  };
+};
+
+export const doDeleteCommentSafe = (comment = {}, options = {}) => {
+  return dispatch => {
+    if (!Object.keys(comment).length)
+      return dispatch(safeDeleteFailed({ message: "no comment provided" }, null));
+
+    dispatch(safeDeleteInitiated(comment));
+    const isDeleted = !!options.undelete;
+
+    return db.collection("comments")
+      .doc(comment.id)
+      .update({ isDeleted })
+      .then(() => {
+        comment.isDeleted = isDeleted;
+        dispatch(safelyDeleted(comment));
+      })
+      .catch(error => {
+        Console.log(error);
+        dispatch(safeDeleteFailed(error, comment));
+      });
+  };
+};

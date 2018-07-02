@@ -22,6 +22,12 @@
   margin-right: 2em;
 }
 
+.responder .responder__meta .initials_avatar {
+  width: 48px;
+  height: 48px;
+  background-color: #FF6561;
+}
+
 .responder .responder__meta .responder__meta_profile_pic > img {
   max-width: 100%;
 }

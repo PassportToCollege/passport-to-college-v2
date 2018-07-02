@@ -18,6 +18,7 @@ import Button from "../../../components/Button";
 import Indicator from "../../../components/Indicator";
 import { CreateUserModal } from "../../../components/Modal";
 import Notification from "../../../components/Notification";
+import { Table, TableData, TableHeader, TableRow } from "../../../components/Table";
 
 const cookies = new Cookies();
 
@@ -134,73 +135,18 @@ class Users extends Component {
             }} />
         </header>
         <main className="users__main">
-          <table className="table table__default" cellSpacing="0">
-            <thead>
-              <tr>
-                <th>name</th>
-                <th>email</th>
-                <th>admin?</th>
-                <th>applicant?</th>
-                <th>student?</th>
-                <th>staff?</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                this.props.users.hasGottenUsers && !this.state.users.empty ?
-                  this.state.users.map(user => {
-                    return (
-                      <tr key={user.uid}>
-                        <td>
-                          {
-                            user.isApplicant ?
-                              <Link className="users__name"
-                                to={`/admin/dashboard/applications/view/${user.uid}`}>
-                                {user.name.full}
-                              </Link> :
-                              cookies.get("ssid").uid === user.uid ?
-                                <Link className="users__name current_user"
-                                  to={"/admin/dashboard/profile"}>
-                                  {user.name.full} (you)
-                                </Link> :
-                                <Link className="users__name"
-                                  to={`/admin/dashboard/users/view/${user.uid}`}>
-                                  {user.name.full}
-                                </Link>
-                          }
-                          <span>id: {user.uid}</span>
-                        </td>
-                        <td>
-                          {/* TODO: clicking should open send email modal */}
-                          <span className="users__email">
-                            {user.email}
-                          </span>
-                        </td>
-                        <td>
-                          <Indicator solid={user.isAdmin} color="#FFCB61" />
-                        </td>
-                        <td>
-                          <Indicator solid={user.isApplicant} color="#FFCB61" />
-                        </td>
-                        <td>
-                          <Indicator solid={user.isStudent} color="#FFCB61" />
-                        </td>
-                        <td>
-                          <Indicator solid={user.isStaff} color="#FFCB61" />
-                        </td>
-                      </tr>
-                    )
-                  }) :
-                  this.props.users.hasGottenUsers && this.state.users.empty ?
-                    <tr>
-                      <td colSpan="6" style={{ textAlign: "center" }}>No users found.</td>
-                    </tr> :
-                    <tr>
-                      <td colSpan="6" style={{ textAlign: "center" }}>Fetching users...</td>
-                    </tr>
-              }
-            </tbody>
-          </table>
+          <Table classes={["table__default"]}
+            headers={
+              <TableRow>
+                <TableHeader heading="name" />
+                <TableHeader heading="email" />
+                <TableHeader heading="admin?" />
+                <TableHeader heading="applicant" />
+                <TableHeader heading="student?" />
+                <TableHeader heading="staff?" />
+              </TableRow>
+            }
+            rows={this._renderTableData()} />
         </main>
       </div>
     )
@@ -243,6 +189,72 @@ class Users extends Component {
 
       this.props.usersActions.doUsersGet(parseInt(page, 10));
     }
+  }
+
+  _renderTableData = () => {
+    if (this.props.users.hasGottenUsers && !this.state.users.empty) {
+      return this.state.users.map(user => {
+        return (
+          <TableRow key={user.uid}>
+            <TableData>
+              {
+                user.isApplicant ?
+                  <Link className="users__name"
+                    to={`/admin/dashboard/applications/view/${user.uid}`}>
+                    {user.name.full}
+                  </Link> :
+                  cookies.get("ssid").uid === user.uid ?
+                    <Link className="users__name current_user"
+                      to={"/admin/dashboard/profile"}>
+                      {user.name.full} (you)
+                    </Link> :
+                    <Link className="users__name"
+                      to={`/admin/dashboard/users/view/${user.uid}`}>
+                      {user.name.full}
+                    </Link>
+              }
+              <span>id: {user.uid}</span>
+            </TableData>
+            <TableData>
+              {/* TODO: clicking should open send email modal */}
+              <span className="users__email">
+                {user.email}
+              </span>
+            </TableData>
+            <TableData>
+              <Indicator solid={user.isAdmin} color="#FFCB61" />
+            </TableData>
+            <TableData>
+              <Indicator solid={user.isApplicant} color="#FFCB61" />
+            </TableData>
+            <TableData>
+              <Indicator solid={user.isStudent} color="#FFCB61" />
+            </TableData>
+            <TableData>
+              <Indicator solid={user.isStaff} color="#FFCB61" />
+            </TableData>
+          </TableRow>
+        )
+      });
+    }
+
+    if (this.props.users.hasGottenUsers && this.state.users.empty) {
+      return (
+        <TableRow>
+          <TableData span="6" classes={["table__center_data"]}>
+            No users found.
+          </TableData>
+        </TableRow>
+      )
+    }
+
+    return (
+      <TableRow>
+        <TableData span="6" classes={["table__center_data"]}>
+          Fetching users...
+        </TableData>
+      </TableRow>
+    )
   }
 }
 

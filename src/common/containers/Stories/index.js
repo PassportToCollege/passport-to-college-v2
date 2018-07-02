@@ -37,12 +37,12 @@ class Stories extends Component {
     let newState = prevState;
 
     if (nextProps.posts.paginationDone && page > 1 &&
-      !_.isEqual(posts, nextProps.posts.posts)) {
-        newState.posts.concat(nextProps.posts.posts);
+      !_.isEqual(posts, nextProps.posts.paginatedPosts)) {
+        newState.posts.concat(nextProps.posts.paginatedPosts);
       }
     
     if (nextProps.posts.paginationDone &&  page === 1)
-      newState.posts = nextProps.posts.posts;
+      newState.posts = nextProps.posts.paginatedPosts;
 
     if (nextProps.posts.paginationFailed)
       newState.posts = [];
@@ -127,7 +127,7 @@ class Stories extends Component {
                 </React.Fragment> : null
             }
             {
-              this.state.posts ?
+              this.props.posts.paginationDone && this.state.posts ?
                 this.state.posts.map(post => {
                   return <StoryCard key={post.id} post={post} />
                 }) : null

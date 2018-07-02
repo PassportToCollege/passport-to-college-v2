@@ -69,6 +69,74 @@ export const doPostsGet = () => {
   };
 };
 
+export const doGetPostsByState = (state = "all") => {
+  return dispatch => {
+    if (state === "all")
+      return doPostsGet();
+    
+    const acceptedStates = {
+      archived: true,
+      published: true,
+      draft: true
+    }
+
+    if (!acceptedStates[state])
+      return dispatch(postsGetFailed({ message: "unknown post state provided" }));
+    
+    dispatch(postsGetInitiated());
+
+    let postRef;
+    if (state === "archived") {
+      postRef = db.collection("posts")
+        .where("state.archived", "==", true)
+    } else if (state === "published") {
+      postRef = db.collection("posts")
+        .where("state.published", "==", true)
+    } else {
+      postRef = db.collection("posts")
+        .where("state.draft", "==", true)
+    }
+
+    return postRef.orderBy("createdAt", "desc")
+      .get()
+      .then(snapshots => {
+        if (snapshots.empty)
+          return dispatch(postsGetFailed({ message: "no posts found" }));
+
+        let posts = [];
+        let heroPromises = [];
+
+        snapshots.forEach(snapshot => {
+          if (storage)
+            heroPromises.push(storage.ref("posts/heros").child(`${snapshot.id}.png`).getDownloadURL());
+          
+            let post = snapshot.data();
+          post.id = snapshot.id;
+
+          posts.push(post);
+        });
+
+        if (storage) {
+          return Promise.all(heroPromises).then(urls => {
+            for (let post of posts) {
+              post.hero = urls.find(url => {
+                return url.indexOf(post.id) > -1;
+              });
+            }
+  
+            dispatch(postsGetDone(posts));
+          });
+        }
+
+        dispatch(postsGetDone(posts));
+      })
+      .catch(error => {
+        Console.log(error);
+        dispatch(postsGetFailed(error));
+      });
+  }
+}
+
 export const postsGetMostRecentInitiated = () => {
   return {
     type: types.POSTS_GET_MOST_RECENT_INITIATED

@@ -74,7 +74,13 @@ class NavigationPosts extends Component {
             routes.DASH_POSTS_SECTIONS.map(section => {
               return (
                 <li key={section.route}>
-                  <NavLink exact to={section.route}
+                  <NavLink exact 
+                    to={{
+                      pathname: section.route,
+                      state: {
+                        current: section.name.toLowerCase()
+                      }
+                    }}
                     activeClassName="active">
                     {section.name.toLowerCase()}
                   </NavLink>

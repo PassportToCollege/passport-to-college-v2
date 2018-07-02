@@ -16,14 +16,18 @@ class DisplayPosts extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      posts: props.posts.posts,
-      section: props.section
+      posts: props.posts.posts
     }
   }
 
   componentDidMount() {
     this.props.togglePostNav(true);
-    this.props.postsActions.doPostsGet();
+    
+    if (this.props.location.state && this.props.location.state.current !== "all") {
+      this.props.postsActions.doGetPostsByState(this.props.location.state.current);
+    } else {
+      this.props.postsActions.doPostsGet();
+    }
   }
 
   static getDerivedStateFromProps(nextProps) {
@@ -54,7 +58,8 @@ DisplayPosts.propTypes = {
   posts: propTypes.object,
   postsActions: propTypes.object,
   togglePostNav: propTypes.func,
-  section: propTypes.string
+  section: propTypes.string,
+  location: propTypes.object
 };
 
 const mapStateToProps = state => {

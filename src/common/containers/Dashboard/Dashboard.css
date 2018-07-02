@@ -21,6 +21,18 @@
   padding: 0;
 }
 
+.dashboard__container > header {
+  position: relative;
+  padding: 1em 0;
+}
+
+.dashboard__container > header > h1 {
+  font-family: "Muli", "Nunito", "Roboto", sans-serif;
+  font-weight: lighter;
+  margin: 0;
+  color: rgb(58, 58, 58);
+}
+
 @media (min-width: 768px) {
   .dashboard__main {
     padding-left: 220px;
