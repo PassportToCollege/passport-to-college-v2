@@ -72,80 +72,101 @@ class ManageComment extends Component {
     return null;
   }
 
+  getSnapshotBeforeUpdate(prevProps) {
+    if (prevProps.comments.deletingComment && this.props.comments.deletedComment) {
+      return {
+        deletedComment: true
+      };
+    }
+
+    return null;
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (snapshot && snapshot.deletedComment) {
+      if (this.props.location && this.props.location.state) {
+        return this.props.history.push(this.props.history.location.state.referrer);
+      }
+
+      this.props.history.push(`/admin/dashboard/post/${this.state.comment.post}/comments`);
+    }
+  }
+
   render() {
     return (
       <React.Fragment>
-      <PageMeta more={
-        <title>
-          Manage Comment | {this.state.replyId || this.state.conversationId} | Dashboard | Passport to College
-        </title>
-      } />
-      <Modal doClose={this.handleModalClose}
-        classes={["modal__manage_comment"]}>
-        <h2>Manage this Comment</h2>
-        <main className="manage_comment">
-          <section className="manage_comment__full_comment">
-            {
-              this.state.comment ?
-                <React.Fragment>
-                  <Comment readonly comment={this.state.comment} />
-                  <h3>Stats</h3>
-                  {
-                    this.state.comment && this.state.comment.isConversation ?
-                      <AnnotatedList data={[
-                        { label: this.getLikesLink(), text: countLikes(this.state.comment.likes) },
-                        { label: this.getRepliesLink(), text: this.state.comment.replies },
-                        { label: "reports", text: "0" }
-                      ]} /> : null
-                  }
-                  {
-                    this.state.comment && !this.state.comment.isConversation ?
-                      <AnnotatedList data={[
+        <PageMeta more={
+          <title>
+            Manage Comment | {this.state.replyId || this.state.conversationId} | Dashboard | Passport to College
+          </title>
+        } />
+        <Modal doClose={this.handleModalClose}
+          classes={["modal__manage_comment"]}>
+          <h2>Manage this Comment</h2>
+          <main className="manage_comment">
+            <section className="manage_comment__full_comment">
+              {
+                this.state.comment ?
+                  <React.Fragment>
+                    <Comment readonly comment={this.state.comment} />
+                    <h3>Stats</h3>
+                    {
+                      this.state.comment && this.state.comment.isConversation ?
+                        <AnnotatedList data={[
                           { label: this.getLikesLink(), text: countLikes(this.state.comment.likes) },
+                          { label: this.getRepliesLink(), text: this.state.comment.replies },
                           { label: "reports", text: "0" }
                         ]} /> : null
-                  }
-                </React.Fragment> 
-                : null
-            }
-          </section>
-          <section className="manage_comment__tasks">
-            <h3>Actions</h3>
+                    }
+                    {
+                      this.state.comment && !this.state.comment.isConversation ?
+                        <AnnotatedList data={[
+                            { label: this.getLikesLink(), text: countLikes(this.state.comment.likes) },
+                            { label: "reports", text: "0" }
+                          ]} /> : null
+                    }
+                  </React.Fragment> 
+                  : null
+              }
+            </section>
+            <section className="manage_comment__tasks">
+              <h3>Actions</h3>
+              {
+                this.state.comment ?
+                  <AnnotatedList data={[
+                    {
+                      label: "Delete (Safe)",
+                      text: <Toggler state={this.state.comment.isDeleted ? "yes" : "no"}
+                        doClick={this.handleSafeDelete} 
+                        disabled={this.props.comments.safelyDeletingComment} 
+                        options={{
+                          title: this.state.comment.isDeleted ? "Comment is deleted" : "Make this comment deleted"
+                        }} />
+                    },
+                    {
+                      label: "Delete (Permanent)",
+                      text: <Button solid type="button"
+                        text="Delete"
+                        doClick={this.handlePermaDelete} />
+                    }
+                  ]} /> : null
+              }
+            </section>
             {
-              this.state.comment ?
-                <AnnotatedList data={[
-                  {
-                    label: "Delete (Safe)",
-                    text: <Toggler state={this.state.comment.isDeleted ? "yes" : "no"}
-                      doClick={this.handleSafeDelete} 
-                      disabled={this.props.comments.safelyDeletingComment} 
-                      options={{
-                        title: this.state.comment.isDeleted ? "Comment is deleted" : "Make this comment deleted"
-                      }} />
-                  },
-                  {
-                    label: "Delete (Permanent)",
-                    text: <Button solid type="button"
-                      text="Delete"
-                      doClick={this.handlePermaDelete} />
-                  }
-                ]} /> : null
+              this.props.comments.safelyDeletingComment ||
+              this.props.comments.deletingComment ?
+                <Loader width="24px"
+                  styles={{
+                    display: "inline-block",
+                    verticalAlign: "middle",
+                    margin: "0 0 0 1em",
+                    position: "absolute",
+                    right: "2em",
+                    bottom: "2em"
+                  }} /> : null
             }
-          </section>
-          {
-            this.props.comments.safelyDeletingComment ?
-              <Loader width="24px"
-                styles={{
-                  display: "inline-block",
-                  verticalAlign: "middle",
-                  margin: "0 0 0 1em",
-                  position: "absolute",
-                  right: "2em",
-                  bottom: "2em"
-                }} /> : null
-          }
-        </main>
-      </Modal>
+          </main>
+        </Modal>
       </React.Fragment>
     )
   }
@@ -202,6 +223,10 @@ class ManageComment extends Component {
         undelete: !this.state.comment.isDeleted
       });
     }
+  }
+
+  handlePermaDelete = () => {
+    this.props.commentActions.doDeleteComment(this.state.comment);
   }
 }
 

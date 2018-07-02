@@ -59,6 +59,49 @@ class DashComments extends Component {
     return null;
   }
 
+  getSnapshotBeforeUpdate(prevProps) {
+    if (prevProps.comments.deletingComment && this.props.comments.deletedComment
+      && this.props.comments.dComment.isConversation) {
+      return {
+        deletedConversation: true
+      };
+    }
+
+    if (prevProps.comments.deletingComment && this.props.comments.deletedComment &&
+      !this.props.comments.dComment.isConversation && this.props.comments.updatedCommentLocal) {
+      return {
+        deletedReply: true
+      };
+    }
+
+    return null;
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (snapshot && snapshot.deletedConversation) {
+      let { conversations } = this.state;
+      const ci = conversations.findIndex(conversation => {
+        return conversation.id === this.props.comments.dComment.id;
+      });
+
+      conversations.splice(ci, 1);
+      this.setState({ conversations });
+    }
+
+    if (snapshot && snapshot.deletedReply) {
+      let { conversations } = this.state;
+      const ci = conversations.findIndex(conversation => {
+        return conversation.id === this.props.comments.uComment.id;
+      });
+
+      if (conversations[ci].replies !== this.props.comments.uComment.replies) {
+        conversations[ci].replies = this.props.comments.uComment.replies;
+
+        this.setState({ conversations });
+      }
+    }
+  }
+
   render() {
     return (
       <div className="dashboard__container dash_comments__container">

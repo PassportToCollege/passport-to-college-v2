@@ -604,10 +604,10 @@ export const doDeleteComment = (comment = {}, options = {}) => {
             if (snapshots.empty) {
               if (options.forceDelete) {
                 return convoRef.delete().then(() => {
-                  dispatch(commentDeleted(comment));
-
                   if (comment.isConversation)
                     return dispatch(doUpdateConversationsCount("dec"));
+                    
+                  dispatch(commentDeleted(comment));
                 }).catch(error => {
                   Console.log(error);
                   dispatch(deleteCommentFailed(comment, error));
@@ -626,10 +626,10 @@ export const doDeleteComment = (comment = {}, options = {}) => {
             });
 
             batch.commit().then(() => {
-              dispatch(commentDeleted(comment));
-
               if (comment.isConversation)
                 return dispatch(doUpdateConversationsCount("dec"));
+
+              dispatch(commentDeleted(comment));
             })
             .catch(error => {
               Console.log(error);
@@ -643,10 +643,10 @@ export const doDeleteComment = (comment = {}, options = {}) => {
       }
 
       return convoRef.delete().then(() => {
-        dispatch(commentDeleted(comment));
-
         if (comment.isConversation)
           return dispatch(doUpdateConversationsCount("dec"));
+        
+        dispatch(commentDeleted(comment));
       }).catch(error => {
         Console.log(error);
         dispatch(deleteCommentFailed(comment, error));
@@ -664,16 +664,16 @@ export const doDeleteComment = (comment = {}, options = {}) => {
         let { replies, hasReplies } = parent;
 
         commentRef.delete().then(() => {
-          dispatch(commentDeleted(comment));
-
           replies -= 1;
-
+          
           if (replies === 0)
-            hasReplies = false;
-
+          hasReplies = false;
+          
           dispatch(doUpdateCommentLocal(parent, {
             hasReplies, replies
           }));
+
+          dispatch(commentDeleted(comment));
         }).catch(error => {
           Console.log(error);
           dispatch(deleteCommentFailed(comment, error));
