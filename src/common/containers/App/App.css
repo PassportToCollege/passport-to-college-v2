@@ -65,13 +65,12 @@ a:focus {
 .app__main {
   width: 100%;
   min-height: 100%;
-  transition: transform 250ms linear 100ms;
+  transition: transform 250ms linear 200ms;
 }
 
 .app__main[data-hamburger="open"] {
-  transform: scale(0.75);
-  overflow: hidden;
-  height: 100vh;
+  transform: translateX(-400px);
+  overflow-x: hidden;
 }
 
 .app__main>.app__body {

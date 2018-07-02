@@ -4,7 +4,6 @@
   height: 100%;
   left: 0;
   top: 0;
-  background-color: rgba(51,51,51,0.45);
 }
 
 .hamburger[data-active="closed"] {
@@ -36,15 +35,14 @@
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  transition: transform 200ms linear 200ms;  
 }
 
 .hamburger[data-active="closed"] .hamburger__navs {
-  transition: transform 200ms linear;  
   transform: translateX(400px);
 }
 
 .hamburger[data-active="open"] .hamburger__navs {
-  transition: transform 200ms linear 200ms;
   transform: translateX(0);
 }
 
