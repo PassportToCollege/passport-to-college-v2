@@ -38,7 +38,11 @@ export const DASH_POSTS_SECTIONS = [
   { name: "Published", route: "/admin/dashboard/posts/published" },
   { name: "Draft", route: "/admin/dashboard/posts/draft" },
   { name: "Settings", route: "/admin/dashboard/posts/settings" }
-]
+];
+export const DASH_POSTS_COMMENTS = {
+  name: "Post comments",
+  route: "/admin/dashboard/post/:post_id/comments"
+};
 
 // Student Application Routes
 export const APPLY = { name: "Apply", route: "/apply" };

@@ -69,7 +69,7 @@ const posts = (state = initialState.posts, action) => {
         paginationDone: true,
         paginationFailed: false,
         page: action.page,
-        posts: action.posts
+        paginatedPosts: action.posts
       });
     case PAGINATE_POSTS_FAILED:
       return Object.assign({}, state, {

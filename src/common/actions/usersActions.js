@@ -175,43 +175,94 @@ export const doUsersGet = (page, userType) => {
   }
 }
 
-export const usersGetByIdInitiated = user => {
+export const userGetByIdInitiated = user => {
   return {
-    type: types.USERS_GET_BY_ID_INITIATED,
+    type: types.USER_GET_BY_ID_INITIATED,
     user
   };
 }
 
-export const usersGetByIdDone = (user) => {
+export const userGetByIdDone = (user) => {
   return {
-    type: types.USERS_GET_BY_ID_SUCCESS,
+    type: types.USER_GET_BY_ID_SUCCESS,
     user
   };
 }
 
-export const usersGetByIdFailed = (error, user) => {
+export const userGetByIdFailed = (error, user) => {
   return {
-    type: types.USERS_GET_BY_ID_FAILED,
+    type: types.USER_GET_BY_ID_FAILED,
     user, error
   };
 }
 
 export const doGetUserByUid = uid => {
   return dispatch => {
-    dispatch(usersGetByIdInitiated(uid));
+    dispatch(userGetByIdInitiated(uid));
 
     db.collection("users")
       .doc(uid)
       .get()
       .then(snapshot => {
         if (snapshot.exists) {
-          return dispatch(usersGetByIdDone(snapshot.data()));
+          return dispatch(userGetByIdDone(snapshot.data()));
         }
 
-        dispatch(usersGetByIdFailed({message: "no user found"}, uid));
+        dispatch(userGetByIdFailed({message: "no user found"}, uid));
       })
       .catch(error => {
-        dispatch(usersGetByIdFailed(error, uid));
+        dispatch(userGetByIdFailed(error, uid));
+      })
+  }
+}
+
+export const usersGetByIdInitiated = users => {
+  return {
+    type: types.USERS_GET_BY_ID_INITIATED,
+    users
+  };
+}
+
+export const usersGetByIdDone = (users) => {
+  return {
+    type: types.USERS_GET_BY_ID_SUCCESS,
+    users
+  };
+}
+
+export const usersGetByIdFailed = (error, users) => {
+  return {
+    type: types.USERS_GET_BY_ID_FAILED,
+    users, error
+  };
+}
+
+export const doGetUsersByUid = (users = []) => {
+  return dispatch => {
+    if (!users.length)
+      return dispatch(usersGetByIdFailed({ message: "no uids provided" }, []));
+
+    dispatch(usersGetByIdInitiated(users));
+
+    let promises = [];
+    for (let user of users) {
+      promises.push(db.collection("users").doc(user).get());
+    }
+
+    Promise.all(promises)
+      .then(snapshots => {
+        let users = [];
+
+        for (let snapshot of snapshots) {
+          if (!snapshot.empty)
+            users.push(snapshot.data());
+        }
+
+        dispatch(usersGetByIdDone(users));
+      })
+      .catch(error => {
+        Console.log(error);
+        dispatch(usersGetByIdFailed(error, users));
       })
   }
 }

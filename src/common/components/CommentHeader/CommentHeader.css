@@ -2,7 +2,7 @@
   display: block;
 }
 
-.comment_header > * {
+.comment_header > *:not([class="initials_avatar"]) {
   display: inline-block;
   vertical-align: middle;
 }

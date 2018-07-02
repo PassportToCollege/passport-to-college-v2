@@ -34,7 +34,12 @@ class LikeComment extends Component {
     comment: propTypes.object,
     commentActions: propTypes.object,
     auth: propTypes.oneOfType([propTypes.object, propTypes.bool]),
-    authActions: propTypes.object
+    authActions: propTypes.object,
+    readonly: propTypes.bool
+  }
+
+  static defaultProps = {
+    readonly: false
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -142,6 +147,9 @@ class LikeComment extends Component {
   }
 
   handleLike = () => {
+    if (this.props.readonly)
+      return;
+      
     if (!this.state.authorized)
       return this.setState({ signingIn: true });
     

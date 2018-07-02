@@ -1,6 +1,7 @@
 .modal__container {
   width: 100vw;
   height: 100vh;
+  padding: 2em;
   position: fixed;
   top: 0;
   left: 0;
@@ -16,6 +17,8 @@
 
 .modal__container .modal__bg {
   position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   background-color: rgba(51,51,51,0.55);
@@ -24,6 +27,8 @@
 .modal__container .modal__content {
   background-color: #fdfdfd;
   width: 600px;
+  max-height: 100%;
+  overflow-y: auto;
   max-width: 100%;
   padding: 2em 1.25em;
   position: relative;

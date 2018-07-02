@@ -45,8 +45,7 @@ class DashPosts extends Component {
                 render={props => {
                   return (
                     <DisplayPosts {...props}
-                      togglePostNav={val => this.setState({ showPostNav: val })} 
-                      section={section.name.toLowerCase()} />
+                      togglePostNav={val => this.setState({ showPostNav: val })} />
                   )
                 }}></Route>
             )

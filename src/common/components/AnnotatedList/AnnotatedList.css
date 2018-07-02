@@ -8,13 +8,23 @@
   padding: 1em 0;
 }
 
+.annotated_list > li > span {
+  display: inline-block;
+  vertical-align: middle;
+}
+
 .annotated_list > li:not(:last-child) {
   border-bottom: 1px solid rgba(26, 25, 25, 0.15);
 }
 
-.annotated_list > li .annotated_list__label {
+.annotated_list > li .annotated_list__label,
+.annotated_list > li .annotated_list__label > a {
   width: 45%;
-  display: inline-block;
   color: rgb(128, 150, 162);
   font-weight: bold;
+}
+
+.annotated_list > li .annotated_list__label > a:hover,
+.annotated_list > li .annotated_list__label > a:focus {
+  text-decoration: underline;
 }

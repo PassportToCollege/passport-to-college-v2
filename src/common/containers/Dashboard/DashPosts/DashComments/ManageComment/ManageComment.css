@@ -1,0 +1,22 @@
+.modal__manage_comment > .modal__content {
+  width: 1170px;
+  padding: 2em;
+}
+
+.manage_comment {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.manage_comment > section {
+  max-width: 100%;
+  min-width: 300px;
+  flex: 1 1 49%;
+  padding: 1em;
+}
+
+.manage_comment > section.manage_comment__tasks > h3 {
+  margin-top: 0;
+}

@@ -12,6 +12,7 @@ import * as userProfilePictureActions from "../../actions/userProfilePictureActi
 import * as userActions from "../../actions/userActions";
 import * as commentActions from "../../actions/commentActions";
 
+import InitialsAvatar from "../../components/InitialsAvatar";
 import Notification from "../../components/Notification";
 import { SignUpModal, SignInModal } from "../../components/Modal";
 import WYSIWYGEditor from "../../components/Editor";
@@ -229,7 +230,9 @@ class Responder extends Component {
                   <img src={this.state.profilePicture} alt="Active user profile pic" /> :
                   this.state.user && this.state.user.photo ?
                     <img src={this.state.user.photo} alt="Active user profile pic" /> :
-                    <span className="responder__meta_placeholder_profile_pic"></span>
+                    this.state.user ?
+                      <InitialsAvatar initials={`${this.state.user.name.first[0]}${this.state.user.name.last[0]}`} /> :
+                      <span className="responder__meta_placeholder_profile_pic"></span>
               }
             </span>
             {

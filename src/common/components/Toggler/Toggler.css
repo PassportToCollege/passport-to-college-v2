@@ -34,3 +34,11 @@
   background-color: rgb(53,53,53);
   left: 2px;
 }
+
+.toggler[data-disabled="disabled"] {
+  border-color: rgba(53, 53, 53, 0.35);
+}
+
+.toggler[data-disabled="disabled"] > .toggler__ball {
+  background-color: rgba(53, 53, 53, 0.35);
+}
