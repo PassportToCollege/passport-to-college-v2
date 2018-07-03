@@ -92,7 +92,7 @@ class Users extends Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (snapshot && snapshot.userTypeChanged) {
-      if (!this.props.users.isGettingUsers) {
+        if (!this.props.users.isGettingUsers) {
         const { user_type } = this.props.match.params;
         this.props.usersActions.doUsersGet(1, user_type || "all");
       }
@@ -129,7 +129,7 @@ class Users extends Component {
           <CardNavigation locations={[
             { 
               pathname: routes.USERS.route,
-              label: routes.USERS.name,
+              label: "All Users",
               icon: "users"
             },
             {
@@ -177,9 +177,8 @@ class Users extends Component {
             doClick={this.openAddUserModal}
             styles={{
               position: "absolute",
-              right: "2em",
-              top: "50%",
-              transform: "translateY(-50%)",
+              right: "0",
+              top: "1em",
               backgroundColor: "#FFCB61"
             }} />
         </header>
@@ -190,7 +189,7 @@ class Users extends Component {
                 <TableHeader heading="name" />
                 <TableHeader heading="email" />
                 <TableHeader heading="admin?" />
-                <TableHeader heading="applicant" />
+                <TableHeader heading="applicant?" />
                 <TableHeader heading="student?" />
                 <TableHeader heading="staff?" />
               </TableRow>

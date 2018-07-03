@@ -14,7 +14,8 @@ import propTypes from "prop-types";
 
 class CardNavigation extends Component {
   static propTypes = {
-    locations: propTypes.arrayOf(propTypes.object)
+    locations: propTypes.arrayOf(propTypes.object),
+    styles: propTypes.object
   }
 
   icons = {
@@ -31,12 +32,12 @@ class CardNavigation extends Component {
 
   render() {
     return (
-      <nav className="card_navigation">
+      <nav className="card_navigation" style={this.props.styles}>
         { 
           this.props.locations.length ?
             this.props.locations.map(location => {
               return (
-                <NavLink key={location.pathname} 
+                <NavLink exact key={location.pathname} 
                   to={location.pathname}
                   activeClassName="active" 
                   className="card_navigation__item">
