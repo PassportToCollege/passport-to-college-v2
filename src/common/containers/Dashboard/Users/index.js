@@ -11,6 +11,7 @@ import { queryToObject } from "../../../utils";
 
 import * as usersActions from "../../../actions/usersActions";
 import * as statsActions from "../../../actions/statsActions";
+import * as routes from "../../../constants/routes";
 
 import PageMeta from "../../../components/PageMeta";
 import LoadingText from "../../../components/LoadingText";
@@ -19,6 +20,7 @@ import Indicator from "../../../components/Indicator";
 import { CreateUserModal } from "../../../components/Modal";
 import Notification from "../../../components/Notification";
 import { Table, TableData, TableHeader, TableRow } from "../../../components/Table";
+import CardNavigation from "../../../components/CardNavigation";
 
 const cookies = new Cookies();
 
@@ -104,6 +106,33 @@ class Users extends Component {
         }
         <header>
           <h1>Users</h1>
+          <CardNavigation locations={[
+            { 
+              pathname: routes.USERS.route,
+              label: routes.USERS.name,
+              icon: "users"
+            },
+            {
+              pathname: routes.USERS_STUDENTS.route,
+              label: routes.USERS_STUDENTS.name,
+              icon: "students"
+            },
+            {
+              pathname: routes.USERS_APPLICANTS.route,
+              label: routes.USERS_APPLICANTS.name,
+              icon: "applicants"
+            },
+            {
+              pathname: routes.USERS_ADMINS.route,
+              label: routes.USERS_ADMINS.name,
+              icon: "admins"
+            },
+            {
+              pathname: routes.USERS_STAFF.route,
+              label: routes.USERS_STAFF.name,
+              icon: "staff"
+            }
+          ]} />
           {
             this.props.stats.hasGotten && this.state.stats &&
               this.props.users.hasGottenUsers ?

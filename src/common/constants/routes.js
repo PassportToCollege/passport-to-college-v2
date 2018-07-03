@@ -12,6 +12,10 @@ export const CONTACT_US = { name: "Contact Us", route: "/contact-us" };
 // Admin Routes
 export const DASHBOARD = { name: "Dashboard", route: "/admin/dashboard" };
 export const USERS = { name: "Users", route: "/admin/dashboard/users" };
+export const USERS_STUDENTS = { name: "Students", route: "/admin/dashboard/users/students" };
+export const USERS_ADMINS = { name: "Admins", route: "/admin/dashboard/users/admins" };
+export const USERS_APPLICANTS = { name: "Applicants", route: "/admin/dashboard/users/applicants" };
+export const USERS_STAFF = { name: "Staff", route: "/admin/dashboard/users/staff" };
 export const VIEW_USER = { name: "View Application", route: "/admin/dashboard/users/view/:user_id" };
 export const VIEW_USER_SECTIONS = [
   { name: "Education", slug: "education", route: "/education" },
