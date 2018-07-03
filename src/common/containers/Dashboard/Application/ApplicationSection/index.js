@@ -14,7 +14,7 @@ import ReviewBlock from "../../../../components/ReviewBlock";
 import Button from "../../../../components/Button";
 import Notification from "../../../../components/Notification";
 
-const EMAIL_API = process.env.RAZZLE_APP_EMAIL_API;
+const EMAIL_API = process.env.RAZZLE_EMAIL_API;
 
 class ApplicationSection extends Component {
   constructor(props) {
