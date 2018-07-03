@@ -158,7 +158,7 @@ class Users extends Component {
               this.props.users.hasGottenUsers ?
               <span className="users__stats">
                 Showing
-              <b> {this.state.users.length} </b>
+              <b> {this.state.users.length || 0} </b>
                 out of
               <b> {this.state.stats.users.total} </b>
                 users
