@@ -33,6 +33,7 @@ export default class Dashboard extends Component {
             render={this.renderDashboard}></Route>
           <Route exact path={routes.APPLICATIONS.route} component={Applications}></Route>
           <Route exact path={routes.USERS.route} component={Users}></Route>
+          <Route exact path={routes.USERS_BY_TYPE.route} component={Users}></Route>
           <Route path={routes.PROFILE.route} component={Profile}></Route>
           <Route path={routes.VIEW_APPLICATION.route} component={Application}></Route>
           <Route path={routes.VIEW_USER.route} component={User}></Route>

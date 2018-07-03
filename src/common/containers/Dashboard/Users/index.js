@@ -39,9 +39,10 @@ class Users extends Component {
 
   componentDidMount() {
     const { search } = this.props.location;
+    const { user_type } = this.props.match.params;
     const { page } = queryToObject(search) || { page: 1 };
 
-    this.props.usersActions.doUsersGet(parseInt(page, 10));
+    this.props.usersActions.doUsersGet(parseInt(page, 10), user_type || "all");
     this.setState({ page });
 
     this.props.statsActions.doStatsGet();
@@ -77,6 +78,25 @@ class Users extends Component {
     }
 
     return newState;
+  }
+
+  getSnapshotBeforeUpdate(props) {
+    if (props.match.params.user_type !== this.props.match.params.user_type) {
+      return {
+        userTypeChanged: true
+      };
+    }
+
+    return null;
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (snapshot && snapshot.userTypeChanged) {
+      if (!this.props.users.isGettingUsers) {
+        const { user_type } = this.props.match.params;
+        this.props.usersActions.doUsersGet(1, user_type || "all");
+      }
+    }
   }
 
   render() {
@@ -293,7 +313,8 @@ Users.propTypes = {
   stats: propTypes.object,
   statsActions: propTypes.object,
   location: propTypes.object,
-  history: propTypes.object
+  history: propTypes.object,
+  match: propTypes.object
 };
 
 const mapStateToProps = state => {
