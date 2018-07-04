@@ -1,8 +1,9 @@
 import "./Scholars.css";
 
 import React, { Component } from "react";
+import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux"
+import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
 
 import * as usersActions from "../../actions/userActions";
@@ -31,7 +32,23 @@ class Scholars extends Component {
       <ToTopContainer classes="scholars__container reset__body_top_padding">
         <PageMeta route="SCHOLARS" />
         <header>
-          header
+          <div className="scholars__header_content">
+            <h1>our scholars</h1>
+            <ul className="scholars__nav">
+              <li>
+                <NavLink exact
+                  to="/scholars"
+                  activeClassName="active">
+                  Current
+                </NavLink>
+                <NavLink exact
+                  to="/scholars/past"
+                  activeClassName="active">
+                  Past
+                </NavLink>
+              </li>
+            </ul>
+          </div>
         </header>
       </ToTopContainer>
     )

@@ -2,3 +2,66 @@
   padding: 125px 2em 2em;
   background-color: #FFCB61;
 }
+
+.scholars__container > header .scholars__header_content {
+  margin: 6.85em auto 23em;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.scholars__container > header .scholars__header_content > h1 {
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: white;
+  font-size: 2.85em;
+  letter-spacing: 0.25em;  
+  margin: 0;
+}
+
+.scholars__container > header .scholars__header_content > ul {
+  min-width: 200px;
+  margin: 1em;
+}
+
+.scholars__container > header .scholars__header_content > ul > li > a {
+  font-weight: bold;
+  line-height: normal;
+  font-size: 16px;
+  color: #FFFFFF;
+  padding: 30px;
+  position: relative;
+}
+
+.scholars__container>header .scholars__header_content>ul>li>a.active:after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 50px;
+  height: 3px;
+  background-color: white;
+  left: 0;
+  right: 0;
+  bottom: 20px;
+  margin: auto;
+}
+
+.scholars__container>header .scholars__header_content>ul>li>a:after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 0;
+  height: 3px;
+  background-color: white;
+  left: 0;
+  right: 0;
+  bottom: 20px;
+  margin: auto;
+  transition: width 250ms linear 100ms;
+}
+
+.scholars__container>header .scholars__header_content>ul>li>a:hover:after {
+  width: 50px;
+}
