@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import propTypes from "prop-types";
 import moment from "moment";
 
+import { USERS_CREATE } from "../../constants/routes";
+
 import TextedIconButton from "../TextedIconButton";
 import Button from "../Button";
 import Loader from "../Loader";
@@ -187,7 +189,11 @@ export const CreateUserForm = props => {
   return (
     <form className="form create_user__form" method="post"
       onSubmit={props.handleSubmit}>
-      <h2>Add user</h2>
+      <h2>Add quick user</h2>
+      <p>
+        Create a simple user (name, email, role) and send the new user a sign up email. To create a full user profile
+        <Link to={USERS_CREATE.route}> click here</Link>.
+      </p>
       <div className="form__input_container">
         <input type="text" name="name" required
           onChange={props.handleInputChange}

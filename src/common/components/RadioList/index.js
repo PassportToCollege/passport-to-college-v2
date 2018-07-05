@@ -29,11 +29,11 @@ export default class RadioList extends Component {
 
   render() {
     return (
-      <ul className="radio_list">
+      <ul className="radio_list" role="tablist">
         {
           this.props.radios.map(radio => {
             return (
-              <li key={radio.value}
+              <li key={radio.value} role="tab"
                 onClick={() => this.setState({ active: radio.value })}>
                 <Radio active={this.state.active === radio.value} />
                 <span>{radio.label}</span>

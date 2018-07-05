@@ -16,6 +16,7 @@ import Application from "./Application";
 import User from "./User";
 import DashPosts from "./DashPosts";
 import DashComments from "./DashPosts/DashComments";
+import NewUser from "./NewUser";
 
 export default class Dashboard extends Component {
   componentDidMount() {
@@ -34,6 +35,7 @@ export default class Dashboard extends Component {
           <Route exact path={routes.APPLICATIONS.route} component={Applications}></Route>
           <Route exact path={routes.USERS.route} component={Users}></Route>
           <Route exact path={routes.USERS_BY_TYPE.route} component={Users}></Route>
+          <Route exact path={routes.USERS_CREATE.route} component={NewUser}></Route>
           <Route path={routes.PROFILE.route} component={Profile}></Route>
           <Route path={routes.VIEW_APPLICATION.route} component={Application}></Route>
           <Route path={routes.VIEW_USER.route} component={User}></Route>

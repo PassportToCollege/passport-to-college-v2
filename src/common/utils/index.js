@@ -156,7 +156,7 @@ export const initializeFacebook = (d, s, id) => {
 }
 
 export class User {
-  constructor(uid, email, name, options) {
+  constructor(uid = "", email = "", name = "", options = {}) {
     this.uid = uid;
     this.email = email;
     this.isAdmin = options.admin || false;
@@ -167,20 +167,24 @@ export class User {
     this.emailConfirmed = options.emailConfirmed || false;
     this.photo = options.photo || "";
 
-    let n = name.split(" ");
-    if (n.length === 3) {
-      this.name = {
-        first: n[0],
-        middle: n[1],
-        last: n[2],
-        full: [n[0], n[2]].join(" ")
+    if (name.length) {
+      let n = name.split(" ");
+      if (n.length === 3) {
+        this.name = {
+          first: n[0],
+          middle: n[1],
+          last: n[2],
+          full: [n[0], n[2]].join(" ")
+        }
+      } else {
+        this.name = {
+          first: n[0],
+          last: n[1],
+          full: name
+        }
       }
     } else {
-      this.name = {
-        first: n[0],
-        last: n[1],
-        full: name
-      }
+      this.name = {};
     }
   }
 

@@ -12,6 +12,7 @@ export const CONTACT_US = { name: "Contact Us", route: "/contact-us" };
 // Admin Routes
 export const DASHBOARD = { name: "Dashboard", route: "/admin/dashboard" };
 export const USERS = { name: "Users", route: "/admin/dashboard/users" };
+export const USERS_CREATE = { name: "Create user", route: "/admin/dashboard/users/create/new" };
 export const USERS_BY_TYPE = { name: "Users by type", route: "/admin/dashboard/users/:user_type" };
 export const USERS_STUDENTS = { name: "Students", route: "/admin/dashboard/users/students" };
 export const USERS_ADMINS = { name: "Admins", route: "/admin/dashboard/users/admins" };
