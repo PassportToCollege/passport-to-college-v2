@@ -6,7 +6,10 @@ import propTypes from "prop-types";
 const TopicSection = ({ heading, content, sectionStyles }) => {
   return (
     <section className="topic_section" style={sectionStyles}>
-      <h5>{heading}</h5>
+      {
+        heading ?
+          <h5>{heading}</h5> : null
+      }
       {content}
     </section>
   )

@@ -1,0 +1,21 @@
+.scholars__current {
+  background-color: rgb(210,210,210);
+  position: relative;
+  margin-bottom: -18.5em;
+  z-index: 98;
+}
+
+/* Hero */
+.scholars__current > img {
+  width: 1140px;
+  max-width: 100%;
+  display: block;
+  margin: 0 auto;
+  transform: translateY(-18.5em);
+}
+
+/* Content */
+.scholars__current .scholars__current_content {
+  transform: translateY(-18.5em);
+  background-color: white;
+}

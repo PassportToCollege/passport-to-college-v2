@@ -1,5 +1,7 @@
 footer.footer {
   background-color: rgb(53, 53, 53);
+  position: relative;
+  z-index: 99;
 }
 
 footer.footer .footer__container {

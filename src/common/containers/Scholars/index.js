@@ -1,13 +1,14 @@
 import "./Scholars.css";
 
 import React, { Component } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Route } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
 
 import * as usersActions from "../../actions/userActions";
 
+import CurrentScholars from "./CurrentScholars";
 import ToTopContainer from "../../components/ToTopContainer";
 import PageMeta from "../../components/PageMeta";
 
@@ -20,7 +21,8 @@ class Scholars extends Component {
   static propTypes = {
     users: propTypes.object,
     usersActions: propTypes.object,
-    updateLocation: propTypes.func
+    updateLocation: propTypes.func,
+    match: propTypes.object
   }
 
   componentDidMount() {
@@ -36,13 +38,11 @@ class Scholars extends Component {
             <h1>our scholars</h1>
             <ul className="scholars__nav">
               <li>
-                <NavLink exact
-                  to="/scholars"
+                <NavLink exact to="/scholars"
                   activeClassName="active">
                   Current
                 </NavLink>
-                <NavLink exact
-                  to="/scholars/past"
+                <NavLink exact to="/scholars/past"
                   activeClassName="active">
                   Past
                 </NavLink>
@@ -50,6 +50,8 @@ class Scholars extends Component {
             </ul>
           </div>
         </header>
+        <Route exact path={this.props.match.url}
+          component={CurrentScholars} />
       </ToTopContainer>
     )
   }
