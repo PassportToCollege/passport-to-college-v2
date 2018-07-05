@@ -5,3 +5,17 @@
   font-family: "Nunito", sans-serif;
   color: rgba(51,51,51,0.85);
 }
+
+.create_user__container .create_user__section:not(:last-child) {
+  margin-bottom: 4em;
+}
+
+.create_user__container .create_user__section > input {
+  margin-bottom: 0;
+}
+
+.create_user__container .create_user__section .create_user__input_label {
+  margin: 0 0 2em;
+  font-weight: 400;
+  font-size: 0.85em;
+}

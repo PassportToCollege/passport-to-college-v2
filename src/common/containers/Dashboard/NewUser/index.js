@@ -67,6 +67,22 @@ class NewUser extends Component {
           </section>
           <section className="create_user__section">
             <h2>Personal Information</h2>
+            <Input inputName="name"
+              inputPlaceholder="John Jim Doe"
+              whenBlur={this.handleInputBlur} />
+            <p className="create_user__input_label">Full Name</p>
+            <Input inputName="email" inputType="email"
+              inputPlaceholder="johndoe@gmail.com"
+              whenBlur={this.handleInputBlur} />
+            <p className="create_user__input_label">Email Address</p>
+            <Input inputName="dob" inputType="date"
+              inputPlaceholder="Date of Birth"
+              whenBlur={this.handleInputBlur} />
+            <p className="create_user__input_label">Date of Birth</p>
+            <Input inputName="country"
+              inputPlaceholder="Jamaica"
+              whenBlur={this.handleInputBlur} />
+            <p className="create_user__input_label">Country</p>
           </section>
         </main>
       </ToTopContainer>
