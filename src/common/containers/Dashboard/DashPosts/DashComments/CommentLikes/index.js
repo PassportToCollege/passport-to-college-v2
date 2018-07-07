@@ -75,7 +75,7 @@ class CommentLikes extends Component {
       if (!this.props.users.isGettingUsers && this.state.comment) {
         if (this.state.comment.likes) {
           const uids = Object.keys(this.state.comment.likes);
-          let users = uids.map(uid => {
+          let users = uids.map(uid => { // eslint-disable-line array-callback-return
             if (this.state.comment.likes[uid])
               return uid;
           });

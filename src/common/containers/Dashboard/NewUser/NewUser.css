@@ -2,7 +2,6 @@
   display: block;
   max-width: 600px;
   font-size: 0.85em;
-  font-family: "Nunito", sans-serif;
   color: rgba(51,51,51,0.85);
 }
 
@@ -10,7 +9,17 @@
   margin-bottom: 4em;
 }
 
-.create_user__container .create_user__section > input {
+.create_user__container .create_user__section .flex_container > span {
+  min-width: 300px;
+  flex: 1 0 33%;
+  padding: 0.5em;
+}
+
+.create_user__container .create_user__section > .radio_list > li {
+  display: inline-block;
+}
+
+.create_user__container .create_user__section input {
   margin-bottom: 0;
 }
 

@@ -10,10 +10,12 @@ import { USERS } from "../../../constants/routes";
 import { User } from "../../../utils";
 
 import ToTopContainer from "../../../components/ToTopContainer";
+import FlexContainer from "../../../components/FlexContainer";
 import PageMeta from "../../../components/PageMeta";
 import Button from "../../../components/Button";
 import Input from "../../../components/Input";
 import Checkbox from  "../../../components/Checkbox";
+import RadioList from "../../../components/RadioList";
 
 class NewUser extends Component {
   constructor(props) {
@@ -67,22 +69,60 @@ class NewUser extends Component {
           </section>
           <section className="create_user__section">
             <h2>Personal Information</h2>
-            <Input inputName="name"
-              inputPlaceholder="John Jim Doe"
-              whenBlur={this.handleInputBlur} />
-            <p className="create_user__input_label">Full Name</p>
-            <Input inputName="email" inputType="email"
-              inputPlaceholder="johndoe@gmail.com"
-              whenBlur={this.handleInputBlur} />
-            <p className="create_user__input_label">Email Address</p>
-            <Input inputName="dob" inputType="date"
-              inputPlaceholder="Date of Birth"
-              whenBlur={this.handleInputBlur} />
-            <p className="create_user__input_label">Date of Birth</p>
-            <Input inputName="country"
-              inputPlaceholder="Jamaica"
-              whenBlur={this.handleInputBlur} />
-            <p className="create_user__input_label">Country</p>
+            <RadioList 
+              radios={[
+                { label: "Female", value: "female" },
+                { label: "Male", value: "male" }
+              ]}
+              obRadioChange={this.handleGenderSelect} />
+            <FlexContainer>
+              <span>
+                <Input inputName="name.first"
+                  inputPlaceholder="John"
+                  whenBlur={this.handleInputBlur} />
+                <p className="create_user__input_label">First Name</p>
+              </span>
+              <span>
+                <Input inputName="name.middle"
+                  inputPlaceholder="James"
+                  whenBlur={this.handleInputBlur} />
+                <p className="create_user__input_label">Middle Name (optional)</p>
+              </span>
+              <span>
+                <Input inputName="name.last"
+                  inputPlaceholder="Doe"
+                  whenBlur={this.handleInputBlur} />
+                <p className="create_user__input_label">Last Name</p>
+              </span>
+            </FlexContainer>
+            <FlexContainer>
+              <span>
+                <Input inputName="email" inputType="email"
+                  inputPlaceholder="johndoe@gmail.com"
+                  whenBlur={this.handleInputBlur} />
+                <p className="create_user__input_label">Email Address</p>
+              </span>
+              <span>
+                <Input inputName="phone" inputType="phone"
+                  inputPlaceholder="999 999 9999"
+                  whenBlur={this.handleInputBlur} />
+                <p className="create_user__input_label">Phone Number</p>
+              </span>
+            </FlexContainer>
+            <FlexContainer>
+              <span>
+                <Input inputName="dob" inputType="date"
+                  inputPlaceholder="Date of Birth"
+                  whenBlur={this.handleInputBlur} />
+                <p className="create_user__input_label">Date of Birth</p>
+              </span>
+              <span>
+                <Input inputName="country"
+                  inputPlaceholder="Jamaica"
+                  whenBlur={this.handleInputBlur} />
+                <p className="create_user__input_label">Country</p>
+              </span>
+            </FlexContainer>
           </section>
         </main>
       </ToTopContainer>
