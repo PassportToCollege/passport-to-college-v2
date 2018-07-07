@@ -186,13 +186,13 @@ class NewUser extends Component {
                 </FlexContainer>
                 <FlexContainer>
                   <span>
-                    <Input inputName="enrollment"
+                    <Input inputName="enrollmentYear"
                       inputPlaceholder="2011"
                       whenBlur={this.handleInputBlurStudent} />
                     <p className="create_user__input_label">Enrollment Year</p>
                   </span>
                   <span>
-                    <Input inputName="graduation"
+                    <Input inputName="graduationYear"
                       inputPlaceholder="2015"
                       whenBlur={this.handleInputBlurStudent} />
                     <p className="create_user__input_label">Graduation Year</p>
@@ -281,6 +281,24 @@ class NewUser extends Component {
           }) 
         });
     }
+  }
+
+  handleInputBlurStudent = e => {
+    const { name, value } = e;
+
+    this.setState({ 
+      student: Object.assign({}, this.state.student, {
+        [name]: value
+      })  
+    });
+  }
+
+  handleBioBlur = content => {
+    this.setState({
+      student: Object.assign({}, this.state.student, {
+        bio: content
+      })
+    });
   }
 }
 
