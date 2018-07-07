@@ -44,6 +44,14 @@ export const doStudentGet = uid => {
   }
 }
 
+// CREATE actions
+export const studentCreateInitiated = student => {
+  return {
+    type: types.CREATE_STUDENT_INITIATED,
+    newStudent: student
+  };
+};
+
 // UPDATE actions
 export const studentUpdateInitiated = (student, data) => {
   return {

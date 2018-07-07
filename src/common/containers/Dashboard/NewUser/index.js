@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux"
 import propTypes from "prop-types";
 
-import * as userActions from "../../../actions/userActions";
+import * as usersActions from "../../../actions/userActions";
 import { USERS } from "../../../constants/routes";
 import { User } from "../../../utils";
 
@@ -304,13 +304,13 @@ class NewUser extends Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.user
+    users: state.user
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    userActions: bindActionCreators(userActions, dispatch)
+    usersActions: bindActionCreators(usersActions, dispatch)
   };
 };
 

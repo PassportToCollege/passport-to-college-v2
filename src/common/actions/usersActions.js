@@ -376,6 +376,33 @@ export const doCreateUser = data => {
   }
 }
 
+export const doCreateFullUser = (user = {}, student = {}) => {
+  return dispatch => {
+    if (!Object.keys(user).length)
+      return dispatch(createUserFailed({ message: "no user data provided" }, null));
+
+    const { email } = user;
+    db.collection("users")
+      .where("email", "==", email)
+      .get()
+      .then(snapshot => {
+        if (!snapshot.empty)
+          return dispatch(createUserFailed({ message: "user already exists" }, user));
+
+        user.uid = `${uid(24)}_ac_less`;
+        return db.collection("users")
+          .doc(user.uid)
+          .set(user)
+          .then(() => {
+            dispatch(userCreated(user));
+          })
+          .catch(error => {
+            dispatch(createUserFailed(error, user));
+          });
+      })
+  }
+};
+
 // UPDATE actions
 export const userUpdateInitiated = (uid, data) => {
   return {
