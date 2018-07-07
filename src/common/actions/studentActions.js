@@ -45,12 +45,45 @@ export const doStudentGet = uid => {
 }
 
 // CREATE actions
-export const studentCreateInitiated = student => {
+export const studentCreateInitiated = () => {
   return {
-    type: types.CREATE_STUDENT_INITIATED,
+    type: types.CREATE_STUDENT_INITIATED
+  };
+};
+
+export const studentCreateFailed = (error, student) => {
+  return {
+    type: types.CREATE_STUDENT_FAILED,
+    error, 
     newStudent: student
   };
 };
+
+export const studentCreated = student => {
+  return {
+    type: types.STUDENT_CREATED,
+    newStudent: student
+  };
+};
+
+export const doCreateStudent = (student ={}) => {
+  return dispatch => {
+    if (!Object.keys(student).length)
+      return dispatch(studentCreateFailed({ message: "no student data provided" }, null));
+
+    dispatch(studentCreateInitiated());
+
+    return db.collection("students")
+      .doc(student.uid)
+      .set(student)
+      .then(() => {
+        dispatch(studentCreated(student));
+      })
+      .catch(error => {
+        dispatch(studentCreateFailed(error, student));
+      });
+  }
+}
 
 // UPDATE actions
 export const studentUpdateInitiated = (student, data) => {

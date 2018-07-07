@@ -3,6 +3,7 @@ import axios from "axios";
 
 import { db } from "../utils/firebase";
 import * as types from "./actionTypes";
+import { doCreateStudent } from "./studentActions";
 
 const EMAIL_API = process.env.REACT_APP_EMAIL_API;
 const Console = console;
@@ -395,6 +396,15 @@ export const doCreateFullUser = (user = {}, student = {}) => {
           .set(user)
           .then(() => {
             dispatch(userCreated(user));
+
+            if (Object.keys(student).length) {
+              const newStudent = Object.assign({}, student, {
+                uid: user.uid,
+                user
+              });
+
+              dispatch(doCreateStudent(newStudent));
+            }
           })
           .catch(error => {
             dispatch(createUserFailed(error, user));
