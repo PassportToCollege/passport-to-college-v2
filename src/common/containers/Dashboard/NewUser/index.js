@@ -3,11 +3,13 @@ import "./NewUser.css";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux"
+import { uid } from "rand-token";
 import propTypes from "prop-types";
 
 import * as usersActions from "../../../actions/userActions";
+import * as studentActions from "../../../actions/studentActions";
 import { USERS } from "../../../constants/routes";
-import { User } from "../../../utils";
+import { DefaultUser } from "../../../utils";
 
 import ToTopContainer from "../../../components/ToTopContainer";
 import FlexContainer from "../../../components/FlexContainer";
@@ -18,13 +20,14 @@ import Checkbox from  "../../../components/Checkbox";
 import RadioList from "../../../components/RadioList";
 import WYSIWYGEditor from "../../../components/Editor";
 import Notification from "../../../components/Notification";
+import Loader from "../../../components/Loader";
 
 class NewUser extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      user: new User().data,
+      user: new DefaultUser({ uid: `${uid(24)}_ac_less` }).data,
       notificationClosed: true,
       hasNotification: false,
       notification: ""
@@ -32,9 +35,11 @@ class NewUser extends Component {
   }
 
   static propTypes = {
-    user: propTypes.object,
-    userActions: propTypes.object,
-    history: propTypes.object
+    users: propTypes.object,
+    usersActions: propTypes.object,
+    history: propTypes.object,
+    student: propTypes.object,
+    studentActions: propTypes.object
   }
 
   render() {
@@ -217,15 +222,28 @@ class NewUser extends Component {
           <Button solid 
             doClick={this.handleUserSave}
             text="Save User" />
+          {
+            this.props.users.isCreating || this.props.student.creatingStudent ?
+              <Loader /> : null
+          }
         </main>
       </ToTopContainer>
     )
   }
 
   handleRolesCheckboxChange = (name, value) => {
-    this.setState({ user: Object.assign({}, this.state.user, {
-        [name]: value
-      }) 
+    const newUser = Object.assign({}, this.state.user, {
+      [name]: value
+    });
+
+    const newStudent = newUser.isStudent ? 
+      Object.assign({}, this.state.student, {
+        user: newUser
+      }) : this.state.student;
+
+    this.setState({ 
+      user: newUser,
+      student: newStudent  
     });
   }
 
@@ -300,17 +318,26 @@ class NewUser extends Component {
       })
     });
   }
+
+  handleUserSave = () => {
+    const user = new DefaultUser(this.state.user);
+    console.log(user.isComplete);
+    console.log(user.missingProps);
+    console.log(user.data)
+  }
 }
 
 const mapStateToProps = state => {
   return {
-    users: state.user
+    users: state.user,
+    student: state.student
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    usersActions: bindActionCreators(usersActions, dispatch)
+    usersActions: bindActionCreators(usersActions, dispatch),
+    studentActions: bindActionCreators(studentActions, dispatch)
   };
 };
 
