@@ -226,6 +226,9 @@ export class DefaultUser {
     if (this.email && !isEmail(this.email)) {
       this.email = null;
     }
+
+    if (Object.keys(this.name).length)
+      this.name.full = `${this.name.first} ${this.name.last}`;
   }
 
   get data() {
@@ -238,7 +241,6 @@ export class DefaultUser {
       (this.address && this.address.country) &&
       (this.name && this.name.first && this.name.last) &&
       this.gender &&
-      (this.isStaff && this.role) &&
       this.dob &&
       this.email &&
       this.phone
@@ -251,8 +253,8 @@ export class DefaultUser {
     if (!this.uid)
       props.push("uid");
 
-    if(!this.address.country)
-      props.push("country");
+    if (!this.email)
+      props.push("email");
 
     if (!this.name.first)
       props.push("name.first");
@@ -260,17 +262,18 @@ export class DefaultUser {
     if (!this.name.last)
       props.push("name.last");
     
+    if (!this.address.country)
+      props.push("country");
+    
     if (!this.gender)
       props.push("gender");
+      
+    if (!this.dob)
+      props.push("dob");
 
     if (this.isStaff && !this.role)
       props.push("role");
 
-    if (!this.dob)
-      props.push("dob");
-    
-    if (!this.email)
-      props.push("email");
 
     return props;
   }
@@ -287,6 +290,58 @@ export class DefaultUser {
       email, emailConfirmed, address, name, gender, role,
       dob, phone, photo
     }
+  }
+}
+
+export class Student {
+  constructor(student = {}, user = {}) {
+    this.user = user;
+
+    this.uid = user.uid;
+    this.bio = {};
+    this.enrollmentYear = null;
+    this.graduationYear = null;
+    this.university = null;
+    this.highSchool = null;
+    this.major = null;
+    this.minor = null;
+    this.isFeatured = false;
+    this.showOnSite = false;
+
+    if (Object.keys(student).length)
+      Object.keys(this, student);
+  }
+
+  get data() {
+    return this.getData();
+  }
+
+  get isComplete() {
+    return !!(
+      this.uid &&
+      Object.keys(this.bio).length &&
+      this.enrollmentYear &&
+      this.graduationYear &&
+      this.major &&
+      this.university &&
+      Object.keys(this.user)
+    );
+  }
+
+  getData() {
+    const {
+      uid, user, bio, 
+      enrollmentYear, graduationYear,
+      university, highSchool, major, minor,
+      isFeatured, showOnSite
+    } = this;
+
+    return {
+      uid, user, bio,
+      enrollmentYear, graduationYear,
+      university, highSchool, major, minor,
+      isFeatured, showOnSite
+    };
   }
 }
 

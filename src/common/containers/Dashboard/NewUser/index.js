@@ -9,7 +9,7 @@ import propTypes from "prop-types";
 import * as usersActions from "../../../actions/userActions";
 import * as studentActions from "../../../actions/studentActions";
 import { USERS } from "../../../constants/routes";
-import { DefaultUser } from "../../../utils";
+import { DefaultUser, Student } from "../../../utils";
 
 import ToTopContainer from "../../../components/ToTopContainer";
 import FlexContainer from "../../../components/FlexContainer";
@@ -321,9 +321,28 @@ class NewUser extends Component {
 
   handleUserSave = () => {
     const user = new DefaultUser(this.state.user);
-    console.log(user.isComplete);
-    console.log(user.missingProps);
-    console.log(user.data)
+    const student = new Student(this.state.student, this.state.user);
+    
+    if (user.isComplete) {
+      if (user.isStudent) {
+        if (student.isComplete)
+          return this.props.usersActions.doCreateFullUser(user, this.state.student);
+
+        this.setState({
+          notificationClosed: false,
+          hasNotification: true,
+          notification: "required student data field(s) left empty"
+        });
+      }
+
+      return this.props.usersActions.doCreateFullUser(user);
+    }
+
+    this.setState({
+      notificationClosed: false,
+      hasNotification: true,
+      notification: `missing user property: ${user.missingProps[0]}`
+    });
   }
 }
 

@@ -390,6 +390,9 @@ export const doCreateFullUser = (user = {}, student = {}) => {
         if (!snapshot.empty)
           return dispatch(createUserFailed({ message: "user already exists" }, user));
 
+        if (!user.uid)
+          user.uid = `${uid(24)}_ac_less`;
+
         return db.collection("users")
           .doc(user.uid)
           .set(user)
