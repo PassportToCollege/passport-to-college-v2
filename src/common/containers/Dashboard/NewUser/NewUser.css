@@ -15,7 +15,11 @@
   padding: 0.5em;
 }
 
-.create_user__container .create_user__section > .radio_list > li {
+.create_user__container .create_user__section > .inline_container {
+  padding: 0 0.5em;
+}
+
+.create_user__container .create_user__section > div > .radio_list > li {
   display: inline-block;
 }
 
@@ -27,4 +31,22 @@
   margin: 0 0 2em;
   font-weight: 400;
   font-size: 0.85em;
+}
+
+.create_user__container .create_user__section .create_user__input_label.heading {
+  font: bold 1.15em "Roboto", san-serif;
+  margin: 0;
+}
+
+.create_user__container .create_user__section .create_user__input_label.inline {
+  margin: 0;
+}
+
+.create_user__container .create_user__section .create_user__input_label.required::after {
+  content: "*";
+  display: inline-block;
+  margin-left: 0.25em;
+  font-size: 1.15em;
+  color: #FF6561;
+  font-weight: bold;
 }

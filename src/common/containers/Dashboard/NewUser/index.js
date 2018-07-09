@@ -88,18 +88,21 @@ class NewUser extends Component {
           </section>
           <section className="create_user__section">
             <h2>Personal Information</h2>
-            <RadioList 
-              radios={[
-                { label: "Female", value: "female" },
-                { label: "Male", value: "male" }
-              ]}
-              onRadioChange={this.handleGenderSelect} />
+            <div className="inline_container">
+              <p className="create_user__input_label required inline">Gender</p>
+              <RadioList 
+                radios={[
+                  { label: "Female", value: "female" },
+                  { label: "Male", value: "male" }
+                ]}
+                onRadioChange={this.handleGenderSelect} />
+            </div>
             <FlexContainer>
               <span>
                 <Input inputName="name.first"
                   inputPlaceholder="John"
                   whenBlur={this.handleInputBlur} />
-                <p className="create_user__input_label">First Name</p>
+                <p className="create_user__input_label required">First Name</p>
               </span>
               <span>
                 <Input inputName="name.middle"
@@ -111,7 +114,7 @@ class NewUser extends Component {
                 <Input inputName="name.last"
                   inputPlaceholder="Doe"
                   whenBlur={this.handleInputBlur} />
-                <p className="create_user__input_label">Last Name</p>
+                <p className="create_user__input_label required">Last Name</p>
               </span>
             </FlexContainer>
             <FlexContainer>
@@ -119,13 +122,13 @@ class NewUser extends Component {
                 <Input inputName="email" inputType="email"
                   inputPlaceholder="johndoe@gmail.com"
                   whenBlur={this.handleInputBlur} />
-                <p className="create_user__input_label">Email Address</p>
+                <p className="create_user__input_label required">Email Address</p>
               </span>
               <span>
                 <Input inputName="phone" inputType="phone"
                   inputPlaceholder="999 999 9999"
                   whenBlur={this.handleInputBlur} />
-                <p className="create_user__input_label">Phone Number</p>
+                <p className="create_user__input_label">Phone Number (optional)</p>
               </span>
             </FlexContainer>
             <FlexContainer>
@@ -133,13 +136,13 @@ class NewUser extends Component {
                 <Input inputName="dob" inputType="date"
                   inputPlaceholder="Date of Birth"
                   whenBlur={this.handleInputBlur} />
-                <p className="create_user__input_label">Date of Birth</p>
+                <p className="create_user__input_label required">Date of Birth</p>
               </span>
               <span>
                 <Input inputName="country"
                   inputPlaceholder="Jamaica"
                   whenBlur={this.handleInputBlur} />
-                <p className="create_user__input_label">Country</p>
+                <p className="create_user__input_label required">Country</p>
               </span>
             </FlexContainer>
           </section>
@@ -166,13 +169,13 @@ class NewUser extends Component {
                     <Input inputName="highSchool"
                       inputPlaceholder="Lorem High School"
                       whenBlur={this.handleInputBlurStudent} />
-                    <p className="create_user__input_label">High School</p>
+                    <p className="create_user__input_label">High School (optional)</p>
                   </span>
                   <span>
                     <Input inputName="university"
                       inputPlaceholder="Ipsum College"
                       whenBlur={this.handleInputBlurStudent} />
-                    <p className="create_user__input_label">University</p>
+                    <p className="create_user__input_label required">University</p>
                   </span>
                 </FlexContainer>
                 <FlexContainer>
@@ -180,7 +183,7 @@ class NewUser extends Component {
                     <Input inputName="major"
                       inputPlaceholder="Biology"
                       whenBlur={this.handleInputBlurStudent} />
-                    <p className="create_user__input_label">Major</p>
+                    <p className="create_user__input_label required">Major</p>
                   </span>
                   <span>
                     <Input inputName="minor"
@@ -194,15 +197,16 @@ class NewUser extends Component {
                     <Input inputName="enrollmentYear"
                       inputPlaceholder="2011"
                       whenBlur={this.handleInputBlurStudent} />
-                    <p className="create_user__input_label">Enrollment Year</p>
+                    <p className="create_user__input_label required">Enrollment Year</p>
                   </span>
                   <span>
                     <Input inputName="graduationYear"
                       inputPlaceholder="2015"
                       whenBlur={this.handleInputBlurStudent} />
-                    <p className="create_user__input_label">Graduation Year</p>
+                    <p className="create_user__input_label required">Graduation Year</p>
                   </span>
                 </FlexContainer>
+                <p className="create_user__input_label required heading">About Student</p>
                 <WYSIWYGEditor
                   captureBlur={this.handleBioBlur} 
                   editorStyles={{

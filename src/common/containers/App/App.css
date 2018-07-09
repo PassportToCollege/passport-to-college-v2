@@ -78,3 +78,8 @@ a:focus {
   position: relative;
   min-height: calc(100vh - 125px);
 }
+
+.app__main .inline_container > *{
+  display: inline-block;
+  vertical-align: middle;
+}
