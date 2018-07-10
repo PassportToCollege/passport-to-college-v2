@@ -11,7 +11,8 @@ import {
   STUDENT_ACCOMPLISHMENT_DELETE_FAILED,
   CREATE_COMMENT_INITIATED,
   CREATE_STUDENT_FAILED,
-  STUDENT_CREATED
+  STUDENT_CREATED,
+  CREATE_STUDENT_INITIATED
 } from "../actions/actionTypes";
 
 const student = (state = initialState.student, action) => {
@@ -86,6 +87,12 @@ const student = (state = initialState.student, action) => {
         error: action.error
       });
     case CREATE_COMMENT_INITIATED:
+      return Object.assign({}, state, {
+        creatingStudent: true,
+        createdStudent: false,
+        failedToCreateStudent: false
+      });
+    case CREATE_STUDENT_INITIATED:
       return Object.assign({}, state, {
         creatingStudent: true,
         createdStudent: false,

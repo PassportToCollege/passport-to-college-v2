@@ -382,6 +382,8 @@ export const doCreateFullUser = (user = {}, student = {}) => {
     if (!Object.keys(user).length)
       return dispatch(createUserFailed({ message: "no user data provided" }, null));
 
+    dispatch(createUserInitiated(user));
+
     const { email } = user;
     db.collection("users")
       .where("email", "==", email)

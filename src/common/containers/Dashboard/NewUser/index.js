@@ -22,6 +22,7 @@ import RadioList from "../../../components/RadioList";
 import WYSIWYGEditor from "../../../components/Editor";
 import Notification from "../../../components/Notification";
 import Loader from "../../../components/Loader";
+import Modal from "../../../components/Modal";
 
 class NewUser extends Component {
   constructor(props) {
@@ -32,7 +33,9 @@ class NewUser extends Component {
       notificationClosed: true,
       hasNotification: false,
       notification: "",
-      resetRadios: false
+      resetRadios: false,
+      userCreated: false,
+      studentCreated: false
     }
   }
 
@@ -56,6 +59,30 @@ class NewUser extends Component {
     return null;
   }
 
+  getSnapshotBeforeUpdate(prevProps) {
+    if (prevProps.users.isCreating && this.props.users.hasCreated && !this.state.user.isStudent) {
+      return {
+        createdUser: true
+      };
+    }
+
+    if (prevProps.student.creatingStudent && this.props.student.createdStudent) {
+      return {
+        createdStudent: true
+      };
+    }
+
+    return null;
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (snapshot && snapshot.createdUser)
+      this.setState({ userCreated: true });
+
+    if (snapshot && snapshot.createdStudent)
+      this.setState({ studentCreated: true });
+  }
+
   render() {
     return (
       <ToTopContainer classes="dashboard__container create_user__container">
@@ -67,6 +94,12 @@ class NewUser extends Component {
                 notificationClosed: true,
                 notification: ""
               })} /> : null
+        }
+        {
+          this.state.userCreated || this.state.studentCreated ?
+            <Modal doClose={this.handleMoreOptionsModalClose}>
+
+            </Modal> : null
         }
         <PageMeta more={
           <title>New User | Dashboard | Passport to College</title>
@@ -239,22 +272,22 @@ class NewUser extends Component {
                     }} />
                 </section> : null
             }
+            <Button solid type="reset"
+              doClick={this.doFormReset}
+              styles={{
+                margin: "0 1em",
+                backgroundColor: "#aaa"
+              }}
+              text="Reset" />
             <Button solid 
               doClick={this.handleUserSave}
               text="Save User" />
-            <Button solid type="reset"
-              styles={{
-                marginLeft: "1em",
-                backgroundColor: "#aaa"
-              }}
-              doClick={this.handleFormReset}
-              text="Reset" />
             {
               this.props.users.isCreating || this.props.student.creatingStudent ?
                 <Loader width="32px"
                   styles={{
                     display: "inline-block",
-                    marginLeft: "1em"
+                    verticalAlign: "middle"
                   }} /> : null
             }
           </Form>
@@ -263,7 +296,7 @@ class NewUser extends Component {
     )
   }
 
-  handleFormReset = () => {
+  doFormReset = () => {
     this.setState({ 
       user: new DefaultUser({ uid: `${uid(24)}_ac_less` }).data,
       resetRadios: true 
