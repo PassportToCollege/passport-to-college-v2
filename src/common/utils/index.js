@@ -242,8 +242,7 @@ export class DefaultUser {
       (this.name && this.name.first && this.name.last) &&
       this.gender &&
       this.dob &&
-      this.email &&
-      this.phone
+      this.email
     );
   }
 
@@ -298,18 +297,15 @@ export class Student {
     this.user = user;
 
     this.uid = user.uid;
-    this.bio = {};
-    this.enrollmentYear = null;
-    this.graduationYear = null;
-    this.university = null;
-    this.highSchool = null;
-    this.major = null;
-    this.minor = null;
-    this.isFeatured = false;
-    this.showOnSite = false;
-
-    if (Object.keys(student).length)
-      Object.keys(this, student);
+    this.bio = student.bio || {};
+    this.enrollmentYear = student.enrollmentYear || null;
+    this.graduationYear = student.graduationYear || null;
+    this.university = student.university || null;
+    this.highSchool = student.highSchool || null;
+    this.major = student.major || null;
+    this.minor = student.minor || null;
+    this.isFeatured = !!student.isFeatured;
+    this.showOnSite = !!student.showOnSite;
   }
 
   get data() {

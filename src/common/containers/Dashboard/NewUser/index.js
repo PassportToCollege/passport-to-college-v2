@@ -6,7 +6,7 @@ import { bindActionCreators } from "redux"
 import { uid } from "rand-token";
 import propTypes from "prop-types";
 
-import * as usersActions from "../../../actions/userActions";
+import * as usersActions from "../../../actions/usersActions";
 import * as studentActions from "../../../actions/studentActions";
 import { USERS } from "../../../constants/routes";
 import { DefaultUser, Student } from "../../../utils";
@@ -15,6 +15,7 @@ import ToTopContainer from "../../../components/ToTopContainer";
 import FlexContainer from "../../../components/FlexContainer";
 import PageMeta from "../../../components/PageMeta";
 import Button from "../../../components/Button";
+import Form from "../../../components/Form";
 import Input from "../../../components/Input";
 import Checkbox from  "../../../components/Checkbox";
 import RadioList from "../../../components/RadioList";
@@ -40,6 +41,18 @@ class NewUser extends Component {
     history: propTypes.object,
     student: propTypes.object,
     studentActions: propTypes.object
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    if (props.users.hasFailed && state.notificationClosed) {
+      return {
+        notificationClosed: false,
+        hasNotification: true,
+        notification: props.users.error.message
+      }
+    }
+
+    return null;
   }
 
   render() {
@@ -71,165 +84,171 @@ class NewUser extends Component {
             }} />
         </header>
         <main className="create_user__content">
-          <section className="create_user__section">
-            <h2>Roles</h2>
-            <Checkbox boxName="isAdmin"
-              boxLabel="Admin"
-              boxChecked={this.state.user.isAdmin}
-              doClick={this.handleRolesCheckboxChange} />
-            <Checkbox boxName="isStudent"
-              boxLabel="Student"
-              boxChecked={this.state.user.isStudent}
-              doClick={this.handleRolesCheckboxChange} />
-            <Checkbox boxName="isStaff"
-              boxLabel="Staff"
-              boxChecked={this.state.user.isStaff}
-              doClick={this.handleRolesCheckboxChange} />
-          </section>
-          <section className="create_user__section">
-            <h2>Personal Information</h2>
-            <div className="inline_container">
-              <p className="create_user__input_label required inline">Gender</p>
-              <RadioList 
-                radios={[
-                  { label: "Female", value: "female" },
-                  { label: "Male", value: "male" }
-                ]}
-                onRadioChange={this.handleGenderSelect} />
-            </div>
-            <FlexContainer>
-              <span>
-                <Input inputName="name.first"
-                  inputPlaceholder="John"
-                  whenBlur={this.handleInputBlur} />
-                <p className="create_user__input_label required">First Name</p>
-              </span>
-              <span>
-                <Input inputName="name.middle"
-                  inputPlaceholder="James"
-                  whenBlur={this.handleInputBlur} />
-                <p className="create_user__input_label">Middle Name (optional)</p>
-              </span>
-              <span>
-                <Input inputName="name.last"
-                  inputPlaceholder="Doe"
-                  whenBlur={this.handleInputBlur} />
-                <p className="create_user__input_label required">Last Name</p>
-              </span>
-            </FlexContainer>
-            <FlexContainer>
-              <span>
-                <Input inputName="email" inputType="email"
-                  inputPlaceholder="johndoe@gmail.com"
-                  whenBlur={this.handleInputBlur} />
-                <p className="create_user__input_label required">Email Address</p>
-              </span>
-              <span>
-                <Input inputName="phone" inputType="phone"
-                  inputPlaceholder="999 999 9999"
-                  whenBlur={this.handleInputBlur} />
-                <p className="create_user__input_label">Phone Number (optional)</p>
-              </span>
-            </FlexContainer>
-            <FlexContainer>
-              <span>
-                <Input inputName="dob" inputType="date"
-                  inputPlaceholder="Date of Birth"
-                  whenBlur={this.handleInputBlur} />
-                <p className="create_user__input_label required">Date of Birth</p>
-              </span>
-              <span>
-                <Input inputName="country"
-                  inputPlaceholder="Jamaica"
-                  whenBlur={this.handleInputBlur} />
-                <p className="create_user__input_label required">Country</p>
-              </span>
-            </FlexContainer>
-          </section>
-          {
-            this.state.user.isStaff ?
-              <section className="create_user__section">
-                <h2>Staff Role</h2>
-                <FlexContainer>
-                  <span>
-                    <Input inputName="role"
-                      inputPlaceholder="Interviewer"
-                      whenBlur={this.handleInputBlur} />
-                    <p className="create_user__input_label">Role</p>
-                  </span>
-                </FlexContainer>
-              </section> : null
-          }
-          {
-            this.state.user.isStudent ?
-              <section className="create_user__section">
-                <h2>Student Information</h2>
-                <FlexContainer>
-                  <span>
-                    <Input inputName="highSchool"
-                      inputPlaceholder="Lorem High School"
-                      whenBlur={this.handleInputBlurStudent} />
-                    <p className="create_user__input_label">High School (optional)</p>
-                  </span>
-                  <span>
-                    <Input inputName="university"
-                      inputPlaceholder="Ipsum College"
-                      whenBlur={this.handleInputBlurStudent} />
-                    <p className="create_user__input_label required">University</p>
-                  </span>
-                </FlexContainer>
-                <FlexContainer>
-                  <span>
-                    <Input inputName="major"
-                      inputPlaceholder="Biology"
-                      whenBlur={this.handleInputBlurStudent} />
-                    <p className="create_user__input_label required">Major</p>
-                  </span>
-                  <span>
-                    <Input inputName="minor"
-                      inputPlaceholder="Chemistry"
-                      whenBlur={this.handleInputBlurStudent} />
-                    <p className="create_user__input_label">Minor (optional)</p>
-                  </span>
-                </FlexContainer>
-                <FlexContainer>
-                  <span>
-                    <Input inputName="enrollmentYear"
-                      inputPlaceholder="2011"
-                      whenBlur={this.handleInputBlurStudent} />
-                    <p className="create_user__input_label required">Enrollment Year</p>
-                  </span>
-                  <span>
-                    <Input inputName="graduationYear"
-                      inputPlaceholder="2015"
-                      whenBlur={this.handleInputBlurStudent} />
-                    <p className="create_user__input_label required">Graduation Year</p>
-                  </span>
-                </FlexContainer>
-                <p className="create_user__input_label required heading">About Student</p>
-                <WYSIWYGEditor
-                  captureBlur={this.handleBioBlur} 
-                  editorStyles={{
-                    margin: "0 auto",
-                    maxWidth: "100%",
-                    padding: "2em 1.875em",
-                    backgroundColor: "#FFF",
-                    border: "none"
-                  }} 
-                  controlStyles={{
-                    maxWidth: "100%",
-                    position: "static",
-                    marginBottom: "0"
-                  }} />
-              </section> : null
-          }
-          <Button solid 
-            doClick={this.handleUserSave}
-            text="Save User" />
-          {
-            this.props.users.isCreating || this.props.student.creatingStudent ?
-              <Loader /> : null
-          }
+          <Form doSubmit={this.handleUserSave}>
+            <section className="create_user__section">
+              <h2>Roles</h2>
+              <Checkbox boxName="isAdmin"
+                boxLabel="Admin"
+                boxChecked={this.state.user.isAdmin}
+                doClick={this.handleRolesCheckboxChange} />
+              <Checkbox boxName="isStudent"
+                boxLabel="Student"
+                boxChecked={this.state.user.isStudent}
+                doClick={this.handleRolesCheckboxChange} />
+              <Checkbox boxName="isStaff"
+                boxLabel="Staff"
+                boxChecked={this.state.user.isStaff}
+                doClick={this.handleRolesCheckboxChange} />
+            </section>
+            <section className="create_user__section">
+              <h2>Personal Information</h2>
+              <div className="inline_container">
+                <p className="create_user__input_label required inline">Gender</p>
+                <RadioList 
+                  radios={[
+                    { label: "Female", value: "female" },
+                    { label: "Male", value: "male" }
+                  ]}
+                  onRadioChange={this.handleGenderSelect} />
+              </div>
+              <FlexContainer>
+                <span>
+                  <Input inputName="name.first"
+                    inputPlaceholder="John"
+                    whenBlur={this.handleInputBlur} />
+                  <p className="create_user__input_label required">First Name</p>
+                </span>
+                <span>
+                  <Input inputName="name.middle"
+                    inputPlaceholder="James"
+                    whenBlur={this.handleInputBlur} />
+                  <p className="create_user__input_label">Middle Name (optional)</p>
+                </span>
+                <span>
+                  <Input inputName="name.last"
+                    inputPlaceholder="Doe"
+                    whenBlur={this.handleInputBlur} />
+                  <p className="create_user__input_label required">Last Name</p>
+                </span>
+              </FlexContainer>
+              <FlexContainer>
+                <span>
+                  <Input inputName="email" inputType="email"
+                    inputPlaceholder="johndoe@gmail.com"
+                    whenBlur={this.handleInputBlur} />
+                  <p className="create_user__input_label required">Email Address</p>
+                </span>
+                <span>
+                  <Input inputName="phone" inputType="phone"
+                    inputPlaceholder="999 999 9999"
+                    whenBlur={this.handleInputBlur} />
+                  <p className="create_user__input_label">Phone Number (optional)</p>
+                </span>
+              </FlexContainer>
+              <FlexContainer>
+                <span>
+                  <Input inputName="dob" inputType="date"
+                    inputPlaceholder="Date of Birth"
+                    whenBlur={this.handleInputBlur} />
+                  <p className="create_user__input_label required">Date of Birth</p>
+                </span>
+                <span>
+                  <Input inputName="country"
+                    inputPlaceholder="Jamaica"
+                    whenBlur={this.handleInputBlur} />
+                  <p className="create_user__input_label required">Country</p>
+                </span>
+              </FlexContainer>
+            </section>
+            {
+              this.state.user.isStaff ?
+                <section className="create_user__section">
+                  <h2>Staff Role</h2>
+                  <FlexContainer>
+                    <span>
+                      <Input inputName="role"
+                        inputPlaceholder="Interviewer"
+                        whenBlur={this.handleInputBlur} />
+                      <p className="create_user__input_label">Role</p>
+                    </span>
+                  </FlexContainer>
+                </section> : null
+            }
+            {
+              this.state.user.isStudent ?
+                <section className="create_user__section">
+                  <h2>Student Information</h2>
+                  <FlexContainer>
+                    <span>
+                      <Input inputName="highSchool"
+                        inputPlaceholder="Lorem High School"
+                        whenBlur={this.handleInputBlurStudent} />
+                      <p className="create_user__input_label">High School (optional)</p>
+                    </span>
+                    <span>
+                      <Input inputName="university"
+                        inputPlaceholder="Ipsum College"
+                        whenBlur={this.handleInputBlurStudent} />
+                      <p className="create_user__input_label required">University</p>
+                    </span>
+                  </FlexContainer>
+                  <FlexContainer>
+                    <span>
+                      <Input inputName="major"
+                        inputPlaceholder="Biology"
+                        whenBlur={this.handleInputBlurStudent} />
+                      <p className="create_user__input_label required">Major</p>
+                    </span>
+                    <span>
+                      <Input inputName="minor"
+                        inputPlaceholder="Chemistry"
+                        whenBlur={this.handleInputBlurStudent} />
+                      <p className="create_user__input_label">Minor (optional)</p>
+                    </span>
+                  </FlexContainer>
+                  <FlexContainer>
+                    <span>
+                      <Input inputName="enrollmentYear"
+                        inputPlaceholder="2011"
+                        whenBlur={this.handleInputBlurStudent} />
+                      <p className="create_user__input_label required">Enrollment Year</p>
+                    </span>
+                    <span>
+                      <Input inputName="graduationYear"
+                        inputPlaceholder="2015"
+                        whenBlur={this.handleInputBlurStudent} />
+                      <p className="create_user__input_label required">Graduation Year</p>
+                    </span>
+                  </FlexContainer>
+                  <p className="create_user__input_label required heading">About Student</p>
+                  <WYSIWYGEditor
+                    captureBlur={this.handleBioBlur} 
+                    editorStyles={{
+                      margin: "0 auto",
+                      maxWidth: "100%",
+                      padding: "2em 1.875em",
+                      backgroundColor: "#FFF",
+                      border: "none"
+                    }} 
+                    controlStyles={{
+                      maxWidth: "100%",
+                      position: "static",
+                      marginBottom: "0"
+                    }} />
+                </section> : null
+            }
+            <Button solid 
+              doClick={this.handleUserSave}
+              text="Save User" />
+            {
+              this.props.users.isCreating || this.props.student.creatingStudent ?
+                <Loader width="32px"
+                  styles={{
+                    display: "inline-block",
+                    marginLeft: "1em"
+                  }} /> : null
+            }
+          </Form>
         </main>
       </ToTopContainer>
     )
@@ -242,7 +261,7 @@ class NewUser extends Component {
 
     const newStudent = newUser.isStudent ? 
       Object.assign({}, this.state.student, {
-        user: newUser
+        uid: newUser.uid
       }) : this.state.student;
 
     this.setState({ 
@@ -323,23 +342,25 @@ class NewUser extends Component {
     });
   }
 
-  handleUserSave = () => {
-    const user = new DefaultUser(this.state.user);
-    const student = new Student(this.state.student, this.state.user);
+  handleUserSave = e => {
+    e.preventDefault();
     
+    const user = new DefaultUser(this.state.user);
+    const student = new Student(this.state.student, user.data);
+
     if (user.isComplete) {
       if (user.isStudent) {
         if (student.isComplete)
-          return this.props.usersActions.doCreateFullUser(user, this.state.student);
+          return this.props.usersActions.doCreateFullUser(user.data, this.state.student);
 
-        this.setState({
+        return this.setState({
           notificationClosed: false,
           hasNotification: true,
           notification: "required student data field(s) left empty"
         });
       }
 
-      return this.props.usersActions.doCreateFullUser(user);
+      return this.props.usersActions.doCreateFullUser(user.data);
     }
 
     this.setState({
@@ -352,7 +373,7 @@ class NewUser extends Component {
 
 const mapStateToProps = state => {
   return {
-    users: state.user,
+    users: state.users,
     student: state.student
   };
 };
