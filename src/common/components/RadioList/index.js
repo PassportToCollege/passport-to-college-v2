@@ -12,7 +12,18 @@ export default class RadioList extends Component {
 
   static propTypes = {
     radios: propTypes.arrayOf(propTypes.object),
-    onRadioChange: propTypes.func
+    onRadioChange: propTypes.func,
+    reset: propTypes.bool
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.reset && prevState.active !== "none") {
+      return {
+        active: "none"
+      };
+    }
+
+    return null;
   }
 
   getSnapshotBeforeUpdate(prevProps, prevState) {

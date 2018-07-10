@@ -31,7 +31,8 @@ class NewUser extends Component {
       user: new DefaultUser({ uid: `${uid(24)}_ac_less` }).data,
       notificationClosed: true,
       hasNotification: false,
-      notification: ""
+      notification: "",
+      resetRadios: false
     }
   }
 
@@ -104,7 +105,8 @@ class NewUser extends Component {
               <h2>Personal Information</h2>
               <div className="inline_container">
                 <p className="create_user__input_label required inline">Gender</p>
-                <RadioList 
+                <RadioList
+                  reset={this.state.resetRadios} 
                   radios={[
                     { label: "Female", value: "female" },
                     { label: "Male", value: "male" }
@@ -240,6 +242,13 @@ class NewUser extends Component {
             <Button solid 
               doClick={this.handleUserSave}
               text="Save User" />
+            <Button solid type="reset"
+              styles={{
+                marginLeft: "1em",
+                backgroundColor: "#aaa"
+              }}
+              doClick={this.handleFormReset}
+              text="Reset" />
             {
               this.props.users.isCreating || this.props.student.creatingStudent ?
                 <Loader width="32px"
@@ -254,6 +263,13 @@ class NewUser extends Component {
     )
   }
 
+  handleFormReset = () => {
+    this.setState({ 
+      user: new DefaultUser({ uid: `${uid(24)}_ac_less` }).data,
+      resetRadios: true 
+    });
+  }
+
   handleRolesCheckboxChange = (name, value) => {
     const newUser = Object.assign({}, this.state.user, {
       [name]: value
@@ -266,13 +282,16 @@ class NewUser extends Component {
 
     this.setState({ 
       user: newUser,
-      student: newStudent  
+      student: newStudent
     });
   }
 
   handleGenderSelect = gender => {
     this.setState({ 
-      user: Object.assign({}, this.state.user, { gender }) 
+      user: Object.assign({}, this.state.user, { 
+        gender: gender === "none" ? null : gender 
+      }),
+      resetRadios: false 
     });
   }
 
