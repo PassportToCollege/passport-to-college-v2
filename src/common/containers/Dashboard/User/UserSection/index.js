@@ -252,7 +252,7 @@ class UserSection extends Component {
                 <div className="user__profile_picture_container">
                   <img src={this.state.profilePicture || this.state.user.photo} alt="User Avatar" />
                 </div> :
-                this.props.picture.hasFailedByUid ?
+                this.props.picture.hasFailedByUid || !this.state.user.hasProfilePicture ?
                   <p>No profile picture</p> :
                   <Loader />
             }
