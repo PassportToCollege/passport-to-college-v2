@@ -50,3 +50,16 @@
   color: #FF6561;
   font-weight: bold;
 }
+
+.create_user__container .modal__create_user_done > .modal__content {
+  padding: 2em;
+}
+
+.create_user__container .modal__create_user_done > .modal__content > .checkbox__container {
+  display: flex;
+  margin: 1em 0;
+}
+
+.create_user__container .modal__create_user_done > .modal__content > .checkbox__container:last-of-type {
+  margin-bottom: 2em;
+}

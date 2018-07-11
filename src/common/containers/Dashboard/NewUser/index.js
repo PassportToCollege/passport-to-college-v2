@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux"
 import { uid } from "rand-token";
+import axios from "axios";
 import propTypes from "prop-types";
 
 import * as usersActions from "../../../actions/usersActions";
@@ -24,6 +25,8 @@ import Notification from "../../../components/Notification";
 import Loader from "../../../components/Loader";
 import Modal from "../../../components/Modal";
 
+const EMAIL_API = process.env.RAZZLE_EMAIL_API;
+
 class NewUser extends Component {
   constructor(props) {
     super(props);
@@ -35,7 +38,9 @@ class NewUser extends Component {
       notification: "",
       resetRadios: false,
       userCreated: false,
-      studentCreated: false
+      studentCreated: false,
+      nofityUser: false,
+      uploadPicture: false
     }
   }
 
@@ -97,8 +102,32 @@ class NewUser extends Component {
         }
         {
           this.state.userCreated || this.state.studentCreated ?
-            <Modal doClose={this.handleMoreOptionsModalClose}>
-
+            <Modal doClose={this.handleModalDone}
+              classes={["modal__create_user_done"]}>
+              <h2>User Created Successfully</h2>
+              <p>More options:</p>
+              <Checkbox boxName="nofityUser"
+                boxLabel="Send user a notification email to create account"
+                boxChecked={this.state.nofityUser}
+                doClick={this.handleModalCheckboxes} />
+              <Checkbox boxName="uploadPicture"
+                boxLabel="Upload a profile picture for new user"
+                boxChecked={this.state.uploadPicture}
+                doClick={this.handleModalCheckboxes} />
+              <Button solid 
+                doClick={this.handleModalDone}
+                styles={{
+                  display: "inline-block",
+                  verticalAlign: "middle"
+                }}
+                text="Done" />
+              {
+                this.state.notifyingUser ?
+                  <Loader width="32px"
+                    styles={{
+                      margin: "0 1em 0 0"
+                    }} /> : null
+              }
             </Modal> : null
         }
         <PageMeta more={
@@ -275,12 +304,14 @@ class NewUser extends Component {
             <Button solid type="reset"
               doClick={this.doFormReset}
               styles={{
-                margin: "0 1em",
                 backgroundColor: "#aaa"
               }}
               text="Reset" />
             <Button solid 
               doClick={this.handleUserSave}
+              styles={{
+                margin: "0 1em",
+              }}
               text="Save User" />
             {
               this.props.users.isCreating || this.props.student.creatingStudent ?
@@ -294,6 +325,54 @@ class NewUser extends Component {
         </main>
       </ToTopContainer>
     )
+  }
+
+  handleModalCheckboxes = (name, value) => {
+    this.setState({ [name]: value });
+  }
+
+  handleModalDone = () => {
+    if (this.state.nofityUser) {
+      this.setState({ notifyingUser: true });
+
+      return axios.get(`${EMAIL_API}/s/signup/${this.state.user.uid}`)
+        .then(() => {
+          this.setState({ notifyingUser: false, notifiedUser: true });
+
+          if (this.state.uploadPicture) {
+            return setTimeout(() => {
+              this.props.history.push(`/admin/dashboard/users/view/${this.state.user.uid}/profile-picture`);
+            }, 2000);
+          }
+
+          this.setState({
+            userCreated: false,
+            studentCreated: false,
+            user: new DefaultUser({ uid: `${uid(24)}_ac_less` }).data,
+            student: new Student().data,
+            resetRadios: true
+          });
+        })
+        .catch(error => {
+          this.setState({
+            hasNotification: true,
+            notification: error.response,
+            notificationClosed: false
+          });
+        });
+    }
+
+    if (this.state.uploadPicture) {
+      return this.props.history.push(`/admin/dashboard/users/view/${this.state.user.uid}/profile-picture`);
+    }
+
+    this.setState({
+      userCreated: false,
+      studentCreated: false,
+      user: new DefaultUser({ uid: `${uid(24)}_ac_less` }).data,
+      student: new Student().data,
+      resetRadios: true
+    });
   }
 
   doFormReset = () => {
