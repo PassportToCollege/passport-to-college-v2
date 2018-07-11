@@ -19,7 +19,7 @@ import * as authActions from "../../actions/authActions";
 import * as userActions from "../../actions/userActions";
 import * as routes from "../../constants/routes";
 
-const defAvatar = require("../../assets/images/default-gravatar.png");
+import defAvatar from "../../assets/images/default-gravatar.png";
 
 const cookies = new Cookies();
 
@@ -28,39 +28,53 @@ class NavigationAdmin extends Component {
     super(props);
 
     this.state = {
-      username: "",
-      profilePicture: props.profilePicture.url
+      username: ""
     }
   }
 
   componentDidMount() {
-    // get user avatar
-    this.props.userProfilePictureActions.doAvatarGet();
-    // get active user
     this.props.userActions.doUserGet();
   }
 
   static getDerivedStateFromProps(nextProps) {
-    let newState = null;
-
-    if (nextProps.profilePicture.url && nextProps.profilePicture.url !== "") {
-      newState = {};
-      newState.profilePicture = nextProps.profilePicture.url;
+    if (nextProps.profilePicture.hasGotten) {
+      return {
+        profilePicture: nextProps.profilePicture.url
+      }
     }
 
-    if (nextProps.profilePicture.url === "") {
-      newState = newState || {};
-      newState.profilePicture = defAvatar;
+    if (nextProps.profilePicture.hasFailed) {
+      return {
+        profilePicture: defAvatar
+      }
     }
 
     if (nextProps.user.hasGotten) {
-      newState = newState || {};
-      newState.username = nextProps.user.user.name.full;
+      return {
+        username: nextProps.user.user.name.full
+      }
     }
     
-    return newState;
+    return null;
   }
 
+  getSnapshotBeforeUpdate(props) {
+    if (props.user.isGetting && this.props.user.hasGotten) {
+      return {
+        gotUser: true
+      };
+    }
+
+    return null;
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (snapshot && snapshot.gotUser) {
+      if (this.props.user.user.hasProfilePicture && !this.props.profilePicture.isGetting) {
+        this.props.userProfilePictureActions.doAvatarGet();
+      }
+    }
+  }
 
   render() {
     return (

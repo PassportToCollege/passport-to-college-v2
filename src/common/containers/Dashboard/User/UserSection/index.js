@@ -59,9 +59,13 @@ class UserSection extends Component {
   }
 
   componentDidMount() {
-    if ((!this.state.profilePicture && !this.props.picture.hasFailedByUid
-      && this.state.section === "profile-picture") ||
-      (this.state.profilePicture && this.state.profilePicture.indexOf(this.props.userId) === -1))
+    if ((!this.state.profilePicture && 
+      !this.props.picture.hasFailedByUid && 
+      this.state.section === "profile-picture" && 
+      this.state.user.hasProfilePicture) ||
+      (this.state.profilePicture && 
+      this.state.profilePicture.indexOf(this.props.userId) === -1 &&
+      this.state.user.hasProfilePicture))
       this.props.uppActions.doAvatarGetByUid(this.props.userId);
   }
 
