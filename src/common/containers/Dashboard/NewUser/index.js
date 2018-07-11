@@ -37,6 +37,7 @@ class NewUser extends Component {
       hasNotification: false,
       notification: "",
       resetRadios: false,
+      resetForm: false,
       userCreated: false,
       studentCreated: false,
       nofityUser: false,
@@ -147,7 +148,8 @@ class NewUser extends Component {
             }} />
         </header>
         <main className="create_user__content">
-          <Form doSubmit={this.handleUserSave}>
+          <Form doSubmit={this.handleUserSave}
+            reset={this.state.resetForm}>
             <section className="create_user__section">
               <h2>Roles</h2>
               <Checkbox boxName="isAdmin"
@@ -345,13 +347,7 @@ class NewUser extends Component {
             }, 2000);
           }
 
-          this.setState({
-            userCreated: false,
-            studentCreated: false,
-            user: new DefaultUser({ uid: `${uid(24)}_ac_less` }).data,
-            student: new Student().data,
-            resetRadios: true
-          });
+          this.refreshForm();
         })
         .catch(error => {
           this.setState({
@@ -366,13 +362,7 @@ class NewUser extends Component {
       return this.props.history.push(`/admin/dashboard/users/view/${this.state.user.uid}/profile-picture`);
     }
 
-    this.setState({
-      userCreated: false,
-      studentCreated: false,
-      user: new DefaultUser({ uid: `${uid(24)}_ac_less` }).data,
-      student: new Student().data,
-      resetRadios: true
-    });
+    this.refreshForm();
   }
 
   doFormReset = () => {
@@ -499,6 +489,21 @@ class NewUser extends Component {
       hasNotification: true,
       notification: `missing user property: ${user.missingProps[0]}`
     });
+  }
+
+  refreshForm = () => {
+    this.setState({
+      userCreated: false,
+      studentCreated: false,
+      user: new DefaultUser({ uid: `${uid(24)}_ac_less` }).data,
+      student: new Student().data,
+      resetRadios: true,
+      resetForm: true
+    });
+
+    setTimeout(() => {
+      this.setState({ resetForm: false });
+    }, 2000);
   }
 }
 
