@@ -40,7 +40,6 @@ class UserSection extends Component {
       user: props.user.user,
       student: props.student.student,
       features: props.features.features,
-      profilePicture: props.picture.picture,
       notificationClosed: false,
       hasError: false,
       hasNotification: false,
@@ -82,7 +81,8 @@ class UserSection extends Component {
         nextProps.featuresActions.doGetFeaturesByUser(prevState.uid);
     }
 
-    if (nextProps.picture.hasGottenByUid) {
+    if (nextProps.picture.hasGottenByUid && 
+    nextProps.picture.picture.indexOf(nextProps.userId) > -1) {
       newState = newState || {};
       newState = Object.assign({}, newState, {
         profilePicture: nextProps.picture.picture
