@@ -32,6 +32,7 @@ class Users extends Component {
       stats: props.stats.stats,
       users: props.users.users,
       creatingUser: false,
+      createdUser: false,
       createUserModalData: {},
       notificationClosed: false
     }
@@ -87,6 +88,12 @@ class Users extends Component {
       };
     }
 
+    if (props.users.isCreating && this.props.users.hasCreated) {
+      return {
+        createdUser: true
+      };
+    }
+
     return null;
   }
 
@@ -96,6 +103,10 @@ class Users extends Component {
         const { user_type } = this.props.match.params;
         this.props.usersActions.doUsersGet(1, user_type || "all");
       }
+    }
+
+    if (snapshot && snapshot.createdUser) {
+      this.setState({ createdUser: true });
     }
   }
 
@@ -113,7 +124,7 @@ class Users extends Component {
             null
         }
         {
-          this.props.users.hasCreated ?
+          this.state.createdUser ?
             <Notification doClose={this.handleNotificationClose}
               text="User created successfully. Close to refresh." /> :
             null
@@ -228,7 +239,7 @@ class Users extends Component {
   }
   
   handleNotificationClose = () => {
-    this.setState({ notificationClosed: true, hasError: false });
+    this.setState({ notificationClosed: true, hasError: false, createdUser: false });
 
     // get users if user was created successfully
     if (this.props.users.hasCreated) {
