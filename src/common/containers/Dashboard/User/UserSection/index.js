@@ -37,7 +37,7 @@ class UserSection extends Component {
     this.state = {
       uid: props.userId,
       section: props.section,
-      user: props.user.user,
+      user: props.user.hasGotten ? props.user.user : null,
       student: props.student.student,
       features: props.features.features,
       notificationClosed: false,
@@ -59,14 +59,24 @@ class UserSection extends Component {
   }
 
   componentDidMount() {
-    if ((!this.state.profilePicture && 
-      !this.props.picture.hasFailedByUid && 
-      this.state.section === "profile-picture" && 
-      this.state.user.hasProfilePicture) ||
-      (this.state.profilePicture && 
-      this.state.profilePicture.indexOf(this.props.userId) === -1 &&
-      this.state.user.hasProfilePicture))
-      this.props.uppActions.doAvatarGetByUid(this.props.userId);
+    if (this.state.user && this.state.user.hasProfilePicture) {
+      if ((!this.state.profilePicture && 
+        !this.props.picture.hasFailedByUid && 
+        this.state.section === "profile-picture") ||
+        (this.state.profilePicture && 
+        this.state.profilePicture.indexOf(this.props.userId) === -1))
+        this.props.uppActions.doAvatarGetByUid(this.props.userId);
+    }
+    
+    if (this.state.user) {
+      if (!this.state.student && this.state.user.isStudent) {
+        this.props.studentActions.doStudentGet(this.props.userId);
+      }
+
+      if (!this.state.features && this.state.section === "features" && this.state.user.isStudent) {
+        this.props.featuresActions.doGetFeaturesByUser(this.props.userId);
+      }
+    }
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -75,14 +85,6 @@ class UserSection extends Component {
     if (nextProps.user.hasGottenUser) {
       newState = {};
       newState.user = nextProps.user.user;
-    }
-      
-    if (nextProps.user.hasGottenUser 
-      && nextProps.user.user.isStudent
-      && !nextProps.student.hasGotten
-      && !nextProps.student.isGetting) {
-        nextProps.studentActions.doStudentGet(prevState.uid);
-        nextProps.featuresActions.doGetFeaturesByUser(prevState.uid);
     }
 
     if (nextProps.picture.hasGottenByUid && 
@@ -125,6 +127,28 @@ class UserSection extends Component {
     }
     
     return newState;
+  }
+
+  getSnapshotBeforeUpdate(prevProps) {
+    if (prevProps.user.isGettingUser && this.props.user.hasGottenUser) {
+      return {
+        gotUser: true
+      };
+    }
+
+    return null;
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (snapshot && snapshot.gotUser) {
+      if (this.props.user.user.hasProfilePicture)
+        this.props.uppActions.doAvatarGetByUid(this.props.userId);
+
+      if (this.props.user.user.isStudent) {
+        this.props.studentActions.doStudentGet(this.props.userId);
+        this.props.featuresActions.doGetFeaturesByUser(this.props.userId);
+      }
+    }
   }
 
   render() {
@@ -252,7 +276,7 @@ class UserSection extends Component {
                 <div className="user__profile_picture_container">
                   <img src={this.state.profilePicture || this.state.user.photo} alt="User Avatar" />
                 </div> :
-                this.props.picture.hasFailedByUid || !this.state.user.hasProfilePicture ?
+                this.props.picture.hasFailedByUid || (this.state.user && !this.state.user.hasProfilePicture) ?
                   <p>No profile picture</p> :
                   <Loader />
             }

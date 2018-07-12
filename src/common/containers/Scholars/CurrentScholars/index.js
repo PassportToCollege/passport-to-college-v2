@@ -4,8 +4,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux"
 import propTypes from "prop-types";
+import _ from "lodash";
 
-import * as usersActions from "../../../actions/usersActions";
+import * as studentsActions from "../../../actions/studentsActions";
 
 import TopicSection from "../../../components/TopicSection";
 import FlexContainer from "../../../components/FlexContainer";
@@ -18,13 +19,29 @@ class CurrentScholars extends Component {
     super(props);
     
     this.state = {
-
-    }
+      students: props.students.gotCurrentStudents ? props.students.students : null
+    };
   }
 
   static propTypes = {
-    users: propTypes.object,
-    usersActions: propTypes.object
+    students: propTypes.object,
+    studentsActions: propTypes.object
+  }
+
+  componentDidMount() {
+    if (!this.props.students.gotCurrentStudents)
+      this.props.studentsActions.doGetCurrentStudents();
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    if (props.students.gotCurrentStudents && 
+    !_.isEqual(state.students, props.students.students)) {
+      return {
+        students: props.students.students
+      };
+    }
+
+    return null;
   }
 
   render() {
@@ -66,13 +83,13 @@ class CurrentScholars extends Component {
 
 const mapStateToProps = state => {
   return {
-    users: state.users
+    students: state.students
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    usersActions: bindActionCreators(usersActions, dispatch)
+    studentsActions: bindActionCreators(studentsActions, dispatch)
   };
 };
 

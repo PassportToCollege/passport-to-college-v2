@@ -85,7 +85,7 @@ export const doGetCurrentStudents = () => {
           const student = snapshot.data();
 
           if (storage && student.user.hasProfilePicture)
-            ppPromises.push(storage.ref("users/profile_images").child(`${student.uid}.png`).getDownloadUrl());
+            ppPromises.push(storage.ref("users/profile_images").child(`${student.uid}.png`).getDownloadURL());
 
           students.push(student);
         });
@@ -98,11 +98,11 @@ export const doGetCurrentStudents = () => {
               });
             }
 
-            dispatch(getStudentsSuccess(students));
+            dispatch(gotCurrentStudents(students));
           });
         }
 
-        dispatch(getStudentsSuccess(students));
+        dispatch(gotCurrentStudents(students));
       })
       .catch(error => {
         dispatch(getCurrentStudentsFailed(error));

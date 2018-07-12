@@ -402,12 +402,7 @@ export const doCreateFullUser = (user = {}, student = {}) => {
             dispatch(userCreated(user));
 
             if (Object.keys(student).length) {
-              const newStudent = Object.assign({}, student, {
-                uid: user.uid,
-                user
-              });
-
-              dispatch(doCreateStudent(newStudent));
+              dispatch(doCreateStudent(student));
             }
           })
           .catch(error => {

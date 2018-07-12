@@ -472,7 +472,7 @@ class NewUser extends Component {
     if (user.isComplete) {
       if (user.isStudent) {
         if (student.isComplete)
-          return this.props.usersActions.doCreateFullUser(user.data, this.state.student);
+          return this.props.usersActions.doCreateFullUser(user.data, student.data);
 
         return this.setState({
           notificationClosed: false,
