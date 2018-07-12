@@ -306,6 +306,7 @@ export class Student {
     this.minor = student.minor || null;
     this.isFeatured = !!student.isFeatured;
     this.showOnSite = !!student.showOnSite;
+    this.hasGraduated = !!student.hasGraduated;
   }
 
   get data() {
@@ -329,14 +330,14 @@ export class Student {
       uid, user, bio, 
       enrollmentYear, graduationYear,
       university, highSchool, major, minor,
-      isFeatured, showOnSite
+      isFeatured, showOnSite, hasGraduated
     } = this;
 
     return {
       uid, user, bio,
       enrollmentYear, graduationYear,
       university, highSchool, major, minor,
-      isFeatured, showOnSite
+      isFeatured, showOnSite, hasGraduated
     };
   }
 }
