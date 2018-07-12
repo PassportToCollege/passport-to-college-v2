@@ -1,0 +1,10 @@
+.two_tone_info_card .two_tone_info_card__top,
+.two_tone_info_card .two_tone_info_card__bottom {
+  padding: 3em 2em;
+  color: white;
+  min-height: 200px;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  justify-content: center;
+}

@@ -19,3 +19,26 @@
   transform: translateY(-18.5em);
   background-color: white;
 }
+
+.scholars__current .scholars__current_content > .topic_section {
+  padding-bottom: 18.5em;
+}
+
+.scholars__current .scholars__current_content .flex_container {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.scholars__current .scholars__current_content .flex_container > section {
+  flex: 1 0 50%;
+}
+
+/* Freshmen */
+.scholars__current .scholars__current_content .scholars__current_freshmen {
+  background-color: rgba(51,51,51,0.2);
+  margin-bottom: -200px;
+}
+
+.scholars__current .scholars__current_content .scholars__current_freshmen .flex_container > section:last-child {
+  transform: translateY(-200px);
+}

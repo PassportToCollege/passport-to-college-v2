@@ -8,13 +8,18 @@ import propTypes from "prop-types";
 import * as usersActions from "../../../actions/usersActions";
 
 import TopicSection from "../../../components/TopicSection";
+import FlexContainer from "../../../components/FlexContainer";
+import TwoToneInfoCard from "../../../components/TwoToneInfoCard";
 
 import Hero from "../../../assets/images/scholars__current_hero.JPG";
 
 class CurrentScholars extends Component {
   constructor(props) {
     super(props);
-    this.state = {}
+    
+    this.state = {
+
+    }
   }
 
   static propTypes = {
@@ -40,6 +45,19 @@ class CurrentScholars extends Component {
             maxWidth: "100%",
             margin: "0 auto"
           }} />
+          <section className="scholars__current_freshmen">
+            <FlexContainer>
+              <section></section>
+              <section>
+                <TwoToneInfoCard heading="Freshmen"
+                  subheading="class of 2021"
+                  topBg="#FFCB61"
+                  bottomBg="#FFB318">
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam venenatis rhoncus congue. Praesent eget facilisis tellus. Etiam quis est eu sem tristique consectetur a vel lacus. Praesent eu justo eleifend, blandit sem ut, laoreet sem.</p>
+                </TwoToneInfoCard>
+              </section>
+            </FlexContainer>
+          </section>
         </section>
       </main>
     )
