@@ -10,7 +10,7 @@ import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import { faFacebook, faTwitterSquare, faLinkedin, } from "@fortawesome/fontawesome-free-brands";
 import Loader from "../../components/Loader";
 
-import logo from "../../assets/images/logo__text__white.png";
+import logo from "../../assets/images/logo__text__white_no_padding.png";
 
 const footerNavItems = [
   routes.LANDING,
@@ -29,7 +29,7 @@ const Footer = ({ posts }) => {
           {
             footerNavItems.map(item => {
               return (
-                <li key={item.route} className="footer__nav_item">
+                <li key={item.route} className="footer__nav_item type__smaller">
                   <NavLink exact to={item.route}
                     activeClassName="active">{item.name}</NavLink>
                 </li>
@@ -38,7 +38,7 @@ const Footer = ({ posts }) => {
           }
         </ul>
         <section className="footer__posts">
-          <h3>recent stories</h3>
+          <h6>recent stories</h6>
           {
             posts.gotMostRecent ?
               posts.mostRecent.map(post => {
@@ -47,8 +47,8 @@ const Footer = ({ posts }) => {
                     activeClassName="active" 
                     to={`/stories/read/${post.id}`}
                     className="footer__post_item">
-                    <h4>{post.title}</h4>
-                    <h5>by {post.author.name.full}</h5>
+                    <p>{post.title}</p>
+                    <p className="type__caption">by {post.author.name.full}</p>
                   </NavLink>
                 )
               }) : posts.mostRecentGetFailed ? null : <Loader />
@@ -62,7 +62,7 @@ const Footer = ({ posts }) => {
           }
         </section>
         <section className="footer__contact">
-          <h3>connect with us</h3>
+          <h6>connect with us</h6>
           <div className="footer__contact_socials">
             <Link to="/">
               <FontAwesomeIcon icon={faFacebook} />
@@ -78,7 +78,7 @@ const Footer = ({ posts }) => {
         </section>
       </main>
       <section className="footer__copyright">
-        <p className="footer__container">
+        <p className="footer__container type__smaller">
           &copy; Copyright {new Date().getFullYear()} Passport to College - All Rights Reserved
         </p>
       </section>

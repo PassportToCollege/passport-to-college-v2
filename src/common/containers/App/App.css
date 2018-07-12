@@ -125,7 +125,7 @@ button,
   letter-spacing: 0.25;
 }
 
-caption {
+.type__caption {
   font-size: 12px;
   letter-spacing: 0.4;
 }

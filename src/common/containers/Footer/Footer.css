@@ -26,34 +26,36 @@ footer.footer .footer__main > .footer__nav {
 }
 
 footer.footer .footer__main > .footer__nav > img {
-  max-width: 250px;
-}
-
-footer.footer .footer__main > .footer__nav > li {
-  padding: 0 25px;
+  max-width: 150px;
+  margin-bottom: 1em;
 }
 
 footer.footer .footer__main > .footer__nav > li > a {
   color: rgba(255,255,255,0.65);
-  font-family: "Nunito", sans-serif;
-  font-weight: bold;
   padding: 0.5em 0.5em 0.75em 0;
   display: block;
+  position: relative;
 }
 
 footer.footer .footer__main > .footer__nav > li > a.active,
 footer.footer .footer__main > .footer__nav > li > a:hover {
-  color: rgba(255, 255, 255, 1);
-  border-bottom: 2px solid rgba(255, 255, 255, 1);
+  color: white;
+}
+
+footer.footer .footer__main > .footer__nav > li > a.active::after,
+footer.footer .footer__main > .footer__nav > li > a:hover::after {
+  content: "";
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(255, 255, 255, 1);
+  height: 2px;
 }
 
 /* Recent stories */
-footer.footer .footer__main > .footer__posts > h3 {
-  color: rgba(255,255,255,0.6);
-  font-size: 1em;
-  font-family: "Muli", sans-serif;
-  font-weight: 100;
-  text-transform: uppercase;
+footer.footer .footer__main > .footer__posts > h6 {
+  color: white;
   margin-bottom: 2em;
 }
 
@@ -61,7 +63,7 @@ footer.footer .footer__main > .footer__posts > .footer__post_item {
   display: block;
   color: white;
   opacity: 0.65;
-  transition: opacity 200ms linear;
+  margin-bottom: 1em;
 }
 
 footer.footer .footer__main > .footer__posts > .footer__post_item.active {
@@ -72,37 +74,20 @@ footer.footer .footer__main > .footer__posts > .footer__post_item:hover {
   opacity: 1;
 }
 
-footer.footer .footer__main > .footer__posts > .footer__post_item > h4 {
-  margin: 0;
-  font-family: "Nunito", sans-serif;
-  font-weight: bold;
-}
-
-footer.footer .footer__main > .footer__posts > .footer__post_item > h5 {
-  margin-top: 0;
-  font-family: "Muli", sans-serif;
-  font-weight: 100;
-}
-
 /* Connect with us */
-footer.footer .footer__main > .footer__contact > h3 {
-  color: rgba(255,255,255,0.6);
-  font-size: 1em;
-  font-family: "Muli", sans-serif;
-  font-weight: 100;
-  text-transform: uppercase;
+footer.footer .footer__main > .footer__contact > h6 {
+  color: white;
   margin-bottom: 2em;
 }
 
 footer.footer .footer__main > .footer__contact > .footer__contact_socials {
-  margin-bottom: 2em;
+  margin-bottom: 1em;
 }
 
 footer.footer .footer__main > .footer__contact > .footer__contact_socials > a {
   display: inline-block;
   color: rgba(255,255,255,0.6);
   font-size: 1.25em;
-  transition: color 200ms linear;
 }
 
 footer.footer .footer__main > .footer__contact > .footer__contact_socials > a:not(:last-child) {
@@ -115,9 +100,12 @@ footer.footer .footer__main > .footer__contact > .footer__contact_socials > a:ho
 
 footer.footer .footer__main > .footer__contact > a {
   display: inline-block;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+footer.footer .footer__main > .footer__contact > a:active,
+footer.footer .footer__main > .footer__contact > a:hover {
   color: white;
-  font-family: "Muli", sans-serif;
-  font-size: 0.95em;
 }
 
 /* Copyright */
@@ -125,12 +113,9 @@ footer.footer > .footer__copyright {
   width: 100%;
   text-align: center;
   background-color: rgb(30,30,30);
-  color: rgba(255,255,255,0.9);
+  color: rgba(255,255,255,0.5);
 }
 
 footer.footer > .footer__copyright > p {
   padding: 2em 3em;
-  font-family: "Muli", sans-serif;
-  font-size: 0.9em;
-  font-weight: 400;
 }
