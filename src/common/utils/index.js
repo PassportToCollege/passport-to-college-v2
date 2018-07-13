@@ -155,6 +155,39 @@ export const initializeFacebook = (d, s, id) => {
   fjs.parentNode.insertBefore(js, fjs);
 }
 
+export const getClassificationYear = classification => {
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+
+  switch (classification) {
+    case "freshman":
+      if (month <= 5)
+        return year + 3;
+
+      return year + 4;
+    case "sophomore":
+      if (month <= 5)
+        return year + 2;
+
+      return year + 3;
+    case "junior":
+      if (month <= 5)
+        return year + 1;
+
+      return year + 2;
+    case "senior":
+      if (month <= 5)
+        return year;
+
+      return year + 1;
+    default:
+      return 0;
+  }
+}
+
+// CLASSES
+
 export class User {
   constructor(uid = "", email = "", name = "", options = {}) {
     this.uid = uid;

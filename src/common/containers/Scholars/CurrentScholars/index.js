@@ -7,7 +7,7 @@ import propTypes from "prop-types";
 import _ from "lodash";
 
 import * as studentsActions from "../../../actions/studentsActions";
-import { Student } from "../../../utils";
+import { Student, getClassificationYear } from "../../../utils";
 
 import TopicSection from "../../../components/TopicSection";
 import FlexContainer from "../../../components/FlexContainer";
@@ -15,6 +15,7 @@ import TwoToneInfoCard from "../../../components/TwoToneInfoCard";
 import ScrollSwitcher from "../../../components/ScrollSwitcher";
 
 import Hero from "../../../assets/images/scholars__current_hero.JPG";
+import EmptyFreshmen from "../../../assets/images/empty_state__freshmen_yellow_570_370.svg";
 
 class CurrentScholars extends Component {
   constructor(props) {
@@ -101,16 +102,39 @@ class CurrentScholars extends Component {
             maxWidth: "100%",
             margin: "0 auto"
           }} />
-          <section className="scholars__current_freshmen">
+          <section className="scholars__current_freshmen" id="freshmen">
             <FlexContainer>
-              <section></section>
+              <section>
+                {
+                  this.state.freshmen && this.state.freshmen.length ?
+                    <span>freshmen</span> :
+                    <span className="scholars__current_freshmen_empty_picture"></span>
+                }
+              </section>
               <section>
                 <TwoToneInfoCard heading="Freshmen"
-                  subheading="class of 2021"
+                  subheading={`class of ${getClassificationYear("freshman")}`}
                   topBg="#FFCB61"
                   bottomBg="#FFB318">
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam venenatis rhoncus congue. Praesent eget facilisis tellus. Etiam quis est eu sem tristique consectetur a vel lacus. Praesent eu justo eleifend, blandit sem ut, laoreet sem.</p>
+                  {
+                    this.state.freshmen && this.state.freshmen.length ?
+                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam venenatis rhoncus congue. Praesent eget facilisis tellus. Etiam quis est eu sem tristique consectetur a vel lacus. Praesent eu justo eleifend, blandit sem ut, laoreet sem.</p> :
+                      <p>Looks like we are still matching our newest scholars with awesome universities. Please check back to see our newest additions and learn more about them.</p>
+                  }
                 </TwoToneInfoCard>
+                {
+                  this.state.freshmen && this.state.freshmen.length ?
+                    <ScrollSwitcher options={
+                      this.state.freshmen.map(student => {
+                        return { label: student.user.name.full, value: student.uid }
+                      })
+                    } /> :
+                    <span className="scholars__current_freshmen_empty"
+                      style={{
+                        backgroundImage: `url(${EmptyFreshmen})`
+                      }}>
+                    </span>
+                }
               </section>
             </FlexContainer>
           </section>

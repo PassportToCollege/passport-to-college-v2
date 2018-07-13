@@ -27,6 +27,7 @@
 .scholars__current .scholars__current_content .flex_container {
   max-width: 1140px;
   margin: 0 auto;
+  flex-flow: row wrap-reverse;
 }
 
 .scholars__current .scholars__current_content .flex_container > section {
@@ -36,9 +37,32 @@
 /* Freshmen */
 .scholars__current .scholars__current_content .scholars__current_freshmen {
   background-color: rgba(51,51,51,0.2);
-  margin-bottom: -200px;
 }
 
+
+
 .scholars__current .scholars__current_content .scholars__current_freshmen .flex_container > section:last-child {
-  transform: translateY(-200px);
+  margin-top: -200px;
+}
+
+.scholars__current .scholars__current_content .scholars__current_freshmen .flex_container > section {
+  flex: 1 1 384px;
+}
+
+.scholars__current .scholars__current_content .scholars__current_freshmen .scholars__current_freshmen_empty_picture {
+  display: block;
+  height: 0;
+  padding-top: 100%;
+  background-color: rgb(51,51,51);
+}
+
+.scholars__current .scholars__current_content .scholars__current_freshmen .scholars__current_freshmen_empty {
+  display: block;
+  overflow: hidden;
+  height: 0;
+  padding-top: 63.63%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  box-sizing: content-box;
 }
