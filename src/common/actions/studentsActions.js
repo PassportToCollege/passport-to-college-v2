@@ -72,6 +72,7 @@ export const doGetCurrentStudents = () => {
 
     return db.collection("students")
       .where("hasGraduated", "==", false)
+      .where("showOnSite", "==", true)
       .orderBy("user.name.last", "desc")
       .get()
       .then(snapshots => {
