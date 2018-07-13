@@ -21,6 +21,18 @@ class ScrollSwitcher extends Component {
     onActiveChange: propTypes.func
   }
 
+  componentDidMount() {
+    const autoSwitcher = setInterval(() => {
+      this.switchNext();
+    }, 5000);
+
+    this.setState({ autoSwitcher });
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.autoSwitcher);
+  }
+
   render() {
     return (
       <div className="scroll_switcher">

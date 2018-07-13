@@ -34,7 +34,7 @@ class InfoCard extends Component {
     }
 
     return (
-      <div className="info_card" 
+      <div className={`info_card${this.props.feature ? " info_card__feature" : ""}`} 
         style={{
           backgroundColor: this.props.bgColor,
           backgroundImage: this.props.bgImage ? `url("${this.props.bgImage}")` : ""
@@ -51,8 +51,8 @@ class InfoCard extends Component {
               <p>{this.props.content}</p>
             </span> :
             <Link to="/" className="info_card__feature_content">
-              <h2>{this.props.title}</h2>
-              <h4>{this.props.university}</h4>
+              <h3>{this.props.title}</h3>
+              <p>{this.props.university}</p>
             </Link>
         }
         {

@@ -111,11 +111,10 @@ class CurrentScholars extends Component {
               <section>
                 {
                   this.state.freshmen && this.state.freshmen.length ?
-                    <InfoCard
+                    <InfoCard feature
                       bgOverlay="rgba(51,51,51,0.9)"
                       bgColor="rgba(51,51,51,0.9)"
                       bgImage={this.state.activeFreshman.user.profilePicture}
-                      feature={true}
                       title={this.state.activeFreshman.user.name.full}
                       university={this.state.activeFreshman.university} /> :
                     <span className="scholars__current_freshmen_empty_picture"></span>
