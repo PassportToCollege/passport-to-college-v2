@@ -13,6 +13,7 @@ import TopicSection from "../../../components/TopicSection";
 import FlexContainer from "../../../components/FlexContainer";
 import TwoToneInfoCard from "../../../components/TwoToneInfoCard";
 import ScrollSwitcher from "../../../components/ScrollSwitcher";
+import InfoCard from "../../../components/InfoCard";
 
 import Hero from "../../../assets/images/scholars__current_hero.JPG";
 import EmptyFreshmen from "../../../assets/images/empty_state__freshmen_yellow_570_370.svg";
@@ -32,8 +33,7 @@ class CurrentScholars extends Component {
   }
 
   componentDidMount() {
-    if (!this.props.students.gotCurrentStudents)
-      this.props.studentsActions.doGetCurrentStudents();
+    this.props.studentsActions.doGetCurrentStudents();
   }
 
   static getDerivedStateFromProps(props, state) {

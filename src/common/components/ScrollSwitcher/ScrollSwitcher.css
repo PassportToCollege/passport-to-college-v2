@@ -1,0 +1,41 @@
+.scroll_switcher {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.scroll_switcher > span {
+  display: block;
+  width: 100%;
+  padding: 0.5em;
+  font-size: 1.5em;
+  text-align: center;
+  cursor: pointer;
+  background-color: transparent;
+  transition: background-color linear 200ms;
+}
+
+.scroll_switcher > span:hover {
+  color: #999;
+  background-color: rgba(51,51,51,0.1);
+}
+
+
+.scroll_switcher .scroll_switcher__list {
+  text-align: center;
+}
+
+.scroll_switcher .scroll_switcher__list > li {
+  cursor: pointer;
+  color: rgba(51,51,51,0.5);
+}
+
+.scroll_switcher .scroll_switcher__list > li:not([class="scroll_switcher__active_item"]):hover {
+  color: rgba(51,51,51,0.85);
+}
+
+.scroll_switcher .scroll_switcher__list .scroll_switcher__active_item {
+  color: rgb(51,51,51);
+  margin: 0.5em 0;
+}

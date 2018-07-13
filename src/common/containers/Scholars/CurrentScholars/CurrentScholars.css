@@ -34,6 +34,10 @@
   flex: 1 0 50%;
 }
 
+.scholars__current .scholars__current_content .flex_container > section .scroll_switcher {
+  min-height: 370px;
+}
+
 /* Freshmen */
 .scholars__current .scholars__current_content .scholars__current_freshmen {
   background-color: rgba(51,51,51,0.2);

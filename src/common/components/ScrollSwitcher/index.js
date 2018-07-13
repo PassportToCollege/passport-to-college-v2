@@ -11,7 +11,7 @@ class ScrollSwitcher extends Component {
 
     this.state = {
       active: 0,
-      next: 1,
+      next: props.options.length > 1 ? 1 : 0,
       previous: props.options.length - 1
     }
   }
@@ -31,7 +31,7 @@ class ScrollSwitcher extends Component {
             {this.props.options[this.state.previous].label}
           </li>
           <li className="scroll_switcher__active_item">
-            {this.props.options[this.state.active].label}
+            <h3>{this.props.options[this.state.active].label}</h3>
           </li>
           <li className="scroll_switcher__next_item">
             {this.props.options[this.state.next].label}
