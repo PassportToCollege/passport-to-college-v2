@@ -14,6 +14,7 @@ import FlexContainer from "../../../components/FlexContainer";
 import TwoToneInfoCard from "../../../components/TwoToneInfoCard";
 import ScrollSwitcher from "../../../components/ScrollSwitcher";
 import InfoCard from "../../../components/InfoCard";
+import Loader from "../../../components/Loader";
 
 import Hero from "../../../assets/images/scholars__current_hero.JPG";
 import EmptyFreshmen from "../../../assets/images/empty_state__freshmen_yellow_570_370.svg";
@@ -139,11 +140,15 @@ class CurrentScholars extends Component {
                         })
                       }
                       onActiveChange={this.handleFreshmanChange} /> :
-                    <span className="scholars__current_freshmen_empty"
-                      style={{
-                        backgroundImage: `url(${EmptyFreshmen})`
-                      }}>
-                    </span>
+                      this.props.students.gettingCurrentStudents ?
+                        <Loader styles={{
+                          marginTop: "2em"
+                        }} /> :
+                        <span className="scholars__current_freshmen_empty"
+                          style={{
+                            backgroundImage: `url(${EmptyFreshmen})`
+                          }}>
+                        </span>
                 }
               </section>
             </FlexContainer>
