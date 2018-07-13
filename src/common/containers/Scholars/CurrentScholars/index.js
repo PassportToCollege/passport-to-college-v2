@@ -77,9 +77,13 @@ class CurrentScholars extends Component {
 
       this.setState({ 
         freshmen,
+        activeFreshman: freshmen.length ? freshmen[0] : null,
         sophomores,
+        activeSophomore: sophomores.length ? sophomores[0] : null,
         juniors,
-        seniors
+        activeJunior: juniors.length ? juniors[0] : null,
+        seniors,
+        activeSenior: seniors.length ? seniors[0] : null
       });
     }
   }
@@ -107,7 +111,13 @@ class CurrentScholars extends Component {
               <section>
                 {
                   this.state.freshmen && this.state.freshmen.length ?
-                    <span>freshmen</span> :
+                    <InfoCard
+                      bgOverlay="rgba(51,51,51,0.9)"
+                      bgColor="rgba(51,51,51,0.9)"
+                      bgImage={this.state.activeFreshman.user.profilePicture}
+                      feature={true}
+                      title={this.state.activeFreshman.user.name.full}
+                      university={this.state.activeFreshman.university} /> :
                     <span className="scholars__current_freshmen_empty_picture"></span>
                 }
               </section>
@@ -125,10 +135,11 @@ class CurrentScholars extends Component {
                 {
                   this.state.freshmen && this.state.freshmen.length ?
                     <ScrollSwitcher options={
-                      this.state.freshmen.map(student => {
-                        return { label: student.user.name.full, value: student.uid }
-                      })
-                    } /> :
+                        this.state.freshmen.map(student => {
+                          return { label: student.user.name.full, value: student.uid }
+                        })
+                      }
+                      onActiveChange={this.handleFreshmanChange} /> :
                     <span className="scholars__current_freshmen_empty"
                       style={{
                         backgroundImage: `url(${EmptyFreshmen})`
@@ -141,6 +152,14 @@ class CurrentScholars extends Component {
         </section>
       </main>
     )
+  }
+
+  handleFreshmanChange = ({ value }) => {
+    this.setState({
+      activeFreshman: this.state.freshmen.find(freshman => {
+        return freshman.uid === value;
+      })
+    });
   }
 }
 
