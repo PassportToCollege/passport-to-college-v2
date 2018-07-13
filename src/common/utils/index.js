@@ -298,8 +298,8 @@ export class Student {
 
     this.uid = user.uid;
     this.bio = student.bio || {};
-    this.enrollmentYear = student.enrollmentYear || null;
-    this.graduationYear = student.graduationYear || null;
+    this.enrollmentYear = parseInt(student.enrollmentYear, 10) || null;
+    this.graduationYear = parseInt(student.graduationYear, 10) || null;
     this.university = student.university || null;
     this.highSchool = student.highSchool || null;
     this.major = student.major || null;
@@ -322,6 +322,55 @@ export class Student {
       this.major &&
       this.university &&
       Object.keys(this.user)
+    );
+  }
+
+  get isFreshman() {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+
+    return (
+      this.enrollmentYear === year ||
+      ((this.graduationYear - year === 3) &&
+      month <= 5)
+    );
+  }
+
+  get isSophomore() {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+
+    return (
+      (year - this.enrollmentYear === 1) ||
+      ((this.graduationYear - year === 2) &&
+      month <= 5)
+    );
+  }
+
+  get isJunior() {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+
+    return (
+      (year - this.enrollmentYear === 2) ||
+      ((this.graduationYear - year === 1) &&
+        month <= 5)
+    );
+  }
+
+  get isSenior() {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+
+    return (
+      !this.hasGraduated &&
+      (this.graduationYear === year ||
+      ((this.graduationYear - year === 1) &&
+        month > 5))
     );
   }
 

@@ -7,10 +7,12 @@ import propTypes from "prop-types";
 import _ from "lodash";
 
 import * as studentsActions from "../../../actions/studentsActions";
+import { Student } from "../../../utils";
 
 import TopicSection from "../../../components/TopicSection";
 import FlexContainer from "../../../components/FlexContainer";
 import TwoToneInfoCard from "../../../components/TwoToneInfoCard";
+import ScrollSwitcher from "../../../components/ScrollSwitcher";
 
 import Hero from "../../../assets/images/scholars__current_hero.JPG";
 
@@ -42,6 +44,43 @@ class CurrentScholars extends Component {
     }
 
     return null;
+  }
+
+  getSnapshotBeforeUpdate(props) {
+    if (props.students.gettingCurrentStudents && this.props.students.gotCurrentStudents) {
+      return {
+        gotStudents: true
+      };
+    }
+
+    return null;
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (snapshot && snapshot.gotStudents && this.state.students) {
+      const freshmen = this.state.students.filter(student => {
+        return new Student(student).isFreshman;
+      });
+
+      const sophomores = this.state.students.filter(student => {
+        return new Student(student).isSophomore;
+      });
+
+      const juniors = this.state.students.filter(student => {
+        return new Student(student).isJunior;
+      });
+
+      const seniors = this.state.students.filter(student => {
+        return new Student(student).isSenior;
+      });
+
+      this.setState({ 
+        freshmen,
+        sophomores,
+        juniors,
+        seniors
+      });
+    }
   }
 
   render() {
