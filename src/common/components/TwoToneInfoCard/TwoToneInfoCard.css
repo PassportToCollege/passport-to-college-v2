@@ -8,3 +8,7 @@
   align-items: flex-start;
   justify-content: center;
 }
+
+.two_tone_info_card .two_tone_info_card__top {
+  text-transform: capitalize;
+}

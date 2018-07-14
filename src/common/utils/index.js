@@ -162,21 +162,25 @@ export const getClassificationYear = classification => {
 
   switch (classification) {
     case "freshman":
+    case "freshmen":
       if (month <= 5)
         return year + 3;
 
       return year + 4;
     case "sophomore":
+    case "sophomores":
       if (month <= 5)
         return year + 2;
 
       return year + 3;
     case "junior":
+    case "juniors":
       if (month <= 5)
         return year + 1;
 
       return year + 2;
     case "senior":
+    case "seniors":
       if (month <= 5)
         return year;
 

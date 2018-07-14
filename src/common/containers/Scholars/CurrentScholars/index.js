@@ -7,13 +7,10 @@ import propTypes from "prop-types";
 import _ from "lodash";
 
 import * as studentsActions from "../../../actions/studentsActions";
-import { Student, getClassificationYear } from "../../../utils";
+import { Student } from "../../../utils";
 
 import TopicSection from "../../../components/TopicSection";
-import FlexContainer from "../../../components/FlexContainer";
-import TwoToneInfoCard from "../../../components/TwoToneInfoCard";
-import ScrollSwitcher from "../../../components/ScrollSwitcher";
-import InfoCard from "../../../components/InfoCard";
+import ClassificationBlock from "../../../components/ClassificationBlock";
 import Loader from "../../../components/Loader";
 
 import Hero from "../../../assets/images/scholars__current_hero.JPG";
@@ -107,63 +104,87 @@ class CurrentScholars extends Component {
             maxWidth: "100%",
             margin: "0 auto"
           }} />
-          <section className="scholars__current_freshmen" id="freshmen">
-            <FlexContainer>
-              <section>
-                {
-                  this.state.freshmen && this.state.freshmen.length ?
-                    <InfoCard feature
-                      bgOverlay="rgba(51,51,51,0.9)"
-                      bgColor="rgba(51,51,51,0.9)"
-                      bgImage={this.state.activeFreshman.user.profilePicture}
-                      title={this.state.activeFreshman.user.name.full}
-                      university={this.state.activeFreshman.university} /> :
-                    <span className="scholars__current_freshmen_empty_picture"></span>
-                }
-              </section>
-              <section>
-                <TwoToneInfoCard heading="Freshmen"
-                  subheading={`class of ${getClassificationYear("freshman")}`}
-                  topBg="#FFCB61"
-                  bottomBg="#FFB318">
-                  {
-                    this.state.freshmen && this.state.freshmen.length ?
-                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam venenatis rhoncus congue. Praesent eget facilisis tellus. Etiam quis est eu sem tristique consectetur a vel lacus. Praesent eu justo eleifend, blandit sem ut, laoreet sem.</p> :
-                      <p>Looks like we are still matching our newest scholars with awesome universities. Please check back to see our newest additions and learn more about them.</p>
-                  }
-                </TwoToneInfoCard>
-                {
-                  this.state.freshmen && this.state.freshmen.length ?
-                    <ScrollSwitcher options={
-                        this.state.freshmen.map(student => {
-                          return { label: student.user.name.full, value: student.uid }
-                        })
-                      }
-                      onActiveChange={this.handleFreshmanChange} /> :
-                      this.props.students.gettingCurrentStudents ?
-                        <Loader styles={{
-                          marginTop: "2em"
-                        }} /> :
-                        <span className="scholars__current_freshmen_empty"
-                          style={{
-                            backgroundImage: `url(${EmptyFreshmen})`
-                          }}>
-                        </span>
-                }
-              </section>
-            </FlexContainer>
-          </section>
+          {this.renderFreshmen()}
+          {this.renderSophomores()}
+          {this.renderJuniors()}
+          {this.renderSeniors()}
         </section>
       </main>
     )
   }
 
-  handleFreshmanChange = ({ value }) => {
-    this.setState({
-      activeFreshman: this.state.freshmen.find(freshman => {
-        return freshman.uid === value;
-      })
-    });
+  renderFreshmen = () => {
+    if (this.state.freshmen) {
+      return (
+        <ClassificationBlock classification="freshmen"
+          classes={["scholars__current_freshmen"]} 
+          students={this.state.freshmen}
+          emptyPicture={EmptyFreshmen}
+          header={{
+            topBg: "#FFCB61",
+            bottomBg: "#FFB318",
+            info: this.state.freshmen && this.state.freshmen.length ?
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam venenatis rhoncus congue. Praesent eget facilisis tellus. Etiam quis est eu sem tristique consectetur a vel lacus. Praesent eu justo eleifend, blandit sem ut, laoreet sem.</p> :
+                <p>Looks like we are still matching our newest scholars with awesome universities. Please check back to see our newest additions and learn more about them.</p>
+          }} />
+      );
+    }
+
+    return <Loader />
+  }
+
+  renderSophomores = () => {
+    if (this.state.sophomores) {
+      return (
+        <ClassificationBlock classification="sophomores"
+          classes={["scholars__current_sophomores"]} 
+          students={this.state.sophomores}
+          emptyPicture={EmptyFreshmen}
+          header={{
+            topBg: "#53D1D7",
+            bottomBg: "#11A5AC",
+            info: <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam venenatis rhoncus congue. Praesent eget facilisis tellus. Etiam quis est eu sem tristique consectetur a vel lacus. Praesent eu justo eleifend, blandit sem ut, laoreet sem.</p>
+          }} />
+      );
+    }
+
+    return null;
+  }
+
+  renderJuniors = () => {
+    if (this.state.seniors) {
+      return (
+        <ClassificationBlock classification="juniors"
+          classes={["scholars__current_juniors"]} 
+          students={this.state.juniors}
+          emptyPicture={EmptyFreshmen}
+          header={{
+            topBg: "#FF6561",
+            bottomBg: "#FF443F",
+            info: <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam venenatis rhoncus congue. Praesent eget facilisis tellus. Etiam quis est eu sem tristique consectetur a vel lacus. Praesent eu justo eleifend, blandit sem ut, laoreet sem.</p>
+          }} />
+      );
+    }
+
+    return null;
+  }
+
+  renderSeniors = () => {
+    if (this.state.seniors) {
+      return (
+        <ClassificationBlock classification="seniors"
+          classes={["scholars__current_seniors"]} 
+          students={this.state.seniors}
+          emptyPicture={EmptyFreshmen}
+          header={{
+            topBg: "#FFCB61",
+            bottomBg: "#FFB318",
+            info: <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam venenatis rhoncus congue. Praesent eget facilisis tellus. Etiam quis est eu sem tristique consectetur a vel lacus. Praesent eu justo eleifend, blandit sem ut, laoreet sem.</p>
+          }} />
+      );
+    }
+
+    return null;
   }
 }
 
