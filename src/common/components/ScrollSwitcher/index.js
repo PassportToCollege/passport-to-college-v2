@@ -5,6 +5,8 @@ import propTypes from "prop-types";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import { faAngleUp, faAngleDown } from "@fortawesome/fontawesome-free-solid";
 
+import { Interval } from "../../utils";
+
 class ScrollSwitcher extends Component {
   constructor(props) {
     super(props);
@@ -14,6 +16,8 @@ class ScrollSwitcher extends Component {
       next: props.options.length > 1 ? 1 : 0,
       previous: props.options.length - 1
     }
+
+    this.SwitcherInterval = new Interval(this.switchNext, 5000);
   }
 
   static propTypes = {
@@ -22,15 +26,11 @@ class ScrollSwitcher extends Component {
   }
 
   componentDidMount() {
-    const autoSwitcher = setInterval(() => {
-      this.switchNext();
-    }, 5000);
-
-    this.setState({ autoSwitcher });
+    this.SwitcherInterval.start();
   }
 
   componentWillUnmount() {
-    clearInterval(this.state.autoSwitcher);
+    this.SwitcherInterval.stop();
   }
 
   render() {
@@ -74,6 +74,7 @@ class ScrollSwitcher extends Component {
         this.props.onActiveChange(options[this.state.active]);
     });
 
+    this.SwitcherInterval.restart();
   }
 
   switchPrevious = () => {
@@ -88,6 +89,8 @@ class ScrollSwitcher extends Component {
       if ("function" === typeof this.props.onActiveChange)
         this.props.onActiveChange(options[this.state.active]);
     });
+
+    this.SwitcherInterval.restart();
   }
 }
 

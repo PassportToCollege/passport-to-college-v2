@@ -547,3 +547,38 @@ export class Reply extends Comment {
     };
   }
 }
+
+export class Interval {
+  constructor(fn, time = 2000) {
+    if ("function" === typeof fn) {
+      this.fn = fn;
+    } else {
+      this.fn = () => { console.log("interval running"); };
+    }
+
+    this.time = time;
+  }
+
+  start() {
+    this.interval = setInterval(() => {
+      this.fn();
+    }, this.time);
+
+    return this.interval;
+  }
+
+  stop() {
+    clearInterval(this.interval);
+    return this;
+  }
+
+  restart() {
+    return this.stop().start();
+  }
+
+  reset(time) {
+    this.time = time;
+
+    return this.restart();
+  }
+}
