@@ -51,7 +51,7 @@ class PastScholars extends Component {
                 return (
                   <StudentInfoCard key={student.uid} 
                     student={student}
-                    accent="#FF6561" />
+                    accent="#FF8C89" />
                 )
               }) : null
           }

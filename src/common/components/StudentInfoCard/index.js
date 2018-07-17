@@ -15,7 +15,7 @@ export default class StudentInfoCard extends Component {
 
     this.state = {
       active: "bio",
-      singleColumn: isBrowser && window.innerWidth <= 768
+      singleColumn: isBrowser && window.innerWidth <= 998
     }
   }
 
@@ -29,8 +29,60 @@ export default class StudentInfoCard extends Component {
     bgColor: "white"
   }
 
+  componentDidMount() {
+    if (isBrowser)
+      window.addEventListener("resize", this.watchWindowWidth);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.watchWindowWidth);
+  }
+
   render() {
-    return this.renderSingleColumn();
+    if (this.state.singleColumn)
+      return this.renderSingleColumn();
+
+    return (
+      <div className="student_info_card__container student_info_card__two_columns"
+        style={{ backgroundColor: this.props.bgColor }}>
+        <section className="student_info_card__left">
+          <ImageWithColoredShadow width="300px" shadowColor={this.props.accent} 
+          image={this.props.student.user.profilePicture} />
+          <h5 className="type__uppercase type__boldest">{this.props.student.user.name.full}</h5>
+          <p>{this.props.student.university}</p>
+          <nav>
+            <h4 className="type__boldest type__uppercase"
+              onClick={() => this.setState({ active: "bio" })}
+              data-active={this.state.active === "bio" ? "active" : "inactive"}>bio</h4>
+            <h4 className="type__boldest type__uppercase"
+              onClick={() => this.setState({ active: "education" })}
+              data-active={this.state.active === "education" ? "active" : "inactive"}>education</h4>
+            <h4 className="type__boldest type__uppercase"
+              onClick={() => this.setState({ active: "social" })}
+              data-active={this.state.active === "social" ? "active" : "inactive"}>social</h4>
+          </nav>
+        </section>
+        <section className="student_info_card__right">
+          {
+            this.state.active === "bio" ?
+              this.getBio() : null
+          }
+          {
+            this.state.active === "education" ?
+              this.getEducation() : null
+          }
+          {
+            this.state.active === "social" ?
+              <IconButton solid icon="linkedin"
+                doClick={this.handleLinkClick} 
+                styles={{
+                  backgroundColor: "#0077B5",
+                  marginTop: "2em"
+                }} /> : null
+          }
+        </section>
+      </div>
+    )
   }
 
   renderSingleColumn = () => {
@@ -53,6 +105,17 @@ export default class StudentInfoCard extends Component {
           }} />
       </div>
     )
+  }
+
+  watchWindowWidth = () => {
+    const { innerWidth } = window;
+    const { singleColumn } = this.state;
+
+    if (innerWidth <= 998 && !singleColumn) {
+      this.setState({ singleColumn: true });
+    } else if (innerWidth > 998 && singleColumn) {
+      this.setState({ singleColumn: false });
+    }
   }
 
   getBio = () => {
