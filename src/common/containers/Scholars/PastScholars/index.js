@@ -47,8 +47,13 @@ class PastScholars extends Component {
         <main className="scholars__past">
           {
             this.state.students && this.state.students.length ?
-              <StudentInfoCard student={this.state.students[0]}
-                accent="#FF6561" /> : null
+              this.state.students.map(student => {
+                return (
+                  <StudentInfoCard key={student.uid} 
+                    student={student}
+                    accent="#FF6561" />
+                )
+              }) : null
           }
         </main>
       </React.Fragment>

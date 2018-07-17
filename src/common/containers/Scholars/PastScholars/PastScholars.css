@@ -1,0 +1,12 @@
+.scholars__past {
+  background-color: rgb(210, 210, 210);
+  padding-top: 2em;
+}
+
+.scholars__past .student_info_card__container {
+  margin: 2em
+}
+
+.scholars__past .student_info_card__container:first-child {
+  margin-top: 0;
+}
