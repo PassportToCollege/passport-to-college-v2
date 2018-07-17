@@ -1,0 +1,10 @@
+.student_info_card__container {
+  padding: 2em;
+}
+
+.student_info_card__container.student_info_card__single_column {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+}

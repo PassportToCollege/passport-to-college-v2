@@ -1,0 +1,20 @@
+.image_with_colored_shadow {
+  position: relative;
+  margin: 0 auto 2em;
+}
+
+.image_with_colored_shadow > img {
+  position: relative;
+}
+
+.image_with_colored_shadow > span {
+  display: block;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  border-width: 16px;
+  border-style: solid;
+  position: absolute;
+  top: 16px;
+  left: 16px;
+}

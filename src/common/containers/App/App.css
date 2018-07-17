@@ -75,6 +75,7 @@ html,
 html,
 body {
   font-family: "Roboto", san-serif;
+  color: rgb(51,51,51);
   font-size: 16px;
   margin: 0;
   letter-spacing: 0.5;
@@ -86,13 +87,13 @@ body {
 h1 {
   font-size: 96px;
   font-weight: light;
-  letter-spacing: -1.5;
+  letter-spacing: -1.5em;
 }
 
 h2 {
   font-size: 60px;
   font-weight: light;
-  letter-spacing: -0.5;
+  letter-spacing: -0.5em;
 }
 
 h3 {
@@ -102,7 +103,7 @@ h3 {
 
 h4 {
   font-size: 34px;
-  letter-spacing: 0.25;
+  letter-spacing: 0.25em;
 }
 
 h5 {
@@ -113,7 +114,7 @@ h5 {
 h6 {
   font-size: 18px;
   font-weight: 600;
-  letter-spacing: 0.15;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
 }
 
@@ -122,22 +123,22 @@ button,
   font-size: 100%;
   font-weight: 600px;
   text-transform: uppercase;
-  letter-spacing: 0.25;
+  letter-spacing: 0.25em;
 }
 
 .type__caption {
   font-size: 12px;
-  letter-spacing: 0.4;
+  letter-spacing: 0.4em;
 }
 
 .type__smaller {
   font-size: 14px;
-  letter-spacing: 0.25;
+  letter-spacing: 0.25em;
 }
 
 .type__small {
   font-size: 12px;
-  letter-spacing: 0.25;
+  letter-spacing: 0.25em;
 }
 
 .type__subtitle {
@@ -149,8 +150,16 @@ button,
   display: block;
 }
 
+.type__medium {
+  font-weight: 600;
+}
+
 .type__bold {
   font-weight: bold;
+}
+
+.type__boldest {
+  font-weight: 900;
 }
 
 .type__margin_top {

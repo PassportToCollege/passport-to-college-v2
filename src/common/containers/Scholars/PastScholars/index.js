@@ -9,6 +9,7 @@ import _ from "lodash";
 import * as studentsActions from "../../../actions/studentsActions";
 
 import PageMeta from "../../../components/PageMeta";
+import StudentInfoCard from "../../../components/StudentInfoCard";
 
 class PastScholars extends Component {
   constructor(props) {
@@ -43,6 +44,13 @@ class PastScholars extends Component {
     return (
       <React.Fragment>
         <PageMeta route="SCHOLARS_PAST" />
+        <main className="scholars__past">
+          {
+            this.state.students && this.state.students.length ?
+              <StudentInfoCard student={this.state.students[0]}
+                accent="#FF6561" /> : null
+          }
+        </main>
       </React.Fragment>
     )
   }
