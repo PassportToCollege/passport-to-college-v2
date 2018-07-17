@@ -63,7 +63,8 @@ export default class StudentInfoCard extends Component {
           border: "none",
           margin: "0 auto",
           maxWidth: "100%",
-          padding: "3em 0 2em",
+          padding: "3em 0",
+          minHeight: "auto"
         }} />
     )
   }
