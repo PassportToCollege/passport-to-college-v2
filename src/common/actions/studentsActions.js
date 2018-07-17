@@ -110,3 +110,68 @@ export const doGetCurrentStudents = () => {
       });
   }
 }
+
+export const getPastStudentsInitiated = () => {
+  return {
+    type: types.STUDENTS_GET_PAST_INITIATED
+  };
+};
+
+export const getPastStudentsFailed = error => {
+  return {
+    type: types.STUDENTS_GET_PAST_FAILED,
+    error
+  };
+};
+
+export const gotPastStudents = students => {
+  return {
+    type: types.STUDENTS_GET_PAST_SUCCESS,
+    students
+  };
+};
+
+export const doGetPastStudents = () => {
+  return dispatch => {
+    dispatch(getPastStudentsInitiated());
+
+    return db.collection("students")
+      .where("hasGraduated", "==", true)
+      .where("showOnSite", "==", true)
+      .orderBy("user.name.last", "desc")
+      .get()
+      .then(snapshots => {
+        if (snapshots.empty)
+          return dispatch(getPastStudentsFailed({ message: "no students found" }));
+
+        const students = [];
+        const ppPromises = [];
+
+        snapshots.forEach(snapshot => {
+          const student = snapshot.data();
+
+          if (storage && student.user.hasProfilePicture)
+            ppPromises.push(storage.ref("users/profile_images").child(`${student.uid}.png`).getDownloadURL());
+
+          students.push(student);
+        });
+
+        if (storage && ppPromises.length) {
+          return Promise.all(ppPromises).then(urls => {
+            for (let student of students) {
+              student.user.profilePicture = urls.find(url => {
+                return url.indexOf(student.uid) > -1;
+              });
+            }
+
+            dispatch(gotPastStudents(students));
+          });
+        }
+
+        dispatch(gotPastStudents(students));
+      })
+      .catch(error => {
+        dispatch(getPastStudentsFailed(error));
+      });
+  }
+}

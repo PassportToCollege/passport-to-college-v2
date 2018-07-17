@@ -5,7 +5,10 @@ import {
   STUDENTS_GET_SUCCESS,
   STUDENTS_GET_CURRENT_INITIATED,
   STUDENTS_GET_CURRENT_FAILED,
-  STUDENTS_GET_CURRENT_SUCCESS
+  STUDENTS_GET_CURRENT_SUCCESS,
+  STUDENTS_GET_PAST_INITIATED,
+  STUDENTS_GET_PAST_FAILED,
+  STUDENTS_GET_PAST_SUCCESS
 } from "../actions/actionTypes";
 
 const students = (state = initialState.students, action) => {
@@ -49,6 +52,26 @@ const students = (state = initialState.students, action) => {
         gotCurrentStudents: true,
         failedToGetCurrentStudents: false,
         students: action.students
+      });
+    case STUDENTS_GET_PAST_INITIATED:
+      return Object.assign({}, state, {
+        gettingPastStudents: true,
+        gotPastStudents: false,
+        failedToGetPastStudents: false
+      });
+    case STUDENTS_GET_PAST_FAILED:
+      return Object.assign({}, state, {
+        gettingPastStudents: false,
+        gotPastStudents: false,
+        failedToGetPastStudents: true,
+        error: action.error
+      });
+    case STUDENTS_GET_PAST_SUCCESS:
+      return Object.assign({}, state, {
+        gettingPastStudents: false,
+        gotPastStudents: true,
+        failedToGetPastStudents: false,
+        pastStudents: action.students
       });
     default:
       return state;
