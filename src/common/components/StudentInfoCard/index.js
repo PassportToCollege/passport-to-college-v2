@@ -7,6 +7,7 @@ import { isBrowser } from "../../utils";
 
 import ImageWithColoredShadow from "../ImageWithColoredShadow";
 import WYSIWYGEditor from "../Editor";
+import IconButton from "../IconButton";
 
 export default class StudentInfoCard extends Component {
   constructor(props) {
@@ -39,24 +40,17 @@ export default class StudentInfoCard extends Component {
         <ImageWithColoredShadow width="300px" shadowColor={this.props.accent} 
           image={this.props.student.user.profilePicture} />
         <h5 className="type__uppercase type__boldest">{this.props.student.user.name.full}</h5>
-        <p className="type__medium">{this.props.student.university}</p>
+        <p>{this.props.student.university}</p>
         {this.getBio()}
         <h4 className="type__boldest type__uppercase">education</h4>
-        <span>
-          <p className="type__smaller type__uppercase">university</p>
-          <p>{this.props.student.university}</p>
-          <p className="type__smaller type__uppercase type__margin_top">major</p>
-          <p>{this.props.student.major}</p>
-          {
-            this.props.student.minor ?
-              <React.Fragment>
-                <p className="type__smaller type__uppercase type__margin_top">minor</p>
-                <p>{this.props.student.minor}</p>
-              </React.Fragment> : null
-          }
-          <p className="type__smaller type__uppercase type__margin_top">graduation year</p>
-          <p>{this.props.student.graduationYear}</p>
-        </span>
+        {this.getEducation()}
+        <h4 className="type__boldest type__uppercase">social</h4>
+        <IconButton solid icon="linkedin"
+          doClick={this.handleLinkClick} 
+          styles={{
+            backgroundColor: "#0077B5",
+            marginTop: "2em"
+          }} />
       </div>
     )
   }
@@ -72,5 +66,25 @@ export default class StudentInfoCard extends Component {
           padding: "3em 0 2em",
         }} />
     )
+  }
+
+  getEducation = () => {
+    return (
+      <span>
+        <p className="type__smaller type__uppercase">university</p>
+        <p>{this.props.student.university}</p>
+        <p className="type__smaller type__uppercase type__margin_top">major</p>
+        <p>{this.props.student.major}</p>
+        {
+          this.props.student.minor ?
+            <React.Fragment>
+              <p className="type__smaller type__uppercase type__margin_top">minor</p>
+              <p>{this.props.student.minor}</p>
+            </React.Fragment> : null
+        }
+        <p className="type__smaller type__uppercase type__margin_top">graduation year</p>
+        <p>{this.props.student.graduationYear}</p>
+      </span>
+    );
   }
 }
