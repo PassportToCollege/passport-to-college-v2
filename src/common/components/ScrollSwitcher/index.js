@@ -3,7 +3,7 @@ import "./ScrollSwitcher.css";
 import React, { Component } from "react";
 import propTypes from "prop-types";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
-import { faAngleUp, faAngleDown } from "@fortawesome/fontawesome-free-solid";
+import { faAngleUp, faAngleDown, faPauseCircle, faPlayCircle } from "@fortawesome/fontawesome-free-solid";
 
 import { Interval } from "../../utils";
 
@@ -14,7 +14,8 @@ class ScrollSwitcher extends Component {
     this.state = {
       active: 0,
       next: props.options.length > 1 ? 1 : 0,
-      previous: props.options.length - 1
+      previous: props.options.length - 1,
+      isPlaying: props.autoplay
     }
 
     this.SwitcherInterval = new Interval(this.switchNext, 5000);
@@ -22,20 +23,32 @@ class ScrollSwitcher extends Component {
 
   static propTypes = {
     options: propTypes.arrayOf(propTypes.object),
-    onActiveChange: propTypes.func
+    onActiveChange: propTypes.func,
+    autoplay: propTypes.bool
+  }
+
+  static defaultProps = {
+    autoplay: true
   }
 
   componentDidMount() {
-    this.SwitcherInterval.start();
+    if (this.props.autoplay)
+      this.SwitcherInterval.start();
   }
 
   componentWillUnmount() {
-    this.SwitcherInterval.stop();
+    if (this.state.isPlaying)
+      this.SwitcherInterval.stop();
   }
 
   render() {
     return (
       <div className="scroll_switcher">
+        <span className="scroll_switcher__pause_play"
+          title={this.state.isPlaying ? "Pause Switcher" : "Play Switcher"} 
+          onClick={this.handlePlayPause}>
+          <FontAwesomeIcon icon={this.state.isPlaying ? faPauseCircle : faPlayCircle} />
+        </span>
         <span className="scroll_switcher__previous"
           onClick={this.switchPrevious}>
           <FontAwesomeIcon icon={faAngleUp} />
@@ -63,7 +76,7 @@ class ScrollSwitcher extends Component {
 
   switchNext = () => {
     const { options } = this.props;
-    const { active, next } = this.state;
+    const { active, next, isPlaying } = this.state;
 
     this.setState({
       active: next,
@@ -74,12 +87,13 @@ class ScrollSwitcher extends Component {
         this.props.onActiveChange(options[this.state.active]);
     });
 
-    this.SwitcherInterval.restart();
+    if (isPlaying)
+      this.SwitcherInterval.restart();
   }
 
   switchPrevious = () => {
     const { options } = this.props;
-    const { active, previous } = this.state;
+    const { active, previous, isPlaying } = this.state;
 
     this.setState({
       active: previous,
@@ -90,7 +104,20 @@ class ScrollSwitcher extends Component {
         this.props.onActiveChange(options[this.state.active]);
     });
 
-    this.SwitcherInterval.restart();
+    if (isPlaying)
+      this.SwitcherInterval.restart();
+  }
+
+  handlePlayPause = () => {
+    const { isPlaying } = this.state;
+
+    if (isPlaying) {
+      this.SwitcherInterval.stop();
+      this.setState({ isPlaying: false });
+    } else {
+      this.SwitcherInterval.start();
+      this.setState({ isPlaying: true });
+    }
   }
 }
 
