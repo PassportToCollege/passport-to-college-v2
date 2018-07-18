@@ -11,6 +11,7 @@ import * as studentsActions from "../../../actions/studentsActions";
 import PageMeta from "../../../components/PageMeta";
 import ToTopContainer from "../../../components/ToTopContainer";
 import StudentInfoCard from "../../../components/StudentInfoCard";
+import Loader from "../../../components/Loader";
 
 class PastScholars extends Component {
   constructor(props) {
@@ -54,7 +55,11 @@ class PastScholars extends Component {
                     student={student}
                     accent="#FF8C89" />
                 )
-              }) : null
+              }) : this.props.students.gettingPastStudents ?
+                <Loader styles={{
+                  margin: "3em auto"
+                }} /> :
+                null
           }
         </ToTopContainer>
       </React.Fragment>
