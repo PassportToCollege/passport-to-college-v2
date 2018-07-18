@@ -1,11 +1,10 @@
 .scholars__container > header {
-  padding: 125px 2em 25em;
+  padding: 125px 2em 6.85em;
   background-color: #53D1D7;
   transition: padding 200ms linear 200ms, background-color linear 500ms;
 }
 
 .scholars__container > header.scholars__header_past {
-  padding: 125px 2em 6.85em;
   background-color: #FF443F;
 }
 

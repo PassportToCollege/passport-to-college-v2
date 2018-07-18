@@ -7,10 +7,14 @@ import propTypes from "prop-types";
 import _ from "lodash";
 
 import * as studentsActions from "../../../actions/studentsActions";
+import { SCHOLARS_PAST } from "../../../constants/routes";
 import { Student } from "../../../utils";
 
+import ToTopContainer from "../../../components/ToTopContainer";
 import TopicSection from "../../../components/TopicSection";
 import ClassificationBlock from "../../../components/ClassificationBlock";
+import ColoredStrip from "../../../components/ColoredStrip";
+import Button from "../../../components/Button";
 import Loader from "../../../components/Loader";
 
 import Hero from "../../../assets/images/scholars__current_hero.JPG";
@@ -27,7 +31,8 @@ class CurrentScholars extends Component {
 
   static propTypes = {
     students: propTypes.object,
-    studentsActions: propTypes.object
+    studentsActions: propTypes.object,
+    history: propTypes.object
   }
 
   componentDidMount() {
@@ -88,8 +93,11 @@ class CurrentScholars extends Component {
 
   render() {
     return (
-      <main className="scholars__current">
-        <img src={Hero} alt="current scholars hero" />
+      <ToTopContainer classes="scholars__current">
+        <section className="scholars__current_hero">
+          <span></span>
+          <img src={Hero} alt="current scholars hero" />
+        </section>
         <section className="scholars__current_content">
           <TopicSection
           content={
@@ -109,7 +117,16 @@ class CurrentScholars extends Component {
           {this.renderJuniors()}
           {this.renderSeniors()}
         </section>
-      </main>
+        <ColoredStrip background="#53D1D7">
+          <h3 className="type__bold">Want to see our past scholars?</h3>
+          <Button solid 
+            doClick={this.toPastScholars}
+            text="past scholars" 
+            styles={{
+              backgroundColor: "#11A5AC"
+            }} />
+        </ColoredStrip>
+      </ToTopContainer>
     )
   }
 
@@ -121,11 +138,11 @@ class CurrentScholars extends Component {
           students={this.state.freshmen}
           emptyPicture={EmptyFreshmen}
           header={{
-            topBg: "#FFCB61",
-            bottomBg: "#FFB318",
+            topBg: "#53D1D7",
+            bottomBg: "#11A5AC",
             info: this.state.freshmen && this.state.freshmen.length ?
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam venenatis rhoncus congue. Praesent eget facilisis tellus. Etiam quis est eu sem tristique consectetur a vel lacus. Praesent eu justo eleifend, blandit sem ut, laoreet sem.</p> :
-                <p>Looks like we are still matching our newest scholars with awesome universities. Please check back to see our newest additions and learn more about them.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam venenatis rhoncus congue. Praesent eget facilisis tellus. Etiam quis est eu sem tristique consectetur a vel lacus. Praesent eu justo eleifend, blandit sem ut, laoreet sem.</p> :
+            <p>Looks like we are still matching our newest scholars with awesome universities. Please check back to see our newest additions and learn more about them.</p>
           }} />
       );
     }
@@ -137,12 +154,12 @@ class CurrentScholars extends Component {
     if (this.state.sophomores) {
       return (
         <ClassificationBlock classification="sophomores"
-          classes={["scholars__current_sophomores"]} 
+        classes={["scholars__current_sophomores"]} 
           students={this.state.sophomores}
           emptyPicture={EmptyFreshmen}
           header={{
-            topBg: "#53D1D7",
-            bottomBg: "#11A5AC",
+            topBg: "#FFCB61",
+            bottomBg: "#FFB318",
             info: <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam venenatis rhoncus congue. Praesent eget facilisis tellus. Etiam quis est eu sem tristique consectetur a vel lacus. Praesent eu justo eleifend, blandit sem ut, laoreet sem.</p>
           }} />
       );
@@ -177,14 +194,18 @@ class CurrentScholars extends Component {
           students={this.state.seniors}
           emptyPicture={EmptyFreshmen}
           header={{
-            topBg: "#FFCB61",
-            bottomBg: "#FFB318",
+            topBg: "#53D1D7",
+            bottomBg: "#11A5AC",
             info: <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam venenatis rhoncus congue. Praesent eget facilisis tellus. Etiam quis est eu sem tristique consectetur a vel lacus. Praesent eu justo eleifend, blandit sem ut, laoreet sem.</p>
           }} />
       );
     }
 
     return null;
+  }
+
+  toPastScholars = () => {
+    this.props.history.push(SCHOLARS_PAST.route);
   }
 }
 

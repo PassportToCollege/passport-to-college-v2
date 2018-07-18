@@ -1,22 +1,34 @@
 .scholars__current {
   background-color: rgb(210,210,210);
   position: relative;
-  margin-bottom: -18.5em;
-  z-index: 98;
 }
 
 /* Hero */
-.scholars__current > img {
+.scholars__current .scholars__current_hero {
+  position: relative;
+  max-height: 760px;
+}
+
+.scholars__current .scholars__current_hero > span {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background-color: #53D1D7;
+}
+
+.scholars__current .scholars__current_hero > img {
+  position: relative;
   width: 1140px;
   max-width: 100%;
   display: block;
   margin: 0 auto;
-  transform: translateY(-18.5em);
 }
 
 /* Content */
 .scholars__current .scholars__current_content {
-  transform: translateY(-18.5em);
   background-color: white;
 }
 
@@ -62,4 +74,13 @@
 /* Seniors */
 .scholars__current .scholars__current_content .scholars__current_seniors .flex_container {
   flex-flow: row-reverse wrap !important;
+}
+
+.scholars__current .colored_strip {
+  text-align: center;
+  color: white;
+}
+
+.scholars__current .colored_strip > h3 {
+  margin-bottom: 16px;
 }

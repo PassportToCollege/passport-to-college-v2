@@ -9,6 +9,7 @@ import _ from "lodash";
 import * as studentsActions from "../../../actions/studentsActions";
 
 import PageMeta from "../../../components/PageMeta";
+import ToTopContainer from "../../../components/ToTopContainer";
 import StudentInfoCard from "../../../components/StudentInfoCard";
 
 class PastScholars extends Component {
@@ -44,7 +45,7 @@ class PastScholars extends Component {
     return (
       <React.Fragment>
         <PageMeta route="SCHOLARS_PAST" />
-        <main className="scholars__past">
+        <ToTopContainer classes="scholars__past">
           {
             this.state.students && this.state.students.length ?
               this.state.students.map(student => {
@@ -55,7 +56,7 @@ class PastScholars extends Component {
                 )
               }) : null
           }
-        </main>
+        </ToTopContainer>
       </React.Fragment>
     )
   }
