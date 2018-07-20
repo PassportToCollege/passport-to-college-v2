@@ -7,7 +7,7 @@ import { NavLink, Route } from "react-router-dom";
 import propTypes from "prop-types";
 
 import { SCHOLARS_PAST } from "../../constants/routes";
-import * as studentActions from "../../actions/studentActions";
+import * as studentsActions from "../../actions/studentsActions";
 
 import CurrentScholars from "./CurrentScholars";
 import PastScholars from "./PastScholars";
@@ -24,13 +24,15 @@ class Scholars extends Component {
     updateLocation: propTypes.func,
     match: propTypes.object,
     location: propTypes.object,
-    student: propTypes.object,
-    studentActions: propTypes.object
+    students: propTypes.object,
+    studentsActions: propTypes.object
   }
 
   componentDidMount() {
     this.props.updateLocation("scholars");
-    this.shouldGetStudent();
+    this.setPath();
+
+    this.props.studentsActions.doGetCurrentStudents();
   }
 
   getSnapshotBeforeUpdate(props) {
@@ -45,7 +47,7 @@ class Scholars extends Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (snapshot && snapshot.pathChanged) {
-      this.shouldGetStudent();
+      this.setPath();
     }
   }
 
@@ -53,25 +55,31 @@ class Scholars extends Component {
     return (
       <ToTopContainer classes="scholars__container reset__body_top_padding">
         <PageMeta route="SCHOLARS" />
-        <header className={this.state.past ? "scholars__header_past" : null}>
-          <div className="scholars__header_content">
-            <h1>our scholars</h1>
-            <ul className="scholars__nav">
-              <li>
-                <NavLink exact to="/scholars"
-                  activeClassName="active">
-                  Current
-                </NavLink>
-                <NavLink exact to="/scholars/past"
-                  activeClassName="active">
-                  Past
-                </NavLink>
-              </li>
-            </ul>
-          </div>
+        <header 
+          className={this.state.past ? "scholars__header_past" : this.state.viewing ? "scholars__header_viewing" : null}>
+          {
+            !this.state.viewing ?
+              <div className="scholars__header_content">
+                <h1>our scholars</h1>
+                <ul className="scholars__nav">
+                  <li>
+                    <NavLink exact to="/scholars"
+                      activeClassName="active">
+                      Current
+                    </NavLink>
+                    <NavLink exact to="/scholars/past"
+                      activeClassName="active">
+                      Past
+                    </NavLink>
+                  </li>
+                </ul>
+              </div> : null
+          }
         </header>
         <Route exact path={this.props.match.url}
-          component={CurrentScholars} />
+          render={props => {
+            return <CurrentScholars {...props} students={this.props.students} />
+          }} />
         <Route path={SCHOLARS_PAST.route}
           component={PastScholars} />
       </ToTopContainer>
@@ -92,30 +100,17 @@ class Scholars extends Component {
       viewing: pathname.indexOf("view") > -1
     };
   }
-
-  shouldGetStudent = () => {
-    const { viewing } = this.setPath();
-
-    if (viewing) {
-      const uid = this.props.location.pathname.split("/")[4];
-
-      if (this.props.student.hasGotten && uid === this.props.student.student.uid)
-        return;
-
-      this.props.studentActions.doStudentGet(uid);
-    }
-  }
 }
 
 const mapStateToProps = state => {
   return {
-    student: state.student
+    students: state.students
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    studentActions: bindActionCreators(studentActions, dispatch)
+    studentsActions: bindActionCreators(studentsActions, dispatch)
   };
 };
 

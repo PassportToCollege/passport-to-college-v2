@@ -1,12 +1,9 @@
 import "./CurrentScholars.css";
 
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux"
 import propTypes from "prop-types";
 import _ from "lodash";
 
-import * as studentsActions from "../../../actions/studentsActions";
 import { SCHOLARS_PAST } from "../../../constants/routes";
 import { Student } from "../../../utils";
 
@@ -35,10 +32,6 @@ class CurrentScholars extends Component {
     history: propTypes.object
   }
 
-  componentDidMount() {
-    this.props.studentsActions.doGetCurrentStudents();
-  }
-
   static getDerivedStateFromProps(props, state) {
     if (props.students.gotCurrentStudents && 
     !_.isEqual(state.students, props.students.students)) {
@@ -48,6 +41,11 @@ class CurrentScholars extends Component {
     }
 
     return null;
+  }
+
+  componentDidMount() {
+    if (this.state.students && this.props.students.gotCurrentStudents)
+      this.createClassificationState();
   }
 
   getSnapshotBeforeUpdate(props) {
@@ -62,32 +60,7 @@ class CurrentScholars extends Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (snapshot && snapshot.gotStudents && this.state.students) {
-      const freshmen = this.state.students.filter(student => {
-        return new Student(student).isFreshman;
-      });
-
-      const sophomores = this.state.students.filter(student => {
-        return new Student(student).isSophomore;
-      });
-
-      const juniors = this.state.students.filter(student => {
-        return new Student(student).isJunior;
-      });
-
-      const seniors = this.state.students.filter(student => {
-        return new Student(student).isSenior;
-      });
-
-      this.setState({ 
-        freshmen,
-        activeFreshman: freshmen.length ? freshmen[0] : null,
-        sophomores,
-        activeSophomore: sophomores.length ? sophomores[0] : null,
-        juniors,
-        activeJunior: juniors.length ? juniors[0] : null,
-        seniors,
-        activeSenior: seniors.length ? seniors[0] : null
-      });
+      this.createClassificationState();
     }
   }
 
@@ -204,24 +177,38 @@ class CurrentScholars extends Component {
     return null;
   }
 
+  createClassificationState = () => {
+    const freshmen = this.state.students.filter(student => {
+      return new Student(student).isFreshman;
+    });
+
+    const sophomores = this.state.students.filter(student => {
+      return new Student(student).isSophomore;
+    });
+
+    const juniors = this.state.students.filter(student => {
+      return new Student(student).isJunior;
+    });
+
+    const seniors = this.state.students.filter(student => {
+      return new Student(student).isSenior;
+    });
+
+    this.setState({
+      freshmen,
+      activeFreshman: freshmen.length ? freshmen[0] : null,
+      sophomores,
+      activeSophomore: sophomores.length ? sophomores[0] : null,
+      juniors,
+      activeJunior: juniors.length ? juniors[0] : null,
+      seniors,
+      activeSenior: seniors.length ? seniors[0] : null
+    });
+  }
+
   toPastScholars = () => {
     this.props.history.push(SCHOLARS_PAST.route);
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    students: state.students
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    studentsActions: bindActionCreators(studentsActions, dispatch)
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CurrentScholars);
+export default CurrentScholars;
