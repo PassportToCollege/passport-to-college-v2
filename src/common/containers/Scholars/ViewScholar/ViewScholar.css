@@ -1,0 +1,49 @@
+
+/* Name */
+.view_scholar__name {
+  background-color: #53D1D7;
+}
+
+.view_scholar__name > span {
+  display: flex;
+  justify-content: flex-end;
+  width: 1140px;
+  max-width: 100%;
+  margin: 0 auto;
+  color: white;
+}
+
+.view_scholar__name > span > h3 {
+  max-width: 570px;
+  flex: 0 1 570px;
+  padding: 0 3rem 3.5rem;
+}
+
+/* Picture block */
+.view_scholar__profile {
+  display: flex;
+  flex-flow: row wrap-reverse;
+  justify-content: center;
+  width: 1140px;
+  max-width: 100%;
+  margin: 0 auto;
+  background-color: #f1f1f1;
+}
+
+.view_scholar__profile > span {
+  max-width: 570px;
+  min-width: 300px;
+  flex: 1 1 570px;
+}
+
+.view_scholar__profile > span > img {
+  max-width: 100%;
+}
+
+.view_scholar__profile > span .colored_strip {
+  color: white;
+}
+
+.view_scholar__profile > span .colored_strip {
+
+}

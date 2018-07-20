@@ -8,6 +8,10 @@
   background-color: #FF443F;
 }
 
+.scholars__container > header.scholars__header_viewing {
+  padding: 125px 2em 3.5em;
+}
+
 .scholars__container > header .scholars__header_content {
   margin: 6.85em auto 0;
   display: flex;

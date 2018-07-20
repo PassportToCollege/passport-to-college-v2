@@ -411,6 +411,19 @@ export class Student {
     );
   }
 
+  get classification() {
+    if (this.isFreshman)
+      return "freshman";
+
+    if (this.isSophomore) 
+      return "sophomore";
+
+    if (this.isJunior)
+      return "junior";
+
+    return "senior";
+  }
+
   getData() {
     const {
       uid, user, bio, 
