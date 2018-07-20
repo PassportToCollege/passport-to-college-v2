@@ -6,11 +6,12 @@ import { bindActionCreators } from "redux";
 import { NavLink, Route } from "react-router-dom";
 import propTypes from "prop-types";
 
-import { SCHOLARS_PAST } from "../../constants/routes";
+import { SCHOLARS_PAST, SCHOLAR } from "../../constants/routes";
 import * as studentsActions from "../../actions/studentsActions";
 
 import CurrentScholars from "./CurrentScholars";
 import PastScholars from "./PastScholars";
+import ViewScholar from "./ViewScholar";
 
 import ToTopContainer from "../../components/ToTopContainer";
 import PageMeta from "../../components/PageMeta";
@@ -82,6 +83,10 @@ class Scholars extends Component {
           }} />
         <Route path={SCHOLARS_PAST.route}
           component={PastScholars} />
+        <Route path={SCHOLAR.route}
+          render={props => {
+            return <ViewScholar {...props} students={this.props.students} />
+          }} />
       </ToTopContainer>
     )
   }
