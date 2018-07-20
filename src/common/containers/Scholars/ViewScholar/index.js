@@ -9,6 +9,7 @@ import { Student } from "../../../utils";
 import ToTopContainer from "../../../components/ToTopContainer";
 import PageMeta from "../../../components/PageMeta";
 import ColoredStrip from "../../../components/ColoredStrip";
+import WYSIWYGEditor from "../../../components/Editor";
 
 class ViewScholar extends Component {
   constructor(props) {
@@ -64,7 +65,8 @@ class ViewScholar extends Component {
               }
             </span>
           </section>
-            {this.getPictureBlock()}
+          {this.getPictureBlock()}
+          {this.getBioBlock()}
         </ToTopContainer>
       </React.Fragment>
     )
@@ -96,6 +98,27 @@ class ViewScholar extends Component {
         }
       </section>
     );
+  }
+
+  getBioBlock = () => {
+    if (this.state.current) {
+      return (
+        <section className="view_scholar__bio">
+          <WYSIWYGEditor readonly
+            content={this.state.current.bio} 
+            editorStyles={{
+              border: "none",
+              margin: "0 auto",
+              padding: "0",
+              minHeight: "auto",
+              lineHeight: "1.25rem",
+              color: "#333"
+            }} />
+        </section>
+      )
+    }
+
+    return null;
   }
 }
 

@@ -44,6 +44,8 @@
   color: white;
 }
 
-.view_scholar__profile > span .colored_strip {
-
+/* Bio block */
+.view_scholar__bio {
+  padding: 7rem 2rem;
+  background-color: #f1f1f1;
 }
