@@ -44,7 +44,8 @@ class ClassificationBlock extends Component {
                   bgColor="rgba(51,51,51,0.9)"
                   bgImage={this.state.activeStudent.user.profilePicture}
                   title={this.state.activeStudent.user.name.full}
-                  university={this.state.activeStudent.university} /> :
+                  university={this.state.activeStudent.university}
+                  target={`/scholars/view/scholar/${this.state.activeStudent.uid}`} /> :
                 <span className="classification_block__empty_picture"></span>
             }
           </section>

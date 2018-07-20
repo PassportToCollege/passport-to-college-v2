@@ -16,7 +16,8 @@ class InfoCard extends Component {
     bgOverlay: propTypes.string,
     linkButton: propTypes.object,
     feature: propTypes.bool,
-    university: propTypes.string
+    university: propTypes.string,
+    target: propTypes.string
   }
 
   static defaultProps = {
@@ -50,7 +51,7 @@ class InfoCard extends Component {
               <h3>{this.props.title}</h3>
               <p>{this.props.content}</p>
             </span> :
-            <Link to="/" className="info_card__feature_content">
+            <Link to={this.props.target || "/"} className="info_card__feature_content">
               <h3>{this.props.title}</h3>
               <p>{this.props.university}</p>
             </Link>

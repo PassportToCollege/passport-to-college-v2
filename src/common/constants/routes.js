@@ -3,6 +3,7 @@ export const LANDING = { name: "Home", route: "/" };
 export const ABOUT_US = { name: "About Us", route: "/about-us" };
 export const SCHOLARS = { name: "Scholars", route: "/scholars" };
 export const SCHOLARS_PAST = { name: "Past Scholars", route: "/scholars/past" };
+export const SCHOLAR = { name: "Scholar", route: "/scholars/view/scholar/:uid" };
 export const EVENTS = { name: "Events", route: "/events" };
 export const STORIES = { name: "Stories", route: "/stories" };
 export const STORIES_CATEGORY = { name: "Stories by Category", route: "/stories/cat/:category" };

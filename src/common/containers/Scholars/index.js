@@ -1,10 +1,13 @@
 import "./Scholars.css";
 
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import { NavLink, Route } from "react-router-dom";
 import propTypes from "prop-types";
 
 import { SCHOLARS_PAST } from "../../constants/routes";
+import * as studentActions from "../../actions/studentActions";
 
 import CurrentScholars from "./CurrentScholars";
 import PastScholars from "./PastScholars";
@@ -20,12 +23,14 @@ class Scholars extends Component {
   static propTypes = {
     updateLocation: propTypes.func,
     match: propTypes.object,
-    location: propTypes.object
+    location: propTypes.object,
+    student: propTypes.object,
+    studentActions: propTypes.object
   }
 
   componentDidMount() {
     this.props.updateLocation("scholars");
-    this.setPath();
+    this.shouldGetStudent();
   }
 
   getSnapshotBeforeUpdate(props) {
@@ -40,7 +45,7 @@ class Scholars extends Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (snapshot && snapshot.pathChanged) {
-      this.setPath();
+      this.shouldGetStudent();
     }
   }
 
@@ -73,10 +78,48 @@ class Scholars extends Component {
     )
   }
 
+
+
   setPath = () => {
     const { pathname } = this.props.location;
-      this.setState({ past: pathname.indexOf("past") > -1 });
+    this.setState({ 
+      past: pathname.indexOf("past") > -1,
+      viewing: pathname.indexOf("view") > -1 
+    });
+
+    return {
+      past: pathname.indexOf("past") > -1,
+      viewing: pathname.indexOf("view") > -1
+    };
+  }
+
+  shouldGetStudent = () => {
+    const { viewing } = this.setPath();
+
+    if (viewing) {
+      const uid = this.props.location.pathname.split("/")[4];
+
+      if (this.props.student.hasGotten && uid === this.props.student.student.uid)
+        return;
+
+      this.props.studentActions.doStudentGet(uid);
+    }
   }
 }
 
-export default Scholars;
+const mapStateToProps = state => {
+  return {
+    student: state.student
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    studentActions: bindActionCreators(studentActions, dispatch)
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Scholars);
