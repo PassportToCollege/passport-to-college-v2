@@ -1,3 +1,6 @@
+.view_scholar {
+  background-color: white;
+}
 
 /* Name */
 .view_scholar__name {
@@ -48,4 +51,25 @@
 .view_scholar__bio {
   padding: 7rem 2rem;
   background-color: #f1f1f1;
+}
+
+/* Facts block */
+.view_scholar__facts {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding-top: 45px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.view_scholar__facts > .labeled_icon_card {
+  margin-bottom: 45px;
+}
+
+.view_scholar__facts .view_scholar__facts_section_overflow {
+  width: 350px;
+  height: 395px;
+  background-color: #11A5AC;
 }

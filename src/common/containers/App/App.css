@@ -170,6 +170,10 @@ button,
   text-transform: uppercase;
 }
 
+.type__center {
+  text-align: center;
+}
+
 /* Custom Resets */
 
 .reset__body_top_padding {

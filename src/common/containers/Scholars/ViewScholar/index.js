@@ -10,6 +10,7 @@ import ToTopContainer from "../../../components/ToTopContainer";
 import PageMeta from "../../../components/PageMeta";
 import ColoredStrip from "../../../components/ColoredStrip";
 import WYSIWYGEditor from "../../../components/Editor";
+import LabledIconCard from "../../../components/LabeledIconCard";
 
 class ViewScholar extends Component {
   constructor(props) {
@@ -67,6 +68,7 @@ class ViewScholar extends Component {
           </section>
           {this.getPictureBlock()}
           {this.getBioBlock()}
+          {this.getFacts()}
         </ToTopContainer>
       </React.Fragment>
     )
@@ -114,6 +116,38 @@ class ViewScholar extends Component {
               lineHeight: "1.25rem",
               color: "#333"
             }} />
+        </section>
+      )
+    }
+
+    return null;
+  }
+
+  getFacts = () => {
+    if (this.state.current) {
+      return (
+        <section className="view_scholar__facts">
+          <LabledIconCard icon="school" 
+            label="university">
+            <h4 className="type__center">{this.state.current.university}</h4>
+          </LabledIconCard>
+          <LabledIconCard icon="book" 
+            label="major">
+            <h4 className="type__center">{this.state.current.major}</h4>
+          </LabledIconCard>
+          <LabledIconCard icon="globe" 
+            label="country">
+            <h4 className="type__center">{this.state.current.user.address.country}</h4>
+          </LabledIconCard>
+          <LabledIconCard icon="date" 
+            label="enrolled">
+            <h4 className="type__center">{this.state.current.enrollmentYear}</h4>
+          </LabledIconCard>
+          <LabledIconCard icon="date" 
+            label="expected graduation">
+            <h4 className="type__center">{this.state.current.graduationYear}</h4>
+          </LabledIconCard>
+          <div className="view_scholar__facts_section_overflow"></div>
         </section>
       )
     }
