@@ -69,6 +69,16 @@ class ViewScholar extends Component {
           {this.getPictureBlock()}
           {this.getBioBlock()}
           {this.getFacts()}
+          <ColoredStrip background="#11A5AC">
+            <h3 className="type__uppercase type__center type__bold type__spacey type__color_white">
+              {
+              this.state.current && 
+              (this.state.current.hasFeatures || this.state.current.hasAccomplishments) ?
+                "features + accomplishments" :
+                "more scholars"
+              }
+            </h3>
+          </ColoredStrip>
         </ToTopContainer>
       </React.Fragment>
     )
