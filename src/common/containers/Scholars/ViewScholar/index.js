@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import propTypes from "prop-types";
 import _ from "lodash";
 
-import { Student } from "../../../utils";
+import { Student, shuffle } from "../../../utils";
 
 import ToTopContainer from "../../../components/ToTopContainer";
 import PageMeta from "../../../components/PageMeta";
@@ -47,6 +47,32 @@ class ViewScholar extends Component {
     }
 
     return null;
+  }
+
+  getSnapshotBeforeUpdate(props) {
+    if (props.match.params.uid !== this.props.match.params.uid) {
+      return {
+        studentChanged: true
+      };
+    }
+
+    return null;
+  }
+
+  componentDidUpdate(props, state, snapshot) {
+    if (snapshot && snapshot.studentChanged) {
+      if ("function" === typeof document.scrollingElement.scrollTo) {
+        document.scrollingElement.scrollTo(0, 0);
+      } else {
+        document.scrollingElement.scrollTop = 0;
+      }
+
+      this.setState({
+        current: this.props.students.students.find(student => {
+          return student.uid === this.props.match.params.uid
+        })
+      });
+    }
   }
 
   render() {
@@ -170,6 +196,7 @@ class ViewScholar extends Component {
   getMoreScholars = () => {
     if (this.state.current && this.state.students) {
       const { current } = this.state;
+      const moreStudents = this.getSuggestedStudents();
 
       return (
         <section className="view_scholar__more_scholars">
@@ -182,7 +209,7 @@ class ViewScholar extends Component {
           }
           <div className="more_scholars__container">
             {
-              this.getSuggestedStudents().map(student => {
+              moreStudents.map(student => {
                 return (
                   <HoverCard key={student.uid}
                     target={`/scholars/view/scholar/${student.uid}`}
@@ -203,16 +230,16 @@ class ViewScholar extends Component {
   }
 
   getSuggestedStudents = () => {
-    const { current } = this.state;
-    let { students } = this.state;
+    const { current, students } = this.state;
 
-    const ci = students.findIndex(student => {
-      return current.uid === student.uid;
-    });
+    let withoutCurrent = students.filter(student => {
+      return student.uid !== current.uid;
+    })
 
-   students.splice(ci, 1);
+    if (withoutCurrent.length <= 3)
+      return withoutCurrent;
 
-   return students.reverse().splice(0, 3);
+    return shuffle(withoutCurrent).slice(0, 3);
   }
 }
 
