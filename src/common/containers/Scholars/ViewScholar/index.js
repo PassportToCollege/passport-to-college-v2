@@ -11,6 +11,7 @@ import PageMeta from "../../../components/PageMeta";
 import ColoredStrip from "../../../components/ColoredStrip";
 import WYSIWYGEditor from "../../../components/Editor";
 import LabledIconCard from "../../../components/LabeledIconCard";
+import HoverCard from "../../../components/HoverCard";
 
 class ViewScholar extends Component {
   constructor(props) {
@@ -79,6 +80,7 @@ class ViewScholar extends Component {
               }
             </h3>
           </ColoredStrip>
+          {this.getMoreScholars()}
         </ToTopContainer>
       </React.Fragment>
     )
@@ -163,6 +165,54 @@ class ViewScholar extends Component {
     }
 
     return null;
+  }
+
+  getMoreScholars = () => {
+    if (this.state.current && this.state.students) {
+      const { current } = this.state;
+
+      return (
+        <section className="view_scholar__more_scholars">
+          {
+            current.hasFeatures || current.hasAccomplishments ?
+              <h3 className="type__uppercase type__center type__bold type__spacey">
+                more scholars
+              </h3> : null
+              
+          }
+          <div className="more_scholars__container">
+            {
+              this.getSuggestedStudents().map(student => {
+                return (
+                  <HoverCard key={student.uid}
+                    target={`/scholars/view/scholar/${student.uid}`}
+                    background={student.user.hasProfilePicture ? student.user.profilePicture : null}
+                    overlay="rgba(51,51,51,0.85)">
+                    <p className="type__color_white type__caption">{student.university}</p>
+                    <h4 className="type__color_white">{student.user.name.full}</h4>
+                  </HoverCard>
+                )
+              })
+            }
+          </div>
+        </section>
+      );
+    }
+
+    return null;
+  }
+
+  getSuggestedStudents = () => {
+    const { current } = this.state;
+    let { students } = this.state;
+
+    const ci = students.findIndex(student => {
+      return current.uid === student.uid;
+    });
+
+   students.splice(ci, 1);
+
+   return students.reverse().splice(0, 3);
   }
 }
 

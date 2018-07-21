@@ -73,3 +73,19 @@
   height: 395px;
   background-color: #11A5AC;
 }
+
+/* More scholars block */
+
+.view_scholar__more_scholars {
+  width: 1140px;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 3rem;
+}
+
+.view_scholar__more_scholars .more_scholars__container {
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+}
