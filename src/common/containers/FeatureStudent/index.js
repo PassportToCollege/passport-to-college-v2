@@ -12,7 +12,8 @@ import WYSIWYGEditor from "../../components/Editor";
 import DropUploader from "../../components/DropUploader";
 import Button from "../../components/Button";
 import Notification from "../../components/Notification";
-import Modal from "../../components/Modal"
+import Modal from "../../components/Modal";
+import Input from "../../components/Input";
 
 class FeatureStudent extends Component {
   constructor(props) {
@@ -27,7 +28,7 @@ class FeatureStudent extends Component {
       feature: props.feature,
       newFeature: {
         student: props.student.uid,
-        name: props.student.user.name.full,
+        excerpt: props.editing ? props.feature.excerpt : "",
         details: props.editing ? props.feature.details : "",
         createdAt: props.editing ? props.feature.createdAt : new Date(moment().add(30, "days").toDate()).getTime(),
         expDate: props.editing ?
@@ -68,11 +69,11 @@ class FeatureStudent extends Component {
             <h5 className="section_heading">1. Student</h5>
             <div className="form__input_container">
               <label>UID</label>
-              <input type="text" disabled value={this.state.student.uid} />
+              <Input inputType="text" inputDisabled inputDefault={this.state.student.uid} />
             </div>
             <div className="form__input_container">
               <label>Full name</label>
-              <input type="text" disabled value={this.state.student.user.name.full} />
+              <Input inputType="text" inputDisabled inputDefault={this.state.student.user.name.full} />
             </div>
           </section>
           <section className="feature_student__section">
@@ -82,7 +83,7 @@ class FeatureStudent extends Component {
               label={<span><b>Choose a hero image</b> or drag it here</span>}
               uploaderStyles={{
                 backgroundColor: "white",
-                // backgroundImage: `url(${this.state.hero})`,
+                backgroundImage: `url(${this.state.hero})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
@@ -101,7 +102,9 @@ class FeatureStudent extends Component {
           <section className="feature_student__section">
             <h5 className="section_heading">3. Excerpt</h5>
             <label>Provide an excerpt of the feature&apos;s full details. It is usually the first paragragh of the full details, or the first couple sentences. This is what readers will see as a preview on the <i>Stories</i> page. Try to keep your excerpt under 100 words.</label>
-            <textarea name="excerpt" rows="5"></textarea>
+            <textarea name="excerpt" rows="5"
+              onChange={this.handleInputChange}
+              value={this.state.newFeature.excerpt}></textarea>
           </section>
           <section className="feature_student__section">
             <h5 className="section_heading">4. Full Details</h5>
@@ -131,9 +134,9 @@ class FeatureStudent extends Component {
             <h5 className="section_heading">5. Expiration</h5>
             <div className="form__input_container">
               <label>Default is 30 days from today.</label>
-              <input type="date" name="expDate" required 
-                defaultValue={moment(this.state.newFeature.expDate).format("Y-MM-DD")}
-                onBlur={this.handleInputChange} />
+              <Input inputType="date" inputName="expDate" 
+                inputDefault={moment(this.state.newFeature.expDate).format("Y-MM-DD")}
+                whenBlur={this.handleInputChange} />
             </div>
           </section>
           <section className="feature_student__section">
@@ -174,6 +177,10 @@ class FeatureStudent extends Component {
         })
       });
     }
+  }
+
+  handleHeroImageChange = e => {
+    
   }
 
   handleFeatureSave = () => {

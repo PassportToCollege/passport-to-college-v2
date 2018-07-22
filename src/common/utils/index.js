@@ -204,3 +204,33 @@ export const shuffle = (arr = []) => {
 
   return arr;
 }
+
+export const verifyImageDimensions = (image, ratio = 133) => {
+  return new Promise((resolve, reject) => {
+    let ni = image.files[0],
+      reader = new FileReader();
+  
+    reader.readAsDataURL(ni);
+    reader.onload = e => {
+      let dUrl = e.target.result,
+        image = new Image();
+  
+      image.src = dUrl;
+      image.onload = () => {
+        const { width, height } = image;
+        
+        if (((width / height) * 100) >= ratio) {
+          return resolve({
+            image: ni,
+            url: dUrl
+          })
+        }
+
+        return reject({
+          error: "ratio not met",
+          url: dUrl
+        });
+      };
+    };
+  });
+}

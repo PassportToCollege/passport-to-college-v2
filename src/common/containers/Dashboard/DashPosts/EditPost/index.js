@@ -6,6 +6,7 @@ import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
 import moment from "moment";
 
+import { verifyImageDimensions } from "../../../../utils";
 import * as postActions from "../../../../actions/postActions";
 import * as postCategoryActions from "../../../../actions/postCategoryActions";
 
@@ -312,32 +313,19 @@ class EditPost extends Component {
   }
 
   handleHeroImageChange = e => {
-    let newHero = e.files[0];
-    let reader = new FileReader();
-
-    reader.readAsDataURL(newHero);
-    reader.onload = event => {
-      let dataUrl = event.target.result;
-
-      let image = new Image();
-      image.src = dataUrl;
-      image.onload = () => {
-        const { width, height } = image;
-
-        // ensure image is rectangular
-        if (((width/height)*100) >= 133) {
-          return this.props.postActions.doHeroUpload(newHero, this.state.id, {
-            refresh: true
-          });
-        }
-
+    verifyImageDimensions(e)
+      .then(({ image }) => {
+        this.props.postActions.doHeroUpload(image, this.state.id, {
+          refresh: true
+        });
+      })
+      .catch(() => {
         this.setState({
           hasError: true,
           notificationClosed: false,
           notification: "Hero aspect ratio must be between 4:3 and 16:9"
         });
-      };
-    };
+      });
   }
 
   handleCategoryAdd = e => {
