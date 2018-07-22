@@ -6,6 +6,7 @@ import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
 import moment from "moment";
 
+import { verifyImageDimensions } from "../../utils";
 import * as featureActions from "../../actions/featureActions";
 
 import WYSIWYGEditor from "../../components/Editor";
@@ -164,10 +165,10 @@ class FeatureStudent extends Component {
   }
 
   handleInputChange = e => {
-    if (e.target.name === "expDate") {
+    if (e.name === "expDate") {
       this.setState({
         newFeature: Object.assign({}, this.state.newFeature, {
-          [e.target.name]: new Date(e.target.value).getTime()
+          [e.name]: new Date(e.value).getTime()
         })
       });
     } else {
@@ -180,7 +181,18 @@ class FeatureStudent extends Component {
   }
 
   handleHeroImageChange = e => {
-    
+    verifyImageDimensions(e)
+      .then(({ image, url }) => {
+        this.setState({ 
+          hero: url,
+          newFeature: Object.assign({}, this.state.newFeature, {
+            hero: image
+          }) 
+        });
+      })
+      .catch(error => {
+        console.log(error.message);
+      });
   }
 
   handleFeatureSave = () => {
