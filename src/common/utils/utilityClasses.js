@@ -522,11 +522,6 @@ export class Post {
     this.conversations = this.conversations || 0;
     this.category = this.category || {};
     this.likes = this.likes || {};
-    this.isFeature = !!this.isFeature;
-    this.isAccomplishment = !!this.isAccomplishment;
-    
-    if (this.isAccomplishment || this.isFeature)
-      this.featuredStudent = this.featuredStudent || "";
   }
 
   get data() {
@@ -537,13 +532,68 @@ export class Post {
     const {
       title, author,excerpt, full,
       createdAt, category, state, conversations,
-      likes, isAccomplishment, isFeature
+      likes
     } = this;
 
     return {
       title, author, excerpt, full,
       createdAt, category, state, conversations,
-      likes, isAccomplishment, isFeature
-    }
+      likes
+    };
+  }
+}
+
+export class Feature extends Post {
+  constructor(post = {}, student = "", expiration = "") {
+    super(post);
+
+    this.isFeature = true;
+    this.student = student,
+    this.expiration = expiration;
+  }
+
+  get data() {
+    return this.getData();
+  }
+
+  getData() {
+    const {
+      title, author,excerpt, full,
+      createdAt, category, state, conversations,
+      likes, isFeature, student, expiration
+    } = this;
+
+    return {
+      title, author, excerpt, full,
+      createdAt, category, state, conversations,
+      likes, isFeature, student, expiration
+    };
+  }
+}
+
+export class Accomplishment extends Post {
+  constructor(post = {}, student = "") {
+    super(post);
+
+    this.isAccomplishment = true;
+    this.student = student;
+  }
+
+  get data() {
+    return this.getData();
+  }
+
+  getData() {
+    const {
+      title, author,excerpt, full,
+      createdAt, category, state, conversations,
+      likes, isAccomplishment, student
+    } = this;
+
+    return {
+      title, author, excerpt, full,
+      createdAt, category, state, conversations,
+      likes, isAccomplishment, student
+    };
   }
 }
