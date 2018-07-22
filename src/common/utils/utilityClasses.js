@@ -548,7 +548,7 @@ export class Feature extends Post {
     super(post);
 
     this.isFeature = true;
-    this.student = student,
+    this.student = student;
     this.expiration = expiration;
   }
 
