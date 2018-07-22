@@ -4,7 +4,8 @@ import React, { Component } from "react";
 import propTypes from "prop-types";
 import _ from "lodash";
 
-import { Student, shuffle } from "../../../utils";
+import { shuffle } from "../../../utils";
+import { Student } from "../../../utils/utilityClasses";
 
 import ToTopContainer from "../../../components/ToTopContainer";
 import PageMeta from "../../../components/PageMeta";

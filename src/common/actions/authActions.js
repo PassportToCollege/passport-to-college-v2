@@ -4,7 +4,7 @@ import moment from "moment";
 
 import * as types from "./actionTypes";
 import { auth, db } from "../utils/firebase";
-import { User, SSID } from "../utils";
+import { User, SSID } from "../utils/utilityClasses";
 import Cookies from "universal-cookie";
 
 const cookies = new Cookies();

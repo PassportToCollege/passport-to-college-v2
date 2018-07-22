@@ -1,5 +1,5 @@
 import { db, storage } from "../utils/firebase";
-import { Comment, Reply } from "../utils";
+import { Comment, Reply } from "../utils/utilityClasses";
 
 import * as types from "./actionTypes";
 import { doUpdateConversationsCount } from "./postActions";

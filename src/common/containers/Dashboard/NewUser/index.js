@@ -10,7 +10,7 @@ import propTypes from "prop-types";
 import * as usersActions from "../../../actions/usersActions";
 import * as studentActions from "../../../actions/studentActions";
 import { USERS } from "../../../constants/routes";
-import { DefaultUser, Student } from "../../../utils";
+import { DefaultUser, Student } from "../../../utils/utilityClasses";
 
 import ToTopContainer from "../../../components/ToTopContainer";
 import FlexContainer from "../../../components/FlexContainer";

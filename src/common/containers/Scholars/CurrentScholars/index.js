@@ -5,7 +5,7 @@ import propTypes from "prop-types";
 import _ from "lodash";
 
 import { SCHOLARS_PAST } from "../../../constants/routes";
-import { Student } from "../../../utils";
+import { Student } from "../../../utils/utilityClasses";
 
 import ToTopContainer from "../../../components/ToTopContainer";
 import TopicSection from "../../../components/TopicSection";

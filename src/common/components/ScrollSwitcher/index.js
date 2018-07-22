@@ -5,7 +5,7 @@ import propTypes from "prop-types";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import { faAngleUp, faAngleDown, faPauseCircle, faPlayCircle } from "@fortawesome/fontawesome-free-solid";
 
-import { Interval } from "../../utils";
+import { Interval } from "../../utils/utilityClasses";
 
 class ScrollSwitcher extends Component {
   constructor(props) {
