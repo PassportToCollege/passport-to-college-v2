@@ -9,6 +9,7 @@ import moment from "moment";
 import * as featureActions from "../../actions/featureActions";
 
 import WYSIWYGEditor from "../../components/Editor";
+import DropUploader from "../../components/DropUploader";
 import Button from "../../components/Button";
 import Notification from "../../components/Notification";
 import Modal from "../../components/Modal"
@@ -52,7 +53,7 @@ class FeatureStudent extends Component {
     return (
       <Modal classes={["modal__feature_student"]}
         doClose={this.handleModalClose}>
-        <form className="feature_student" onSubmit={this.handleSubmit}>
+        <main className="feature_student">
           {
             this.state.hasError && !this.state.notificationClosed ?
               <Notification text={this.state.error}
@@ -60,7 +61,11 @@ class FeatureStudent extends Component {
               null
           }
           <section className="feature_student__section">
-            <h3 className="section_heading">1. student</h3>
+            <h6>Note:</h6>
+            <p>A student feature is a special type of post/story. It will be rendered as a story on the website under the <i>Features</i> category and will always be available for reading even after expiration. The expiration date determines how long the student will appear on the websites homepage under the <i>Featured Students</i> section.</p>
+          </section>
+          <section className="feature_student__section">
+            <h5 className="section_heading">1. Student</h5>
             <div className="form__input_container">
               <label>UID</label>
               <input type="text" disabled value={this.state.student.uid} />
@@ -71,8 +76,36 @@ class FeatureStudent extends Component {
             </div>
           </section>
           <section className="feature_student__section">
-            <h3 className="section_heading">2. details</h3>
-            <label>Provide the details about why this student is being featured. This is what readers will see.</label>
+            <h5 className="section_heading">2. Hero Image</h5>
+            <label>This is an optional hero image for the feature. It will appear after the feature title when a user opens the feature.</label>
+            <DropUploader overlay
+              label={<span><b>Choose a hero image</b> or drag it here</span>}
+              uploaderStyles={{
+                backgroundColor: "white",
+                // backgroundImage: `url(${this.state.hero})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+                padding: "4em"
+              }}
+              handleAvatarChange={this.handleHeroImageChange} 
+              dropAreaStyles={{
+                background: "none",
+                color: "#FFF",
+                borderColor: "#FFF"
+              }}
+              labelStyles={{
+                color: "#FFF"
+              }} />
+          </section>
+          <section className="feature_student__section">
+            <h5 className="section_heading">3. Excerpt</h5>
+            <label>Provide an excerpt of the feature&apos;s full details. It is usually the first paragragh of the full details, or the first couple sentences. This is what readers will see as a preview on the <i>Stories</i> page. Try to keep your excerpt under 100 words.</label>
+            <textarea name="excerpt" rows="5"></textarea>
+          </section>
+          <section className="feature_student__section">
+            <h5 className="section_heading">4. Full Details</h5>
+            <label>Provide the full details about why this student is being featured. This is what readers will see.</label>
             {
               this.state.editing ?
                 <WYSIWYGEditor
@@ -95,7 +128,7 @@ class FeatureStudent extends Component {
             }
           </section>
           <section className="feature_student__section">
-            <h3 className="section_heading">3. expiration</h3>
+            <h5 className="section_heading">5. Expiration</h5>
             <div className="form__input_container">
               <label>Default is 30 days from today.</label>
               <input type="date" name="expDate" required 
@@ -105,12 +138,12 @@ class FeatureStudent extends Component {
           </section>
           <section className="feature_student__section">
             <div className="form__input_container">
-              <Button type="submit" solid
+              <Button type="button" solid
                 text="save feature" 
                 doClick={this.handleFeatureSave} />
             </div>
           </section>
-        </form>
+        </main>
       </Modal>
     )
   }
@@ -143,9 +176,7 @@ class FeatureStudent extends Component {
     }
   }
 
-  handleFeatureSave = e => {
-    e.preventDefault();
-
+  handleFeatureSave = () => {
     const { newFeature } = this.state;
 
     if ("object" === typeof newFeature.details) {
