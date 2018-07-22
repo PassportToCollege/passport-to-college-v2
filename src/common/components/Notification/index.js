@@ -5,10 +5,13 @@ import propTypes from "prop-types";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/fontawesome-free-solid";
 
-class Notification extends Component {
+export default class Notification extends Component {
+  static propTypes = {
+    text: propTypes.string,
+    doClose: propTypes.func
+  }
+
   componentDidMount() {
-    // close notification automatically after
-    // 5 secs
     setTimeout(() => {
       if (this.notification)
         this.closeNotification();
@@ -32,10 +35,14 @@ class Notification extends Component {
   }
 }
 
-Notification.propTypes = {
-  text: propTypes.string,
-  doClose: propTypes.func
-};
-
-export default Notification;
+export class InlineNotification extends Notification {
+  render() {
+    return (
+      <div className="notification__inline" ref={div => this.notification = div}>
+        <p>{this.props.text}</p>
+        <span onClick={this.closeNotification}><FontAwesomeIcon icon={faTimes} /></span>
+      </div>
+    )
+  }
+}
 

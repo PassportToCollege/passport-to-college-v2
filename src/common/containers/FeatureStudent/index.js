@@ -7,12 +7,14 @@ import propTypes from "prop-types";
 import moment from "moment";
 
 import { verifyImageDimensions } from "../../utils";
+import { auth } from "../../utils/firebase";
+import { Feature } from "../../utils/utilityClasses";
 import * as featureActions from "../../actions/featureActions";
 
 import WYSIWYGEditor from "../../components/Editor";
 import DropUploader from "../../components/DropUploader";
 import Button from "../../components/Button";
-import Notification from "../../components/Notification";
+import { InlineNotification } from "../../components/Notification";
 import Modal from "../../components/Modal";
 import Input from "../../components/Input";
 
@@ -56,26 +58,16 @@ class FeatureStudent extends Component {
       <Modal classes={["modal__feature_student"]}
         doClose={this.handleModalClose}>
         <main className="feature_student">
-          {
-            this.state.hasError && !this.state.notificationClosed ?
-              <Notification text={this.state.error}
-                doClose={this.handleNotificationClose} /> :
-              null
-          }
           <section className="feature_student__section">
             <h6>Note:</h6>
             <p>A student feature is a special type of post/story. It will be rendered as a story on the website under the <i>Features</i> category and will always be available for reading even after expiration. The expiration date determines how long the student will appear on the websites homepage under the <i>Featured Students</i> section.</p>
           </section>
           <section className="feature_student__section">
             <h5 className="section_heading">1. Student</h5>
-            <div className="form__input_container">
-              <label>UID</label>
-              <Input inputType="text" inputDisabled inputDefault={this.state.student.uid} />
-            </div>
-            <div className="form__input_container">
-              <label>Full name</label>
-              <Input inputType="text" inputDisabled inputDefault={this.state.student.user.name.full} />
-            </div>
+            <label>UID</label>
+            <Input inputType="text" inputDisabled inputDefault={this.state.student.uid} />
+            <label>Full name</label>
+            <Input inputType="text" inputDisabled inputDefault={this.state.student.user.name.full} />
           </section>
           <section className="feature_student__section">
             <h5 className="section_heading">2. Hero Image</h5>
@@ -106,6 +98,11 @@ class FeatureStudent extends Component {
             <textarea name="excerpt" rows="5"
               onChange={this.handleInputChange}
               value={this.state.newFeature.excerpt}></textarea>
+            {
+              this.state.hasExcerptNotification && !this.state.excerptNotificationClosed ?
+                <InlineNotification text={this.state.excerptNotification}
+                  doClose={this.closeExcerptNotification} /> : null
+            }
           </section>
           <section className="feature_student__section">
             <h5 className="section_heading">4. Full Details</h5>
@@ -130,22 +127,30 @@ class FeatureStudent extends Component {
                     maxWidth: "100%"
                   }} />
             }
+            {
+              this.state.hasDetailsNotification && !this.state.detailsNotificationClosed ?
+                <InlineNotification text={this.state.detailsNotification}
+                  doClose={this.closeDetailsNotification} /> : null
+            }
           </section>
           <section className="feature_student__section">
             <h5 className="section_heading">5. Expiration</h5>
-            <div className="form__input_container">
-              <label>Default is 30 days from today.</label>
-              <Input inputType="date" inputName="expDate" 
-                inputDefault={moment(this.state.newFeature.expDate).format("Y-MM-DD")}
-                whenBlur={this.handleInputChange} />
-            </div>
+            <label>Default is 30 days from today.</label>
+            <Input inputType="date" inputName="expDate" 
+              inputDefault={moment(this.state.newFeature.expDate).format("Y-MM-DD")}
+              whenBlur={this.handleInputChange} />
           </section>
           <section className="feature_student__section">
-            <div className="form__input_container">
-              <Button type="button" solid
-                text="save feature" 
-                doClick={this.handleFeatureSave} />
-            </div>
+            <Button type="button" solid
+                text="cancel" 
+                doClick={this.handleModalClose} 
+                styles={{
+                  backgroundColor: "rgb(128, 150, 162)",
+                  marginRight: "1em"
+                }} />
+            <Button type="button" solid
+              text="save feature" 
+              doClick={this.handleFeatureSave} />
           </section>
         </main>
       </Modal>
@@ -196,35 +201,51 @@ class FeatureStudent extends Component {
   }
 
   handleFeatureSave = () => {
-    const { newFeature } = this.state;
+    const newFeature = new Feature({
+      title: `Featured Student: ${this.state.student.user.name.full} (${moment.utc(moment(this.state.newFeature.createdAt)).format("MMM D, YYYY")})`,
+      author: auth.currentUser.uid,
+      excerpt: this.state.newFeature.excerpt,
+      full: this.state.newFeature.details,
+      category: { features: true }
+    }, this.state.student.uid, this.state.newFeature.expDate);
 
-    if ("object" === typeof newFeature.details) {
-      if (this.state.editing) {
-        this.props.featureActions.doFeatureUpdate(this.state.feature.fid, newFeature, {
-          refresh: true,
-          student: this.state.student.uid
-        });
-      } else {
-        this.props.featureActions.doCreateFeature(newFeature, { refresh: true });
-      }
+    if (!newFeature.excerpt)
+      return this.setExcerptErrorNotification();
 
-      if ("function" === typeof this.props.doClose)
-        this.props.doClose();
-    } else {
-      this.setState({
-        hasError: true,
-        notificationClosed: false,
-        error: "You need to provide full details of the feature"
-      });
-    }
+    if (!newFeature.full)
+      return this.setDetailsErrorNotification();
   }
 
-  handleNotificationClose = () => {
+  setDetailsErrorNotification = () => {
     this.setState({
-      notificationClosed: true,
-      hasError: false,
-      error: ""
-    })
+      hasDetailsNotification: true,
+      detailsNotificationClosed: false,
+      detailsNotification: "Full details required before saving this feature."
+    });
+  }
+
+  closeDetailsNotification = () => {
+    this.setState({
+      hasDetailsNotification: false,
+      detailsNotificationClosed: true,
+      detailsNotification: null
+    });
+  }
+
+  setExcerptErrorNotification = () => {
+    this.setState({
+      hasExcerptNotification: true,
+      excerptNotificationClosed: false,
+      excerptNotification: "An excerpt is required before saving this feature."
+    });
+  }
+
+  closeExcerptNotification = () => {
+    this.setState({
+      hasExcerptNotification: true,
+      excerptNotificationClosed: false,
+      excerptNotification: null
+    });
   }
 }
 

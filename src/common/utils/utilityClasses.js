@@ -2,6 +2,7 @@ import Cookies from "universal-cookie";
 import moment from "moment";
 import BadWords from "./badwords.en";
 import { convertBlocksToText, isEmail } from ".";
+import { auth } from "./firebase";
 
 const cookies = new Cookies();
 
@@ -506,7 +507,7 @@ export class Post {
 
     if("string" === typeof postOrTitle) {
       this.title = postOrTitle;
-      this.author = author;
+      this.author = author || auth.currentUser.uid;
       this.excerpt = excerpt;
       this.full = full;
       
