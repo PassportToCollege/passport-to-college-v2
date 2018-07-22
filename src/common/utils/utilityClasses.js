@@ -545,10 +545,12 @@ export class Post {
 }
 
 export class Feature extends Post {
-  constructor(post = {}, student = "", expiration = "") {
+  constructor(post = {}, active = true, student = "", expiration = "") {
     super(post);
 
     this.isFeature = true;
+    this.category = { features: true };
+    this.isActive = !!active;
     this.student = student;
     this.expiration = expiration;
   }
@@ -577,6 +579,7 @@ export class Accomplishment extends Post {
     super(post);
 
     this.isAccomplishment = true;
+    this.category = { "student accomplishments": true };
     this.student = student;
   }
 

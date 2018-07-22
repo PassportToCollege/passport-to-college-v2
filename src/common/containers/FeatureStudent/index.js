@@ -205,9 +205,8 @@ class FeatureStudent extends Component {
       title: `Featured Student: ${this.state.student.user.name.full} (${moment.utc(moment(this.state.newFeature.createdAt)).format("MMM D, YYYY")})`,
       author: auth.currentUser.uid,
       excerpt: this.state.newFeature.excerpt,
-      full: this.state.newFeature.details,
-      category: { features: true }
-    }, this.state.student.uid, this.state.newFeature.expDate);
+      full: this.state.newFeature.details
+    }, this.state.student.uid, true, this.state.newFeature.expDate);
 
     if (!newFeature.excerpt)
       return this.setExcerptErrorNotification();
