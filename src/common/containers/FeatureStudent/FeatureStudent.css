@@ -1,3 +1,11 @@
+.modal__feature_student {
+  margin: 0 !important;
+}
+
+.modal__feature_student > .modal__content {
+  width: 1140px;
+}
+
 .feature_student {
   width: 100%;
   background-color: white;

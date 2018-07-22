@@ -11,6 +11,7 @@ import * as featureActions from "../../actions/featureActions";
 import WYSIWYGEditor from "../../components/Editor";
 import Button from "../../components/Button";
 import Notification from "../../components/Notification";
+import Modal from "../../components/Modal"
 
 class FeatureStudent extends Component {
   constructor(props) {
@@ -35,68 +36,88 @@ class FeatureStudent extends Component {
     }
   }
 
+  static propTypes = {
+    student: propTypes.object,
+    featureActions: propTypes.object,
+    doClose: propTypes.func,
+    editing: propTypes.bool,
+    feature: propTypes.object,
+  }
+
+  static defaultProps = {
+    editing: false
+  }
+
   render() {
     return (
-      <form className="feature_student" onSubmit={this.handleSubmit}>
-        {
-          this.state.hasError && !this.state.notificationClosed ?
-            <Notification text={this.state.error}
-              doClose={this.handleNotificationClose} /> :
-            null
-        }
-        <section className="feature_student__section">
-          <h3 className="section_heading">1. student</h3>
-          <div className="form__input_container">
-            <label>UID</label>
-            <input type="text" disabled value={this.state.student.uid} />
-          </div>
-          <div className="form__input_container">
-            <label>Full name</label>
-            <input type="text" disabled value={this.state.student.user.name.full} />
-          </div>
-        </section>
-        <section className="feature_student__section">
-          <h3 className="section_heading">2. details</h3>
-          <label>Provide the details about why this student is being featured. This is what readers will see.</label>
+      <Modal classes={["modal__feature_student"]}
+        doClose={this.handleModalClose}>
+        <form className="feature_student" onSubmit={this.handleSubmit}>
           {
-            this.state.editing ?
-              <WYSIWYGEditor
-                content={this.state.feature.details}
-                captureBlur={this.handleDetailsBlur}
-                editorStyles={{
-                  maxWidth: "100%"
-                }}
-                controlStyles={{
-                  maxWidth: "100%"
-                }} /> :
-              <WYSIWYGEditor
-                captureBlur={this.handleDetailsBlur}
-                editorStyles={{
-                  maxWidth: "100%"
-                }}
-                controlStyles={{
-                  maxWidth: "100%"
-                }} />
+            this.state.hasError && !this.state.notificationClosed ?
+              <Notification text={this.state.error}
+                doClose={this.handleNotificationClose} /> :
+              null
           }
-        </section>
-        <section className="feature_student__section">
-          <h3 className="section_heading">3. expiration</h3>
-          <div className="form__input_container">
-            <label>Default is 30 days from today.</label>
-            <input type="date" name="expDate" required 
-              defaultValue={moment(this.state.newFeature.expDate).format("Y-MM-DD")}
-              onBlur={this.handleInputChange} />
-          </div>
-        </section>
-        <section className="feature_student__section">
-          <div className="form__input_container">
-            <Button type="submit" solid
-              text="save feature" 
-              doClick={this.handleFeatureSave} />
-          </div>
-        </section>
-      </form>
+          <section className="feature_student__section">
+            <h3 className="section_heading">1. student</h3>
+            <div className="form__input_container">
+              <label>UID</label>
+              <input type="text" disabled value={this.state.student.uid} />
+            </div>
+            <div className="form__input_container">
+              <label>Full name</label>
+              <input type="text" disabled value={this.state.student.user.name.full} />
+            </div>
+          </section>
+          <section className="feature_student__section">
+            <h3 className="section_heading">2. details</h3>
+            <label>Provide the details about why this student is being featured. This is what readers will see.</label>
+            {
+              this.state.editing ?
+                <WYSIWYGEditor
+                  content={this.state.feature.details}
+                  captureBlur={this.handleDetailsBlur}
+                  editorStyles={{
+                    maxWidth: "100%"
+                  }}
+                  controlStyles={{
+                    maxWidth: "100%"
+                  }} /> :
+                <WYSIWYGEditor
+                  captureBlur={this.handleDetailsBlur}
+                  editorStyles={{
+                    maxWidth: "100%"
+                  }}
+                  controlStyles={{
+                    maxWidth: "100%"
+                  }} />
+            }
+          </section>
+          <section className="feature_student__section">
+            <h3 className="section_heading">3. expiration</h3>
+            <div className="form__input_container">
+              <label>Default is 30 days from today.</label>
+              <input type="date" name="expDate" required 
+                defaultValue={moment(this.state.newFeature.expDate).format("Y-MM-DD")}
+                onBlur={this.handleInputChange} />
+            </div>
+          </section>
+          <section className="feature_student__section">
+            <div className="form__input_container">
+              <Button type="submit" solid
+                text="save feature" 
+                doClick={this.handleFeatureSave} />
+            </div>
+          </section>
+        </form>
+      </Modal>
     )
+  }
+
+  handleModalClose = () => {
+    if ("function" === typeof this.props.doClose)
+      this.props.doClose();
   }
 
   handleDetailsBlur = content => {
@@ -156,18 +177,6 @@ class FeatureStudent extends Component {
     })
   }
 }
-
-FeatureStudent.defaultProps = {
-  editing: false
-};
-
-FeatureStudent.propTypes = {
-  student: propTypes.object,
-  featureActions: propTypes.object,
-  doClose: propTypes.func,
-  editing: propTypes.bool,
-  feature: propTypes.object
-};
 
 const mapStateToProps = () => {
   return {};

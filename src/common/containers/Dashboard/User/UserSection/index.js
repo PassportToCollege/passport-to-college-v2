@@ -79,7 +79,7 @@ class UserSection extends Component {
     }
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
+  static getDerivedStateFromProps(nextProps) {
     let newState = null;
 
     if (nextProps.user.hasGottenUser) {
