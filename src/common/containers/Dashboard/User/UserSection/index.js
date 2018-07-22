@@ -166,558 +166,586 @@ class UserSection extends Component {
               text={this.state.notification} /> :
             null
         }
-        { this._render(this.props.section) }
+        { this.getSection(this.props.section) }
       </div>
     )
   }
 
-  _render = section => {
+  getSection = section => {
     switch (section) {
       case "education":
-        if (this.props.user.hasGottenUser && this.state.user &&
-          !this.state.user.isStudent) {
-          return (
-            <section className="user__section education__section">
-              <PageMeta more={
-                <title>Education | {this.state.user.name.full} | User | Dashboard | Passport to College</title>
-              } />
-              <div className="user__not_student">
-                <h4>user is no a student</h4>
-              </div>
-            </section>
-          )
-        }
-
-        return (
-          <section className="user__section education__section">
-            {
-              this.props.user.hasGottenUser && this.state.user ?
-                <PageMeta more={
-                  <title>Education | {this.state.user.name.full} | User | Dashboard | Passport to College</title>
-                } /> : null
-            }
-            <div className="user__section_left">
-              <div className="user__education">
-                <Button solid type="button" text="edit"
-                  doClick={() => this.setState({ editingEducation: true })}
-                  styles={{
-                    position: "absolute",
-                    right: "0",
-                    top: "2em",
-                    backgroundColor: "rgb(147,166,176)"
-                  }} />
-                {
-                  this.props.student.hasGotten && this.state.student ?
-                    <AnnotatedList data={[
-                      { label: "high school", text: this.state.student.highSchool || "no high school provided" },
-                      { label: "university", text: this.state.student.university || "no university provided" },
-                      { label: "major", text: this.state.student.major || "no major provided" },
-                      { label: "minor", text: this.state.student.minor || "no minor provided" }
-                    ]} /> :
-                    <LoadingText options={{
-                      class: "block__lines",
-                      bg: "transparent",
-                      height: "10px",
-                      lines: [
-                        { color: "rgba(255,101,97,0.2)", width: "80%" },
-                        { color: "rgba(255,101,97,0.4)", width: "70%" }
-                      ]
-                    }} />
-                }
-                {
-                  this.props.student.hasGotten && this.state.student 
-                  && this.state.editingEducation ?
-                    <EditStudentEducation student={this.state.student}
-                      doClose={() => this.setState({ editingEducation: false })}
-                      doSubmit={this.handleStudentEducationEdit} /> :
-                    null
-                }
-              </div>
-            </div>
-            <div className="user__section_right">
-              <div className="user__education_meta">
-                <h5>Meta</h5>
-                {
-                  this.props.student.hasGotten && this.state.student ?
-                    <AnnotatedList data={[
-                      { label: "enrollment year", text: this.state.student.enrollmentYear || "no enrollment year provided" },
-                      { label: "graduation year", text: this.state.student.graduationYear || "no graduation year provided" },
-                      { 
-                        label: "graduated?", 
-                        text: this.state.student.hasGraduated ? "yes" : "no" 
-                      }
-                    ]} /> :
-                    <LoadingText options={{
-                      class: "block__lines",
-                      bg: "transparent",
-                      height: "10px",
-                      lines: [
-                        { color: "rgba(255,101,97,0.2)", width: "80%" },
-                        { color: "rgba(255,101,97,0.4)", width: "70%" }
-                      ]
-                    }} />
-                }
-              </div>
-            </div>
-          </section>
-        )
+        return this.getEducationSection();
       case "profile-picture":
-        return (
-          <section className="user__section profile_picture__section">
-            {
-              this.props.user.hasGottenUser && this.state.user ?
-                <PageMeta more={
-                  <title>Profile Picture | {this.state.user.name.full} | User | Dashboard | Passport to College</title>
-                } /> : null
-            }
-            {
-              (this.props.picture.hasGottenByUid || this.props.user.hasGottenUser) &&
-              (this.state.profilePicture || (this.state.user && this.state.user.photo)) ?
-                <div className="user__profile_picture_container">
-                  <img src={this.state.profilePicture || this.state.user.photo} alt="User Avatar" />
-                </div> :
-                this.props.picture.hasFailedByUid || (this.state.user && !this.state.user.hasProfilePicture) ?
-                  <p>No profile picture</p> :
-                  <Loader />
-            }
-            <DropUploader handleAvatarChange={this.updateProfilePicture} />
-          </section>
-        )
+        return this.getProfilePictureSection()
       case "bio":
-        return (
-          <section className="user__section bio__section">
-            {
-              this.props.user.hasGottenUser && this.state.user ?
-                <PageMeta more={
-                  <title>Bio | {this.state.user.name.full} | User | Dashboard | Passport to College</title>
-                } /> : null
-            }
-            {
-              this.props.student.hasGotten && this.state.student
-              && this.state.student.bio && this.state.student.bio.blocks ?
-                <WYSIWYGEditor content={this.state.student.bio} saveButton
-                  handleSave={this.handleBioSave}
-                  editorStyles={{
-                    margin: "0 auto",
-                    maxWidth: "100%",
-                    padding: "2em 1.875em",
-                    backgroundColor: "#FFF",
-                    border: "none"
-                  }} 
-                  controlStyles={{
-                    maxWidth: "100%",
-                    position: "static",
-                    marginBottom: "0"
-                  }} />
-                  :
-                <WYSIWYGEditor saveButton
-                  handleSave={this.handleBioSave}
-                  editorStyles={{
-                    margin: "0 auto",
-                    maxWidth: "100%",
-                    padding: "2em 1.875em",
-                    backgroundColor: "#FFF",
-                    border: "none"
-                  }}
-                  controlStyles={{
-                    maxWidth: "100%",
-                    position: "static",
-                    marginBottom: "0"
-                  }} />
-            }
-          </section>
-        )
+        return this.getBioSection();
       case "accomplishments":
-        if (this.props.user.hasGottenUser && this.state.user &&
-          !this.state.user.isStudent) {
-          return (
-            <section className="user__section accomplishments__section">
-              <PageMeta more={
-                <title>Accomplishments | {this.state.user.name.full} | User | Dashboard | Passport to College</title>
-              } />
-              <div className="user__not_student">
-                <h4>user is no a student</h4>
-              </div>
-            </section>
-          )
-        }
-
-        if (this.props.student.hasGotten) {
-          return (
-            <section className="user__section accomplishments__section">
-              {
-                this.props.user.hasGottenUser && this.state.user ?
-                  <PageMeta more={
-                    <title>Accomplishments | {this.state.user.name.full} | User | Dashboard | Passport to College</title>
-                  } /> : null
-              }
-              <Button text={this.state.addingAccomplishment || this.state.editingAccomplishment ? "- cancel" : "+ accomplishment"} 
-                solid 
-                styles={{
-                  position: "absolute",
-                  right: "0",
-                  backgroundColor: "rgb(147,166,176)"
-                }} 
-                doClick={this.toggleAddAccomplishment} />
-              <div className="accomplishments__section_content">
-                {
-                  this.props.student.hasGotten && this.state.student
-                  && !this.state.student.accomplishments ?
-                    <div className="user__no_accomplishments">
-                      <h4>no accomplishments listed yet</h4>
-                    </div> :
-                  null
-                }
-                {
-                  this.state.addingAccomplishment && this.props.student.hasGotten
-                    && this.state.student ?
-                    <AddAccomplishment student={this.state.student}
-                      doClose={() => this.setState({ addingAccomplishment: false })} /> :
-                      this.state.editingAccomplishment && this.props.student.hasGotten ?
-                      <AddAccomplishment edit={true} student={this.state.student}
-                        slug={this.state.editingSlug}
-                        accomplishment={this.state.accomplishment}
-                        doClose={() => 
-                          this.setState({ 
-                            editingAccomplishment: false,
-                            editingSlug: "",
-                            accomplishment: {} 
-                          })
-                        } /> :
-                      null
-                }
-                {
-                  this.props.student.hasGotten && this.state.student
-                    && this.state.student.accomplishments ?
-                    <div className="user__accomplishments">
-                      <AccomplishmentsList actions
-                        accomplishments={this.state.student.accomplishments} 
-                        doDelete={this.handleAccomplishmentDelete} 
-                        doEdit={this.handleAccomplishmentEdit} />
-                    </div> :
-                    null
-                }
-              </div>
-            </section>
-          )
-        } else {
-          return (
-            <Loader styles={{
-              marginTop: "5em"
-            }}/>
-          )
-        }
+        return this.getAccomplishmentsSection();
       case "features":
-        if (this.props.user.hasGottenUser && this.state.user &&
-          !this.state.user.isStudent) {
-          return (
-            <section className="user__section features__section">
-              <PageMeta more={
-                <title>Features | {this.state.user.name.full} | User | Dashboard | Passport to College</title>
-              } />
-              <div className="user__not_student">
-                <h4>user is no a student</h4>
-              </div>
-            </section>
-          )
-        }
-        
-        if (this.props.student.hasGotten) {
-          return (
-            <section className="user__section features__section">
-              {
-                this.props.user.hasGottenUser && this.state.user ?
-                  <PageMeta more={
-                    <title>Features | {this.state.user.name.full} | User | Dashboard | Passport to College</title>
-                  } /> : null
-              }
-              <Button text={this.state.editingFeature || this.state.creatingFeature ? "- cancel" : "+ feature student"}
-                doClick={this.toggleFeatureStudent}
-                solid
-                styles={{
-                  position: "absolute",
-                  right: "0",
-                  backgroundColor: "rgb(147,166,176)"
-                }} />
-              <div className="features__section_content">
-                {
-                  this.props.features.hasFailed && this.state.noFeatures ?
-                    <div className="user__no_features">
-                      <h4>student has not been featured</h4>
-                    </div> :
-                    null
-                }
-                {
-                  this.state.editingFeature ?
-                    <FeatureStudent editing student={this.state.student}
-                      feature={this.state.featureBeingEdited}
-                      doClose={() => this.setState({ editingFeature: false })} /> :
-                    null
-                }
-                {
-                  this.state.creatingFeature ?
-                    <FeatureStudent student={this.state.student}
-                      doClose={() => this.setState({ creatingFeature: false })} /> :
-                    null
-                }
-                {
-                  this.props.features.hasGotten && this.state.features ?
-                    <FeatureList actions features={this.state.features} 
-                      doDelete={this.handleFeatureDelete} 
-                      doEdit={this.handleFeatureEdit} /> :
-                    null
-                }
-              </div>
-            </section>
-          )
-        } else {
-          return (
-            <Loader styles={{
-              marginTop: "5em"
-            }} />
-          )
-        }
+        return this.getFeaturesSection();
       case "settings":
-        return (
-          <section className="user__section settings__section">
-            {
-              this.props.user.hasGottenUser && this.state.user ?
-                <PageMeta more={
-                  <title>Settings | {this.state.user.name.full} | User | Dashboard | Passport to College</title>
-                } /> : null
-            }
-            <div className="user__section_left">
-              <div className="settings__roles">
-                <h2>User Roles</h2>
-                <div className="settings__item">
-                  <p>Admin</p>
-                  {
-                    this.props.user.hasGottenUser && this.state.user ?
-                      <Toggler state={this.state.user.isAdmin ? "yes" : "no"} 
-                        doClick={this.toggleAdminSetting} /> :
-                      <Loader width="16px" styles={{
-                        margin: "0"
-                      }} />
-                  }
-                </div>
-                <div className="settings__item">
-                  <p>Staff</p>
-                  {
-                    this.props.user.hasGottenUser && this.state.user ?
-                      <Toggler state={this.state.user.isStaff ? "yes" : "no"}
-                        doClick={this.toggleStaffSetting} /> :
-                      <Loader width="16px" styles={{
-                        margin: "0"
-                      }} />
-                  }
-                </div>
-                <div className="settings__item">
-                  <p>Role</p>
-                  {
-                    this.props.user.hasGottenUser && this.state.user &&
-                    this.state.user.isStaff ?
-                      this.state.user.role ?
-                        <span>
-                          <p>{this.state.user.role}</p>
-                          <span className="settings__edit_role"
-                            onClick={() => this.setState({ editingRole: true })}>edit</span>
-                        </span> :
-                        <span>
-                          <p>no role yet</p>
-                          <span className="settings__add_role"
-                            onClick={() => this.setState({ addingRole: true })}>add</span>
-                        </span>
-                      :
-                      null
-                  }
-                  {
-                    this.props.user.hasGottenUser && this.state.user &&
-                      !this.state.user.isStaff ?
-                      <p>user is not on staff</p>:
-                      null
-                  }
-                  {
-                    this.state.addingRole ?
-                      <AddRole doSubmit={this.handleAddRoleSubmit} 
-                        doClose={() => this.setState({ addingRole: false })} /> :
-                      null
-                  }
-                  {
-                    this.props.user.hasGottenUser && this.state.user &&
-                    this.state.user.role && this.state.editingRole ?
-                      <AddRole doSubmit={this.handleAddRoleSubmit}
-                        doClose={() => this.setState({ editingRole: false })} 
-                        role={this.state.user.role} /> :
-                      null
-                  }
-                </div>
-              </div>
-              <div className="settings__account">
-                <h2>Account</h2>
-                <div className="settings__item">
-                  <p>Send password reset email</p>
-                  {
-                    this.props.user.hasGottenUser && this.state.user ?
-                      <Button type="button" solid text="send"
-                        doClick={this.sendPasswordResetEmail}
-                        styles={{
-                          backgroundColor: "rgb(147,166,176)"
-                        }} /> :
-                      null
-                  }
-                </div>
-              </div>
-            </div>
-            <div className="user__section_right">
-              <div className="settings__students">
-                <h2>Students</h2>
-                {
-                  this.props.user.hasGottenUser && this.state.user &&
-                  this.state.user.isStudent ?
-                  <span>
-                    <div className="settings__item">
-                      <p>Graduated</p>
-                        {
-                          this.props.student.hasGotten && this.state.student ?
-                            <Toggler state={this.state.student.hasGraduated ? "yes" : "no"}
-                            doClick={this.toggleGraduated} /> :
-                            <Loader width="16px" styles={{
-                              margin: "0"
-                            }}/>
-                        }
-                    </div>
-                    <div className="settings__item">
-                      <p>Show on website</p>
-                      {
-                        this.props.student.hasGotten && this.state.student ?
-                        <Toggler state={this.state.student.showOnSite ? "yes" : "no"}
-                          doClick={this.toggleShowOnSite} />:
-                        <Loader width="16px" styles={{
-                          margin: "0"
-                        }}/>
-                      }
-                    </div>
-                  </span> :
-                  null
-                }
-                {
-                  this.props.user.hasGottenUser && this.state.user &&
-                    !this.state.user.isStudent ?
-                    <div className="user__not_student">
-                      <h4>user is no a student</h4>
-                    </div> :
-                    null
-                }
-              </div>
-              <div className="settings__delete_user">
-                <h2>Remove User</h2>
-                {
-                  this.props.user.hasGottenUser && this.state.user ?
-                    <Button solid text={`delete ${this.state.user.name.full}`}
-                      doClick={() => this.setState({ deletingUser: true })} 
-                      styles={{
-                        backgroundColor: "rgb(147,166,176)"
-                      }} /> :
-                    null
-                }
-                {
-                  this.props.user.hasGottenUser && this.state.user &&
-                  this.state.deletingUser ?
-                    <DeleteUser name={this.state.user.name.full}
-                      doClose={() => this.setState({ deletingUser: false })}
-                      doSubmit={this.handleUserDelete} /> :
-                    null
-                }
-              </div>
-            </div>
-          </section>
-        )
+        return this.getSettingsSection();
       case "personal":
       default:
-        return (
-          <section className="user__section personal__section">
+        return this.getPersonalSection();
+    }
+  }
+
+  getEducationSection = () => {
+    if (this.props.user.hasGottenUser && this.state.user &&
+      !this.state.user.isStudent) {
+      return (
+        <section className="user__section education__section">
+          <PageMeta more={
+            <title>Education | {this.state.user.name.full} | User | Dashboard | Passport to College</title>
+          } />
+          <div className="user__not_student">
+            <h4>user is no a student</h4>
+          </div>
+        </section>
+      )
+    }
+
+    return (
+      <section className="user__section education__section">
+        {
+          this.props.user.hasGottenUser && this.state.user ?
+            <PageMeta more={
+              <title>Education | {this.state.user.name.full} | User | Dashboard | Passport to College</title>
+            } /> : null
+        }
+        <div className="user__section_left">
+          <div className="user__education">
             <Button solid type="button" text="edit"
-              doClick={() => this.setState({ editingPersonal: true })}
+              doClick={() => this.setState({ editingEducation: true })}
               styles={{
                 position: "absolute",
                 right: "0",
                 top: "2em",
                 backgroundColor: "rgb(147,166,176)"
               }} />
-            <div className="user__section_left">
-              <div className="user__personal">
-                {
-                  this.props.user.hasGottenUser && this.state.user ?
-                    <InitialsAvatar initials={`${this.state.user.name.first[0]}${this.state.user.name.last[0]}`} 
-                    styles={{ display: "block", margin: "0 auto 1em" }}/> :
-                    null
-                }
-                {
-                  this.props.user.hasGottenUser && this.state.user ?
-                    <AnnotatedList data={[
-                      { label: "full name", text: this.state.user.name.full },
-                      { 
-                        label: "dob", 
-                        text: this.state.user.dob ? moment(this.state.user.dob).format("MM-DD-Y") : "no dob" 
-                      },
-                      { label: "gender", text: this.state.user.gender || "no gender provided" }
-                    ]} /> :
-                    <LoadingText options={{
-                      class: "block__lines",
-                      bg: "transparent",
-                      height: "10px",
-                      lines: [
-                        { color: "rgba(255,101,97,0.2)", width: "80%" },
-                        { color: "rgba(255,101,97,0.4)", width: "70%" },
-                        { color: "rgba(255,101,97,0.2)", width: "80%" },
-                        { color: "rgba(255,101,97,0.4)", width: "90%" },
-                        { color: "rgba(255,101,97,0.4)", width: "70%" },
-                        { color: "rgba(255,101,97,0.2)", width: "80%" }
-                      ]
-                    }} />
-                }
-                {
-                  this.props.user.hasGottenUser && this.state.user
-                    && this.state.editingPersonal ?
-                    <EditUserPersonal user={this.state.user}
-                      doClose={() => this.setState({ editingPersonal: false })}
-                      doSubmit={this.handleUserPersonalEdit} /> :
-                    null
-                }
-              </div>
+            {
+              this.props.student.hasGotten && this.state.student ?
+                <AnnotatedList data={[
+                  { label: "high school", text: this.state.student.highSchool || "no high school provided" },
+                  { label: "university", text: this.state.student.university || "no university provided" },
+                  { label: "major", text: this.state.student.major || "no major provided" },
+                  { label: "minor", text: this.state.student.minor || "no minor provided" }
+                ]} /> :
+                <LoadingText options={{
+                  class: "block__lines",
+                  bg: "transparent",
+                  height: "10px",
+                  lines: [
+                    { color: "rgba(255,101,97,0.2)", width: "80%" },
+                    { color: "rgba(255,101,97,0.4)", width: "70%" }
+                  ]
+                }} />
+            }
+            {
+              this.props.student.hasGotten && this.state.student 
+              && this.state.editingEducation ?
+                <EditStudentEducation student={this.state.student}
+                  doClose={() => this.setState({ editingEducation: false })}
+                  doSubmit={this.handleStudentEducationEdit} /> :
+                null
+            }
+          </div>
+        </div>
+        <div className="user__section_right">
+          <div className="user__education_meta">
+            <h5>Meta</h5>
+            {
+              this.props.student.hasGotten && this.state.student ?
+                <AnnotatedList data={[
+                  { label: "enrollment year", text: this.state.student.enrollmentYear || "no enrollment year provided" },
+                  { label: "graduation year", text: this.state.student.graduationYear || "no graduation year provided" },
+                  { 
+                    label: "graduated?", 
+                    text: this.state.student.hasGraduated ? "yes" : "no" 
+                  }
+                ]} /> :
+                <LoadingText options={{
+                  class: "block__lines",
+                  bg: "transparent",
+                  height: "10px",
+                  lines: [
+                    { color: "rgba(255,101,97,0.2)", width: "80%" },
+                    { color: "rgba(255,101,97,0.4)", width: "70%" }
+                  ]
+                }} />
+            }
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  getProfilePictureSection = () => {
+    return (
+      <section className="user__section profile_picture__section">
+        {
+          this.props.user.hasGottenUser && this.state.user ?
+            <PageMeta more={
+              <title>Profile Picture | {this.state.user.name.full} | User | Dashboard | Passport to College</title>
+            } /> : null
+        }
+        {
+          (this.props.picture.hasGottenByUid || this.props.user.hasGottenUser) &&
+          (this.state.profilePicture || (this.state.user && this.state.user.photo)) ?
+            <div className="user__profile_picture_container">
+              <img src={this.state.profilePicture || this.state.user.photo} alt="User Avatar" />
+            </div> :
+            this.props.picture.hasFailedByUid || (this.state.user && !this.state.user.hasProfilePicture) ?
+              <p>No profile picture</p> :
+              <Loader />
+        }
+        <DropUploader handleAvatarChange={this.updateProfilePicture} />
+      </section>
+    );
+  }
+
+  getPersonalSection = () => {
+    return (
+      <section className="user__section personal__section">
+        <Button solid type="button" text="edit"
+          doClick={() => this.setState({ editingPersonal: true })}
+          styles={{
+            position: "absolute",
+            right: "0",
+            top: "2em",
+            backgroundColor: "rgb(147,166,176)"
+          }} />
+        <div className="user__section_left">
+          <div className="user__personal">
+            {
+              this.props.user.hasGottenUser && this.state.user ?
+                <InitialsAvatar initials={`${this.state.user.name.first[0]}${this.state.user.name.last[0]}`} 
+                styles={{ display: "block", margin: "0 auto 1em" }}/> :
+                null
+            }
+            {
+              this.props.user.hasGottenUser && this.state.user ?
+                <AnnotatedList data={[
+                  { label: "full name", text: this.state.user.name.full },
+                  { 
+                    label: "dob", 
+                    text: this.state.user.dob ? moment(this.state.user.dob).format("MM-DD-Y") : "no dob" 
+                  },
+                  { label: "gender", text: this.state.user.gender || "no gender provided" }
+                ]} /> :
+                <LoadingText options={{
+                  class: "block__lines",
+                  bg: "transparent",
+                  height: "10px",
+                  lines: [
+                    { color: "rgba(255,101,97,0.2)", width: "80%" },
+                    { color: "rgba(255,101,97,0.4)", width: "70%" },
+                    { color: "rgba(255,101,97,0.2)", width: "80%" },
+                    { color: "rgba(255,101,97,0.4)", width: "90%" },
+                    { color: "rgba(255,101,97,0.4)", width: "70%" },
+                    { color: "rgba(255,101,97,0.2)", width: "80%" }
+                  ]
+                }} />
+            }
+            {
+              this.props.user.hasGottenUser && this.state.user
+                && this.state.editingPersonal ?
+                <EditUserPersonal user={this.state.user}
+                  doClose={() => this.setState({ editingPersonal: false })}
+                  doSubmit={this.handleUserPersonalEdit} /> :
+                null
+            }
+          </div>
+        </div>
+        <div className="user__section_right">
+            <div className="user__contact">
+              <h2>Contact Information</h2>
+              {
+                this.props.user.hasGottenUser && this.state.user ?
+                  <AnnotatedList data={[
+                    { label: "email", text: this.state.user.email },
+                    { label: "phone", text: this.state.user.phone || "no phone number" },
+                    { 
+                      label: "country", 
+                      text: this.state.user.address ? this.state.user.address.country : "no country" 
+                    }
+                  ]} /> :
+                  <LoadingText options={{
+                    class: "block__lines",
+                    bg: "transparent",
+                    height: "10px",
+                    lines: [
+                      { color: "rgba(255,101,97,0.2)", width: "80%" },
+                      { color: "rgba(255,101,97,0.4)", width: "70%" },
+                      { color: "rgba(255,101,97,0.2)", width: "80%" },
+                      { color: "rgba(255,101,97,0.4)", width: "90%" },
+                      { color: "rgba(255,101,97,0.4)", width: "70%" },
+                      { color: "rgba(255,101,97,0.2)", width: "80%" }
+                    ]
+                  }} />
+              }
             </div>
-            <div className="user__section_right">
-                <div className="user__contact">
-                  <h2>Contact Information</h2>
+        </div>
+      </section>
+    );
+  }
+
+  getSettingsSection = () => {
+    return (
+      <section className="user__section settings__section">
+        {
+          this.props.user.hasGottenUser && this.state.user ?
+            <PageMeta more={
+              <title>Settings | {this.state.user.name.full} | User | Dashboard | Passport to College</title>
+            } /> : null
+        }
+        <div className="user__section_left">
+          <div className="settings__roles">
+            <h2>User Roles</h2>
+            <div className="settings__item">
+              <p>Admin</p>
+              {
+                this.props.user.hasGottenUser && this.state.user ?
+                  <Toggler state={this.state.user.isAdmin ? "yes" : "no"} 
+                    doClick={this.toggleAdminSetting} /> :
+                  <Loader width="16px" styles={{
+                    margin: "0"
+                  }} />
+              }
+            </div>
+            <div className="settings__item">
+              <p>Staff</p>
+              {
+                this.props.user.hasGottenUser && this.state.user ?
+                  <Toggler state={this.state.user.isStaff ? "yes" : "no"}
+                    doClick={this.toggleStaffSetting} /> :
+                  <Loader width="16px" styles={{
+                    margin: "0"
+                  }} />
+              }
+            </div>
+            <div className="settings__item">
+              <p>Role</p>
+              {
+                this.props.user.hasGottenUser && this.state.user &&
+                this.state.user.isStaff ?
+                  this.state.user.role ?
+                    <span>
+                      <p>{this.state.user.role}</p>
+                      <span className="settings__edit_role"
+                        onClick={() => this.setState({ editingRole: true })}>edit</span>
+                    </span> :
+                    <span>
+                      <p>no role yet</p>
+                      <span className="settings__add_role"
+                        onClick={() => this.setState({ addingRole: true })}>add</span>
+                    </span>
+                  :
+                  null
+              }
+              {
+                this.props.user.hasGottenUser && this.state.user &&
+                  !this.state.user.isStaff ?
+                  <p>user is not on staff</p>:
+                  null
+              }
+              {
+                this.state.addingRole ?
+                  <AddRole doSubmit={this.handleAddRoleSubmit} 
+                    doClose={() => this.setState({ addingRole: false })} /> :
+                  null
+              }
+              {
+                this.props.user.hasGottenUser && this.state.user &&
+                this.state.user.role && this.state.editingRole ?
+                  <AddRole doSubmit={this.handleAddRoleSubmit}
+                    doClose={() => this.setState({ editingRole: false })} 
+                    role={this.state.user.role} /> :
+                  null
+              }
+            </div>
+          </div>
+          <div className="settings__account">
+            <h2>Account</h2>
+            <div className="settings__item">
+              <p>Send password reset email</p>
+              {
+                this.props.user.hasGottenUser && this.state.user ?
+                  <Button type="button" solid text="send"
+                    doClick={this.sendPasswordResetEmail}
+                    styles={{
+                      backgroundColor: "rgb(147,166,176)"
+                    }} /> :
+                  null
+              }
+            </div>
+          </div>
+        </div>
+        <div className="user__section_right">
+          <div className="settings__students">
+            <h2>Students</h2>
+            {
+              this.props.user.hasGottenUser && this.state.user &&
+              this.state.user.isStudent ?
+              <span>
+                <div className="settings__item">
+                  <p>Graduated</p>
+                    {
+                      this.props.student.hasGotten && this.state.student ?
+                        <Toggler state={this.state.student.hasGraduated ? "yes" : "no"}
+                        doClick={this.toggleGraduated} /> :
+                        <Loader width="16px" styles={{
+                          margin: "0"
+                        }}/>
+                    }
+                </div>
+                <div className="settings__item">
+                  <p>Show on website</p>
                   {
-                    this.props.user.hasGottenUser && this.state.user ?
-                      <AnnotatedList data={[
-                        { label: "email", text: this.state.user.email },
-                        { label: "phone", text: this.state.user.phone || "no phone number" },
-                        { 
-                          label: "country", 
-                          text: this.state.user.address ? this.state.user.address.country : "no country" 
-                        }
-                      ]} /> :
-                      <LoadingText options={{
-                        class: "block__lines",
-                        bg: "transparent",
-                        height: "10px",
-                        lines: [
-                          { color: "rgba(255,101,97,0.2)", width: "80%" },
-                          { color: "rgba(255,101,97,0.4)", width: "70%" },
-                          { color: "rgba(255,101,97,0.2)", width: "80%" },
-                          { color: "rgba(255,101,97,0.4)", width: "90%" },
-                          { color: "rgba(255,101,97,0.4)", width: "70%" },
-                          { color: "rgba(255,101,97,0.2)", width: "80%" }
-                        ]
-                      }} />
+                    this.props.student.hasGotten && this.state.student ?
+                    <Toggler state={this.state.student.showOnSite ? "yes" : "no"}
+                      doClick={this.toggleShowOnSite} />:
+                    <Loader width="16px" styles={{
+                      margin: "0"
+                    }}/>
                   }
                 </div>
-            </div>
-          </section>
-        )
+              </span> :
+              null
+            }
+            {
+              this.props.user.hasGottenUser && this.state.user &&
+                !this.state.user.isStudent ?
+                <div className="user__not_student">
+                  <h4>user is no a student</h4>
+                </div> :
+                null
+            }
+          </div>
+          <div className="settings__delete_user">
+            <h2>Remove User</h2>
+            {
+              this.props.user.hasGottenUser && this.state.user ?
+                <Button solid text={`delete ${this.state.user.name.full}`}
+                  doClick={() => this.setState({ deletingUser: true })} 
+                  styles={{
+                    backgroundColor: "rgb(147,166,176)"
+                  }} /> :
+                null
+            }
+            {
+              this.props.user.hasGottenUser && this.state.user &&
+              this.state.deletingUser ?
+                <DeleteUser name={this.state.user.name.full}
+                  doClose={() => this.setState({ deletingUser: false })}
+                  doSubmit={this.handleUserDelete} /> :
+                null
+            }
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  getFeaturesSection = () => {
+    if (this.props.user.hasGottenUser && this.state.user &&
+      !this.state.user.isStudent) {
+      return (
+        <section className="user__section features__section">
+          <PageMeta more={
+            <title>Features | {this.state.user.name.full} | User | Dashboard | Passport to College</title>
+          } />
+          <div className="user__not_student">
+            <h4>user is no a student</h4>
+          </div>
+        </section>
+      )
     }
+    
+    if (this.props.student.hasGotten) {
+      return (
+        <section className="user__section features__section">
+          {
+            this.props.user.hasGottenUser && this.state.user ?
+              <PageMeta more={
+                <title>Features | {this.state.user.name.full} | User | Dashboard | Passport to College</title>
+              } /> : null
+          }
+          <Button text={this.state.editingFeature || this.state.creatingFeature ? "- cancel" : "+ feature student"}
+            doClick={this.toggleFeatureStudent}
+            solid
+            styles={{
+              position: "absolute",
+              right: "0",
+              backgroundColor: "rgb(147,166,176)"
+            }} />
+          <div className="features__section_content">
+            {
+              this.props.features.hasFailed && this.state.noFeatures ?
+                <div className="user__no_features">
+                  <h4>student has not been featured</h4>
+                </div> :
+                null
+            }
+            {
+              this.state.editingFeature ?
+                <FeatureStudent editing student={this.state.student}
+                  feature={this.state.featureBeingEdited}
+                  doClose={() => this.setState({ editingFeature: false })} /> :
+                null
+            }
+            {
+              this.state.creatingFeature ?
+                <FeatureStudent student={this.state.student}
+                  doClose={() => this.setState({ creatingFeature: false })} /> :
+                null
+            }
+            {
+              this.props.features.hasGotten && this.state.features ?
+                <FeatureList actions features={this.state.features} 
+                  doDelete={this.handleFeatureDelete} 
+                  doEdit={this.handleFeatureEdit} /> :
+                null
+            }
+          </div>
+        </section>
+      )
+    } else {
+      return (
+        <Loader styles={{
+          marginTop: "5em"
+        }} />
+      )
+    }
+  }
+
+  getAccomplishmentsSection = () => {
+    if (this.props.user.hasGottenUser && this.state.user &&
+      !this.state.user.isStudent) {
+      return (
+        <section className="user__section accomplishments__section">
+          <PageMeta more={
+            <title>Accomplishments | {this.state.user.name.full} | User | Dashboard | Passport to College</title>
+          } />
+          <div className="user__not_student">
+            <h4>user is no a student</h4>
+          </div>
+        </section>
+      )
+    }
+
+    if (this.props.student.hasGotten) {
+      return (
+        <section className="user__section accomplishments__section">
+          {
+            this.props.user.hasGottenUser && this.state.user ?
+              <PageMeta more={
+                <title>Accomplishments | {this.state.user.name.full} | User | Dashboard | Passport to College</title>
+              } /> : null
+          }
+          <Button text={this.state.addingAccomplishment || this.state.editingAccomplishment ? "- cancel" : "+ accomplishment"} 
+            solid 
+            styles={{
+              position: "absolute",
+              right: "0",
+              backgroundColor: "rgb(147,166,176)"
+            }} 
+            doClick={this.toggleAddAccomplishment} />
+          <div className="accomplishments__section_content">
+            {
+              this.props.student.hasGotten && this.state.student
+              && !this.state.student.accomplishments ?
+                <div className="user__no_accomplishments">
+                  <h4>no accomplishments listed yet</h4>
+                </div> :
+              null
+            }
+            {
+              this.state.addingAccomplishment && this.props.student.hasGotten
+                && this.state.student ?
+                <AddAccomplishment student={this.state.student}
+                  doClose={() => this.setState({ addingAccomplishment: false })} /> :
+                  this.state.editingAccomplishment && this.props.student.hasGotten ?
+                  <AddAccomplishment edit={true} student={this.state.student}
+                    slug={this.state.editingSlug}
+                    accomplishment={this.state.accomplishment}
+                    doClose={() => 
+                      this.setState({ 
+                        editingAccomplishment: false,
+                        editingSlug: "",
+                        accomplishment: {} 
+                      })
+                    } /> :
+                  null
+            }
+            {
+              this.props.student.hasGotten && this.state.student
+                && this.state.student.accomplishments ?
+                <div className="user__accomplishments">
+                  <AccomplishmentsList actions
+                    accomplishments={this.state.student.accomplishments} 
+                    doDelete={this.handleAccomplishmentDelete} 
+                    doEdit={this.handleAccomplishmentEdit} />
+                </div> :
+                null
+            }
+          </div>
+        </section>
+      )
+    } else {
+      return (
+        <Loader styles={{
+          marginTop: "5em"
+        }}/>
+      )
+    }
+  }
+
+  getBioSection = () => {
+    return (
+      <section className="user__section bio__section">
+        {
+          this.props.user.hasGottenUser && this.state.user ?
+            <PageMeta more={
+              <title>Bio | {this.state.user.name.full} | User | Dashboard | Passport to College</title>
+            } /> : null
+        }
+        {
+          this.props.student.hasGotten && this.state.student
+          && this.state.student.bio && this.state.student.bio.blocks ?
+            <WYSIWYGEditor content={this.state.student.bio} saveButton
+              handleSave={this.handleBioSave}
+              editorStyles={{
+                margin: "0 auto",
+                maxWidth: "100%",
+                padding: "2em 1.875em",
+                backgroundColor: "#FFF",
+                border: "none"
+              }} 
+              controlStyles={{
+                maxWidth: "100%",
+                position: "static",
+                marginBottom: "0"
+              }} />
+              :
+            <WYSIWYGEditor saveButton
+              handleSave={this.handleBioSave}
+              editorStyles={{
+                margin: "0 auto",
+                maxWidth: "100%",
+                padding: "2em 1.875em",
+                backgroundColor: "#FFF",
+                border: "none"
+              }}
+              controlStyles={{
+                maxWidth: "100%",
+                position: "static",
+                marginBottom: "0"
+              }} />
+        }
+      </section>
+    );
   }
 
   toggleAddAccomplishment = () => {

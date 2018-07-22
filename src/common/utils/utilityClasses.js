@@ -338,7 +338,6 @@ export class SSID {
 }
 
 export class Comment {
-  // TODO: search messages for bad words and censor
   constructor(user = {}, content = {}, post) {
     this.user = user;
     this.message = {
@@ -496,5 +495,55 @@ export class Interval {
     this.time = time;
 
     return this.restart();
+  }
+}
+
+export class Post {
+  constructor(postOrTitle = "", author = "", excerpt = "", full = {}, meta = {}) {
+    if ("object" === typeof postOrTitle) {
+      Object.assign(this, postOrTitle);
+    }
+
+    if("string" === typeof postOrTitle) {
+      this.title = postOrTitle;
+      this.author = author;
+      this.excerpt = excerpt;
+      this.full = full;
+      
+      Object.assign(this, meta);
+    }
+
+    this.createdAt = this.createdAt || new Date().getTime();
+    this.state = this.state || {
+      draft: true,
+      published: false,
+      archived: false
+    }
+    this.conversations = this.conversations || 0;
+    this.category = this.category || {};
+    this.likes = this.likes || {};
+    this.isFeature = !!this.isFeature;
+    this.isAccomplishment = !!this.isAccomplishment;
+    
+    if (this.isAccomplishment || this.isFeature)
+      this.featuredStudent = this.featuredStudent || "";
+  }
+
+  get data() {
+    return this.getData();
+  }
+
+  getData() {
+    const {
+      title, author,excerpt, full,
+      createdAt, category, state, conversations,
+      likes, isAccomplishment, isFeature
+    } = this;
+
+    return {
+      title, author, excerpt, full,
+      createdAt, category, state, conversations,
+      likes, isAccomplishment, isFeature
+    }
   }
 }
