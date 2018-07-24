@@ -190,7 +190,7 @@ export const updatedCategoryPosts = updatedCategory => {
   };
 };
 
-export const doCategoryIncrement = (slug = "", operation = "inc") => {
+export const doCategoryPostsUpdate = (slug = "", operation = "inc") => {
   return dispatch => {
     if (!slug.length)
       return dispatch(updateCategoryPostsFailed({ message: "no slug provided" }, ""));

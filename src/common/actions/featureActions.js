@@ -65,22 +65,23 @@ export const featureCreationFailed = (error, data) => {
   };
 };
 
-export const doCreateFeature = (data, options) => {
+export const doCreateFeature = (feature, options) => {
   return dispatch => {
-    dispatch(featureCreationInitiated(data));
+    dispatch(featureCreationInitiated(feature));
 
     options = options || {};
 
-    db.collection("features")
-      .add(data)
+    db.collection("posts")
+      .doc(feature.id)
+      .set(feature)
       .then(() => {
-        dispatch(featureCreated(data));
+        dispatch(featureCreated(feature));
 
         if (options.refresh)
-          return dispatch(featuresActions.doGetFeaturesByUser(data.student));
+          return dispatch(featuresActions.doGetFeaturesByUser(feature.student));
       })
       .catch(error => {
-        dispatch(featureCreationFailed(error, data));
+        dispatch(featureCreationFailed(error, feature));
       })
   }
 }

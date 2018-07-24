@@ -10,6 +10,8 @@ import { verifyImageDimensions } from "../../utils";
 import { auth } from "../../utils/firebase";
 import { Feature } from "../../utils/utilityClasses";
 import * as featureActions from "../../actions/featureActions";
+import * as postActions from "../../actions/postActions";
+import * as postCategoryActions from "../../actions/postCategoryActions";
 
 import WYSIWYGEditor from "../../components/Editor";
 import DropUploader from "../../components/DropUploader";
@@ -47,6 +49,8 @@ class FeatureStudent extends Component {
     doClose: propTypes.func,
     editing: propTypes.bool,
     feature: propTypes.object,
+    postActions: propTypes.object,
+    postCategoryActions: propTypes.object
   }
 
   static defaultProps = {
@@ -213,6 +217,21 @@ class FeatureStudent extends Component {
 
     if (!newFeature.full)
       return this.setDetailsErrorNotification();
+
+    if (this.state.newFeature.hero) {
+      newFeature.hasHero = true;
+
+      this.props.postActions.doHeroUpload(
+        this.state.newFeature.hero,
+        newFeature.id
+      );
+    }
+
+    this.props.postCategoryActions.doCategoryPostsUpdate("student_features");
+
+    this.props.featureActions.doCreateFeature(newFeature, {
+      refresh: true
+    });
   }
 
   setDetailsErrorNotification = () => {
@@ -254,7 +273,9 @@ const mapStateToProps = () => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    featureActions: bindActionCreators(featureActions, dispatch)
+    featureActions: bindActionCreators(featureActions, dispatch),
+    postActions: bindActionCreators(postActions, dispatch),
+    postCategoryActions: bindActionCreators(postCategoryActions, dispatch)
   };
 };
 

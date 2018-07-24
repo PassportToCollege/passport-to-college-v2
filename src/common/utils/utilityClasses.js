@@ -1,5 +1,7 @@
 import Cookies from "universal-cookie";
 import moment from "moment";
+import { uid } from "rand-token";
+
 import BadWords from "./badwords.en";
 import { convertBlocksToText, isEmail } from ".";
 import { auth } from "./firebase";
@@ -514,6 +516,8 @@ export class Post {
       Object.assign(this, meta);
     }
 
+    this.id = this.id || uid(20);
+    this.hasHero = !!this.hasHero;
     this.createdAt = this.createdAt || new Date().getTime();
     this.state = this.state || {
       draft: true,
@@ -531,16 +535,24 @@ export class Post {
 
   getData() {
     const {
-      title, author,excerpt, full,
+      id, title, author,excerpt, full,
       createdAt, category, state, conversations,
       likes
     } = this;
 
     return {
-      title, author, excerpt, full,
+      id, title, author, excerpt, full,
       createdAt, category, state, conversations,
       likes
     };
+  }
+
+  set hasHero(hasHero = true) {
+    if ("boolean" === typeof hasHero) {
+      this.hasHero = hasHero;
+    } else {
+      console.log("boolean value expected");
+    }
   }
 }
 
@@ -561,13 +573,13 @@ export class Feature extends Post {
 
   getData() {
     const {
-      title, author,excerpt, full,
+      id, title, author,excerpt, full,
       createdAt, category, state, conversations,
       likes, isFeature, student, expiration
     } = this;
 
     return {
-      title, author, excerpt, full,
+      id, title, author, excerpt, full,
       createdAt, category, state, conversations,
       likes, isFeature, student, expiration
     };
@@ -589,13 +601,13 @@ export class Accomplishment extends Post {
 
   getData() {
     const {
-      title, author,excerpt, full,
+      id, title, author,excerpt, full,
       createdAt, category, state, conversations,
       likes, isAccomplishment, student
     } = this;
 
     return {
-      title, author, excerpt, full,
+      id, title, author, excerpt, full,
       createdAt, category, state, conversations,
       likes, isAccomplishment, student
     };
