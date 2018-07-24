@@ -11,7 +11,10 @@ import {
   CATEGORIES_GET_FAILED,
   CATEGORY_UPDATE_INITIATED,
   CATEGORY_UPDATE_FAILED,
-  CATEGORY_UPDATED
+  CATEGORY_UPDATED,
+  UPDATE_CATEGORY_POSTS_INITIATED,
+  UPDATE_CATEGORY_POSTS_FAILED,
+  CATEGORY_POSTS_UPDATED
 } from "../actions/actionTypes";
 
 const postCategories = (state = initialState.postCategories, action) => {
@@ -110,6 +113,29 @@ const postCategories = (state = initialState.postCategories, action) => {
         hasUpdated: true,
         updateFailed: false,
         slug: action.slug
+      });
+    case UPDATE_CATEGORY_POSTS_INITIATED:
+      return Object.assign({}, state, {
+        updatingCategoryPosts: true,
+        updatedCategoryPosts: false,
+        failedToUpdateCategoryPosts: false,
+        slug: action.slug
+      });
+    case UPDATE_CATEGORY_POSTS_FAILED:
+      return Object.assign({}, state, {
+        updatingCategoryPosts: false,
+        updatedCategoryPosts: false,
+        failedToUpdateCategoryPosts: true,
+        slug: action.slug,
+        error: action.error
+      });
+    case CATEGORY_POSTS_UPDATED:
+      return Object.assign({}, state, {
+        updatingCategoryPosts: false,
+        updatedCategoryPosts: true,
+        failedToUpdateCategoryPosts: false,
+        slug: null,
+        uCategory: action.updatedCategory
       });
     default:
       return state;

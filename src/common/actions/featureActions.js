@@ -71,9 +71,6 @@ export const doCreateFeature = (data, options) => {
 
     options = options || {};
 
-    // make feature active
-    data.isActive = true;
-
     db.collection("features")
       .add(data)
       .then(() => {

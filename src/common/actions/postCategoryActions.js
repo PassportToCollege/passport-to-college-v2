@@ -168,3 +168,59 @@ export const doCategoryUpdate = (slug, data = {}, options = {}) => {
       });
   };
 };
+
+export const updateCategoryPostsInitiated = slug => {
+  return {
+    type: types.UPDATE_CATEGORY_POSTS_INITIATED,
+    slug
+  };
+};
+
+export const updateCategoryPostsFailed = (error, slug) => {
+  return {
+    type: types.UPDATE_CATEGORY_POSTS_FAILED,
+    slug, error
+  };
+};
+
+export const updatedCategoryPosts = updatedCategory => {
+  return {
+    type: types.CATEGORY_POSTS_UPDATED,
+    updatedCategory
+  };
+};
+
+export const doCategoryIncrement = (slug = "", operation = "inc") => {
+  return dispatch => {
+    if (!slug.length)
+      return dispatch(updateCategoryPostsFailed({ message: "no slug provided" }, ""));
+
+    dispatch(updateCategoryPostsInitiated(slug));
+
+    const categoryRef = db.collection("post-categories").doc(slug);
+    let updatedCategory;
+
+    return db.runTransaction(transaction => {
+      return transaction.get(categoryRef)
+        .then(snapshot => {
+          let category = snapshot.data();
+
+          if (operation === "inc") {
+            category.posts += 1;
+          } else {
+            category.posts -= 1;
+          }
+
+          updatedCategory = category;
+
+          transaction.update(categoryRef, { posts: category.posts });
+        });
+    })
+    .then(() => {
+      dispatch(updatedCategoryPosts(updatedCategory));
+    })
+    .catch(error => {
+      dispatch(updateCategoryPostsFailed(error, slug));
+    });
+  };
+};
