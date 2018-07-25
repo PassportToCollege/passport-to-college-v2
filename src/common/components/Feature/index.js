@@ -3,6 +3,8 @@ import "./Feature.css";
 import React, { Component } from "react";
 import propTypes from "prop-types";
 import moment from "moment";
+import { storage } from "../../utils/firebase";
+import { isBrowser } from "../../utils";
 
 import AnnotatedList from "../AnnotatedList";
 import IconButton from "../IconButton";
@@ -21,6 +23,17 @@ class Feature extends Component {
     this.featureStyles = {
       backgroundColor: "#FFF",
       padding: "1em"
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.feature.hasHero && isBrowser) {
+      storage.ref("posts/heros")
+        .child(`${this.props.feature.id}.png`)
+        .getDownloadURL()
+        .then(url => {
+          this.setState({ hero: url });
+        })
     }
   }
 

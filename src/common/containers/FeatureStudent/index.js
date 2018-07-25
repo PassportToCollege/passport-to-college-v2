@@ -235,7 +235,7 @@ class FeatureStudent extends Component {
       return this.setDetailsErrorNotification();
 
     if (this.state.newFeature.hero) {
-      newFeature.hasHero = true;
+      newFeature.hero = true;
 
       this.props.postActions.doHeroUpload(
         this.state.newFeature.hero,
