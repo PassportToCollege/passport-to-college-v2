@@ -157,10 +157,14 @@ class UserSection extends Component {
     }
 
     if (snapshot && snapshot.createdFeature) {
+      this.props.studentActions.doStudentUpdate(this.state.student.uid, {
+        isFeatured: true
+      });
+
       this.setState({
         hasNotification: true,
         notificationClosed: false,
-        notification: "Feature created successefully."
+        notification: "Feature created successefully. Use the edit button to review and publish the feature so it shows on the website."
       });
     }
   }
@@ -859,11 +863,14 @@ class UserSection extends Component {
   }
 
   handleFeatureDelete = feature => {
+    if (feature.isActive)
+      this.props.studentActions.doStudentUpdate(this.state.student.uid, { isFeatured: false });
+
     this.props.featureActions.doFeatureDelete(feature, { refresh: true });
   }
 
   handleFeatureEdit = feature => {
-    this.setState({ editingFeature: true, featureBeingEdited: feature });
+    this.props.history.push(`/admin/dashboard/posts/e/${feature.id}`);
   }
 
   toggleAdminSetting = () => {
@@ -940,6 +947,7 @@ class UserSection extends Component {
 
 UserSection.propTypes = {
   section: propTypes.string,
+  history: propTypes.object,
   userId: propTypes.string,
   user: propTypes.object,
   student: propTypes.object,

@@ -567,13 +567,15 @@ export class Feature extends Post {
     const {
       id, title, author,excerpt, full,
       createdAt, category, state, conversations,
-      likes, isFeature, student, expiration, hasHero
+      likes, isFeature, student, expiration, hasHero,
+      isActive
     } = this;
 
     return {
       id, title, author, excerpt, full,
       createdAt, category, state, conversations,
-      likes, isFeature, student, expiration, hasHero
+      likes, isFeature, student, expiration, hasHero,
+      isActive
     };
   }
 

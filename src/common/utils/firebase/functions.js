@@ -41,3 +41,24 @@ export const getPostHero = id => {
     }
   });
 }
+
+export const deletePostHero = id => {
+  return new Promise((resolve, reject) => {
+    if (!id.length)
+      return reject({ message: "no id provided" });
+
+    if (storage && isBrowser) {
+      storage.ref("posts/heros")
+        .child(`${id}.png`)
+        .delete()
+        .then(() => {
+          resolve({ message: "deleted file"});
+        })
+        .catch(error => {
+          reject(error);
+        })
+    } else {
+      reject({ message: "unsupported environment" });
+    }
+  });
+}

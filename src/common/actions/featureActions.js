@@ -1,6 +1,8 @@
 import { db } from "../utils/firebase";
+import { deletePostHero } from "../utils/firebase/functions";
 import * as types from "./actionTypes";
 import * as featuresActions from "./featuresActions";
+import { doCategoryPostsUpdate } from "./postCategoryActions";
 
 // GET actions
 export const featureGetInitiated = feature => {
@@ -158,10 +160,14 @@ export const doFeatureDelete = (feature, options) => {
 
     options = options || {};
 
-    return db.collection("features")
-      .doc(feature.fid)
+    return db.collection("posts")
+      .doc(feature.id)
       .delete()
       .then(() => {
+        if (feature.hasHero)
+          deletePostHero(feature.id);
+
+        dispatch(doCategoryPostsUpdate("student_features", "dec"));
         dispatch(featureDeleted(feature));
 
         if (options.refresh)
