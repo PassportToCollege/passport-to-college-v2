@@ -26,9 +26,10 @@ export const doGetFeaturesByUser = student => {
   return dispatch => {
     dispatch(featuresGetInitiated());
 
-    db.collection("features")
+    db.collection("posts")
+      .where("isFeature", "==", true)
       .where("student", "==", student)
-      .orderBy("expDate", "desc")
+      .orderBy("expiration", "desc")
       .get()
       .then(snapshots => {
         if (snapshots.empty)
@@ -36,10 +37,7 @@ export const doGetFeaturesByUser = student => {
         
         let data = [];
         snapshots.forEach(snapshot => {
-          let docData = snapshot.data();
-          docData.fid = snapshot.id;
-
-          data.push(docData);
+          data.push(snapshot.data());
         });
 
         dispatch(featuresGetDone(data));
@@ -54,7 +52,7 @@ export const doGetActiveFeatures = () => {
   return dispatch => {
     dispatch(featuresGetInitiated());
 
-    db.collection("features")
+    db.collection("posts")
       .where("isActive", "==", true)
       .orderBy("expDate", "desc")
       .get()

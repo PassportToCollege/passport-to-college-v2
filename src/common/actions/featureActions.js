@@ -115,7 +115,7 @@ export const doFeatureUpdate = (feature, data, options) => {
 
     options = options || {};
 
-    db.collection("features")
+    db.collection("posts")
       .doc(feature)
       .update(data)
       .then(() => {

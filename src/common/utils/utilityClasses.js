@@ -546,14 +546,6 @@ export class Post {
       likes
     };
   }
-
-  set hasHero(hasHero = true) {
-    if ("boolean" === typeof hasHero) {
-      this.hasHero = hasHero;
-    } else {
-      console.log("boolean value expected");
-    }
-  }
 }
 
 export class Feature extends Post {
@@ -561,7 +553,7 @@ export class Feature extends Post {
     super(post);
 
     this.isFeature = true;
-    this.category = { features: true };
+    this.category = { student_features: true };
     this.isActive = !!active;
     this.student = student;
     this.expiration = expiration;
@@ -591,7 +583,7 @@ export class Accomplishment extends Post {
     super(post);
 
     this.isAccomplishment = true;
-    this.category = { "student accomplishments": true };
+    this.category = { student_accomplishments: true };
     this.student = student;
   }
 

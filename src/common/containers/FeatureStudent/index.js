@@ -57,6 +57,22 @@ class FeatureStudent extends Component {
     editing: false
   }
 
+  getSnapshotBeforeUpdate(props) {
+    if (props.feature.isCreating && this.props.feature.hasCreated) {
+      return {
+        createdFeature: true
+      };
+    }
+
+    return null;
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (snapshot && snapshot.createdFeature) {
+      this.handleModalClose();
+    }
+  }
+
   render() {
     return (
       <Modal classes={["modal__feature_student"]}
@@ -64,7 +80,7 @@ class FeatureStudent extends Component {
         <main className="feature_student">
           <section className="feature_student__section">
             <h6>Note:</h6>
-            <p>A student feature is a special type of post/story. It will be rendered as a story on the website under the <i>Features</i> category and will always be available for reading even after expiration. The expiration date determines how long the student will appear on the websites homepage under the <i>Featured Students</i> section.</p>
+            <p>A student feature is a special type of post/story. It will be rendered as a story on the website under the <i>Features</i> category and will always be available for reading even after expiration. The expiration date determines how long the student will appear on the website&apos;s homepage under the <i>Featured Students</i> section.</p>
           </section>
           <section className="feature_student__section">
             <h5 className="section_heading">1. Student</h5>
@@ -210,7 +226,7 @@ class FeatureStudent extends Component {
       author: auth.currentUser.uid,
       excerpt: this.state.newFeature.excerpt,
       full: this.state.newFeature.details
-    }, this.state.student.uid, true, this.state.newFeature.expDate);
+    }, true, this.state.student.uid, this.state.newFeature.expDate);
 
     if (!newFeature.excerpt)
       return this.setExcerptErrorNotification();
@@ -229,7 +245,7 @@ class FeatureStudent extends Component {
 
     this.props.postCategoryActions.doCategoryPostsUpdate("student_features");
 
-    this.props.featureActions.doCreateFeature(newFeature, {
+    this.props.featureActions.doCreateFeature(newFeature.data, {
       refresh: true
     });
   }
@@ -267,8 +283,12 @@ class FeatureStudent extends Component {
   }
 }
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = state => {
+  return {
+    feature: state.feature,
+    post: state.post,
+    postCategories: state.postCategories
+  };
 };
 
 const mapDispatchToProps = dispatch => {
