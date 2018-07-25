@@ -1,4 +1,4 @@
-import { db, storage } from "../utils/firebase";
+import { db } from "../utils/firebase";
 import * as types from "./actionTypes";
 
 // GET actions
@@ -27,6 +27,7 @@ export const doGetFeaturesByUser = student => {
     dispatch(featuresGetInitiated());
 
     db.collection("posts")
+      .where("state.puplished", "==", true)
       .where("isFeature", "==", true)
       .where("student", "==", student)
       .orderBy("expiration", "desc")
@@ -54,7 +55,7 @@ export const doGetActiveFeatures = () => {
 
     db.collection("posts")
       .where("isActive", "==", true)
-      .orderBy("expDate", "desc")
+      .orderBy("expiration", "desc")
       .get()
       .then(snapshots => {
         if (snapshots.empty)
@@ -62,14 +63,12 @@ export const doGetActiveFeatures = () => {
 
         let features = [];
         let studentPromises = [];
-        let profilePicPromises = [];
 
         snapshots.forEach(snapshot => {
           let feature = snapshot.data();
           feature.id = snapshot.id;
 
           studentPromises.push(db.collection("students").doc(feature.student).get());
-          profilePicPromises.push(storage.ref("users/profile_images").child(`${feature.student}.png`).getDownloadURL());
           features.push(feature);
         });
 
@@ -82,17 +81,8 @@ export const doGetActiveFeatures = () => {
 
               feature.student = feature.student.data();
             }
-
-            Promise.all(profilePicPromises)
-              .then(urls => {
-                for (let feature of features) {
-                  feature.profilePic = urls.find(url => {
-                    return url.indexOf(feature.student.uid) > -1;
-                  });
-                }
-                
-                dispatch(featuresGetDone(features));
-              });
+            
+            dispatch(featuresGetDone(features));
           });
       })
       .catch(error => {

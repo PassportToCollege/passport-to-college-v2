@@ -3,10 +3,19 @@ import "./InfoCard.css";
 import React, { Component } from "react";
 import propTypes from "prop-types";
 import { Link } from "react-router-dom";
+import { getPostHero } from "../../utils/firebase/functions";
 
 import LinkButton from "../LinkButton";
 
 class InfoCard extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      bgImage: props.bgImage || ""
+    };
+  }
+
   static propTypes = {
     bgImage: propTypes.string,
     bgColor: propTypes.string,
@@ -17,11 +26,25 @@ class InfoCard extends Component {
     linkButton: propTypes.object,
     feature: propTypes.bool,
     university: propTypes.string,
-    target: propTypes.string
+    target: propTypes.string,
+    featureData: propTypes.object
   }
 
   static defaultProps = {
     feature: false
+  }
+
+  componentDidMount() {
+    if (this.props.feature && !this.props.bgImage &&
+      this.props.featureData) {
+        getPostHero(this.props.featureData.id)
+          .then(url => {
+            this.setState({ bgImage: url });
+          })
+          .catch(error => {
+            console.log(error);
+          })
+    }
   }
 
   render() {
@@ -38,7 +61,7 @@ class InfoCard extends Component {
       <div className={`info_card${this.props.feature ? " info_card__feature" : ""}`} 
         style={{
           backgroundColor: this.props.bgColor,
-          backgroundImage: this.props.bgImage ? `url("${this.props.bgImage}")` : ""
+          backgroundImage: `url("${this.state.bgImage}")`
         }}>
         {
           this.props.bgOverlay ?
@@ -52,8 +75,8 @@ class InfoCard extends Component {
               <p>{this.props.content}</p>
             </span> :
             <Link to={this.props.target || "/"} className="info_card__feature_content">
-              <h3>{this.props.title}</h3>
               <p>{this.props.university}</p>
+              <h3>{this.props.title}</h3>
             </Link>
         }
         {

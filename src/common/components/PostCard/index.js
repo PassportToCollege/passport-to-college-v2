@@ -22,7 +22,7 @@ const PostCard = ({ post, cardStyles, isDashboard, full }) => {
                 if (post.category[category] === true)
                   return ( 
                     <span key={category} className="post_card__category">
-                      {category.split("-").join(" ").trim()}
+                      {category.split("_").join(" ").trim()}
                     </span> 
                   )
                 
@@ -30,7 +30,7 @@ const PostCard = ({ post, cardStyles, isDashboard, full }) => {
               })
             }
           </section>
-          <h2>{post.title}</h2>
+          <h5>{post.title}</h5>
         </Link>
       </div>
     )

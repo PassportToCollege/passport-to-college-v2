@@ -20,6 +20,7 @@ import InfoStrip from "../../components/InfoStrip";
 import PostCardGrid from "../../components/PostCardGrid";
 import Loader from "../../components/Loader";
 import ToTopContainer from "../../components/ToTopContainer";
+import Title from "../../components/Title";
 
 import infoCardBg from "../../assets/images/info_card__bg.JPG";
 import headerBg0 from "../../assets/images/home__header_bg_0.jpg";
@@ -124,7 +125,10 @@ class Home extends Component {
         </section>
         <section className="home__section home__featured_students_title">
           <div className="home__section_inner">
-            <h1>featured students</h1>
+            <Title classes={[
+              "type__color_white",
+              "type__center"
+            ]}>featured students</Title>
           </div>
         </section>
         <section className="home__section home__featured_students">
@@ -134,11 +138,12 @@ class Home extends Component {
                 this.state.features.map(feature => {
                   return (
                     <InfoCard key={feature.id}
+                      target={`/stories/read/${feature.id}`}
                       bgOverlay="rgba(51,51,51,0.9)"
                       bgColor="rgba(51,51,51,0.9)"
-                      bgImage={feature.profilePic}
                       feature={true}
-                      title={feature.name}
+                      featureData={feature}
+                      title={feature.student.user.name.full}
                       university={feature.student.university} />
                   )
                 }) : null
@@ -156,7 +161,7 @@ class Home extends Component {
         </section>
         <section className="home__section home__posts">
           <div className="home__section_inner">
-            <h1>most recent stories</h1>
+            <Title classes={["type__center"]}>most recent stories</Title>
             {
               this.props.posts.gettingMostRecent ?
                 <Loader color="#FFCB61" /> : null
