@@ -217,9 +217,7 @@ class UserSection extends Component {
           <PageMeta more={
             <title>Education | {this.state.user.name.full} | User | Dashboard | Passport to College</title>
           } />
-          <div className="user__not_student">
-            <h4>user is no a student</h4>
-          </div>
+          {this.getNotAStudentFlag()}
         </section>
       )
     }
@@ -339,7 +337,7 @@ class UserSection extends Component {
             {
               this.props.user.hasGottenUser && this.state.user ?
                 <InitialsAvatar initials={`${this.state.user.name.first[0]}${this.state.user.name.last[0]}`} 
-                styles={{ display: "block", margin: "0 auto 1em" }}/> :
+                styles={{ display: "flex", margin: "0 auto 1em" }}/> :
                 null
             }
             {
@@ -378,7 +376,7 @@ class UserSection extends Component {
         </div>
         <div className="user__section_right">
             <div className="user__contact">
-              <h2>Contact Information</h2>
+              <h4>Contact Information</h4>
               {
                 this.props.user.hasGottenUser && this.state.user ?
                   <AnnotatedList data={[
@@ -420,7 +418,7 @@ class UserSection extends Component {
         }
         <div className="user__section_left">
           <div className="settings__roles">
-            <h2>User Roles</h2>
+            <h4>User Roles</h4>
             <div className="settings__item">
               <p>Admin</p>
               {
@@ -485,7 +483,7 @@ class UserSection extends Component {
             </div>
           </div>
           <div className="settings__account">
-            <h2>Account</h2>
+            <h4>Account</h4>
             <div className="settings__item">
               <p>Send password reset email</p>
               {
@@ -502,7 +500,7 @@ class UserSection extends Component {
         </div>
         <div className="user__section_right">
           <div className="settings__students">
-            <h2>Students</h2>
+            <h4>Students</h4>
             {
               this.props.user.hasGottenUser && this.state.user &&
               this.state.user.isStudent ?
@@ -535,14 +533,12 @@ class UserSection extends Component {
             {
               this.props.user.hasGottenUser && this.state.user &&
                 !this.state.user.isStudent ?
-                <div className="user__not_student">
-                  <h4>user is no a student</h4>
-                </div> :
+                this.getNotAStudentFlag() :
                 null
             }
           </div>
           <div className="settings__delete_user">
-            <h2>Remove User</h2>
+            <h4>Remove User</h4>
             {
               this.props.user.hasGottenUser && this.state.user ?
                 <Button solid text={`delete ${this.state.user.name.full}`}
@@ -574,9 +570,7 @@ class UserSection extends Component {
           <PageMeta more={
             <title>Features | {this.state.user.name.full} | User | Dashboard | Passport to College</title>
           } />
-          <div className="user__not_student">
-            <h4>user is no a student</h4>
-          </div>
+          {this.getNotAStudentFlag()}
         </section>
       )
     }
@@ -646,9 +640,7 @@ class UserSection extends Component {
           <PageMeta more={
             <title>Accomplishments | {this.state.user.name.full} | User | Dashboard | Passport to College</title>
           } />
-          <div className="user__not_student">
-            <h4>user is no a student</h4>
-          </div>
+          {this.getNotAStudentFlag()}
         </section>
       )
     }
@@ -764,6 +756,14 @@ class UserSection extends Component {
         }
       </section>
     );
+  }
+
+  getNotAStudentFlag = () => {
+    return (
+      <div className="user__not_student">
+        <h6>user is no a student</h6>
+      </div>
+    )
   }
 
   toggleAddAccomplishment = () => {

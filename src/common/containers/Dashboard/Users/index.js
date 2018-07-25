@@ -136,7 +136,7 @@ class Users extends Component {
             null
         }
         <header>
-          <h1>Users</h1>
+          <h2>Users</h2>
           <CardNavigation locations={[
             { 
               pathname: routes.USERS.route,

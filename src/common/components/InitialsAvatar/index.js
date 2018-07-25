@@ -6,7 +6,7 @@ import propTypes from "prop-types";
 const InitialsAvatar = ({ initials, styles }) => {
   return (
     <span className="initials_avatar" style={styles}>
-      {initials}
+      <span>{initials}</span>
     </span>
   )
 }
