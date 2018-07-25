@@ -32,10 +32,10 @@ export const doFeatureGet = feature => {
       .doc(feature)
       .get()
       .then(snapshot => {
-        if (snapshot.exists)
-          return dispatch(featureGetDone(snapshot.data()));
-
-        return dispatch(featureGetFailed({ message: "no feature found" }, feature));
+        if (!snapshot.exists)
+          return dispatch(featureGetFailed({ message: "no feature found" }, feature));
+        
+        dispatch(featureGetDone(snapshot.data()));
       })
       .catch(error => {
         dispatch(featureGetFailed(error, feature));

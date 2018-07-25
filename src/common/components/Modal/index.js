@@ -5,7 +5,6 @@ import propTypes from "prop-types";
 import moment from "moment";
 
 import { NationalTest, CreateUserForm } from "../Forms";
-import WYSIWYGEditor from "../Editor";
 import Button from "../Button";
 import TextedIconButton from "../TextedIconButton";
 
@@ -144,46 +143,6 @@ export class CreateUserModal extends Component {
   inputChanged = e => {
     if ("function" === typeof this.props.handleInputChange)
       this.props.handleInputChange(e);
-  }
-}
-
-export class ViewFeatureModal extends Component {
-  static propTypes = {
-    doClose: propTypes.func,
-    feature: propTypes.object
-  }
-
-  render() {
-    const { feature } = this.props;
-
-    return (
-      <div className="modal__container modal__view_feature"
-        ref={div => this.modalContainer = div}>
-        <div className="modal__bg" onClick={this.closeModal}></div>
-        <div className="modal__content">
-          <h4>Created On</h4>
-          <span>{moment(feature.createdAt).format("MM-DD-Y")}</span>
-          <h4>Expires On</h4>
-          <span>{moment(feature.expDate).format("MM-DD-Y")}</span>
-          <h4>Details</h4>
-          <WYSIWYGEditor readonly content={feature.details}
-            editorStyles={{
-              border: "none",
-              padding: "0",
-              minHeight: "auto"
-            }} />
-          <h4>Active?</h4>
-          <span>{feature.isActive ? "yes" : "no"}</span>
-        </div>
-      </div>
-    )
-  }
-
-  closeModal = () => {
-    this.modalContainer.classList.add("close");
-
-    if ("function" === typeof this.props.doClose)
-      this.props.doClose();
   }
 }
 

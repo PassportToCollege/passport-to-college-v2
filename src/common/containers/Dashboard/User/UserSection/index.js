@@ -136,6 +136,12 @@ class UserSection extends Component {
       };
     }
 
+    if (prevProps.feature.isCreating && this.props.feature.hasCreated) {
+      return {
+        createdFeature: true
+      };
+    }
+
     return null;
   }
 
@@ -148,6 +154,14 @@ class UserSection extends Component {
         this.props.studentActions.doStudentGet(this.props.userId);
         this.props.featuresActions.doGetFeaturesByUser(this.props.userId);
       }
+    }
+
+    if (snapshot && snapshot.createdFeature) {
+      this.setState({
+        hasNotification: true,
+        notificationClosed: false,
+        notification: "Feature created successefully."
+      });
     }
   }
 
@@ -930,6 +944,7 @@ UserSection.propTypes = {
   user: propTypes.object,
   student: propTypes.object,
   studentActions: propTypes.object,
+  feature: propTypes.object,
   features: propTypes.object,
   featuresActions: propTypes.object,
   featureActions: propTypes.object,
@@ -942,6 +957,7 @@ const mapStateToProps = state => {
   return {
     student: state.student,
     picture: state.userProfilePicture,
+    feature: state.feature,
     features: state.features
   };
 };
