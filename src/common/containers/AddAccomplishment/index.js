@@ -5,12 +5,16 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
 
-import * as studentsActions from "../../actions/studentsActions";
-import * as studentActions from "../../actions/studentActions";
+import { verifyImageDimensions } from "../../utils";
+import { auth } from "../../utils/firebase";
+import { Accomplishment } from "../../utils/utilityClasses";
+import * as postActions from "../../actions/postActions";
+import * as postCategoryActions from "../../actions/postCategoryActions";
 
 import Modal from "../../components/Modal";
 import WYSIWYGEditor from "../../components/Editor";
 import DropUploader from "../../components/DropUploader";
+import { InlineNotification } from "../../components/Notification";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 
@@ -19,34 +23,15 @@ class AddAccomplishment extends Component {
     super(props);
 
     this.state = {
-      students: props.students.students,
       student: props.student,
       newAccomplishment: {
         student: props.student.uid,
-        name: props.student.user.name.full,
         title: "",
         excerpt: "",
         full: {},
         createdAt: new Date().getTime()
-      },
-      notificationClosed: false,
-      hasError: false,
-      error: ""
-    }
-  }
-
-  componentDidMount() {
-    this.props.studentsActions.doStudentsGet();
-  }
-
-  static getDerivedStateFromProps(nextProps) {
-    if (nextProps.students.hasGotten) {
-      return {
-        students: nextProps.students.students
       }
     }
-
-    return null;
   }
 
   render() {
@@ -87,6 +72,11 @@ class AddAccomplishment extends Component {
               labelStyles={{
                 color: "#FFF"
               }} />
+            {
+              this.state.hasHeroNotification && !this.state.heroNotificationClosed ?
+                <InlineNotification text={this.state.heroNotification}
+                  doClose={this.closeHeroNotification} /> : null
+            }
           </section>
           <section className="add_accomplishment__section">
             <h5 className="section_heading">3. Accomplishment Title</h5>
@@ -130,89 +120,54 @@ class AddAccomplishment extends Component {
     )
   }
 
-  handleNotificationClose = () => {
-    this.setState({
-      notificationClosed: true,
-      hasError: false,
-      error: ""
-    })
-  }
-
   handleDetailsBlur = content => {
-    let { full } = this.state.newAccomplishment.details;
-    full = content;
-
-    const newAccomplishment = Object.assign({}, this.state.newAccomplishment, {
-        details: Object.assign({}, this.state.newAccomplishment.details, {
-          full
-        })
+    this.setState({ newAccomplishment: Object.assign({}, this.state.newAccomplishment, {
+        full: content
+      }) 
     });
-
-    this.setState({ newAccomplishment });
   }
 
   handleInputChange = e => {
-    let { excerpt } = this.state.newAccomplishment.details;
-
-    switch (e.target.name) {
-      case "details.brief":
-        excerpt = e.target.value;
-
-        this.setState({
-          newAccomplishment: Object.assign({}, this.state.newAccomplishment, {
-            details: Object.assign({}, this.state.newAccomplishment.details, {
-              excerpt
-            })
-          }) 
-        });
-        break;
-      case "title":
-        if (!this.state.newAccomplishment.slug && !this.props.edit) {
-          this.slugInput.value = e.target.value.toLowerCase().split(" ").join("-");
-
-          this.setState({
-            newAccomplishment: Object.assign({}, this.state.newAccomplishment, {
-              slug: this.slugInput.value
-            })
-          });
-        }
-
-        this.setState({ newAccomplishment: Object.assign({}, this.state.newAccomplishment, {
-            "title": e.target.value
-          })
-        });
-
-        break;
-      default:
-        this.setState({ newAccomplishment: Object.assign({}, this.state.newAccomplishment, {
-          [e.target.name]: e.target.value
-        })
-      });
-    }
+    this.setState({
+      newAccomplishment: Object.assign({}, this.state.newAccomplishment, {
+        [e.target ? e.target.name : e.name]: e.target ? e.target.value : e.value
+      })
+    });
   }
 
-  handleAccomplishmentSave = e => {
-    e.preventDefault();
-
-    let { newAccomplishment } = this.state;
-
-    if ("object" === typeof newAccomplishment.details.full) {
-      // update student
-      const accomplishments = Object.assign({}, this.state.student.accomplishments, {
-        [newAccomplishment.slug]: newAccomplishment
+  handleHeroImageChange = e => {
+    verifyImageDimensions(e)
+      .then(({ image, url }) => {
+        this.setState({ 
+          hero: url,
+          newAccomplishment: Object.assign({}, this.state.newAccomplishment, {
+            hero: image
+          }) 
+        });
+      })
+      .catch(error => {
+        this.setHeroNotification(error.message);
       });
+  }
 
-      this.props.studentActions.doStudentUpdate(this.state.student.uid, { accomplishments });
+  handleAccomplishmentSave = () => {
+    
+  }
 
-      if (this.props.doClose && "function" === typeof this.props.doClose)
-        this.props.doClose();
-    } else {
-      this.setState({
-        hasError: true,
-        notificationClosed: false,
-        error: "You need to provide full details of the accomplishment"
-      });
-    }
+  setHeroNotification = (notification = "") => {
+    this.setState({
+      hasHeroNotification: true,
+      heroNotificationClosed: false,
+      heroNotification: notification
+    });
+  }
+
+  closeHeroNotification = () => {
+    this.setState({
+      hasHeroNotification: false,
+      heroNotificationClosed: true,
+      heroNotification: ""
+    });
   }
 }
 
@@ -221,26 +176,25 @@ AddAccomplishment.defaultProps = {
 };
 
 AddAccomplishment.propTypes = {
-  students: propTypes.object,
-  studentsActions: propTypes.object,
-  student: propTypes.object,
-  studentActions: propTypes.object,
+  post: propTypes.object,
+  postActions: propTypes.object,
+  postCategories: propTypes.object,
+  postCategoryActions: propTypes.object,
   doClose: propTypes.func,
-  edit: propTypes.bool,
-  accomplishment: propTypes.object,
-  slug: propTypes.string
+  student: propTypes.object
 };
 
 const mapStateToProps = state => {
   return {
-    students: state.students
+    post: state.post,
+    postCategories: state.postCategories
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    studentsActions: bindActionCreators(studentsActions, dispatch),
-    studentActions: bindActionCreators(studentActions, dispatch)
+    postActions: bindActionCreators(postActions, dispatch),
+    postCategoryActions: bindActionCreators(postCategoryActions, dispatch)
   };
 };
 
