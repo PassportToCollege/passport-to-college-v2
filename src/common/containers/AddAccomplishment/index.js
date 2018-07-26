@@ -83,6 +83,11 @@ class AddAccomplishment extends Component {
             <Input inputType="text" inputName="title"
               inputPlaceholder="Insert awesome title here"
               whenBlur={this.handleInputChange} />
+            {
+              this.state.hasTitleNotification && !this.state.titleNotificationClosed ?
+                <InlineNotification text={this.state.titleNotification}
+                  doClose={this.closeTitleNotification} /> : null
+            }
           </section>
           <section className="add_accomplishment__section">
             <h5 className="section_heading">4. Excerpt</h5>
@@ -90,6 +95,11 @@ class AddAccomplishment extends Component {
             <textarea name="excerpt" rows="5"
               onChange={this.handleInputChange}
               value={this.state.newAccomplishment.excerpt} />
+            {
+              this.state.hasExcerptNotification && !this.state.excerptNotificationClosed ?
+                <InlineNotification text={this.state.excerptNotification}
+                  doClose={this.closeExcerptNotification} /> : null
+            }
           </section>
           <section className="add_accomplishment__section">
             <h5 className="section_heading">5. Full Details</h5>
@@ -102,6 +112,11 @@ class AddAccomplishment extends Component {
               controlStyles={{
                 maxWidth: "100%"
               }} />
+            {
+              this.state.hasDetailsNotification && !this.state.detailsNotificationClosed ?
+                <InlineNotification text={this.state.detailsNotification}
+                  doClose={this.closeDetailsNotification} /> : null
+            }
           </section>
           <section className="add_accomplishment__section">
             <Button type="button" solid
@@ -167,6 +182,54 @@ class AddAccomplishment extends Component {
       hasHeroNotification: false,
       heroNotificationClosed: true,
       heroNotification: ""
+    });
+  }
+
+  setTitleNotification = notification => {
+    this.setState({
+      hasTitleNotification: true,
+      titleNotificationClosed: false,
+      titleNotification: notification
+    });
+  }
+
+  closeTitleNotification = () => {
+    this.setState({
+      hasTitleNotification: false,
+      titleNotificationClosed: true,
+      titleNotification: ""
+    });
+  }
+  
+  setExcerptNotification = notification => {
+    this.setState({
+      hasExcerptNotification: true,
+      excerptNotificationClosed: false,
+      excerptNotification: notification
+    });
+  }
+
+  closeExcerptNotification = () => {
+    this.setState({
+      hasExcerptNotification: false,
+      excerptNotificationClosed: true,
+      excerptNotification: ""
+    });
+  }
+
+  setDetailsErrorNotification = notification => {
+    this.setState({
+      hasDetailsNotification: true,
+      detailsNotificationClosed: false,
+      detailsNotification: notification
+    });
+  }
+
+  closeDetailsNotification = () => {
+    this.setState({
+      hasDetailsNotification: false,
+      detailsNotificationClosed: true,
+      detailsNotification: null
     });
   }
 }
