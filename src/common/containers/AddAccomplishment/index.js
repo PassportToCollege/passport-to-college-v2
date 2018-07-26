@@ -119,6 +119,21 @@ class AddAccomplishment extends Component {
             }
           </section>
           <section className="add_accomplishment__section">
+            {
+              this.state.hasTitleNotification && !this.state.titleNotificationClosed ?
+                <InlineNotification text={this.state.titleNotification}
+                  doClose={this.closeTitleNotification} /> : null
+            }
+            {
+              this.state.hasExcerptNotification && !this.state.excerptNotificationClosed ?
+                <InlineNotification text={this.state.excerptNotification}
+                  doClose={this.closeExcerptNotification} /> : null
+            }
+            {
+              this.state.hasDetailsNotification && !this.state.detailsNotificationClosed ?
+                <InlineNotification text={this.state.detailsNotification}
+                  doClose={this.closeDetailsNotification} /> : null
+            }
             <Button type="button" solid
               text="cancel" 
               doClick={this.props.doClose} 
@@ -128,7 +143,7 @@ class AddAccomplishment extends Component {
               }} />
             <Button type="button" solid 
               text="save accomplishment" 
-              doClisk={this.handleAccomplishmentSave} />
+              doClick={this.handleAccomplishmentSave} />
           </section>
         </main>
       </Modal>
@@ -166,7 +181,16 @@ class AddAccomplishment extends Component {
   }
 
   handleAccomplishmentSave = () => {
-    
+    const { newAccomplishment } = this.state;
+
+    if (!newAccomplishment.title.length)
+      return this.setTitleNotification("title is required");
+
+    if (!newAccomplishment.excerpt.length)
+      return this.setExcerptNotification("excerpt required");
+
+    if(!Object.keys(newAccomplishment.full).length)
+      return this.setDetailsErrorNotification("full details required");
   }
 
   setHeroNotification = (notification = "") => {
