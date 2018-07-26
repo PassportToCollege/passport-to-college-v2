@@ -39,7 +39,7 @@ class UserSection extends Component {
       section: props.section,
       user: props.user.hasGotten ? props.user.user : null,
       student: props.student.student,
-      features: props.features.features,
+      features: props.features.userFeatures,
       notificationClosed: false,
       hasError: false,
       hasNotification: false,
@@ -105,7 +105,7 @@ class UserSection extends Component {
     if (nextProps.features.hasGotten) {
       newState = newState || {};
       newState = Object.assign({}, newState, {
-        features: nextProps.features.features
+        features: nextProps.features.userFeatures
       });
     }
 
@@ -596,7 +596,7 @@ class UserSection extends Component {
             {
               this.props.features.hasFailed && this.state.noFeatures ?
                 <div className="user__no_features">
-                  <h4>student has not been featured</h4>
+                  <h6>student has not been featured</h6>
                 </div> :
                 null
             }
@@ -667,7 +667,7 @@ class UserSection extends Component {
               this.props.student.hasGotten && this.state.student
               && !this.state.student.accomplishments ?
                 <div className="user__no_accomplishments">
-                  <h4>no accomplishments listed yet</h4>
+                  <h6>no accomplishments listed yet</h6>
                 </div> :
               null
             }

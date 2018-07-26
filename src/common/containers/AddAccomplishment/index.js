@@ -8,9 +8,11 @@ import propTypes from "prop-types";
 import * as studentsActions from "../../actions/studentsActions";
 import * as studentActions from "../../actions/studentActions";
 
+import Modal from "../../components/Modal";
 import WYSIWYGEditor from "../../components/Editor";
+import DropUploader from "../../components/DropUploader";
+import Input from "../../components/Input";
 import Button from "../../components/Button";
-import Notification from "../../components/Notification";
 
 class AddAccomplishment extends Component {
   constructor(props) {
@@ -22,12 +24,10 @@ class AddAccomplishment extends Component {
       newAccomplishment: {
         student: props.student.uid,
         name: props.student.user.name.full,
-        title: props.edit ? props.accomplishment.title : "",
-        slug: props.edit ? props.slug : "",
-        details: {
-          excerpt: props.edit ? props.accomplishment.details.excerpt : "",
-          full: props.edit ? props.accomplishment.details.full : ""
-        }
+        title: "",
+        excerpt: "",
+        full: {},
+        createdAt: new Date().getTime()
       },
       notificationClosed: false,
       hasError: false,
@@ -51,100 +51,82 @@ class AddAccomplishment extends Component {
 
   render() {
     return (
-      <form className="add_accomplishment" onSubmit={this.handleAccomplishmentSave}>
-        {
-          this.state.hasError && !this.state.notificationClosed ?
-            <Notification text={this.state.error}
-              doClose={this.handleNotificationClose} /> :
-            null
-        }
-        <section className="add_accomplishment__section">
-          <h3 className="section_heading">1. select student</h3>
-          <div className="form__input_container">
-            <label>Student</label>
-            <select name="student" defaultValue={this.state.student.uid} required
-              onChange={this.handleInputChange} disabled={this.props.edit}>
-              <option value="" disabled>Choose Student</option>
-              {
-                this.props.students.hasGotten && this.state.students ?
-                  this.state.students.map(student => {
-                    return (
-                      <option key={student.uid} 
-                        value={student.uid}>
-                        {student.user.name.full}
-                      </option>
-                    )
-                  }) :
-                  null
-              }
-            </select>
-          </div>
-          <div className="form__input_container">
+      <Modal classes={["modal__add_accomplishment"]}
+        doClose={this.props.doClose}>
+        <main className="add_accomplishment">
+          <section className="add_accomplishment__section">
+            <h6>Note:</h6>
+            <p>A student acomplishment is a special type of post/story. It will always be available for reading in the blog and will appear on the student&apos;s profile page. Unlike student features, accomplishments do not have expirations.</p>
+          </section>
+          <section className="add_accomplishment__section">
+            <h5 className="section_heading">1. Student</h5>
+            <label>UID</label>
+            <Input inputType="text" inputDisabled inputDefault={this.state.student.uid} />
             <label>Full name</label>
-            <input type="text" name="name" 
-              defaultValue={this.state.student && this.state.student.user ? this.state.student.user.name.full : null} required 
-              onBlur={this.handleInputChange} 
-              disabled={this.props.edit} />
-          </div>
-        </section>
-        <section className="add_accomplishment__section">
-          <h3 className="section_heading">2. about accomplishment</h3>
-          <div className="form__input_container">
-            <label>Title</label>
-            <input type="text" name="title" required 
-              onBlur={this.handleInputChange} 
-              defaultValue={this.props.edit ? this.props.accomplishment.title : null}/>
-          </div>
-          <div className="form__input_container">
-            <label>Slug (unique accomplishment identifier)</label>
-            <input type="text" name="slug" required 
-              onBlur={this.handleInputChange} 
-              ref={input => this.slugInput = input} 
-              disabled={this.props.edit} 
-              defaultValue={this.props.edit ? this.props.slug : null} />
-          </div>
-          <div className="form__input_container">
-            <label>Excerpt</label>
-            <textarea name="details.brief" required rows="5"
-              onBlur={this.handleInputChange}
-              defaultValue={
-                this.props.edit ?
-                  this.props.accomplishment.details.excerpt :
-                  null
-              }>
-              </textarea>
-          </div>
-          <div className="form__input_container">
-            <label>Details</label>
-            {
-              this.props.edit ?
-                <WYSIWYGEditor
-                  captureBlur={this.handleDetailsBlur}
-                  content={this.state.newAccomplishment.details.full}
-                  editorStyles={{
-                    maxWidth: "100%"
-                  }}
-                  controlStyles={{
-                    maxWidth: "100%"
-                  }} /> :
-                <WYSIWYGEditor
-                  captureBlur={this.handleDetailsBlur}
-                  editorStyles={{
-                    maxWidth: "100%"
-                  }}
-                  controlStyles={{
-                    maxWidth: "100%"
-                  }} />
-            }
-          </div>
-        </section>
-        <section className="add_accomplishment__section">
-          <div className="form__input_container">
-            <Button type="submit" solid 
-              text="save accomplishment" />
-          </div>
-        </section>
-      </form>
+            <Input inputType="text" inputDisabled inputDefault={this.state.student.user.name.full} />
+          </section>
+          <section className="feature_student__section">
+            <h5 className="section_heading">2. Hero Image</h5>
+            <label>This is an optional hero image for the accomplishment. It will appear after the accomplishment title when a user opens the accomplishment.</label>
+            <DropUploader overlay
+              label={<span><b>Choose a hero image</b> or drag it here</span>}
+              uploaderStyles={{
+                backgroundColor: "white",
+                backgroundImage: `url(${this.state.hero})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+                padding: "4em"
+              }}
+              handleAvatarChange={this.handleHeroImageChange} 
+              dropAreaStyles={{
+                background: "none",
+                color: "#FFF",
+                borderColor: "#FFF"
+              }}
+              labelStyles={{
+                color: "#FFF"
+              }} />
+          </section>
+          <section className="add_accomplishment__section">
+            <h5 className="section_heading">3. Accomplishment Title</h5>
+            <Input inputType="text" inputName="title"
+              inputPlaceholder="Insert awesome title here"
+              whenBlur={this.handleInputChange} />
+          </section>
+          <section className="add_accomplishment__section">
+            <h5 className="section_heading">4. Excerpt</h5>
+            <label>Provide an excerpt of the accomplishment&apos;s full details. It is usually the first paragragh of the full details, or the first couple sentences. This is what readers will see as a preview on the <i>Stories</i> page. Try to keep your excerpt under 100 words.</label>
+            <textarea name="excerpt" rows="5"
+              onChange={this.handleInputChange}
+              value={this.state.newAccomplishment.excerpt} />
+          </section>
+          <section className="add_accomplishment__section">
+            <h5 className="section_heading">5. Full Details</h5>
+            <label>Provide the full details about this student&apos;s accomplishment. This is what readers will see when the open the accomplishment.</label>
+            <WYSIWYGEditor
+              captureBlur={this.handleDetailsBlur}
+              editorStyles={{
+                maxWidth: "100%"
+              }}
+              controlStyles={{
+                maxWidth: "100%"
+              }} />
+          </section>
+          <section className="add_accomplishment__section">
+            <Button type="button" solid
+              text="cancel" 
+              doClick={this.props.doClose} 
+              styles={{
+                backgroundColor: "rgb(128, 150, 162)",
+                marginRight: "1em"
+              }} />
+            <Button type="button" solid 
+              text="save accomplishment" 
+              doClisk={this.handleAccomplishmentSave} />
+          </section>
+        </main>
+      </Modal>
     )
   }
 
