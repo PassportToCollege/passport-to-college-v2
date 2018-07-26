@@ -41,19 +41,37 @@ class Home extends Component {
     this.state = {
       flipStrip: false,
       stats: props.stats.stats,
-      features: props.features.features,
+      features: props.features.activeFeatures,
       posts: props.posts.mostRecent,
       showHeader: true
     }
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { stats, features, posts } = prevState;
-    return {
-      stats: nextProps.stats.hasGotten && !_.isEqual(nextProps.stats.stats, stats) ? nextProps.stats.stats : stats,
-      features: nextProps.features.hasGotten && !_.isEqual(nextProps.features.features, features) ? nextProps.features.features : features,
-      posts: nextProps.posts.gotMostRecent && !_.isEqual(nextProps.posts.mostRecent, posts) ? nextProps.posts.mostRecent : posts
-    };
+    let { features, stats, posts } = prevState;
+
+    if (nextProps.features.gotActive &&
+    !_.isEqual(nextProps.features.activeFeatures, features)) {
+      return {
+        features: nextProps.features.activeFeatures
+      };
+    }
+
+    if (nextProps.stats.hasGotten &&
+    !_.isEqual(nextProps.stats.stats, stats)) {
+      return {
+        stats: nextProps.stats.stats
+      };
+    }
+
+    if (nextProps.posts.gotMostRecent &&
+    !_.isEqual(nextProps.posts.mostRecent, posts)) {
+      return {
+        posts: nextProps.posts.mostRecent
+      };
+    }
+
+    return null;
   }
   
   componentDidMount() {
@@ -61,7 +79,7 @@ class Home extends Component {
 
     this.props.updateLocation("landing");
     this.props.statsActions.doStatsGet();
-    this.props.featuresActions.doGetActiveFeatures();
+    this.props.featuresActions.doGetActiveFeatures("published");
   }
 
   componentWillUnmount() {
@@ -134,7 +152,7 @@ class Home extends Component {
         <section className="home__section home__featured_students">
           <div className="home__section_inner">
             {
-              this.props.features.hasGotten && this.state.features ?
+              this.state.features ?
                 this.state.features.map(feature => {
                   return (
                     <InfoCard key={feature.id}
@@ -149,7 +167,7 @@ class Home extends Component {
                 }) : null
             }
             {
-              this.props.features.hasGotten && this.state.features
+              this.state.features
               && this.state.features.length%2 === 0 ?
                   <InfoCard blank={true} bgColor="transparent" /> : null
             }
