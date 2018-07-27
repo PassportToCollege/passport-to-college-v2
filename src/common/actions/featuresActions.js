@@ -23,18 +23,33 @@ export const featuresGetDone = (features, student) => {
   };
 };
 
-export const doGetFeaturesByUser = student => {
+export const doGetFeaturesByUser = (student, state = "all") => {
   return dispatch => {
     if (!student.length)
       return dispatch(featuresGetFailed({ message: "no student provided" }, null));
 
     dispatch(featuresGetInitiated(student));
 
-    db.collection("posts")
-      .where("state.published", "==", true)
+    let ref = db.collection("posts")
       .where("isFeature", "==", true)
-      .where("student", "==", student)
-      .orderBy("expiration", "desc")
+      .where("student", "==", student);
+
+    switch (state) {
+      case "published":
+        ref = ref.where("state.published", "==", true);
+        break;
+      case "archived":
+        ref = ref.where("state.archived", "==", true);
+        break;
+      case "draft":
+        ref = ref.where("state.draft", "==", true);
+        break;
+      case "all":
+      default:
+        break;
+    }
+
+    ref.orderBy("expiration", "desc")
       .get()
       .then(snapshots => {
         if (snapshots.empty)

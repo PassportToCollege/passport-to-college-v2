@@ -28,7 +28,7 @@ class AddAccomplishment extends Component {
         student: props.student.uid,
         title: "",
         excerpt: "",
-        full: {},
+        full: "",
         createdAt: new Date().getTime()
       }
     }
@@ -151,6 +151,7 @@ class AddAccomplishment extends Component {
   }
 
   handleDetailsBlur = content => {
+    debugger;
     this.setState({ newAccomplishment: Object.assign({}, this.state.newAccomplishment, {
         full: content
       }) 
@@ -209,8 +210,8 @@ class AddAccomplishment extends Component {
     }
 
     this.props.postCategoryActions.doCategoryPostsUpdate("student_accomplishments");
-
-    this.props.postActions.doPostCreate(accomplishment);
+    
+    this.props.postActions.doPostCreate(accomplishment.data);
   }
 
   setHeroNotification = (notification = "") => {

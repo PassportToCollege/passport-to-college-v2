@@ -30,11 +30,11 @@ export const postCreated = id => {
 export const doPostCreate = (post = {}) => {
   return dispatch => {
     dispatch(createPostInitiated());
-
+    
     if ("object" === typeof post && Object.keys(post).length) {
-      return db.collection(post)
+      return db.collection("posts")
         .doc(post.id)
-        .set(post, { merge: true })
+        .set(post)
         .then(() => {
           dispatch(postCreated(post.id));
         })
@@ -145,9 +145,9 @@ export const doPostGet = id => {
           // get user if author is uid
           if ("string" === typeof postData.author) {
             return db.collection("users")
-              .doc(postData.author)
-              .get()
-              .then(author => {
+            .doc(postData.author)
+            .get()
+            .then(author => {
                 if (author.exists) {
                   postData.author = author.data();
                   return dispatch(postGetDone(postData));

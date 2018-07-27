@@ -202,6 +202,7 @@ class UserSection extends Component {
       this.props.postsActions.doGetAccomplishmentsByUser(this.props.userId, "all");
 
       this.setState({
+        addingAccomplishment: false,
         hasNotification: true,
         notificationClosed: false,
         notification: "Accomplishment added successefully. Use the edit button to review and publish the accomplishment so it shows on the website."
@@ -874,18 +875,12 @@ class UserSection extends Component {
     });
   }
 
-  handleAccomplishmentDelete = slug => {
-    this.props.studentActions.doAccomplishmentDelete(this.state.student.uid, slug, {
-      refresh: true
-    });
+  handleAccomplishmentDelete = accomplishment => {
+    
   }
 
-  handleAccomplishmentEdit = slug => {
-    this.setState({
-      editingAccomplishment: true,
-      editingSlug: slug,
-      accomplishment: this.state.student.accomplishments[slug]
-    });
+  handleAccomplishmentEdit = accomplishment => {
+    this.props.history.push(`/admin/dashboard/posts/e/${accomplishment.id}`);
   }
 
   handleFeatureDelete = feature => {
