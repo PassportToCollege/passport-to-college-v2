@@ -151,7 +151,6 @@ class AddAccomplishment extends Component {
   }
 
   handleDetailsBlur = content => {
-    debugger;
     this.setState({ newAccomplishment: Object.assign({}, this.state.newAccomplishment, {
         full: content
       }) 

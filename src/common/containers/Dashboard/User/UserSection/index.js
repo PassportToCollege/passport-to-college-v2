@@ -171,6 +171,12 @@ class UserSection extends Component {
       };
     }
 
+    if (prevProps.post.deletingPost && this.props.post.deletedPost) {
+      return {
+        deletedAccomplishment: true
+      };
+    }
+
     return null;
   }
 
@@ -206,6 +212,16 @@ class UserSection extends Component {
         hasNotification: true,
         notificationClosed: false,
         notification: "Accomplishment added successefully. Use the edit button to review and publish the accomplishment so it shows on the website."
+      });
+    }
+
+    if (snapshot && snapshot.deletedAccomplishment) {
+      this.props.postsActions.doGetAccomplishmentsByUser(this.props.userId, "all");
+
+      this.setState({
+        hasNotification: true,
+        notificationClosed: false,
+        notification: "Accomplishment deleted successefully"
       });
     }
   }
@@ -876,7 +892,7 @@ class UserSection extends Component {
   }
 
   handleAccomplishmentDelete = accomplishment => {
-    
+    this.props.postActions.doPostDelete(accomplishment);
   }
 
   handleAccomplishmentEdit = accomplishment => {
