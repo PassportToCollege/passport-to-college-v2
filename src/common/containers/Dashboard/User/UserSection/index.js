@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
 import moment from "moment";
+import _ from "lodash";
 
 import { auth } from "../../../../utils/firebase";
 
@@ -41,17 +42,16 @@ class UserSection extends Component {
       section: props.section,
       user: props.user.hasGotten ? props.user.user : null,
       student: props.student.student,
+      profilePicture: props.picture.picture || "",
       features: props.features.userFeatures,
+      accomplishments: props.posts.accomplishmentsByUser,
       notificationClosed: false,
       hasError: false,
       hasNotification: false,
       addingAccomplishment: false,
-      noAccomplishments: props.posts.failedToGetAccomplishmentsByUser && props.posts.error,
-      editingSlug: "",
-      noFeatures: props.features.hasFailed && props.features.error,
-      editingFeature: false,
+      noAccomplishments: !!(props.posts.failedToGetAccomplishmentsByUser && props.posts.error),
+      noFeatures: !!(props.features.hasFailed && props.features.error),
       creatingFeature: false,
-      featureBeingEdited: {},
       addingRole: false,
       editingRole: false,
       deletingUser: false,
@@ -60,10 +60,8 @@ class UserSection extends Component {
   }
 
   componentDidMount() {
-    if (this.state.user && this.state.user.hasProfilePicture) {
-      if ((!this.state.profilePicture && 
-        !this.props.picture.hasFailedByUid && 
-        this.state.section === "profile-picture") ||
+    if (this.state.user && this.state.user.hasProfilePicture && this.state.section === "profile-picture") {
+      if ((!this.state.profilePicture) ||
         (this.state.profilePicture && 
         this.state.profilePicture.indexOf(this.props.userId) === -1))
         this.props.uppActions.doAvatarGetByUid(this.props.userId);
@@ -86,51 +84,52 @@ class UserSection extends Component {
     }
   }
 
-  static getDerivedStateFromProps(nextProps) {
-    let newState = null;
-
-    if (nextProps.user.hasGottenUser) {
-      newState = {};
-      newState.user = nextProps.user.user;
+  static getDerivedStateFromProps(nextProps, state) {
+    if (nextProps.user.hasGottenUser &&
+    !_.isEqual(state.user, nextProps.user.user)) {
+      return {
+        user: nextProps.user.user
+      };
     }
 
     if (nextProps.picture.hasGottenByUid && 
-    nextProps.picture.picture.indexOf(nextProps.userId) > -1) {
-      newState = newState || {};
-      newState = Object.assign({}, newState, {
+    nextProps.picture.picture.indexOf(nextProps.userId) > -1 &&
+    nextProps.picture.picture !== state.profilePicture) {
+      return {
         profilePicture: nextProps.picture.picture
-      });
+      };
     }
 
-    if (nextProps.student.hasGotten) {
-      newState = newState || {};
-      newState = Object.assign({}, newState, { 
+    if (nextProps.student.hasGotten &&
+    !_.isEqual(state.student, nextProps.student.student)) {
+      return { 
         student: nextProps.student.student 
-      });
+      };
     }
     
-    if (nextProps.features.hasGotten) {
-      newState = newState || {};
-      newState = Object.assign({}, newState, {
-        features: nextProps.features.userFeatures
-      });
+    if (nextProps.features.hasGotten &&
+    !_.isEqual(state.features, nextProps.features.userFeatures)) {
+      return {
+        features: nextProps.features.userFeatures,
+        noFeatures: false
+      };
     }
 
     if (nextProps.features.hasFailed && 
-      nextProps.features.error.message === "no features found") {
-      newState = newState || {};
-      newState = Object.assign({}, newState, {
-        noFeatures: true
-      });
+      nextProps.features.error.message === "no features found" &&
+      !state.noFeatures) {
+      return {
+        noFeatures: true,
+        features: []
+      };
     }
-
+    
     if (nextProps.student.hasFailed) {
-      newState = newState || {};
-      newState = Object.assign({}, newState, {
+      return {
         hasError: true, 
         notificationClosed: false, 
         error: nextProps.student.error.message
-      });
+      };
     }
 
     if (nextProps.posts.gotAccomplishmentsByUser &&
@@ -145,11 +144,11 @@ class UserSection extends Component {
     nextProps.posts.error.message === "no accomplishments found") {
       return {
         noAccomplishments: true,
-        accomplishments: {}
+        accomplishments: []
       };
     }
     
-    return newState;
+    return null;
   }
 
   getSnapshotBeforeUpdate(prevProps) {
@@ -182,7 +181,8 @@ class UserSection extends Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (snapshot && snapshot.gotUser) {
-      if (this.props.user.user.hasProfilePicture)
+      if (this.props.user.user.hasProfilePicture &&
+      this.state.profilePicture.indexOf(this.props.userId) === -1)
         this.props.uppActions.doAvatarGetByUid(this.props.userId);
 
       if (this.props.user.user.isStudent) {
@@ -242,6 +242,13 @@ class UserSection extends Component {
             null
         }
         { this.getSection(this.props.section) }
+        {
+          this.props.post.deletingPost ||
+          this.props.feature.isDeleting ?
+            <Loader styles={{
+              marginTop: "5em"
+            }} /> : null
+        }
       </div>
     )
   }
@@ -641,7 +648,7 @@ class UserSection extends Component {
                 <title>Features | {this.state.user.name.full} | User | Dashboard | Passport to College</title>
               } /> : null
           }
-          <Button text={this.state.editingFeature || this.state.creatingFeature ? "- cancel" : "+ feature student"}
+          <Button text="+ feature student"
             doClick={this.toggleFeatureStudent}
             solid
             styles={{
@@ -655,13 +662,6 @@ class UserSection extends Component {
                 <div className="user__no_features">
                   <h6>student has not been featured</h6>
                 </div> :
-                null
-            }
-            {
-              this.state.editingFeature ?
-                <FeatureStudent editing student={this.state.student}
-                  feature={this.state.featureBeingEdited}
-                  doClose={() => this.setState({ editingFeature: false })} /> :
                 null
             }
             {
@@ -711,7 +711,7 @@ class UserSection extends Component {
                 <title>Accomplishments | {this.state.user.name.full} | User | Dashboard | Passport to College</title>
               } /> : null
           }
-          <Button text={this.state.addingAccomplishment || this.state.editingAccomplishment ? "- cancel" : "+ accomplishment"} 
+          <Button text="+ accomplishment" 
             solid 
             styles={{
               position: "absolute",
@@ -817,17 +817,8 @@ class UserSection extends Component {
   }
 
   toggleFeatureStudent = () => {
-    if (this.state.editingFeature) {
-      return this.setState({ 
-        editingFeature: !this.state.editingFeature,
-        featureBeingEdited: {} 
-      });
-    }
-
     let canAdd = true;
 
-    // check if student has an active feature
-    // deny if true
     if (!this.state.noFeatures) {
       let { features } = this.state;
       for (let i = 0; i < features.length; i++) {
