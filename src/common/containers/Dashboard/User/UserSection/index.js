@@ -13,6 +13,8 @@ import * as userProfilePictureActions from "../../../../actions/userProfilePictu
 import * as featuresActions from "../../../../actions/featuresActions";
 import * as featureActions from "../../../../actions/featureActions";
 import * as usersActions from "../../../../actions/usersActions";
+import * as postActions from "../../../../actions/postActions";
+import * as postsActions from "../../../../actions/postsActions";
 
 import PageMeta from "../../../../components/PageMeta";
 import AnnotatedList from "../../../../components/AnnotatedList";
@@ -44,8 +46,7 @@ class UserSection extends Component {
       hasError: false,
       hasNotification: false,
       addingAccomplishment: false,
-      editingAccomplishment: false,
-      accomplishment: {},
+      noAccomplishments: props.posts.failedToGetAccomplishmentsByUser && props.posts.error,
       editingSlug: "",
       noFeatures: props.features.hasFailed && props.features.error,
       editingFeature: false,
@@ -73,8 +74,14 @@ class UserSection extends Component {
         this.props.studentActions.doStudentGet(this.props.userId);
       }
 
-      if (!this.state.features && this.state.section === "features" && this.state.user.isStudent) {
-        this.props.featuresActions.doGetFeaturesByUser(this.props.userId);
+      if (this.state.user.isStudent) {
+        if (!this.state.features && this.state.section === "features") {
+          this.props.featuresActions.doGetFeaturesByUser(this.props.userId);
+        }
+  
+        if (!this.state.accomplishments && this.state.section === "accomplishments") {
+          this.props.postsActions.doGetAccomplishmentsByUser(this.props.userId, "all");
+        }
       }
     }
   }
@@ -125,6 +132,22 @@ class UserSection extends Component {
         error: nextProps.student.error.message
       });
     }
+
+    if (nextProps.posts.gotAccomplishmentsByUser &&
+    nextProps.posts.student === nextProps.userId) {
+      return {
+        accomplishments: nextProps.posts.accomplishmentsByUser,
+        noAccomplishments: false
+      };
+    }
+
+    if (nextProps.posts.failedToGetAccomplishmentsByUser &&
+    nextProps.posts.error.message === "no accomplishments found") {
+      return {
+        noAccomplishments: true,
+        accomplishments: {}
+      };
+    }
     
     return newState;
   }
@@ -142,6 +165,12 @@ class UserSection extends Component {
       };
     }
 
+    if (prevProps.post.isCreating && this.props.post.hasCreated) {
+      return {
+        createdAccomplishment: true
+      };
+    }
+
     return null;
   }
 
@@ -153,6 +182,7 @@ class UserSection extends Component {
       if (this.props.user.user.isStudent) {
         this.props.studentActions.doStudentGet(this.props.userId);
         this.props.featuresActions.doGetFeaturesByUser(this.props.userId);
+        this.props.postsActions.doGetAccomplishmentsByUser(this.props.userId, "all");
       }
     }
 
@@ -165,6 +195,16 @@ class UserSection extends Component {
         hasNotification: true,
         notificationClosed: false,
         notification: "Feature created successefully. Use the edit button to review and publish the feature so it shows on the website."
+      });
+    }
+
+    if (snapshot && snapshot.createdAccomplishment) {
+      this.props.postsActions.doGetAccomplishmentsByUser(this.props.userId, "all");
+
+      this.setState({
+        hasNotification: true,
+        notificationClosed: false,
+        notification: "Accomplishment added successefully. Use the edit button to review and publish the accomplishment so it shows on the website."
       });
     }
   }
@@ -664,37 +704,23 @@ class UserSection extends Component {
             doClick={this.toggleAddAccomplishment} />
           <div className="accomplishments__section_content">
             {
-              this.props.student.hasGotten && this.state.student
-              && !this.state.student.accomplishments ?
+              this.state.noAccomplishments ?
                 <div className="user__no_accomplishments">
                   <h6>no accomplishments listed yet</h6>
                 </div> :
               null
             }
             {
-              this.state.addingAccomplishment && this.props.student.hasGotten
-                && this.state.student ?
+              this.state.addingAccomplishment && this.state.student ?
                 <AddAccomplishment student={this.state.student}
                   doClose={() => this.setState({ addingAccomplishment: false })} /> :
-                  this.state.editingAccomplishment && this.props.student.hasGotten ?
-                  <AddAccomplishment edit={true} student={this.state.student}
-                    slug={this.state.editingSlug}
-                    accomplishment={this.state.accomplishment}
-                    doClose={() => 
-                      this.setState({ 
-                        editingAccomplishment: false,
-                        editingSlug: "",
-                        accomplishment: {} 
-                      })
-                    } /> :
                   null
             }
             {
-              this.props.student.hasGotten && this.state.student
-                && this.state.student.accomplishments ?
+              this.state.accomplishments ?
                 <div className="user__accomplishments">
                   <AccomplishmentsList actions
-                    accomplishments={this.state.student.accomplishments} 
+                    accomplishments={this.state.accomplishments} 
                     doDelete={this.handleAccomplishmentDelete} 
                     doEdit={this.handleAccomplishmentEdit} />
                 </div> :
@@ -958,7 +984,11 @@ UserSection.propTypes = {
   featureActions: propTypes.object,
   picture: propTypes.object,
   uppActions: propTypes.object,
-  usersActions: propTypes.object
+  usersActions: propTypes.object,
+  post: propTypes.object,
+  postActions: propTypes.object,
+  posts: propTypes.object,
+  postsActions: propTypes.object
 };
 
 const mapStateToProps = state => {
@@ -966,7 +996,9 @@ const mapStateToProps = state => {
     student: state.student,
     picture: state.userProfilePicture,
     feature: state.feature,
-    features: state.features
+    features: state.features,
+    post: state.post,
+    posts: state.posts
   };
 };
 
@@ -976,7 +1008,9 @@ const mapDispatchToProps = dispatch => {
     uppActions: bindActionCreators(userProfilePictureActions, dispatch),
     featuresActions: bindActionCreators(featuresActions, dispatch),
     featureActions: bindActionCreators(featureActions, dispatch),
-    usersActions: bindActionCreators(usersActions, dispatch)
+    usersActions: bindActionCreators(usersActions, dispatch),
+    postActions: bindActionCreators(postActions, dispatch),
+    postsActions: bindActionCreators(postsActions, dispatch)
   };
 };
 

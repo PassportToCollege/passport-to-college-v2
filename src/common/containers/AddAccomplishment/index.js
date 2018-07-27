@@ -191,6 +191,26 @@ class AddAccomplishment extends Component {
 
     if(!Object.keys(newAccomplishment.full).length)
       return this.setDetailsErrorNotification("full details required");
+
+    const accomplishment = new Accomplishment({
+      title: newAccomplishment.title,
+      author: auth.currentUser.uid,
+      excerpt: newAccomplishment.excerpt,
+      full: newAccomplishment.full
+    }, this.state.student.uid);
+
+    if (newAccomplishment.hero) {
+      accomplishment.hasHero = true;
+
+      this.props.postActions.doHeroUpload(
+        newAccomplishment.hero,
+        accomplishment.id
+      );
+    }
+
+    this.props.postCategoryActions.doCategoryPostsUpdate("student_accomplishments");
+
+    this.props.postActions.doPostCreate(accomplishment);
   }
 
   setHeroNotification = (notification = "") => {
@@ -209,7 +229,7 @@ class AddAccomplishment extends Component {
     });
   }
 
-  setTitleNotification = notification => {
+  setTitleNotification = (notification = "") => {
     this.setState({
       hasTitleNotification: true,
       titleNotificationClosed: false,
@@ -225,7 +245,7 @@ class AddAccomplishment extends Component {
     });
   }
   
-  setExcerptNotification = notification => {
+  setExcerptNotification = (notification = "") => {
     this.setState({
       hasExcerptNotification: true,
       excerptNotificationClosed: false,
@@ -241,7 +261,7 @@ class AddAccomplishment extends Component {
     });
   }
 
-  setDetailsErrorNotification = notification => {
+  setDetailsErrorNotification = (notification = "") => {
     this.setState({
       hasDetailsNotification: true,
       detailsNotificationClosed: false,

@@ -537,14 +537,18 @@ export class Post {
     const {
       id, title, author,excerpt, full,
       createdAt, category, state, conversations,
-      likes
+      likes, hasHero
     } = this;
 
     return {
       id, title, author, excerpt, full,
       createdAt, category, state, conversations,
-      likes
+      likes, hasHero
     };
+  }
+
+  set hero(hasHero) {
+    this.hasHero = hasHero;
   }
 }
 
@@ -578,10 +582,6 @@ export class Feature extends Post {
       isActive
     };
   }
-
-  set hero(hasHero) {
-    this.hasHero = hasHero;
-  }
 }
 
 export class Accomplishment extends Post {
@@ -601,13 +601,13 @@ export class Accomplishment extends Post {
     const {
       id, title, author,excerpt, full,
       createdAt, category, state, conversations,
-      likes, isAccomplishment, student
+      likes, isAccomplishment, student, hasHero
     } = this;
 
     return {
       id, title, author, excerpt, full,
       createdAt, category, state, conversations,
-      likes, isAccomplishment, student
+      likes, isAccomplishment, student, hasHero
     };
   }
 }

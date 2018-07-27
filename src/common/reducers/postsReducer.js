@@ -11,7 +11,10 @@ import {
   POSTS_GET_MOST_RECENT_BY_CATEGORY_INITIATED,
   POSTS_GET_MOST_RECENT_BY_CATEGORY_DONE,
   POSTS_GET_MOST_RECENT_BY_CATEGORY_FAILED,
-  PAGINATE_POSTS_FAILED
+  PAGINATE_POSTS_FAILED,
+  GET_ACCOMPLISHMENTS_BY_USER_INITIATED,
+  GET_ACCOMPLISHMENTS_BY_USER_FAILED,
+  GOT_ACCOMPLISHMENTS_BY_USER
 } from "../actions/actionTypes";
 
 const posts = (state = initialState.posts, action) => {
@@ -101,6 +104,29 @@ const posts = (state = initialState.posts, action) => {
         mostRecentGetByCategoryGetFailed: true,
         category: action.category,
         error: action.error
+      });
+    case GET_ACCOMPLISHMENTS_BY_USER_INITIATED:
+      return Object.assign({}, state, {
+        gettingAccomplishmentsByUser: true,
+        gotAccomplishmentsByUser: false,
+        failedToGetAccomplishmentsByUser: false,
+        student: action.student
+      });
+    case GET_ACCOMPLISHMENTS_BY_USER_FAILED:
+      return Object.assign({}, state, {
+        gettingAccomplishmentsByUser: false,
+        gotAccomplishmentsByUser: false,
+        failedToGetAccomplishmentsByUser: true,
+        student: action.student,
+        error: action.error
+      });
+    case GOT_ACCOMPLISHMENTS_BY_USER:
+      return Object.assign({}, state, {
+        gettingAccomplishmentsByUser: false,
+        gotAccomplishmentsByUser: true,
+        failedToGetAccomplishmentsByUser: false,
+        student: action.student,
+        accomplishmentsByUser: action.posts
       });
     default:
       return state;

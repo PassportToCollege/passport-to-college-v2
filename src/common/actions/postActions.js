@@ -27,9 +27,21 @@ export const postCreated = id => {
   };
 };
 
-export const doPostCreate = () => {
+export const doPostCreate = (post = {}) => {
   return dispatch => {
     dispatch(createPostInitiated());
+
+    if ("object" === typeof post && Object.keys(post).length) {
+      return db.collection(post)
+        .doc(post.id)
+        .set(post, { merge: true })
+        .then(() => {
+          dispatch(postCreated(post.id));
+        })
+        .catch(error => {
+          dispatch(createPostFailed(error));
+        });
+    }
 
     auth.onAuthStateChanged(user => {
       if (user) {
