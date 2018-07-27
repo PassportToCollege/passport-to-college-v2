@@ -30,7 +30,11 @@ class Feature extends Component {
         <AnnotatedList data={[
           { label: "id", text: this.state.feature.id },
           { label: "created on", text: moment(this.state.feature.createdAt).format("MM-DD-Y") },
-          { label: "expires on", text: moment(this.state.feature.expiration).format("MM-DD-Y") }
+          { label: "expires on", text: moment(this.state.feature.expiration).format("MM-DD-Y") },
+          { 
+            label: "state", 
+            text: this.state.feature.state.published ? "featured" : this.state.feature.state.archived ? "archived" : "draft" 
+          }
         ]} />
         {
           this.state.actions ?

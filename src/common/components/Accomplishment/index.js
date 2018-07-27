@@ -19,8 +19,18 @@ const Accomplishment = ({ accomplishment, actions, doDelete, doEdit }) => {
   return (
     <div className="accomplishment">
       <section className="accomplishment__meta">
+        {
+          accomplishment.state.published ?
+            <p className="type__caption accomplishment__published">published</p>:
+            null
+        }
+        {
+          accomplishment.state.draft ?
+            <p className="type__caption accomplishment__draft">draft</p>:
+            null
+        }
         <h5>{accomplishment.title}</h5>
-        <p className="type__margin_top type__caption">
+        <p className="type__caption">
           {moment.utc(moment(accomplishment.createdAt)).format("MMM D, YYYY")}
         </p>
       </section>

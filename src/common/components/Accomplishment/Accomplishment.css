@@ -24,17 +24,17 @@
   border-bottom: 1px solid rgba(128, 150, 162, 0.25);
 }
 
-.accomplishment > .accomplishment__meta > span {
-  font-family: "Muli", sans-serif;
-  font-size: 0.85em;
-  font-style: italic;
-  opacity: 0.85;
+.accomplishment > .accomplishment__meta > h5 {
+  margin: 0;
+  font-weight: 600;
 }
 
-.accomplishment > .accomplishment__meta > h2 {
-  margin: 0;
-  font-weight: 400;
-  color: rgba(128, 150, 162, 0.95);
+.accomplishment__meta > p {
+  margin: 0.5em 0;
+}
+
+.accomplishment__meta > p.accomplishment__draft {
+  color: #FF6561;
 }
 
 .accomplishment > .accomplishment__excerpt > p {
