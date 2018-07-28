@@ -37,7 +37,8 @@ const posts = (state = initialState.posts, action) => {
         isGetting: false,
         hasGotten: false,
         postsGetFailed: true,
-        error: action.error
+        error: action.error,
+        posts: null
       });
     case POSTS_GET_MOST_RECENT_INITIATED:
       return Object.assign({}, state, {
@@ -57,7 +58,8 @@ const posts = (state = initialState.posts, action) => {
         gettingMostRecent: false,
         gotMostRecent: false,
         mostRecentGetFailed: true,
-        error: action.error
+        error: action.error,
+        mostRecent: null
       });
     case PAGINATE_POSTS_INITIATED:
       return Object.assign({}, state, {
@@ -80,7 +82,8 @@ const posts = (state = initialState.posts, action) => {
         paginationDone: false,
         paginationFailed: true,
         page: action.page,
-        error: action.error
+        error: action.error,
+        paginatedPosts: null
       });
     case POSTS_GET_MOST_RECENT_BY_CATEGORY_INITIATED:
       return Object.assign({}, state, {
@@ -103,7 +106,8 @@ const posts = (state = initialState.posts, action) => {
         gotMostRecentByCategory: false,
         mostRecentGetByCategoryGetFailed: true,
         category: action.category,
-        error: action.error
+        error: action.error,
+        moreByCategory: null
       });
     case GET_ACCOMPLISHMENTS_BY_USER_INITIATED:
       return Object.assign({}, state, {
@@ -118,7 +122,8 @@ const posts = (state = initialState.posts, action) => {
         gotAccomplishmentsByUser: false,
         failedToGetAccomplishmentsByUser: true,
         student: action.student,
-        error: action.error
+        error: action.error,
+        accomplishmentsByUser: null
       });
     case GOT_ACCOMPLISHMENTS_BY_USER:
       return Object.assign({}, state, {

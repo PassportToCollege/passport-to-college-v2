@@ -1,9 +1,13 @@
 import "./ViewScholar.css";
 
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
 import _ from "lodash";
 
+import * as featuresActions from "../../../actions/featuresActions";
+import * as postsActions from "../../../actions/postsActions";
 import { shuffle } from "../../../utils";
 import { Student } from "../../../utils/utilityClasses";
 
@@ -18,22 +22,26 @@ class ViewScholar extends Component {
   constructor(props) {
     super(props);
 
-    let current;
-    if (props.students.gotCurrentStudents) {
-      current = props.students.students.find(student => {
-        return student.uid === props.match.params.uid
-      });
-    }
-
     this.state = {
-      current,
+      current: this.getCurrentStudent(props.students.students),
       students: props.students.gotCurrentStudents ? props.students.students : null
     }
   }
 
   static propTypes = {
     students: propTypes.object,
-    match: propTypes.object
+    match: propTypes.object,
+    posts: propTypes.object,
+    postsActions: propTypes.object,
+    features: propTypes.object,
+    featuresActions: propTypes.object
+  }
+
+  componentDidMount() {
+    if (this.state.current) {
+      this.props.postsActions.doGetAccomplishmentsByUser(this.state.current.uid, "published");
+      this.props.featuresActions.doGetFeaturesByUser(this.state.current.uid, "published");
+    }
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -47,6 +55,20 @@ class ViewScholar extends Component {
       }
     }
 
+    if (nextProps.posts.gotAccomplishmentsByUser &&
+    !_.isEqual(prevState.accomplishments, nextProps.posts.accomplishmentsByUser)) {
+      return {
+        accomplishments: nextProps.posts.accomplishmentsByUser
+      };
+    }
+
+    if (nextProps.features.hasGotten &&
+    !_.isEqual(nextProps.features.userFeatures, prevState.features)) {
+      return {
+        features: nextProps.features.userFeatures
+      };
+    }
+
     return null;
   }
 
@@ -54,6 +76,19 @@ class ViewScholar extends Component {
     if (props.match.params.uid !== this.props.match.params.uid) {
       return {
         studentChanged: true
+      };
+    }
+
+    if (props.students.gettingCurrentStudents && this.props.students.gotCurrentStudents) {
+      return {
+        gotStudents: true
+      };
+    }
+
+    if (this.props.features.hasGotten && this.props.posts.gotAccomplishmentsByUser &&
+    this.state.accomplishments && this.state.features) {
+      return {
+        gotFeatsAndAccomplishments: true
       };
     }
 
@@ -72,6 +107,23 @@ class ViewScholar extends Component {
         current: this.props.students.students.find(student => {
           return student.uid === this.props.match.params.uid
         })
+      });
+    }
+
+    if (snapshot && snapshot.gotStudents && this.state.current) {
+      this.props.postsActions.doGetAccomplishmentsByUser(this.state.current.uid, "published");
+      this.props.featuresActions.doGetFeaturesByUser(this.state.current.uid, "published");
+    }
+
+    if (snapshot && snapshot.gotFeatsAndAccomplishments) {
+      const combined = [...this.state.accomplishments, ...this.state.features].sort((a, b) => {
+        return a.createdAt - b.createdAt;
+      });
+
+      this.setState({
+        combined,
+        features: null,
+        accomplishments: null
       });
     }
   }
@@ -111,6 +163,16 @@ class ViewScholar extends Component {
         </ToTopContainer>
       </React.Fragment>
     )
+  }
+
+  getCurrentStudent = students => {
+    if (students) {
+      return students.find(student => {
+        return student.uid === this.props.match.params.uid;
+      });
+    }
+
+    return null;
   }
 
   getPictureBlock = () => {
@@ -244,5 +306,22 @@ class ViewScholar extends Component {
   }
 }
 
-export default ViewScholar;
+const mapStateToProps = state => {
+  return {
+    posts: state.posts,
+    features: state.features
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    postsActions: bindActionCreators(postsActions, dispatch),
+    featuresActions: bindActionCreators(featuresActions, dispatch)
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ViewScholar);
 
