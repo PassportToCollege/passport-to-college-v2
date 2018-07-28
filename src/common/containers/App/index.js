@@ -98,7 +98,7 @@ class App extends React.Component {
             <Route path={routes.SIGN_UP.route} render={props => this.authMiddleware(props, SignUp)}></Route>
             <Route path={routes.RESET_PASSWORD.route} render={(props) => this.authMiddleware(props, ResetPassword)}></Route>
             <Route path={routes.CONFIRM_EMAIL_ADDRESS.route} render={(props) => this.defaultRouteMiddleware(props, ConfirmEmail)}></Route>
-            <Route path={routes.DASHBOARD.route} render={props => this.protectedMiddleware(props, Dashboard)}></Route>
+            <Route path={routes.DASHBOARD.route} render={props => this.protectedAdminMiddleware(props, Dashboard)}></Route>
             <Route path={routes.STUDENT_DASHBOARD.route} render={props => this.protectedStudentMiddleware(props, StudentDashboard)}></Route>
             <Route exact path={routes.APPLY.route} render={props => this.applyLandingMiddleware(props, Apply)}></Route>
             <Route path={routes.APPLY_PORTAL.route} render={props => this.applicationPortalMiddleware(props, ApplicationPortal)}></Route>
@@ -132,6 +132,19 @@ class App extends React.Component {
     return <Component {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }} />
   }
 
+  protectedAdminMiddleware(props, Component) {
+     if (!isAuthorized())
+      return <Redirect to="/auth/sign-in" />
+
+    if (isStudent())
+      return <Redirect to="/scholar/dashboard" />
+
+    if (isAdmin())
+      return <Component {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }} />
+
+    return <Redirect to="/" />
+  }
+
   protectedStudentMiddleware(props, Component) {
     if (!isAuthorized())
       return <Redirect to="/auth/sign-in" />
@@ -141,7 +154,7 @@ class App extends React.Component {
 
     if (isStudent())
       return <Component {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }} />
-
+    console("got here")
     return <Redirect to="/" />
   }
 

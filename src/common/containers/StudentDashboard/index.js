@@ -10,6 +10,7 @@ import * as studentActions from "../../actions/studentActions";
 import { activeUser } from "../../utils";
 import { getProfilePicture } from "../../utils/firebase/functions";
 
+import NavigationDashboard from "../NavigationDashboard";
 import PageMeta from "../../components/PageMeta";
 
 const Console = console;
@@ -69,7 +70,7 @@ class StudentDashboard extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <div className="student_dashboard">
         {
           this.state.student ?
             <PageMeta>
@@ -77,8 +78,9 @@ class StudentDashboard extends Component {
             </PageMeta> :
             <PageMeta route="STUDENT_DASHBOARD" />
         }
+        <NavigationDashboard student />
         <main></main>
-      </React.Fragment>
+      </div>
     )
   }
 }

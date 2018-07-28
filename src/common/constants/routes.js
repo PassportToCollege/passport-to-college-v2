@@ -53,10 +53,10 @@ export const DASH_POSTS_COMMENTS = {
 };
 
 // Student Dashboard Routes
-export const STUDENT_DASHBOARD = { name: "Student Dashboard", route: "/scholar/dashboard" };
-export const STUDENT_DASHBOARD_BIO = { name: "Bio | Student Dashboard", route: "/scholar/dashboard/bio" };
-export const STUDENT_DASHBOARD_EDUCATION = { name: "Education | Student Dashboard", route: "/scholar/dashboard/education" };
-export const STUDENT_DASHBOARD_SETTINGS = { name: "Settings | Student Dashboard", route: "/scholar/dashboard/settings" };
+export const STUDENT_DASHBOARD = { name: "Student Dashboard", dashLabel: "profile", route: "/scholar/dashboard" };
+export const STUDENT_DASHBOARD_BIO = { name: "Bio | Student Dashboard", dashLabel: "bio", route: "/scholar/dashboard/bio" };
+export const STUDENT_DASHBOARD_EDUCATION = { name: "Education | Student Dashboard", dashLabel: "education", route: "/scholar/dashboard/education" };
+export const STUDENT_DASHBOARD_SETTINGS = { name: "Settings | Student Dashboard", dashLabel: "settings", route: "/scholar/dashboard/settings" };
 
 // Student Application Routes
 export const APPLY = { name: "Apply", route: "/apply" };

@@ -9,7 +9,7 @@ import { renderToString } from 'react-dom/server';
 import reducers from "../common/reducers";
 import App from "../common/containers/App";
 
-import Renderer from "./middleware/renderer";
+import handleRedirects from "./middleware/handle-redirects";
 
 const server = express();
 
@@ -29,36 +29,7 @@ server
       </Provider>
     );
 
-    if (context.url) {
-      let { ssid } = req.cookies;
-      const { url } = req;
-
-      if (ssid === undefined) {
-        return res.redirect(context.url);
-      }
-      
-      ssid = JSON.parse(ssid);
-      
-      if (url.indexOf("admin") > -1) {
-        if (ssid.isAdmin)
-          return Renderer(req, res, markup);
-        
-        if (ssid.isApplicant)
-          return res.redirect(`/apply/p/${ssid.uid}`);
-      }
-
-      if (url.indexOf("apply") > -1) {
-        if (ssid.isApplicant)
-          return Renderer(req, res, markup);
-        
-        if (ssid.isAdmin)
-          return res.redirect("/admin/dashboard");
-      }
-
-      return res.redirect("/");
-    } else {
-      Renderer(req, res, markup);
-    }
+    handleRedirects(context, req, res, markup);
   });
 
 export default server;

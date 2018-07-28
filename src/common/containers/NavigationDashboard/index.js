@@ -1,4 +1,4 @@
-import "./NavigationAdmin.css"
+import "./NavigationDashboard.css"
 
 import React, { Component } from "react";
 import { Link, NavLink } from "react-router-dom";
@@ -9,7 +9,17 @@ import Cookies from "universal-cookie";
 import { withRouter } from "react-router-dom";
 
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
-import { faTachometerAlt, faUsers, faUser, faHome, faSignOutAlt, faRss } from "@fortawesome/fontawesome-free-solid";
+import { 
+  faTachometerAlt, 
+  faUsers, 
+  faUser, 
+  faHome, 
+  faSignOutAlt, 
+  faRss, 
+  faBookOpen,
+  faChalkboard,
+  faSlidersH 
+} from "@fortawesome/fontawesome-free-solid";
 import { faWpforms } from "@fortawesome/fontawesome-free-brands";
 import LoadingText from "../../components/LoadingText";
 import Loader from "../../components/Loader";
@@ -22,8 +32,18 @@ import * as routes from "../../constants/routes";
 import defAvatar from "../../assets/images/default-gravatar.png";
 
 const cookies = new Cookies();
+const icons = {
+  [routes.DASHBOARD.route]: faTachometerAlt,
+  [routes.APPLICATIONS.route] : faWpforms,
+  [routes.USERS.route]: faUsers,
+  [routes.DASH_POSTS.route]: faRss,
+  [routes.STUDENT_DASHBOARD.route]: faUser,
+  [routes.STUDENT_DASHBOARD_BIO.route]: faBookOpen,
+  [routes.STUDENT_DASHBOARD_EDUCATION.route]: faChalkboard,
+  [routes.STUDENT_DASHBOARD_SETTINGS.route]: faSlidersH
+}
 
-class NavigationAdmin extends Component {
+class NavigationDashboard extends Component {
   constructor(props) {
     super(props);
 
@@ -105,16 +125,19 @@ class NavigationAdmin extends Component {
         </div>
         <div className="dashboard__navigation_container">
           <ul>
-            {this.renderMainNavElements()}
+            {this.selectMainNavElements()}
           </ul>
           <hr />
           <ul>
-            <li>
-              <NavLink exact to={routes.PROFILE.route}>
-                <FontAwesomeIcon icon={faUser} />
-                <span>profile</span>
-              </NavLink>
-            </li>
+            {
+              !this.props.student ?
+                <li>
+                  <NavLink exact to={routes.PROFILE.route}>
+                    <FontAwesomeIcon icon={faUser} />
+                    <span>profile</span>
+                  </NavLink>
+                </li> : null
+            }
             <li>
               <NavLink exact to={routes.LANDING.route}>
                 <FontAwesomeIcon icon={faHome}/>
@@ -141,56 +164,54 @@ class NavigationAdmin extends Component {
     this.props.history.push("/")
   }
 
-  renderMainNavElements = () => {
-    let mainRoutes = [
+  selectMainNavElements = () => {
+    let adminRoutes = [
       routes.DASHBOARD,
       routes.APPLICATIONS,
       routes.USERS,
       routes.DASH_POSTS
-    ]
+    ];
 
-    const els = mainRoutes.map((v, i) => {
-      let icon;
+    let studentRoutes = [
+      routes.STUDENT_DASHBOARD,
+      routes.STUDENT_DASHBOARD_BIO,
+      routes.STUDENT_DASHBOARD_EDUCATION,
+      routes.STUDENT_DASHBOARD_SETTINGS
+    ];
 
-      switch(v.route){
-        case "/admin/dashboard":
-          icon = faTachometerAlt;
-          break;
-        case "/admin/dashboard/applications":
-          icon = faWpforms;
-          break;
-        case "/admin/dashboard/users":
-          icon = faUsers;
-          break;
-        case "/admin/dashboard/posts":
-          icon = faRss;
-          break;
-        default:
-          icon = "";
-      }
+    if (this.props.student)
+      return this.renderMainNavElements(studentRoutes);
 
+    return this.renderMainNavElements(adminRoutes);
+  }
+
+  renderMainNavElements = (routes = []) => {
+    return routes.map(route => {
       return (
-        <li key={i}>
-          <NavLink exact={v.name === "Dashboard" ? true : false}
-            to={v.route} activeClassName="active">
-            <FontAwesomeIcon icon={icon} />
-            <span>{v.name}</span>
-          </NavLink>
-        </li>
-      )
-    });
-
-    return els;
+          <li key={route.route}>
+            <NavLink exact={(route.name === "Dashboard" || route.dashLabel === "profile")}
+              to={route.route} activeClassName="active">
+              <FontAwesomeIcon icon={icons[route.route]} />
+              <span>{route.dashLabel || route.name}</span>
+            </NavLink>
+          </li>
+        );
+      });
   }
 }
 
-NavigationAdmin.propTypes = {
+NavigationDashboard.defaultProps = {
+  student: false
+};
+
+NavigationDashboard.propTypes = {
   userProfilePictureActions: propTypes.object,
   authActions: propTypes.object,
   profilePicture: propTypes.object,
   userActions: propTypes.object,
   user: propTypes.object,
-  history: propTypes.object
+  history: propTypes.object,
+  student: propTypes.bool
 };
 
 const mapStateToProps = state => {
@@ -211,4 +232,4 @@ const mapDispatchToProps = dispatch => {
 export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(NavigationAdmin));
+)(NavigationDashboard));

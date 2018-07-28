@@ -7,7 +7,7 @@ import propTypes from "prop-types";
 import * as routes from "../../constants/routes";
 
 import PageMeta from "../../components/PageMeta";
-import NavigationAdmin from "../NavigationAdmin";
+import NavigationDashboard from "../NavigationDashboard";
 import SearchBar from "../SearchBar";
 import Applications from "./Applications";
 import Users from "./Users";
@@ -27,7 +27,7 @@ export default class Dashboard extends Component {
     return (
       <div className="dashboard">
         <PageMeta route="DASHBOARD" />
-        <NavigationAdmin />
+        <NavigationDashboard />
         <main className="dashboard__main">
           <SearchBar />
           <Route exact path={this.props.match.url} 
