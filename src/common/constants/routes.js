@@ -52,6 +52,12 @@ export const DASH_POSTS_COMMENTS = {
   route: "/admin/dashboard/post/:post_id/comments"
 };
 
+// Student Dashboard Routes
+export const STUDENT_DASHBOARD = { name: "Student Dashboard | Passport to College", route: "/scholar/dashboard" };
+export const STUDENT_DASHBOARD_BIO = { name: "Bio | Student Dashboard | Passport to College", route: "/scholar/dashboard/bio" };
+export const STUDENT_DASHBOARD_EDUCATION = { name: "Education | Student Dashboard | Passport to College", route: "/scholar/dashboard/education" };
+export const STUDENT_DASHBOARD_SETTINGS = { name: "Settings | Student Dashboard | Passport to College", route: "/scholar/dashboard/settings" };
+
 // Student Application Routes
 export const APPLY = { name: "Apply", route: "/apply" };
 export const APPLY_PORTAL = { name: "Application Portal | Apply", route: "/apply/p/:application_id" };
