@@ -410,7 +410,7 @@ class UserSection extends Component {
                   { label: "full name", text: this.state.user.name.full },
                   { 
                     label: "dob", 
-                    text: this.state.user.dob ? moment(this.state.user.dob).format("MM-DD-Y") : "no dob" 
+                    text: this.state.user.dob ? moment.utc(moment(this.state.user.dob)).format("MM-DD-Y") : "no dob" 
                   },
                   { label: "gender", text: this.state.user.gender || "no gender provided" }
                 ]} /> :
