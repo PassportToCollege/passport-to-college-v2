@@ -7,7 +7,9 @@ import {
   faSchool,
   faBook,
   faGlobe,
-  faCalendar
+  faCalendar,
+  faTrophy,
+  faStar
 
 } from "@fortawesome/fontawesome-free-solid";
 
@@ -16,7 +18,9 @@ const LabeledIconCard = ({ icon, label, children, cardStyles }) => {
     school: faSchool,
     book: faBook,
     globe: faGlobe,
-    date: faCalendar
+    date: faCalendar,
+    feature: faStar,
+    accomplishment: faTrophy
   }
 
   return (
@@ -25,7 +29,7 @@ const LabeledIconCard = ({ icon, label, children, cardStyles }) => {
         <FontAwesomeIcon icon={icons[icon]} />
       </span>
       {children}
-      <p className="labeled_icon_card__label type__uppercase type__light">{label}</p>
+      <p className="labeled_icon_card__label type__caption type__uppercase type__light">{label}</p>
     </span>
   )
 }

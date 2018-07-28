@@ -1,6 +1,7 @@
 import "./ViewScholar.css";
 
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
@@ -15,8 +16,9 @@ import ToTopContainer from "../../../components/ToTopContainer";
 import PageMeta from "../../../components/PageMeta";
 import ColoredStrip from "../../../components/ColoredStrip";
 import WYSIWYGEditor from "../../../components/Editor";
-import LabledIconCard from "../../../components/LabeledIconCard";
+import LabeledIconCard from "../../../components/LabeledIconCard";
 import HoverCard from "../../../components/HoverCard";
+import InvisibleFlexPadder from "../../../components/InvisibleFlexPadder";
 
 class ViewScholar extends Component {
   constructor(props) {
@@ -103,10 +105,15 @@ class ViewScholar extends Component {
         document.scrollingElement.scrollTop = 0;
       }
 
+      const current = this.props.students.students.find(student => {
+        return student.uid === this.props.match.params.uid
+      });
+
+      this.props.postsActions.doGetAccomplishmentsByUser(current.uid, "published");
+      this.props.featuresActions.doGetFeaturesByUser(current.uid, "published");
+
       this.setState({
-        current: this.props.students.students.find(student => {
-          return student.uid === this.props.match.params.uid
-        })
+        current
       });
     }
 
@@ -152,13 +159,15 @@ class ViewScholar extends Component {
           <ColoredStrip background="#11A5AC">
             <h3 className="type__uppercase type__center type__bold type__spacey type__color_white">
               {
-              this.state.current && 
-              (this.state.current.hasFeatures || this.state.current.hasAccomplishments) ?
+              this.state.combined ||
+              this.state.features ||
+              this.state.accomplishments ?
                 "features + accomplishments" :
                 "more scholars"
               }
             </h3>
           </ColoredStrip>
+          {this.getAccomplishmentsBlock()}
           {this.getMoreScholars()}
         </ToTopContainer>
       </React.Fragment>
@@ -228,26 +237,26 @@ class ViewScholar extends Component {
     if (this.state.current) {
       return (
         <section className="view_scholar__facts">
-          <LabledIconCard icon="school" 
+          <LabeledIconCard icon="school" 
             label="university">
             <h4 className="type__center">{this.state.current.university}</h4>
-          </LabledIconCard>
-          <LabledIconCard icon="book" 
+          </LabeledIconCard>
+          <LabeledIconCard icon="book" 
             label="major">
             <h4 className="type__center">{this.state.current.major}</h4>
-          </LabledIconCard>
-          <LabledIconCard icon="globe" 
+          </LabeledIconCard>
+          <LabeledIconCard icon="globe" 
             label="country">
             <h4 className="type__center">{this.state.current.user.address.country}</h4>
-          </LabledIconCard>
-          <LabledIconCard icon="date" 
+          </LabeledIconCard>
+          <LabeledIconCard icon="date" 
             label="enrolled">
             <h4 className="type__center">{this.state.current.enrollmentYear}</h4>
-          </LabledIconCard>
-          <LabledIconCard icon="date" 
+          </LabeledIconCard>
+          <LabeledIconCard icon="date" 
             label="expected graduation">
             <h4 className="type__center">{this.state.current.graduationYear}</h4>
-          </LabledIconCard>
+          </LabeledIconCard>
           <div className="view_scholar__facts_section_overflow"></div>
         </section>
       )
@@ -256,15 +265,78 @@ class ViewScholar extends Component {
     return null;
   }
 
+  getAccomplishmentsBlock = () => {
+    const { combined, features, accomplishments } = this.state;
+
+    if (combined || features || accomplishments) {
+      return (
+        <section className="view_scholar__accomplishments">
+          <div>
+            {
+              combined ?
+                combined.map(post => {
+                  return (
+                    <LabeledIconCard key={post.id}
+                      icon={post.isFeature ? "feature" : "accomplishment"}
+                      label={post.isFeature ? "feature" : "accomplishment"}>
+                      <h4 className="type__center">
+                        <Link to={`/stories/read/${post.id}`}>{post.title}</Link>
+                      </h4>
+                    </LabeledIconCard>
+                  )
+                }) : null
+            }
+            {
+              features ?
+                features.map(post => {
+                  return (
+                    <LabeledIconCard key={post.id}
+                      icon={post.isFeature ? "feature" : "accomplishment"}
+                      label={post.isFeature ? "feature" : "accomplishment"}>
+                      <h4 className="type__center">
+                        <Link to={`/stories/read/${post.id}`}>{post.title}</Link>
+                      </h4>
+                    </LabeledIconCard>
+                  )
+                }) : null
+            }
+            {
+              accomplishments ?
+                accomplishments.map(post => {
+                  return (
+                    <LabeledIconCard key={post.id}
+                      icon={post.isFeature ? "feature" : "accomplishment"}
+                      label={post.isFeature ? "feature" : "accomplishment"}>
+                      <h4 className="type__center">
+                        <Link to={`/stories/read/${post.id}`}>{post.title}</Link>
+                      </h4>
+                    </LabeledIconCard>
+                  )
+                }) : null
+            }
+            {
+              (combined && combined.length % 3 > 0) ||
+              (features && features.length % 3 > 0) ||
+              (accomplishments && accomplishments.length % 3 > 0) ?
+                <InvisibleFlexPadder width="350px" height="350px" /> : null
+            }
+          </div>
+        </section>
+      );
+    }
+
+    return null;
+  }
+
   getMoreScholars = () => {
     if (this.state.current && this.state.students) {
-      const { current } = this.state;
+      const { combined, accomplishments, features } = this.state;
       const moreStudents = this.getSuggestedStudents();
 
       return (
         <section className="view_scholar__more_scholars">
           {
-            current.hasFeatures || current.hasAccomplishments ?
+            combined || accomplishments || features ?
               <h3 className="type__uppercase type__center type__bold type__spacey">
                 more scholars
               </h3> : null

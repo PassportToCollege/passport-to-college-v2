@@ -74,6 +74,35 @@
   background-color: #11A5AC;
 }
 
+/* Accomplishments block */
+.view_scholar__accomplishments {
+  background-color: #f1f1f1;
+}
+
+.view_scholar__accomplishments > div {
+  width: 1140px;
+  max-width: 100%;
+  padding-top: 45px;
+  margin: 0 auto;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+
+.view_scholar__accomplishments .labeled_icon_card {
+  background-color: white;
+  margin-bottom: 45px;
+}
+
+.view_scholar__accomplishments .labeled_icon_card > h4 > a {
+  color: #333;
+}
+
+.view_scholar__accomplishments .invisible_flex_padder {
+  margin-bottom: 45px;
+  padding: 2em;
+}
+
 /* More scholars block */
 
 .view_scholar__more_scholars {
@@ -88,4 +117,5 @@
   display: flex;
   flex-flow: row wrap;
   justify-content: space-evenly;
+  margin-top: 3rem;
 }
