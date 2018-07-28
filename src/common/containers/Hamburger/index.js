@@ -11,7 +11,7 @@ import Cookies from "universal-cookie";
 import * as hamburgerActions from "../../actions/hamburgerActions";
 import * as authActions from "../../actions/authActions";
 import * as routes from "../../constants/routes";
-import { isAuthorized, isAdmin } from "../../utils";
+import { isAuthorized, isAdmin, isStudent, isApplicant } from "../../utils";
 
 const mainNavItems = [
   routes.LANDING,
@@ -59,7 +59,6 @@ class Hamburger extends Component {
           </div>
           <div className="hamburger__other_nav">
             <ul>
-              <li><NavLink to={routes.APPLY.route} onClick={this.handleCloseButtonClick}>{routes.APPLY.name}</NavLink></li>
               {this.selectAuthLink()}
             </ul>
           </div>
@@ -72,14 +71,44 @@ class Hamburger extends Component {
     if (isAuthorized()) {
       let links = [];
       
-      if(isAdmin())
-        links.push(<li key="dashboard"><NavLink to={routes.DASHBOARD.route} onClick={this.handleCloseButtonClick}>{routes.DASHBOARD.name}</NavLink></li>);
+      if(isAdmin()) {
+        links.push(
+          <li key="dashboard">
+            <NavLink to={routes.DASHBOARD.route} onClick={this.handleCloseButtonClick}>
+              {routes.DASHBOARD.name}
+            </NavLink>
+          </li>
+        );
+      } else if (isStudent()) {
+        links.push(
+          <li key="student-dashboard">
+            <NavLink to={routes.STUDENT_DASHBOARD.route} onClick={this.handleCloseButtonClick}>Profile</NavLink>
+          </li>
+        );
+      } else if (isApplicant()) {
+        links.push(
+          <li key="application-dashboard">
+            <NavLink to={routes.APPLY.route} onClick={this.handleCloseButtonClick}>Your Application</NavLink>
+          </li>
+        );
+      }
       
       links.push(<li key="sign-out"><NavLink to={routes.SIGN_OUT.route} onClick={this.handleSignOutClick}>{routes.SIGN_OUT.name}</NavLink></li>);
       return links;
     }
 
-    return <li><NavLink to={routes.SIGN_IN.route} onClick={this.handleCloseButtonClick}>{routes.SIGN_IN.name}</NavLink></li>
+    return [
+      <li key="application-dashboard">
+        <NavLink to={routes.APPLY.route} onClick={this.handleCloseButtonClick}>
+          {routes.APPLY.name}
+        </NavLink>
+      </li>,
+      <li key="sign-in">
+        <NavLink to={routes.SIGN_IN.route} onClick={this.handleCloseButtonClick}>
+          {routes.SIGN_IN.name}
+        </NavLink>
+      </li>
+    ]
   }
 
   handleCloseButtonClick = () => {
