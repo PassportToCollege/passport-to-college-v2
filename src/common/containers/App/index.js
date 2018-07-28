@@ -13,7 +13,9 @@ import {
   initializeFacebook,
   isBrowser,
   activeUser,
-  isApplicant
+  isApplicant,
+  isStudent,
+  isAdmin
 } from "../../utils";
 
 import Hamburger from "../Hamburger";
@@ -31,6 +33,7 @@ import ResetPassword from "../Auth/ResetPassword";
 import ConfirmEmail from "../Auth/ConfirmEmail";
 
 import Dashboard from "../Dashboard";
+import StudentDashboard from "../StudentDashboard";
 import Apply from "../Apply";
 import ApplicationPortal from "../Apply/Portal";
 
@@ -96,6 +99,7 @@ class App extends React.Component {
             <Route path={routes.RESET_PASSWORD.route} render={(props) => this.authMiddleware(props, ResetPassword)}></Route>
             <Route path={routes.CONFIRM_EMAIL_ADDRESS.route} render={(props) => this.defaultRouteMiddleware(props, ConfirmEmail)}></Route>
             <Route path={routes.DASHBOARD.route} render={props => this.protectedMiddleware(props, Dashboard)}></Route>
+            <Route path={routes.STUDENT_DASHBOARD.route} render={props => this.protectedStudentMiddleware(props, StudentDashboard)}></Route>
             <Route exact path={routes.APPLY.route} render={props => this.applyLandingMiddleware(props, Apply)}></Route>
             <Route path={routes.APPLY_PORTAL.route} render={props => this.applicationPortalMiddleware(props, ApplicationPortal)}></Route>
           </div>
@@ -126,6 +130,19 @@ class App extends React.Component {
       return <Redirect to="/auth/sign-in" />
 
     return <Component {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }} />
+  }
+
+  protectedStudentMiddleware(props, Component) {
+    if (!isAuthorized())
+      return <Redirect to="/auth/sign-in" />
+
+    if (isAdmin())
+      return <Redirect to="/admin/dashboard" />
+
+    if (isStudent())
+      return <Component {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }} />
+
+    return <Redirect to="/" />
   }
 
   applyLandingMiddleware(props) {
