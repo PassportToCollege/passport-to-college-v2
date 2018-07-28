@@ -27,6 +27,7 @@ import Loader from "../../components/Loader";
 import * as userProfilePictureActions from "../../actions/userProfilePictureActions";
 import * as authActions from "../../actions/authActions";
 import * as userActions from "../../actions/userActions";
+import * as menuActions from "../../actions/menuActions";
 import * as routes from "../../constants/routes";
 
 import defAvatar from "../../assets/images/default-gravatar.png";
@@ -54,6 +55,7 @@ class NavigationDashboard extends Component {
 
   componentDidMount() {
     this.props.userActions.doUserGet();
+    this.selectNavigationState();
   }
 
   static getDerivedStateFromProps(nextProps) {
@@ -98,7 +100,7 @@ class NavigationDashboard extends Component {
 
   render() {
     return (
-      <nav className="dashboard__navigation">
+      <nav className="dashboard__navigation" data-state={this.props.menu.dash}>
         <div className="dashboard__navigation__top">
           <div className="dashboard__navigation_avatar_container">
             {
@@ -202,6 +204,18 @@ class NavigationDashboard extends Component {
         );
       });
   }
+
+  selectNavigationState = () => {
+    const { innerWidth } = window;
+
+    if (innerWidth > 768)
+      return this.props.menuActions.makeDashMenuFull();
+
+    if (innerWidth > 384)
+      return this.props.menuActions.makeDashMenuCompact();
+
+    this.props.menuActions.closeDashMenu();
+  }
 }
 
 NavigationDashboard.defaultProps = {
@@ -215,13 +229,16 @@ NavigationDashboard.propTypes = {
   userActions: propTypes.object,
   user: propTypes.object,
   history: propTypes.object,
-  student: propTypes.bool
+  student: propTypes.bool,
+  menu: propTypes.object,
+  menuActions: propTypes.object
 };
 
 const mapStateToProps = state => {
   return {
     profilePicture: state.userProfilePicture,
-    user: state.user
+    user: state.user,
+    menu: state.menu
   };
 };
 
@@ -229,7 +246,8 @@ const mapDispatchToProps = dispatch => {
   return {
     userProfilePictureActions: bindActionCreators(userProfilePictureActions, dispatch),
     authActions: bindActionCreators(authActions, dispatch),
-    userActions: bindActionCreators(userActions, dispatch)
+    userActions: bindActionCreators(userActions, dispatch),
+    menuActions: bindActionCreators(menuActions, dispatch)
   };
 };
 

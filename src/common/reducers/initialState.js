@@ -1,5 +1,8 @@
 export default {
   hamburgerState: { current: "closed" },
+  menu: {
+    dash: "closed"
+  },
   auth: {
     activeUser: false
   },
@@ -16,5 +19,5 @@ export default {
   post: {},
   posts: {},
   postCategories: {},
-  comments: {}
+  comments: {},
 }
