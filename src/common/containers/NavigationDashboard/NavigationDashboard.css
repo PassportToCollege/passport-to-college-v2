@@ -32,13 +32,6 @@ nav.dashboard__navigation {
   max-width: 64px;
 }
 
-/* Username */
-.dashboard__navigation__top > h3 {
-  text-align: center;
-  color: white;
-  margin-bottom: 0;
-}
-
 /* Edit Profile Link */
 .dashboard__navigation__top > a {
   color: #FF6561;

@@ -119,9 +119,13 @@ class NavigationDashboard extends Component {
                 ]
               }} />
             :
-              <h3>{this.state.username}</h3>
+              <h5 className="type__color_white type__center">{this.state.username}</h5>
           }
-          <Link to={routes.PROFILE.route}>view profile</Link>
+          {
+            !this.props.student ?
+              <Link to={routes.PROFILE.route}>view profile</Link> :
+              null
+          }
         </div>
         <div className="dashboard__navigation_container">
           <ul>
