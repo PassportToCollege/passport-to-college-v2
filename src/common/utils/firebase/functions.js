@@ -21,6 +21,27 @@ export const getUser = uid => {
   });
 }
 
+export const getProfilePicture = uid => {
+  return new Promise((resolve, reject) => {
+    if (!uid.length)
+      return reject({ message: "no uid provided" });
+
+    if (storage && isBrowser) {
+      storage.ref("users/profile_images")
+        .child(`${uid}.png`)
+        .getDownloadURL()
+        .then(url => {
+          resolve(url);
+        })
+        .catch(error => {
+          reject(error);
+        })
+    } else {
+      reject({ message: "unsupported environment" });
+    }
+  });
+}
+
 export const getPostHero = id => {
   return new Promise((resolve, reject) => {
     if (!id.length)
