@@ -9,7 +9,7 @@ const menu = (state = initialState.menu, action) => {
   switch (action.type) {
     case DASHBOARD_MENU_STATE_CLOSED:
       return Object.assign({}, state, {
-        dash: "closed"
+        dash: `${state.dash} closed`
       });
     case DASHBOARD_MENU_STATE_COMPACT:
       return Object.assign({}, state, {

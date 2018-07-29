@@ -9,10 +9,6 @@ nav.dashboard__navigation {
   transition: transform 200ms linear;
 }
 
-nav.dashboard__navigation[data-state="closed"] {
-  transform: translateX(-100%);
-}
-
 /* Top Container */
 .dashboard__navigation__top {
   padding: 2em 1em;
@@ -67,4 +63,56 @@ nav.dashboard__navigation[data-state="closed"] {
 .dashboard__navigation_container > ul > li > a.active,
 .dashboard__navigation_container > ul > li > a:hover {
   color: #FF6561;
+}
+
+/* Nav compact */
+nav.dashboard__navigation[data-state="compact"] {
+  width: 64px;
+}
+
+nav.dashboard__navigation[data-state="compact"] .dashboard__navigation_avatar_container {
+  width: 32px;
+  height: 32px;
+  margin: 0;
+}
+
+nav.dashboard__navigation[data-state="compact"] .dashboard__navigation_avatar_container img {
+  max-width: 32px;
+}
+
+nav.dashboard__navigation[data-state="compact"] .dashboard__navigation__top > h5 {
+  display: none;
+}
+
+nav.dashboard__navigation[data-state="compact"] .dashboard__navigation_container > ul > li {
+  text-align: center;
+}
+
+nav.dashboard__navigation[data-state="compact"] .dashboard__navigation_container > ul > li > a > span {
+  display: none;
+}
+
+nav.dashboard__navigation[data-state="compact"] .dashboard__navigation_container > ul > li > a {
+  position: relative;
+}
+
+nav.dashboard__navigation[data-state="compact"] .dashboard__navigation_container > ul > li > a:hover > span {
+  position: absolute;
+  display: block;
+  text-align: left;
+  margin: 0;
+  width: max-content;
+  top: 50%;
+  transform: translate(64px, -50%);
+  background-color: rgba(51,51,51,0.5);
+  padding: 0.5em;
+  font-size: 12px;
+  font-weight: 400;
+  border-radius: 7px;
+  color: white;
+}
+
+/* Nav closed */
+nav.dashboard__navigation[data-state~="closed"] {
+  transform: translateX(-100%);
 }

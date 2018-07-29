@@ -225,7 +225,7 @@ class NavigationDashboard extends Component {
     if ((innerWidth > 384 && innerWidth <= 768) && this.props.menu.dash !== "compact")
       return this.props.menuActions.makeDashMenuCompact();
 
-    if (innerWidth <= 384 && this.props.menu.dash !== "closed")
+    if (innerWidth <= 384 && this.props.menu.dash.indexOf("closed") === -1)
       return this.props.menuActions.closeDashMenu();
 
     return null;
