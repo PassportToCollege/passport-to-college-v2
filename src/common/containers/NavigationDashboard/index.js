@@ -7,7 +7,6 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import Cookies from "universal-cookie";
 import { withRouter } from "react-router-dom";
-
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
 import { 
   faTachometerAlt, 
@@ -21,9 +20,11 @@ import {
   faSlidersH 
 } from "@fortawesome/fontawesome-free-solid";
 import { faWpforms } from "@fortawesome/fontawesome-free-brands";
+
 import LoadingText from "../../components/LoadingText";
 import Loader from "../../components/Loader";
 
+import { isBrowser } from "../../utils";
 import * as userProfilePictureActions from "../../actions/userProfilePictureActions";
 import * as authActions from "../../actions/authActions";
 import * as userActions from "../../actions/userActions";
@@ -55,7 +56,15 @@ class NavigationDashboard extends Component {
 
   componentDidMount() {
     this.props.userActions.doUserGet();
-    this.selectNavigationState();
+
+    if (isBrowser) {
+      this.selectNavigationState();
+      window.addEventListener("resize", this.selectNavigationState);
+    }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.selectNavigationState);
   }
 
   static getDerivedStateFromProps(nextProps) {
@@ -91,9 +100,11 @@ class NavigationDashboard extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (snapshot && snapshot.gotUser) {
-      if (this.props.user.user.hasProfilePicture && !this.props.profilePicture.isGetting) {
-        this.props.userProfilePictureActions.doAvatarGet();
+    if (snapshot) {
+      if (snapshot.gotUser) {
+        if (this.props.user.user.hasProfilePicture && !this.props.profilePicture.isGetting) {
+          this.props.userProfilePictureActions.doAvatarGet();
+        }
       }
     }
   }
@@ -208,13 +219,16 @@ class NavigationDashboard extends Component {
   selectNavigationState = () => {
     const { innerWidth } = window;
 
-    if (innerWidth > 768)
+    if (innerWidth > 768 && this.props.menu.dash !== "full")
       return this.props.menuActions.makeDashMenuFull();
 
-    if (innerWidth > 384)
+    if ((innerWidth > 384 && innerWidth <= 768) && this.props.menu.dash !== "compact")
       return this.props.menuActions.makeDashMenuCompact();
 
-    this.props.menuActions.closeDashMenu();
+    if (innerWidth <= 384 && this.props.menu.dash !== "closed")
+      return this.props.menuActions.closeDashMenu();
+
+    return null;
   }
 }
 
