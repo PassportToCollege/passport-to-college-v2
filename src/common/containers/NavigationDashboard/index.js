@@ -17,7 +17,10 @@ import {
   faRss, 
   faBookOpen,
   faChalkboard,
-  faSlidersH 
+  faSlidersH,
+  faCaretLeft,
+  faCaretRight, 
+  faBars
 } from "@fortawesome/fontawesome-free-solid";
 import { faWpforms } from "@fortawesome/fontawesome-free-brands";
 
@@ -169,6 +172,17 @@ class NavigationDashboard extends Component {
             </li>
           </ul>
         </div>
+        <span className="dashboard__navigation_state_toggler"
+          onClick={this.forceNavState}>
+            {
+              this.props.menu.dash === "full" ?
+                <FontAwesomeIcon icon={faCaretLeft} /> :
+                this.props.menu.dash === "compact" ?
+                  <FontAwesomeIcon icon={faCaretRight} /> :
+                  <FontAwesomeIcon icon={faBars} />
+
+            }
+        </span>
       </nav>
     )
   }
@@ -219,7 +233,8 @@ class NavigationDashboard extends Component {
   selectNavigationState = () => {
     const { innerWidth } = window;
 
-    if (innerWidth > 768 && this.props.menu.dash !== "full")
+    if (innerWidth > 768 && this.props.menu.dash !== "full"
+    && this.state.forcedState !== "compact")
       return this.props.menuActions.makeDashMenuFull();
 
     if ((innerWidth > 384 && innerWidth <= 768) && this.props.menu.dash !== "compact")
@@ -229,6 +244,28 @@ class NavigationDashboard extends Component {
       return this.props.menuActions.closeDashMenu();
 
     return null;
+  }
+
+  forceNavState = () => {
+    const { dash } = this.props.menu;
+    let toState = "full";
+
+    if (dash.indexOf("closed") > -1) {
+      toState = dash.split(" ")[0];
+    }
+
+    if (dash === "full")
+      toState = "compact";
+
+    if (dash === "compact")
+      toState = "full";
+
+    this.setState({ forcedState: toState });
+    
+    if (toState === "full")
+      return this.props.menuActions.makeDashMenuFull();
+
+    this.props.menuActions.makeDashMenuCompact();
   }
 }
 

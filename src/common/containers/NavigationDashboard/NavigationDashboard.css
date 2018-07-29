@@ -116,3 +116,36 @@ nav.dashboard__navigation[data-state="compact"] .dashboard__navigation_container
 nav.dashboard__navigation[data-state~="closed"] {
   transform: translateX(-100%);
 }
+
+/* State toggler */
+.dashboard__navigation_state_toggler {
+  position: fixed;
+  display: block;
+  color: white;
+  bottom: 0;
+  left: 0;
+  padding: 1em;
+  cursor: pointer;
+  text-align: center;
+  font-size: 20px;
+  z-index: 99;
+}
+
+.dashboard__navigation[data-state="full"] .dashboard__navigation_state_toggler {
+  width: 220px;
+}
+
+.dashboard__navigation[data-state="compact"] .dashboard__navigation_state_toggler,
+.dashboard__navigation[data-state~="closed"] .dashboard__navigation_state_toggler {
+  width: 64px;
+}
+
+.dashboard__navigation[data-state="full"] .dashboard__navigation_state_toggler:hover,
+.dashboard__navigation[data-state="compact"] .dashboard__navigation_state_toggler:hover {
+  background-color: #111111;
+}
+
+.dashboard__navigation[data-state~="closed"] .dashboard__navigation_state_toggler {
+  left: 100%;
+  color: #111;
+}
