@@ -59,8 +59,8 @@ class NavigationDashboard extends Component {
 
   componentDidMount() {
     this.props.userActions.doUserGet();
-
-    if (isBrowser && !this.props.menu.dash) {
+    
+    if (isBrowser && this.props.menu.dash !== "closed") {
       this.selectNavigationState();
       window.addEventListener("resize", this.selectNavigationState);
     }

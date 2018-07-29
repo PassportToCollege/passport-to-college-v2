@@ -1,7 +1,7 @@
 export default {
   hamburgerState: { current: "closed" },
   menu: {
-    dash: "closed"
+    dash: "full"
   },
   auth: {
     activeUser: false

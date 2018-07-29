@@ -27,7 +27,9 @@ class StudentDashboard extends Component {
   static propTypes = {
     student: propTypes.object,
     studentActions: propTypes.object,
-    updateLocation: propTypes.func
+    updateLocation: propTypes.func,
+    menu: propTypes.object,
+    menuActions: propTypes.object
   }
 
   componentDidMount() {
@@ -70,7 +72,7 @@ class StudentDashboard extends Component {
 
   render() {
     return (
-      <div className="student_dashboard">
+      <div className="student_dashboard" data-menu-state={this.props.menu.dash}>
         {
           this.state.student ?
             <PageMeta>
@@ -79,15 +81,22 @@ class StudentDashboard extends Component {
             <PageMeta route="STUDENT_DASHBOARD" />
         }
         <NavigationDashboard student />
-        <main></main>
+        <main>
+          <header></header>
+        </main>
       </div>
     )
+  }
+
+  renderProfile() {
+
   }
 }
 
 const mapStateToProps = state => {
   return {
-    student: state.student
+    student: state.student,
+    menu: state.menu
   };
 };
 
