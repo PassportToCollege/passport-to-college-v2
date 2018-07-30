@@ -12,6 +12,8 @@ import { getProfilePicture } from "../../utils/firebase/functions";
 
 import NavigationDashboard from "../NavigationDashboard";
 import PageMeta from "../../components/PageMeta";
+import FlexContainer from "../../components/FlexContainer";
+import ImageUploader from "../../components/ImageUploader";
 
 const Console = console;
 
@@ -83,13 +85,22 @@ class StudentDashboard extends Component {
         <NavigationDashboard student />
         <main>
           <header></header>
+          {this.renderProfile()}
         </main>
       </div>
     )
   }
 
   renderProfile() {
-
+    return (
+      <FlexContainer classes={["student_dashboard__container", "student_dashboard__profile"]}>
+        <section>
+          <ImageUploader default={this.state.picture}
+            onUpload={this.handleProfilePictureChange} />
+        </section>
+        <section></section>
+      </FlexContainer>
+    )
   }
 }
 

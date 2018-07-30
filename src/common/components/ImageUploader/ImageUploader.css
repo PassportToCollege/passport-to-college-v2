@@ -1,0 +1,50 @@
+.image_uploader {
+  width: 300px;
+  height: 300px;
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.image_uploader > img {
+  max-width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.image_uploader > input[type] {
+  max-height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  position: absolute;
+}
+
+.image_uploader .image_uploader__controls_overlay {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 9;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: rgba(51,51,51,0.85);
+  color: white;
+  opacity: 0;
+  transition: opacity linear 200ms;
+}
+
+.image_uploader .image_uploader__controls_overlay:hover,
+.image_uploader[data-uploading="true"] .image_uploader__controls_overlay {
+  opacity: 1;
+}
+
+.image_uploader .image_uploader__controls_overlay > span {
+  cursor: pointer;
+  font-weight: 600;
+  padding: 1em;
+}
+
+.image_uploader .image_uploader__controls_overlay > span:hover {
+  text-decoration: underline;
+}
