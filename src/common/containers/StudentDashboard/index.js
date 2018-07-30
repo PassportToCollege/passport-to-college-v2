@@ -7,22 +7,23 @@ import propTypes from "prop-types";
 import _ from "lodash";
 
 import * as studentActions from "../../actions/studentActions";
+import * as userProfilePictureActions from "../../actions/userProfilePictureActions";
 import { activeUser } from "../../utils";
-import { getProfilePicture } from "../../utils/firebase/functions";
 
 import NavigationDashboard from "../NavigationDashboard";
 import PageMeta from "../../components/PageMeta";
 import FlexContainer from "../../components/FlexContainer";
 import ImageUploader from "../../components/ImageUploader";
 
-const Console = console;
+import defAvatar from "../../assets/images/default-gravatar.png";
 
 class StudentDashboard extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      student: props.student.student
+      student: props.student.student,
+      picture: defAvatar
     };
   }
 
@@ -47,29 +48,13 @@ class StudentDashboard extends Component {
       };
     }
 
-    return null;
-  }
-
-  getSnapshotBeforeUpdate(props) {
-    if (props.student.isGetting && this.props.student.hasGotten) {
-      return { gotStudent: true };
-    }
-
-    return null;
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (snapshot) {
-      if (snapshot.gotStudent && this.state.student && this.state.student.user.hasProfilePicture) {
-        getProfilePicture(this.state.student.uid)
-          .then(url => {
-            this.setState({ picture: url });
-          })
-          .catch(error => {
-            Console.log(error.message);
-          })
+    if (props.profilePicture.hasGotten) {
+      return {
+        picture: props.profilePicture.url
       }
     }
+
+    return null;
   }
 
   render() {
@@ -107,13 +92,15 @@ class StudentDashboard extends Component {
 const mapStateToProps = state => {
   return {
     student: state.student,
-    menu: state.menu
+    menu: state.menu,
+    profilePicture: state.userProfilePicture
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    studentActions: bindActionCreators(studentActions, dispatch)
+    studentActions: bindActionCreators(studentActions, dispatch),
+    userPPActions: bindActionCreators(userProfilePictureActions, dispatch)
   };
 };
 

@@ -22,3 +22,8 @@
   max-width: 100%;
   margin: 0 auto;
 }
+
+/* Profile */
+.student_dashboard__container.student_dashboard__profile  section:first-child {
+  transform: translateY(-150px);
+}
