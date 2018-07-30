@@ -32,7 +32,9 @@ class StudentDashboard extends Component {
     studentActions: propTypes.object,
     updateLocation: propTypes.func,
     menu: propTypes.object,
-    menuActions: propTypes.object
+    menuActions: propTypes.object,
+    userPPActions: propTypes.object,
+    profilePicture: propTypes.object
   }
 
   componentDidMount() {
@@ -86,6 +88,10 @@ class StudentDashboard extends Component {
         <section></section>
       </FlexContainer>
     )
+  }
+
+  handleProfilePictureChange = newImage => {
+    this.props.userPPActions.doAvatarUpload(newImage);
   }
 }
 
