@@ -32,3 +32,9 @@
 .student_dashboard__container.student_dashboard__profile .image_uploader {
   margin-bottom: 2em;
 }
+
+.student_dashboard__container.student_dashboard__profile section:last-child {
+  max-width: 768px;
+  flex: 1 1 786px;
+  padding: 2em;
+}

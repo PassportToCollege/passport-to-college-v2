@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux"
 import propTypes from "prop-types";
 import _ from "lodash";
+import moment from "moment";
 
 import * as studentActions from "../../actions/studentActions";
 import * as userProfilePictureActions from "../../actions/userProfilePictureActions";
@@ -17,6 +18,7 @@ import ImageUploader from "../../components/ImageUploader";
 import Button from "../../components/Button";
 
 import defAvatar from "../../assets/images/default-gravatar.png";
+import AnnotatedList from "../../components/AnnotatedList";
 
 class StudentDashboard extends Component {
   constructor(props) {
@@ -87,7 +89,22 @@ class StudentDashboard extends Component {
             onUpload={this.handleProfilePictureChange} />
           <Button solid text="edit" />
         </section>
-        <section></section>
+        <section>
+          {
+            this.state.student ?
+              <AnnotatedList data={[
+                { label: "name", text: this.state.student.user.name.full },
+                {
+                  label: "born",
+                  text: `${moment.utc(moment(this.state.student.user.dob)).format("MMM DD, Y")} (${moment().diff(moment.utc(moment(this.state.student.user.dob)), "years")} years)`
+                },
+                { label: "gender", text: this.state.student.user.gender },
+                { label: "country", text: this.state.student.user.address.country },
+                { label: "phone", text: this.state.student.user.phone },
+                { label: "role", text: this.state.student.user.isStaff ? this.state.student.user.role : "no role" }
+              ]} /> : null
+          }
+        </section>
       </FlexContainer>
     )
   }
