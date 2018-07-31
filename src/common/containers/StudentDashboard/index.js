@@ -10,12 +10,14 @@ import moment from "moment";
 import * as studentActions from "../../actions/studentActions";
 import * as userProfilePictureActions from "../../actions/userProfilePictureActions";
 import { activeUser } from "../../utils";
+import { auth } from "../../utils/firebase";
 
 import NavigationDashboard from "../NavigationDashboard";
 import PageMeta from "../../components/PageMeta";
 import FlexContainer from "../../components/FlexContainer";
 import ImageUploader from "../../components/ImageUploader";
 import Button from "../../components/Button";
+import InfoStrip from "../../components/InfoStrip";
 
 import defAvatar from "../../assets/images/default-gravatar.png";
 import AnnotatedList from "../../components/AnnotatedList";
@@ -104,6 +106,15 @@ class StudentDashboard extends Component {
                 { label: "role", text: this.state.student.user.isStaff ? this.state.student.user.role : "no role" }
               ]} /> : null
           }
+          <InfoStrip stripStyles={{
+            padding: "2em 1em",
+            backgroundColor: "#FF443F",
+            fontSize: "12px",
+            fontFamily: "inherit",
+            textAlign: "left"
+          }} >
+            <p className="student_dashboard__meta_item">LAST SIGNED IN: {auth.currentUser.metadata.lastSignInTime}</p>
+          </InfoStrip>
         </section>
       </FlexContainer>
     )

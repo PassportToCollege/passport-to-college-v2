@@ -1,7 +1,7 @@
 import React from "react";
 import propTypes from "prop-types";
 
-const InfoStrip = ({ content, stripStyles }) => {
+const InfoStrip = ({ content, children, stripStyles }) => {
   const styles = Object.assign({
     width: "100%",
     backgroundColor: "#FFCB61",
@@ -15,17 +15,22 @@ const InfoStrip = ({ content, stripStyles }) => {
 
   return (
     <div className="info_strip" style={styles}>
-      <p style={{
-        maxWidth: "600px",
-        margin: "0 auto"
-      }}>{content}</p>
+      {
+        content ?
+          <p style={{
+            maxWidth: "600px",
+            margin: "0 auto"
+          }}>{content}</p> : null
+      }
+      {children}
     </div>
   )
 }
 
 InfoStrip.propTypes = {
   content: propTypes.string,
-  stripStyles: propTypes.object
+  stripStyles: propTypes.object,
+  children: propTypes.any
 };
 
 export default InfoStrip;
