@@ -14,6 +14,7 @@ import NavigationDashboard from "../NavigationDashboard";
 import PageMeta from "../../components/PageMeta";
 import FlexContainer from "../../components/FlexContainer";
 import ImageUploader from "../../components/ImageUploader";
+import Button from "../../components/Button";
 
 import defAvatar from "../../assets/images/default-gravatar.png";
 
@@ -84,6 +85,7 @@ class StudentDashboard extends Component {
         <section>
           <ImageUploader default={this.state.picture}
             onUpload={this.handleProfilePictureChange} />
+          <Button solid text="edit" />
         </section>
         <section></section>
       </FlexContainer>

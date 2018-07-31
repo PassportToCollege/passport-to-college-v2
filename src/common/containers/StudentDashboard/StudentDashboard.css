@@ -26,4 +26,9 @@
 /* Profile */
 .student_dashboard__container.student_dashboard__profile  section:first-child {
   transform: translateY(-150px);
+  text-align: center;
+}
+
+.student_dashboard__container.student_dashboard__profile .image_uploader {
+  margin-bottom: 2em;
 }
