@@ -16,7 +16,7 @@ Download [here](https://nodejs.org/en/download/)
 2. Clone this repository onto your local machine.
 3. Navigate to the cloned repository on your local machine using your terminal and run `npm install` to install all the project dependencies.
 4. Obtain the .env file required to configure firebase and facebook login. 
-5. Place the .env file in the root of the project folder on your local machine. __DO NOT REMOVE THE .ENV FILE FROM THE IGNORE LIST__
+5. Place the .env file in the root of the project folder on your local machine. __DO NOT REMOVE THE .ENV FILE FROM THE IGNORE LIST. IT SHOULD NOT BE INCLUDED IN ANY COMMITS.__
 6. To start the local server run `npm start`. The project will compile and start a server @ [localhost:3000](http://127.0.0.1:3000).
 7. You should now be able to open a browser window and navigate to the application.
 
