@@ -6,13 +6,13 @@ This server-side rendered React web application replaces the [passport-to-colleg
 
 ## Requirement
 
-### node.js@latest-ltm
+### node.js@latest-lts
 Download [here](https://nodejs.org/en/download/)
 
 
 
 ## Instructions
-1. Ensure the latest LTM version of node.js is installed on your system.
+1. Ensure the latest LTS version of node.js is installed on your system.
 2. Clone this repository onto your local machine.
 3. Navigate to the cloned repository on your local machine using your terminal and run `npm install` to install all the project dependencies.
 4. Obtain the .env file required to configure firebase and facebook login. 
