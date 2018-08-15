@@ -216,7 +216,7 @@ class StudentDashboard extends Component {
   }
 
   handleInputBlur = e => {
-    const { name, value } = e.target;
+    const { name, value } = e;
 
     switch (name) {
       case "name.first":
@@ -261,6 +261,14 @@ class StudentDashboard extends Component {
           }) 
         });
     }
+  }
+
+  handleGenderSelect = gender => {
+    this.setState({ 
+      updatedInfo: Object.assign({}, this.state.updatedInfo, {
+        gender
+      }) 
+    });
   }
 }
 
