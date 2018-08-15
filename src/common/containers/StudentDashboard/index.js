@@ -18,6 +18,10 @@ import FlexContainer from "../../components/FlexContainer";
 import ImageUploader from "../../components/ImageUploader";
 import Button from "../../components/Button";
 import InfoStrip from "../../components/InfoStrip";
+import Modal from "../../components/Modal";
+import Form from "../../components/Form";
+import RadioList from "../../components/RadioList";
+import Input from "../../components/Input";
 
 import defAvatar from "../../assets/images/default-gravatar.png";
 import AnnotatedList from "../../components/AnnotatedList";
@@ -28,7 +32,8 @@ class StudentDashboard extends Component {
 
     this.state = {
       student: props.student.student,
-      picture: defAvatar
+      picture: defAvatar,
+      editing: false
     };
   }
 
@@ -85,38 +90,83 @@ class StudentDashboard extends Component {
 
   renderProfile() {
     return (
-      <FlexContainer classes={["student_dashboard__container", "student_dashboard__profile"]}>
-        <section>
-          <ImageUploader default={this.state.picture}
-            onUpload={this.handleProfilePictureChange} />
-          <Button solid text="edit" />
-        </section>
-        <section>
-          {
-            this.state.student ?
-              <AnnotatedList data={[
-                { label: "name", text: this.state.student.user.name.full },
-                {
-                  label: "born",
-                  text: `${moment.utc(moment(this.state.student.user.dob)).format("MMM DD, Y")} (${moment().diff(moment.utc(moment(this.state.student.user.dob)), "years")} years)`
-                },
-                { label: "gender", text: this.state.student.user.gender },
-                { label: "country", text: this.state.student.user.address.country },
-                { label: "phone", text: this.state.student.user.phone },
-                { label: "role", text: this.state.student.user.isStaff ? this.state.student.user.role : "no role" }
-              ]} /> : null
-          }
-          <InfoStrip stripStyles={{
-            padding: "2em 1em",
-            backgroundColor: "#FF443F",
-            fontSize: "12px",
-            fontFamily: "inherit",
-            textAlign: "left"
-          }} >
-            <p className="student_dashboard__meta_item">LAST SIGNED IN: {auth.currentUser.metadata.lastSignInTime}</p>
-          </InfoStrip>
-        </section>
-      </FlexContainer>
+      <React.Fragment>
+        {
+          this.state.editing ?
+            <Modal classes={["modal__student_edit_profile"]}
+              doClose={() => this.setState({ editing: false })}>
+              <Form doSubmit={this.handleProfileSave}>
+                <h4>Edit Personal Information</h4>
+                <p>Make changes to your personal information here</p>
+                <FlexContainer>
+                  <span>
+                    <Input inputName="name.first"
+                      inputDefault={this.state.student.user.name.first}
+                      inputPlaceholder="John"
+                      whenBlur={this.handleInputBlur} />
+                    <p className="create_user__input_label required">First Name</p>
+                  </span>
+                  <span>
+                    <Input inputName="name.middle"
+                      inputPlaceholder="James"
+                      whenBlur={this.handleInputBlur} />
+                    <p className="create_user__input_label">Middle Name (optional)</p>
+                  </span>
+                  <span>
+                    <Input inputName="name.last"
+                      inputPlaceholder="Doe"
+                      whenBlur={this.handleInputBlur} />
+                    <p className="create_user__input_label required">Last Name</p>
+                  </span>
+                </FlexContainer>
+                <div className="inline_container">
+                  <p className="create_user__input_label required inline">Gender</p>
+                  <RadioList
+                    reset={this.state.resetRadios} 
+                    radios={[
+                      { label: "Female", value: "female" },
+                      { label: "Male", value: "male" }
+                    ]}
+                    checked={this.state.student.user.gender}
+                    onRadioChange={this.handleGenderSelect} />
+                </div>
+              </Form>
+            </Modal> : null
+        }
+        <FlexContainer classes={["student_dashboard__container", "student_dashboard__profile"]}>
+          <section>
+            <ImageUploader default={this.state.picture}
+              onUpload={this.handleProfilePictureChange} />
+            <Button solid text="edit"
+              doClick={() => this.setState({ editing: true })} />
+          </section>
+          <section>
+            {
+              this.state.student ?
+                <AnnotatedList data={[
+                  { label: "name", text: this.state.student.user.name.full },
+                  {
+                    label: "born",
+                    text: `${moment.utc(moment(this.state.student.user.dob)).format("MMM DD, Y")} (${moment().diff(moment.utc(moment(this.state.student.user.dob)), "years")} years)`
+                  },
+                  { label: "gender", text: this.state.student.user.gender },
+                  { label: "country", text: this.state.student.user.address.country },
+                  { label: "phone", text: this.state.student.user.phone },
+                  { label: "role", text: this.state.student.user.isStaff ? this.state.student.user.role : "no role" }
+                ]} /> : null
+            }
+            <InfoStrip stripStyles={{
+              padding: "2em 1em",
+              backgroundColor: "#FF443F",
+              fontSize: "12px",
+              fontFamily: "inherit",
+              textAlign: "left"
+            }} >
+              <p className="student_dashboard__meta_item">LAST SIGNED IN: {auth.currentUser ? auth.currentUser.metadata.lastSignInTime : null}</p>
+            </InfoStrip>
+          </section>
+        </FlexContainer>
+      </React.Fragment>
     )
   }
 

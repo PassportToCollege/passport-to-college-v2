@@ -7,13 +7,14 @@ import Radio from "../Radio";
 
 export default class RadioList extends Component {
   state = {
-    active: "none"
+    active: this.props.checked || "none"
   }
 
   static propTypes = {
     radios: propTypes.arrayOf(propTypes.object),
     onRadioChange: propTypes.func,
-    reset: propTypes.bool
+    reset: propTypes.bool,
+    checked: propTypes.string
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
