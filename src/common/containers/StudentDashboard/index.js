@@ -1,6 +1,7 @@
 import "./StudentDashboard.css";
 
 import React, { Component } from "react";
+import { Route } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux"
 import propTypes from "prop-types";
@@ -12,6 +13,7 @@ import * as userProfilePictureActions from "../../actions/userProfilePictureActi
 import * as userActions from "../../actions/userActions";
 import { activeUser } from "../../utils";
 import { auth } from "../../utils/firebase";
+import * as routes from "../../constants/routes";
 
 import NavigationDashboard from "../NavigationDashboard";
 import PageMeta from "../../components/PageMeta";
@@ -26,6 +28,8 @@ import Input from "../../components/Input";
 import Loader from "../../components/Loader";
 import { InlineNotification } from "../../components/Notification";
 
+import Bio from "./StudentDashboardBio";
+
 import defAvatar from "../../assets/images/default-gravatar.png";
 import AnnotatedList from "../../components/AnnotatedList";
 
@@ -37,7 +41,8 @@ class StudentDashboard extends Component {
       student: props.student.student,
       picture: defAvatar,
       editing: false,
-      updatedInfo: {}
+      updatedInfo: {},
+      isProfile: true
     }
   }
 
@@ -45,6 +50,8 @@ class StudentDashboard extends Component {
     student: propTypes.object,
     studentActions: propTypes.object,
     updateLocation: propTypes.func,
+    match: propTypes.object,
+    location: propTypes.object,
     menu: propTypes.object,
     menuActions: propTypes.object,
     userPPActions: propTypes.object,
@@ -56,6 +63,7 @@ class StudentDashboard extends Component {
   componentDidMount() {
     this.props.updateLocation("dashboard student");
     this.props.studentActions.doStudentGet(activeUser());
+    this.setAtProfile();
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -84,6 +92,10 @@ class StudentDashboard extends Component {
       return { updateFailed: true };
     }
 
+    if (props.location.pathname !== this.props.location.pathname) {
+      return { locationChanged: true }
+    }
+
     return null;
   }
 
@@ -105,6 +117,9 @@ class StudentDashboard extends Component {
           inlineNotification: this.props.user.error.message
         });
       }
+
+      if (snapshot.locationChanged)
+        this.setAtProfile();
     }
   }
 
@@ -120,8 +135,15 @@ class StudentDashboard extends Component {
         }
         <NavigationDashboard student />
         <main>
-          <header></header>
-          {this.renderProfile()}
+          <header data-at-profile={this.state.isProfile}></header>
+          <Route exact path={this.props.match.url}
+            render={() => {
+              return this.renderProfile()
+            }} />
+          <Route exact path={routes.STUDENT_DASHBOARD_BIO.route}
+            render={props => {
+              return <Bio {...props} student={this.props.student} />
+            }} />
         </main>
       </div>
     )
@@ -260,6 +282,13 @@ class StudentDashboard extends Component {
         </FlexContainer>
       </React.Fragment>
     )
+  }
+
+  setAtProfile = () => {
+    let { pathname } = this.props.location;
+    const path = pathname.split("/").slice(-1)[0];
+
+    this.setState({ isProfile: path === "dashboard" });
   }
 
   renderInlineNotification = message => {
