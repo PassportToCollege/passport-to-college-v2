@@ -80,6 +80,10 @@ class StudentDashboard extends Component {
       return { updatedUser: true };
     }
 
+    if (props.user.isUpdating && this.props.user.hasFailed) {
+      return { updateFailed: true };
+    }
+
     return null;
   }
 
@@ -92,6 +96,14 @@ class StudentDashboard extends Component {
             user: Object.assign(this.state.student.user, this.state.updatedInfo)
           })
         })
+      }
+
+      if (snapshot.updateFailed) {
+        this.setState({
+          hasInlineNotification: true,
+          inlineNotificationClosed: false,
+          inlineNotification: this.props.user.error.message
+        });
       }
     }
   }
