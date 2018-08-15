@@ -29,11 +29,15 @@
 
 /* Profile */
 .modal__student_edit_profile .modal__content {
-  width: 1140px;
+  width: 768px;
 }
 
 .modal__student_edit_profile .modal__content > form > p {
   font-size: 14px;
+  margin-bottom: 3em;
+}
+
+.modal__student_edit_profile .modal__content .flex_container:last-of-type {
   margin-bottom: 3em;
 }
 

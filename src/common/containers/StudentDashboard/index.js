@@ -108,12 +108,14 @@ class StudentDashboard extends Component {
                   </span>
                   <span>
                     <Input inputName="name.middle"
+                      inputDefault={this.state.student.user.name.middle}
                       inputPlaceholder="James"
                       whenBlur={this.handleInputBlur} />
                     <p className="create_user__input_label">Middle Name (optional)</p>
                   </span>
                   <span>
                     <Input inputName="name.last"
+                      inputDefault={this.state.student.user.name.last}
                       inputPlaceholder="Doe"
                       whenBlur={this.handleInputBlur} />
                     <p className="create_user__input_label required">Last Name</p>
@@ -130,6 +132,44 @@ class StudentDashboard extends Component {
                     checked={this.state.student.user.gender}
                     onRadioChange={this.handleGenderSelect} />
                 </div>
+                <FlexContainer>
+                  <span>
+                     <Input inputName="dob" inputType="date"
+                      inputPlaceholder="Date of Birth"
+                      inputDefault={moment.utc(moment(this.state.student.user.dob)).format("YYYY-MM-DD")}
+                      whenBlur={this.handleInputBlur} />
+                    <p className="create_user__input_label required">Date of Birth</p>
+                  </span>
+                </FlexContainer>
+                <FlexContainer>
+                  <span>
+                    <Input inputName="country"
+                      inputDefault={this.state.student.user.address.country}
+                      inputPlaceholder="Jamaica"
+                      whenBlur={this.handleInputBlur} />
+                    <p className="create_user__input_label required">Country</p>
+                  </span>
+                </FlexContainer>
+                <FlexContainer>
+                  <span>
+                    <Input inputName="phone" inputType="phone"
+                      inputDefault={this.state.student.user.phone}
+                      inputPlaceholder="999 999 9999"
+                      whenBlur={this.handleInputBlur} />
+                    <p className="create_user__input_label">Phone Number</p>
+                  </span>
+                </FlexContainer>
+                <Button solid
+                  doClick={() => this.setState({ editing: false })}
+                  styles={{
+                    backgroundColor: "#aaa"
+                  }}
+                  text="cancel" />
+                <Button solid type="submit"
+                  styles={{
+                    margin: "0 1em",
+                  }}
+                  text="save" />
               </Form>
             </Modal> : null
         }
