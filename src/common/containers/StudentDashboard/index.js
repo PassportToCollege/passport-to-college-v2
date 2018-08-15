@@ -310,7 +310,7 @@ class StudentDashboard extends Component {
 
     const { updatedInfo } = this.state;
 
-    if (Object.keys(updatedInfo)) {
+    if (Object.keys(updatedInfo).length) {
       if (updatedInfo.name) {
         let { name } = this.state.student.user;
         const { first, last } = updatedInfo.name;
@@ -332,8 +332,16 @@ class StudentDashboard extends Component {
         }
       }
 
-      //return this.props.userActions.doUserUpdate(updatedInfo);
+      if (updatedInfo.dob === "")
+        return this.renderInlineNotification("dob is required");
+
+      if (updatedInfo.address && !updatedInfo.address.country)
+        return this.renderInlineNotification("country is required");
+
+      return this.props.userActions.doUserUpdate(updatedInfo);
     }
+
+    this.renderInlineNotification("you have not made any changes");
   }
 }
 
