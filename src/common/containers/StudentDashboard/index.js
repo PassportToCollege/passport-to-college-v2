@@ -9,6 +9,7 @@ import moment from "moment";
 
 import * as studentActions from "../../actions/studentActions";
 import * as userProfilePictureActions from "../../actions/userProfilePictureActions";
+import * as userActions from "../../actions/userActions";
 import { activeUser } from "../../utils";
 import { auth } from "../../utils/firebase";
 
@@ -22,6 +23,8 @@ import Modal from "../../components/Modal";
 import Form from "../../components/Form";
 import RadioList from "../../components/RadioList";
 import Input from "../../components/Input";
+import Loader from "../../components/Loader";
+import { InlineNotification } from "../../components/Notification";
 
 import defAvatar from "../../assets/images/default-gravatar.png";
 import AnnotatedList from "../../components/AnnotatedList";
@@ -45,7 +48,9 @@ class StudentDashboard extends Component {
     menu: propTypes.object,
     menuActions: propTypes.object,
     userPPActions: propTypes.object,
-    profilePicture: propTypes.object
+    profilePicture: propTypes.object,
+    user: propTypes.object,
+    userActions: propTypes.object
   }
 
   componentDidMount() {
@@ -160,6 +165,11 @@ class StudentDashboard extends Component {
                     <p className="create_user__input_label">Phone Number</p>
                   </span>
                 </FlexContainer>
+                {
+                  this.state.hasInlineNotification && !this.state.inlineNotificationClosed ?
+                    <InlineNotification doClose={this.closeInlineNotification}
+                      text={this.state.inlineNotification} /> : null
+                }
                 <Button solid
                   doClick={() => this.setState({ editing: false })}
                   styles={{
@@ -171,6 +181,14 @@ class StudentDashboard extends Component {
                     margin: "0 1em",
                   }}
                   text="save" />
+                {
+                  this.props.user.isUpdating ?
+                    <Loader width="32px"
+                      styles={{
+                        display: "inline-block",
+                        verticalAlign: "middle"
+                      }} /> : null
+                }
               </Form>
             </Modal> : null
         }
@@ -209,6 +227,22 @@ class StudentDashboard extends Component {
         </FlexContainer>
       </React.Fragment>
     )
+  }
+
+  renderInlineNotification = message => {
+    this.setState({
+      hasInlineNotification: true,
+      inlineNotificationClosed: false,
+      inlineNotification: message
+    });
+  }
+
+  closeInlineNotification = () => {
+    this.setState({
+      hasInlineNotification: false,
+      inlineNotificationClosed: true,
+      inlineNotification: null
+    });
   }
 
   handleProfilePictureChange = newImage => {
@@ -270,20 +304,53 @@ class StudentDashboard extends Component {
       }) 
     });
   }
+
+  handleProfileSave = e => {
+    e.preventDefault();
+
+    const { updatedInfo } = this.state;
+
+    if (Object.keys(updatedInfo)) {
+      if (updatedInfo.name) {
+        let { name } = this.state.student.user;
+        const { first, last } = updatedInfo.name;
+
+        if (!first) {
+          return this.renderInlineNotification("first name is required");
+        }
+
+        if (!last) {
+          return this.renderInlineNotification("last name is required");
+        }
+
+        if (first && last) {
+          updatedInfo.name.full = `${first} ${last}`;
+        } else if (first) {
+          updatedInfo.name.full = `${first} ${name.last}`;
+        } else if (last) {
+          updatedInfo.name.full = `${name.first} ${last}`;
+        }
+      }
+
+      //return this.props.userActions.doUserUpdate(updatedInfo);
+    }
+  }
 }
 
 const mapStateToProps = state => {
   return {
     student: state.student,
     menu: state.menu,
-    profilePicture: state.userProfilePicture
+    profilePicture: state.userProfilePicture,
+    user: state.user
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     studentActions: bindActionCreators(studentActions, dispatch),
-    userPPActions: bindActionCreators(userProfilePictureActions, dispatch)
+    userPPActions: bindActionCreators(userProfilePictureActions, dispatch),
+    userActions: bindActionCreators(userActions, dispatch)
   };
 };
 
