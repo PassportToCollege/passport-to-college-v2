@@ -75,6 +75,27 @@ class StudentDashboard extends Component {
     return null;
   }
 
+  getSnapshotBeforeUpdate(props) {
+    if (props.user.isUpdating && this.props.user.hasUpdated) {
+      return { updatedUser: true };
+    }
+
+    return null;
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (snapshot) {
+      if (snapshot.updatedUser) {
+        this.setState({
+          editing: false,
+          student: Object.assign({}, this.state.student, {
+            user: Object.assign(this.state.student.user, this.state.updatedInfo)
+          })
+        })
+      }
+    }
+  }
+
   render() {
     return (
       <div className="student_dashboard" data-menu-state={this.props.menu.dash}>
@@ -315,11 +336,11 @@ class StudentDashboard extends Component {
         let { name } = this.state.student.user;
         const { first, last } = updatedInfo.name;
 
-        if (!first) {
+        if (first === "") {
           return this.renderInlineNotification("first name is required");
         }
 
-        if (!last) {
+        if (last === "") {
           return this.renderInlineNotification("last name is required");
         }
 
@@ -327,8 +348,10 @@ class StudentDashboard extends Component {
           updatedInfo.name.full = `${first} ${last}`;
         } else if (first) {
           updatedInfo.name.full = `${first} ${name.last}`;
+          updatedInfo.name.last = last;
         } else if (last) {
           updatedInfo.name.full = `${name.first} ${last}`;
+          updatedInfo.name.first = first;
         }
       }
 
@@ -337,6 +360,8 @@ class StudentDashboard extends Component {
 
       if (updatedInfo.address && !updatedInfo.address.country)
         return this.renderInlineNotification("country is required");
+
+      this.setState({ updatedInfo });
 
       return this.props.userActions.doUserUpdate(updatedInfo);
     }
