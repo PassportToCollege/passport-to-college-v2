@@ -33,8 +33,9 @@ class StudentDashboard extends Component {
     this.state = {
       student: props.student.student,
       picture: defAvatar,
-      editing: false
-    };
+      editing: false,
+      updatedInfo: {}
+    }
   }
 
   static propTypes = {
@@ -212,6 +213,54 @@ class StudentDashboard extends Component {
 
   handleProfilePictureChange = newImage => {
     this.props.userPPActions.doAvatarUpload(newImage);
+  }
+
+  handleInputBlur = e => {
+    const { name, value } = e.target;
+
+    switch (name) {
+      case "name.first":
+        this.setState({
+          updatedInfo: Object.assign({}, this.state.updatedInfo, {
+            name: Object.assign({}, this.state.updatedInfo.name, { first: value })
+          })
+        });
+        break;
+      case "name.middle":
+        this.setState({
+          updatedInfo: Object.assign({}, this.state.updatedInfo, {
+            name: Object.assign({}, this.state.updatedInfo.name, { middle: value })
+          })
+        });
+        break;
+      case "name.last":
+        this.setState({
+          updatedInfo: Object.assign({}, this.state.updatedInfo, {
+            name: Object.assign({}, this.state.updatedInfo.name, { last: value })
+          })
+        });
+        break;
+      case "dob":
+        this.setState({
+          updatedInfo: Object.assign({}, this.state.updatedInfo, {
+            dob: new Date(value).getTime()
+          })
+        });
+        break;
+      case "country":
+        this.setState({
+          updatedInfo: Object.assign({}, this.state.updatedInfo, {
+            address: { country: value }
+          })
+        });
+        break;
+      default:
+        this.setState({ 
+          updatedInfo: Object.assign({}, this.state.updatedInfo, {
+            [name]: value
+          }) 
+        });
+    }
   }
 }
 
