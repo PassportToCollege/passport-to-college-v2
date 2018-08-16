@@ -142,7 +142,10 @@ class StudentDashboard extends Component {
             }} />
           <Route exact path={routes.STUDENT_DASHBOARD_BIO.route}
             render={props => {
-              return <Bio {...props} student={this.props.student} />
+              return (
+                <Bio {...props} student={this.props.student} 
+                  studentActions={this.props.studentActions} />
+              )
             }} />
         </main>
       </div>
