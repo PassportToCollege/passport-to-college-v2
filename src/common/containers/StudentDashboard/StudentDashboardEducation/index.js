@@ -6,6 +6,8 @@ import _ from "lodash";
 
 import PageMeta from "../../../components/PageMeta";
 import Notification from "../../../components/Notification";
+import Button from "../../../components/Button";
+import AnnotatedList from "../../../components/AnnotatedList";
 
 class StudentEducation extends Component {
   constructor(props) {
@@ -66,13 +68,28 @@ class StudentEducation extends Component {
                 })
               }} /> : null
         }
+        {
+          this.state.student ?
+            <PageMeta>
+              <title>Education | {this.state.student.user.name.full} | Student Dashboard | Passport to College</title>
+            </PageMeta> :
+            <PageMeta route="STUDENT_DASHBOARD" />
+        }
         <section className="student_dashboard__container student_dashboard__education">
-           {
-              this.state.student ?
-                <PageMeta>
-                  <title>Education | {this.state.student.user.name.full} | Student Dashboard | Passport to College</title>
-                </PageMeta> :
-                <PageMeta route="STUDENT_DASHBOARD" />
+          <span>
+            <Button text="edit" solid
+              doClick={() => this.setState({ editing: true })} />
+          </span>
+          {
+            this.state.student ?
+              <AnnotatedList data={[
+                { label: "high school", text: this.state.student.highSchool },
+                { label: "university", text: this.state.student.university },
+                { label: "major", text: this.state.student.major },
+                { label: "minor", text: this.state.student.minor || "none" },
+                { label: "enrolled", text: this.state.student.enrollmentYear },
+                { label: "expected graduation", text: this.state.student.graduationYear }
+              ]} /> : null
             }
         </section>
       </React.Fragment>
