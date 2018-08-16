@@ -29,6 +29,7 @@ import Loader from "../../components/Loader";
 import { InlineNotification } from "../../components/Notification";
 
 import Bio from "./StudentDashboardBio";
+import Education from "./StudentDashboardEducation";
 
 import defAvatar from "../../assets/images/default-gravatar.png";
 import AnnotatedList from "../../components/AnnotatedList";
@@ -147,6 +148,13 @@ class StudentDashboard extends Component {
                   studentActions={this.props.studentActions} />
               )
             }} />
+            <Route exact path={routes.STUDENT_DASHBOARD_EDUCATION.route}
+              render={props => {
+                return (
+                  <Education {...props} student={this.props.student} 
+                    studentActions={this.props.studentActions} />
+                )
+              }} />
         </main>
       </div>
     )

@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import propTypes from "prop-types";
 import _ from "lodash";
 
+import PageMeta from "../../../components/PageMeta";
 import WYSIWYGEditor from "../../../components/Editor";
 import Notification from "../../../components/Notification";
 
@@ -67,6 +68,13 @@ class StudentBio extends Component {
               }} /> : null
         }
         <section className="student_dashboard__container student_dashboard__bio">
+          {
+            this.state.student ?
+              <PageMeta>
+                <title>Bio | {this.state.student.user.name.full} | Student Dashboard | Passport to College</title>
+              </PageMeta> :
+              <PageMeta route="STUDENT_DASHBOARD" />
+          }
           {
             this.state.student ?
               <WYSIWYGEditor saveButton
