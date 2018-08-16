@@ -1,6 +1,8 @@
 .student_dashboard {
   width: 100%;
+  min-height: 100vh;
   padding-left: 220px;
+  background-color: #F4F7F9;
 }
 
 .student_dashboard[data-menu-state="compact"] {
