@@ -11,4 +11,12 @@
   color: white;
   padding: 12px;
   cursor: pointer;
+  -webkit-transition: color 200ms ease;
+  transition: color 200ms ease;
 }
+
+.connection__item.connection__item_google:hover { color: #4285F4; }
+.connection__item.connection__item_facebook:hover { color: #3B5998 ; }
+.connection__item.connection__item_twitter:hover { color: #1DA1F2; }
+.connection__item.connection__item_linkedin:hover { color: #0077B5; }
+.connection__item.connection__item_github:hover { color: #000; }

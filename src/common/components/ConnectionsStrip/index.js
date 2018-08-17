@@ -26,7 +26,8 @@ const ConnectionsStrip = props => {
       styles={{ justifyContent: "flex-start" }}>
       {
         props.google ?
-          <span className="connection__item connection__item_google" 
+          <span className="connection__item connection__item_google"
+            title="Link Google account" 
             data-connection="google"
             onClick={handleConnectionClick}>
             <FontAwesomeIcon icon={faGoogle} />
@@ -35,7 +36,8 @@ const ConnectionsStrip = props => {
       }
       {
         props.facebook ?
-          <span className="connection__item connection__item_facebook" 
+          <span className="connection__item connection__item_facebook"
+            title="Link Facebook account"  
             data-connection="facebook"
             onClick={handleConnectionClick}>
             <FontAwesomeIcon icon={faFacebookSquare} />
@@ -44,7 +46,8 @@ const ConnectionsStrip = props => {
       }
       {
         props.twitter ?
-          <span className="connection__item connection__item_twitter" 
+          <span className="connection__item connection__item_twitter"
+            title="Link Twitter account"  
             data-connection="twitter"
             onClick={handleConnectionClick}>
             <FontAwesomeIcon icon={faTwitterSquare} />
@@ -54,7 +57,8 @@ const ConnectionsStrip = props => {
       }
       {
         props.linkedin ?
-          <span className="connection__item connection__item_linkedin" 
+          <span className="connection__item connection__item_linkedin"
+            title="Link LinkedIn account"  
             data-connection="linkedin"
             onClick={handleConnectionClick}>
             <FontAwesomeIcon icon={faLinkedin} />
@@ -63,7 +67,8 @@ const ConnectionsStrip = props => {
       }
       {
         props.github ?
-          <span className="connection__item connection__item_github" 
+          <span className="connection__item connection__item_github"
+            title="Link Github account"  
             data-connection="github"
             onClick={handleConnectionClick}>
             <FontAwesomeIcon icon={faGithubSquare} />
