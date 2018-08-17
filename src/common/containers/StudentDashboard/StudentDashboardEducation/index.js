@@ -53,6 +53,7 @@ class StudentEducation extends Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (snapshot && snapshot.updatedEducation) {
       this.setState({
+        editing: false,
         hasNotification: true,
         notificationClosed: false,
         notification: "information updated successfully"
@@ -186,6 +187,22 @@ class StudentEducation extends Component {
     )
   }
 
+  renderInlineNotification = message => {
+    this.setState({
+      hasInlineNotification: true,
+      inlineNotificationClosed: false,
+      inlineNotification: message
+    });
+  }
+
+  closeInlineNotification = () => {
+    this.setState({
+      hasInlineNotification: false,
+      inlineNotificationClosed: true,
+      inlineNotification: null
+    });
+  }
+
   handleInputBlur = e => {
     const { name, value } = e;
 
@@ -194,6 +211,41 @@ class StudentEducation extends Component {
         [name]: value
       })
     });
+  }
+
+  handleEducationSave = e => {
+    e.preventDefault();
+
+    const { updatedInfo } = this.state;
+
+    if (Object.keys(updatedInfo).length) {
+      const { 
+        highSchool,
+        university,
+        major,
+        enrollmentYear,
+        graduationYear 
+      } = updatedInfo;
+
+      if (highSchool === "")
+        return this.renderInlineNotification("high school is required");
+
+      if (university === "")
+        return this.renderInlineNotification("university is required");
+
+      if (major === "")
+        return this.renderInlineNotification("major is required");
+
+      if (enrollmentYear === "")
+        return this.renderInlineNotification("enrollment year is required");
+
+      if (graduationYear === "")
+        return this.renderInlineNotification("graduation year is required");
+
+      return this.props.studentActions.doStudentUpdate(this.state.student.uid, updatedInfo);
+    }
+
+    this.renderInlineNotification("you have not made any changes");
   }
 }
 
