@@ -167,95 +167,7 @@ class StudentDashboard extends Component {
           this.state.editing ?
             <Modal classes={["modal__student_edit_profile"]}
               doClose={() => this.setState({ editing: false })}>
-              <Form doSubmit={this.handleProfileSave}>
-                <h4>Edit Personal Information</h4>
-                <p>Make changes to your personal information here</p>
-                <FlexContainer>
-                  <span>
-                    <Input inputName="name.first"
-                      inputDefault={this.state.student.user.name.first}
-                      inputPlaceholder="John"
-                      whenBlur={this.handleInputBlur} />
-                    <p className="create_user__input_label required">First Name</p>
-                  </span>
-                  <span>
-                    <Input inputName="name.middle"
-                      inputDefault={this.state.student.user.name.middle}
-                      inputPlaceholder="James"
-                      whenBlur={this.handleInputBlur} />
-                    <p className="create_user__input_label">Middle Name (optional)</p>
-                  </span>
-                  <span>
-                    <Input inputName="name.last"
-                      inputDefault={this.state.student.user.name.last}
-                      inputPlaceholder="Doe"
-                      whenBlur={this.handleInputBlur} />
-                    <p className="create_user__input_label required">Last Name</p>
-                  </span>
-                </FlexContainer>
-                <div className="inline_container">
-                  <p className="create_user__input_label required inline">Gender</p>
-                  <RadioList
-                    reset={this.state.resetRadios} 
-                    radios={[
-                      { label: "Female", value: "female" },
-                      { label: "Male", value: "male" }
-                    ]}
-                    checked={this.state.student.user.gender}
-                    onRadioChange={this.handleGenderSelect} />
-                </div>
-                <FlexContainer>
-                  <span>
-                     <Input inputName="dob" inputType="date"
-                      inputPlaceholder="Date of Birth"
-                      inputDefault={moment.utc(moment(this.state.student.user.dob)).format("YYYY-MM-DD")}
-                      whenBlur={this.handleInputBlur} />
-                    <p className="create_user__input_label required">Date of Birth</p>
-                  </span>
-                </FlexContainer>
-                <FlexContainer>
-                  <span>
-                    <Input inputName="country"
-                      inputDefault={this.state.student.user.address.country}
-                      inputPlaceholder="Jamaica"
-                      whenBlur={this.handleInputBlur} />
-                    <p className="create_user__input_label required">Country</p>
-                  </span>
-                </FlexContainer>
-                <FlexContainer>
-                  <span>
-                    <Input inputName="phone" inputType="phone"
-                      inputDefault={this.state.student.user.phone}
-                      inputPlaceholder="999 999 9999"
-                      whenBlur={this.handleInputBlur} />
-                    <p className="create_user__input_label">Phone Number</p>
-                  </span>
-                </FlexContainer>
-                {
-                  this.state.hasInlineNotification && !this.state.inlineNotificationClosed ?
-                    <InlineNotification doClose={this.closeInlineNotification}
-                      text={this.state.inlineNotification} /> : null
-                }
-                <Button solid
-                  doClick={() => this.setState({ editing: false })}
-                  styles={{
-                    backgroundColor: "#aaa"
-                  }}
-                  text="cancel" />
-                <Button solid type="submit"
-                  styles={{
-                    margin: "0 1em",
-                  }}
-                  text="save" />
-                {
-                  this.props.user.isUpdating ?
-                    <Loader width="32px"
-                      styles={{
-                        display: "inline-block",
-                        verticalAlign: "middle"
-                      }} /> : null
-                }
-              </Form>
+              {this.renderForm()}
             </Modal> : null
         }
         <FlexContainer classes={["student_dashboard__container", "student_dashboard__profile"]}>
@@ -292,6 +204,100 @@ class StudentDashboard extends Component {
           </section>
         </FlexContainer>
       </React.Fragment>
+    )
+  }
+
+  renderForm = () => {
+    return (
+      <Form doSubmit={this.handleProfileSave}>
+        <h4>Edit Personal Information</h4>
+        <p>Make changes to your personal information here</p>
+        <FlexContainer>
+          <span>
+            <Input inputName="name.first"
+              inputDefault={this.state.student.user.name.first}
+              inputPlaceholder="John"
+              whenBlur={this.handleInputBlur} />
+            <p className="create_user__input_label required">First Name</p>
+          </span>
+          <span>
+            <Input inputName="name.middle"
+              inputDefault={this.state.student.user.name.middle}
+              inputPlaceholder="James"
+              whenBlur={this.handleInputBlur} />
+            <p className="create_user__input_label">Middle Name (optional)</p>
+          </span>
+          <span>
+            <Input inputName="name.last"
+              inputDefault={this.state.student.user.name.last}
+              inputPlaceholder="Doe"
+              whenBlur={this.handleInputBlur} />
+            <p className="create_user__input_label required">Last Name</p>
+          </span>
+        </FlexContainer>
+        <div className="inline_container">
+          <p className="create_user__input_label required inline">Gender</p>
+          <RadioList
+            reset={this.state.resetRadios} 
+            radios={[
+              { label: "Female", value: "female" },
+              { label: "Male", value: "male" }
+            ]}
+            checked={this.state.student.user.gender}
+            onRadioChange={this.handleGenderSelect} />
+        </div>
+        <FlexContainer>
+          <span>
+              <Input inputName="dob" inputType="date"
+              inputPlaceholder="Date of Birth"
+              inputDefault={moment.utc(moment(this.state.student.user.dob)).format("YYYY-MM-DD")}
+              whenBlur={this.handleInputBlur} />
+            <p className="create_user__input_label required">Date of Birth</p>
+          </span>
+        </FlexContainer>
+        <FlexContainer>
+          <span>
+            <Input inputName="country"
+              inputDefault={this.state.student.user.address.country}
+              inputPlaceholder="Jamaica"
+              whenBlur={this.handleInputBlur} />
+            <p className="create_user__input_label required">Country</p>
+          </span>
+        </FlexContainer>
+        <FlexContainer>
+          <span>
+            <Input inputName="phone" inputType="phone"
+              inputDefault={this.state.student.user.phone}
+              inputPlaceholder="999 999 9999"
+              whenBlur={this.handleInputBlur} />
+            <p className="create_user__input_label">Phone Number</p>
+          </span>
+        </FlexContainer>
+        {
+          this.state.hasInlineNotification && !this.state.inlineNotificationClosed ?
+            <InlineNotification doClose={this.closeInlineNotification}
+              text={this.state.inlineNotification} /> : null
+        }
+        <Button solid
+          doClick={() => this.setState({ editing: false })}
+          styles={{
+            backgroundColor: "#aaa"
+          }}
+          text="cancel" />
+        <Button solid type="submit"
+          styles={{
+            margin: "0 1em",
+          }}
+          text="save" />
+        {
+          this.props.user.isUpdating ?
+            <Loader width="32px"
+              styles={{
+                display: "inline-block",
+                verticalAlign: "middle"
+              }} /> : null
+        }
+      </Form>
     )
   }
 
