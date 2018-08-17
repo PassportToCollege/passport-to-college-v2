@@ -1,0 +1,18 @@
+.student_dashboard__settings {
+  width: 856px;
+  max-width: 100%;
+  margin: 32px auto 0;
+  padding: 0 2em;
+}
+
+.student_dashboard__settings > p:first-of-type {
+  margin-bottom: 64px;
+}
+
+.student_dashboard__settings .flex_container {
+  margin-bottom: 32px;
+}
+
+.student_dashboard__settings .flex_container > span > h6 {
+  text-transform: none;
+}
