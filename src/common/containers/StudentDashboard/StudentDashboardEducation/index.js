@@ -5,9 +5,14 @@ import propTypes from "prop-types";
 import _ from "lodash";
 
 import PageMeta from "../../../components/PageMeta";
-import Notification from "../../../components/Notification";
+import Notification, { InlineNotification } from "../../../components/Notification";
 import Button from "../../../components/Button";
 import AnnotatedList from "../../../components/AnnotatedList";
+import Modal from "../../../components/Modal";
+import Form from "../../../components/Form";
+import FlexContainer from "../../../components/FlexContainer";
+import Input from "../../../components/Input";
+import Loader from "../../../components/Loader";
 
 class StudentEducation extends Component {
   constructor(props) {
@@ -74,6 +79,84 @@ class StudentEducation extends Component {
               <title>Education | {this.state.student.user.name.full} | Student Dashboard | Passport to College</title>
             </PageMeta> :
             <PageMeta route="STUDENT_DASHBOARD" />
+        }
+        {
+          this.state.editing ?
+            <Modal classes={["modal__student_edit_education", "modal__student_edit_profile"]}
+              doClose={() => this.setState({ editing: false })}>
+              <Form doSubmit={this.handleEducationSave}>
+                <h4>Edit Education Information</h4>
+                <p>Make changes to your education information here</p>
+                <FlexContainer>
+                  <span>
+                    <Input inputName="highSchool"
+                      inputDefault={this.state.student.highSchool}
+                      whenBlur={this.handleInputBlur} />
+                    <p className="create_user__input_label required">High School</p>
+                  </span>
+                  <span>
+                    <Input inputName="university"
+                      inputDefault={this.state.student.university}
+                      whenBlur={this.handleInputBlur} />
+                    <p className="create_user__input_label required">University</p>
+                  </span>
+                </FlexContainer>
+                <FlexContainer>
+                  <span>
+                    <Input inputName="major"
+                      inputDefault={this.state.student.major}
+                      whenBlur={this.handleInputBlur} />
+                    <p className="create_user__input_label required">Major</p>
+                  </span>
+                  <span>
+                    <Input inputName="minor"
+                      inputDefault={this.state.student.minor}
+                      whenBlur={this.handleInputBlur} />
+                    <p className="create_user__input_label">Minor</p>
+                  </span>
+                </FlexContainer>
+                <FlexContainer>
+                  <span>
+                    <Input inputName="enrollmentYear"
+                      inputType="number"
+                      inputDefault={this.state.student.enrollmentYear}
+                      whenBlur={this.handleInputBlur} />
+                    <p className="create_user__input_label required">Enrollment Year</p>
+                  </span>
+                  <span>
+                    <Input inputName="graduationYear"
+                      inputType="number"
+                      inputDefault={this.state.student.graduationYear}
+                      whenBlur={this.handleInputBlur} />
+                    <p className="create_user__input_label required">Expected Graduation</p>
+                  </span>
+                </FlexContainer>
+                {
+                  this.state.hasInlineNotification && !this.state.inlineNotificationClosed ?
+                    <InlineNotification doClose={this.closeInlineNotification}
+                      text={this.state.inlineNotification} /> : null
+                }
+                <Button solid
+                  doClick={() => this.setState({ editing: false })}
+                  styles={{
+                    backgroundColor: "#aaa"
+                  }}
+                  text="cancel" />
+                <Button solid type="submit"
+                  styles={{
+                    margin: "0 1em",
+                  }}
+                  text="save" />
+                {
+                  this.props.student.isUpdating ?
+                    <Loader width="32px"
+                      styles={{
+                        display: "inline-block",
+                        verticalAlign: "middle"
+                      }} /> : null
+                }
+              </Form>
+            </Modal> : null
         }
         <section className="student_dashboard__container student_dashboard__education">
           <span>
