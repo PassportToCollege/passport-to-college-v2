@@ -7,6 +7,7 @@ import _ from "lodash";
 import PageMeta from "../../../components/PageMeta";
 import FlexContainer from "../../../components/FlexContainer";
 import Button from "../../../components/Button";
+import ConnectionsStrip from "../../../components/ConnectionsStrip";
 
 import { auth } from "../../../utils/firebase";
 
@@ -85,9 +86,15 @@ class StudentSettings extends Component {
           </FlexContainer>
           <h5>Connections</h5>
           <p>Connect you accounts</p>
+          <ConnectionsStrip facebook twitter linkedin github google
+            whenConnectionClicked={this.handleAddConnection} />
         </section>
       </React.Fragment>
     )
+  }
+
+  handleAddConnection = connection => {
+    console.log(connection);
   }
 }
 

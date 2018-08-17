@@ -5,6 +5,10 @@
   padding: 0 2em;
 }
 
+.student_dashboard__settings > p {
+  margin-bottom: 32px;
+}
+
 .student_dashboard__settings > p:first-of-type {
   margin-bottom: 64px;
 }

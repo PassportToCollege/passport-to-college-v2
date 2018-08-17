@@ -1,0 +1,14 @@
+.connections_strip {
+  width: 100%;
+  background: #333333;
+  border-radius: 6px;
+  padding: 34px;
+}
+
+.connections_strip .connection__item {
+  display: inline-block;
+  font-size: 36px;
+  color: white;
+  padding: 12px;
+  cursor: pointer;
+}
