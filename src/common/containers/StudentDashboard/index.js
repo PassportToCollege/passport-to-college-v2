@@ -30,6 +30,7 @@ import { InlineNotification } from "../../components/Notification";
 
 import Bio from "./StudentDashboardBio";
 import Education from "./StudentDashboardEducation";
+import Settings from "./StudentDashboardSettings";
 
 import defAvatar from "../../assets/images/default-gravatar.png";
 import AnnotatedList from "../../components/AnnotatedList";
@@ -152,6 +153,13 @@ class StudentDashboard extends Component {
               render={props => {
                 return (
                   <Education {...props} student={this.props.student} 
+                    studentActions={this.props.studentActions} />
+                )
+              }} />
+            <Route exact path={routes.STUDENT_DASHBOARD_SETTINGS.route}
+              render={props => {
+                return (
+                  <Settings {...props} student={this.props.student} 
                     studentActions={this.props.studentActions} />
                 )
               }} />
