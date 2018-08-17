@@ -188,6 +188,7 @@ class StudentDashboard extends Component {
                   },
                   { label: "gender", text: this.state.student.user.gender },
                   { label: "country", text: this.state.student.user.address.country },
+                  { label: "email", text: this.state.student.user.email },
                   { label: "phone", text: this.state.student.user.phone },
                   { label: "role", text: this.state.student.user.isStaff ? this.state.student.user.role : "no role" }
                 ]} /> : null
