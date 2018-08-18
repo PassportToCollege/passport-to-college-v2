@@ -1,5 +1,6 @@
 import Cookies from "universal-cookie";
 import moment from "moment";
+import { auth } from "./firebase";
 
 const cookies = new Cookies();
 
@@ -240,4 +241,14 @@ export const verifyImageDimensions = (image, ratio = 133) => {
       };
     };
   });
+}
+
+export const isProviderLinked = provider => {
+  provider = provider.toLowerCase();
+
+  const pi = auth.currentUser.providerData.findIndex(p => {
+    return p.providerId.indexOf(provider) > -1;
+  });
+
+  return pi > -1;
 }

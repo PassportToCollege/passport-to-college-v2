@@ -1,15 +1,21 @@
 import "./Settings.css";
 
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
 import _ from "lodash";
 
+import * as authActions from "../../../actions/authActions";
+
 import PageMeta from "../../../components/PageMeta";
+import { InlineNotification } from "../../../components/Notification";
 import FlexContainer from "../../../components/FlexContainer";
 import Button from "../../../components/Button";
 import ConnectionsStrip from "../../../components/ConnectionsStrip";
 
 import { auth } from "../../../utils/firebase";
+import { isProviderLinked } from "../../../utils";
 
 class StudentSettings extends Component {
   constructor(props) {
@@ -21,6 +27,8 @@ class StudentSettings extends Component {
   }
 
   static propTypes = {
+    auth: propTypes.object,
+    authActions: propTypes.object,
     student: propTypes.object,
     studentActions: propTypes.object
   }
@@ -86,6 +94,11 @@ class StudentSettings extends Component {
           </FlexContainer>
           <h5>Connections</h5>
           <p>Connect you accounts</p>
+          {
+            this.state.hasInlineNotification && !this.state.inlineNotificationClosed ?
+              <InlineNotification text={this.state.inlineNotification}
+                doClose={this.closeInlineNotification} /> : null
+          }
           <ConnectionsStrip facebook twitter linkedin github google
             whenConnectionClicked={this.handleAddConnection} />
         </section>
@@ -93,9 +106,55 @@ class StudentSettings extends Component {
     )
   }
 
+  renderInlineNotification = message => {
+    this.setState({
+      hasInlineNotification: true,
+      inlineNotificationClosed: false,
+      inlineNotification: message
+    });
+  }
+
+  closeInlineNotification = () => {
+    this.setState({
+      hasInlineNotification: false,
+      inlineNotificationClosed: true,
+      inlineNotification: null
+    });
+  }
+
   handleAddConnection = connection => {
-    console.log(connection);
+    switch (connection) {
+      case "google":
+      case "twitter":
+      case "github":
+      case "facebook":
+        if (isProviderLinked(connection))
+          return this.renderInlineNotification("account already linked");
+        
+        this.props.authActions.doLinkSocialAccount(connection);
+        break;
+      case "linkedin":
+        this.renderInlineNotification("coming soon");
+        break;
+      default:
+        this.renderInlineNotification("unknown connection provided");
+    }
   }
 }
 
-export default StudentSettings;
+const mapStateToProps = state => {
+  return {
+    auth: state.auth
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    authActions: bindActionCreators(authActions, dispatch)
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(StudentSettings);
