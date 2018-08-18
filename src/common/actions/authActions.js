@@ -547,3 +547,62 @@ export const doSendEmailConfirmation = (uid, email) => {
       });
   };
 };
+
+// LINK SOCIAL ACCOUNT
+export const linkSocialAccountInitiated = provider => {
+  return {
+    type: types.LINK_SOCIAL_ACCOUNT_INITIATED,
+    provider
+  };
+};
+
+export const linkSocialAccountFailed = (error, provider) => {
+  return {
+    type: types.LINK_SOCIAL_ACCOUNT_FAILED,
+    error, provider
+  };
+};
+
+export const socialAccountLinked = (provider, credentials) => {
+  return {
+    type: types.SOCIAL_ACCOUNT_LINKED,
+    provider, credentials
+  };
+};
+
+export const doLinkSocialAccount = provider => {
+  return dispatch => {
+    if (!provider)
+      return dispatch(linkSocialAccountFailed({ message: "no provider" }, null));
+
+    dispatch(linkSocialAccountInitiated(provider));
+
+    let p;
+    switch (provider) {
+      case "google":
+        p = new firebase.auth.GoogleAuthProvider();
+        break;
+      case "facebook":
+        p = new firebase.auth.FacebookAuthProvider();
+        break;
+      case "github":
+        p = new firebase.auth.GithubAuthProvider();
+        break;
+      case "twitter":
+        p = new firebase.auth.TwitterAuthProvider();
+        break;
+      default:
+        return linkSocialAccountFailed({
+          message: "unknown provider"
+        }, provider);
+    }
+
+    auth.currentUser.linkWithPopup(p)
+      .then(result => {
+        dispatch(socialAccountLinked(provider, result.credentials));
+      })
+      .catch(error => {
+        dispatch(linkSocialAccountFailed(error, provider));
+      })
+  }
+}
