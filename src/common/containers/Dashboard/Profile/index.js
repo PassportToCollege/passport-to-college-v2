@@ -161,37 +161,8 @@ class Profile extends Component {
     } else if (this.props.user.hasGotten) {
       let user = this.state.user;
 
-      if(this.state.editingHeaderInfo) {
-        return (
-          <span>
-            <span className="profile__done_edit_button" onClick={this.handleNameEmailUpdate}>done</span>
-            <span className="profile__cancel_edit_button" onClick={() => this.setState({ editingHeaderInfo: false })}>cancel</span>
-            <form onSubmit={this.handleNameEmailUpdate}>
-              <div className="form__input_container profile__input">
-                <label>name</label>
-                <input type="text" name="name" defaultValue={user.name.full} required 
-                  ref={input => this.nameInput = input} />
-              </div>
-              <div className="form__input_container profile__input">
-                <label>email</label>
-                <input type="text" name="email" defaultValue={user.email} required 
-                  ref={input => this.emailInput = input} 
-                  onChange={this.handleEmailInputChange}/>
-              </div>
-              <div className="form__input_container profile__input">
-                <label>password</label>
-                <input type="password" name="password" required
-                  ref={input => this.passwordInput = input}
-                  disabled={this.state.emailChanged ? null : "disabled"} />
-              </div>
-            </form>
-          </span>
-        );
-      }
-
       return (
         <span>
-          <span className="profile__edit_button" onClick={() => this.setState({ editingHeaderInfo: true })}>edit</span>
           <h1 className="profile__name">{user.name.full}</h1>
           <p>{user.email}</p>
         </span>
