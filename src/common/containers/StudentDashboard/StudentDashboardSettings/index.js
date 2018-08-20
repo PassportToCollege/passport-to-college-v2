@@ -13,6 +13,7 @@ import { InlineNotification } from "../../../components/Notification";
 import FlexContainer from "../../../components/FlexContainer";
 import Button from "../../../components/Button";
 import ConnectionsStrip from "../../../components/ConnectionsStrip";
+import SocialConnection from "../../SocialConnection";
 
 import { auth } from "../../../utils/firebase";
 import { isProviderLinked } from "../../../utils";
@@ -101,6 +102,16 @@ class StudentSettings extends Component {
           }
           <ConnectionsStrip facebook twitter linkedin github google
             whenConnectionClicked={this.handleAddConnection} />
+          {
+            this.state.userProviders ?
+              this.state.userProviders.map(provider => {
+                if (provider.providerId === "password")
+                  return null;
+
+                return <SocialConnection key={provider.providerId} provider={provider} />
+              }) : 
+              null
+          }
         </section>
       </React.Fragment>
     )
