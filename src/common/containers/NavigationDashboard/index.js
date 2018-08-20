@@ -119,6 +119,10 @@ class NavigationDashboard extends Component {
           <div className="dashboard__navigation_avatar_container">
             {
               this.props.profilePicture.hasGotten && this.state.profilePicture ?
+                !this.props.student && this.props.menu.dash === "compact" ?
+                <Link to={routes.PROFILE.route}>
+                  <img src={this.state.profilePicture} alt="User Avatar" />
+                </Link> :
                 <img src={this.state.profilePicture} alt="User Avatar" />
               :
               <Loader />
@@ -138,7 +142,7 @@ class NavigationDashboard extends Component {
               <h5 className="type__color_white type__center">{this.state.username}</h5>
           }
           {
-            !this.props.student ?
+            !this.props.student && this.props.menu.dash === "full" ?
               <Link to={routes.PROFILE.route}>view profile</Link> :
               null
           }
