@@ -236,7 +236,8 @@ export const verifyImageDimensions = (image, ratio = 133) => {
 
         return reject({
           message: "ratio not met",
-          url: dUrl
+          url: dUrl,
+          ratio: (width / height) * 100
         });
       };
     };

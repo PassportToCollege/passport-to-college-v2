@@ -12,6 +12,8 @@ import * as userActions from "../../../actions/userActions";
 import PageMeta from "../../../components/PageMeta";
 import UserInfoItem from "../../../components/UserInfoItem";
 import LoadingText from "../../../components/LoadingText";
+import ImageUploader from "../../../components/ImageUploader";
+import Notification from "../../../components/Notification";
 
 import { auth } from "../../../utils/firebase";
 
@@ -62,45 +64,50 @@ class Profile extends Component {
 
   render() {
     return (
-      <div className="profile__container">
+      <React.Fragment>
         <PageMeta more={
           <title>Profile | Dashboard | Passport to College</title>
         } />
-        {/* TODO: add notification for update errors */}
-        <div className="profile__header">
-          <div className="dashboard__container profile__header_body">
-            <div className="profile__avatar" style={{ backgroundImage: 'url(' + this.state.profilePicture + ')' }}>
-              <form action="/profile_image" method="post" encType="multipart/form-data">
-                <input type="file" name="avatar" accept="image/*" 
-                  ref={input => this.avatartInput = input}
-                  onChange={this.handleAvatarChange}/>
-              </form>
-              <button className="button__avatar_upload" type="button" onClick={ () => this.avatartInput.click() }>
-                Click here to select file.
-              </button>
+        {
+          this.state.hasNotification && !this.state.notificationClosed ?
+            <Notification doClose={() => {
+                this.setState({
+                  hasNotification: false,
+                  notificationClosed: true,
+                  notification: null
+                })
+              }}
+              text={this.state.notification} /> :
+            null
+        }
+        <div className="profile__container">
+          <div className="profile__header">
+            <div className="dashboard__container profile__header_body">
+              <ImageUploader default={this.state.profilePicture}
+                onUpload={this.handleProfilePictureChange} />
+              <div className="profile__header_info">
+                {this.createHeaderInfo()}
+              </div>
             </div>
-            <div className="profile__header_info">
-              {this.createHeaderInfo()}
+          </div>
+          <div className="dashboard__container profile__body">
+            <div className="profile__50">
+              <div className="profile__edit_header">
+                <h2>About</h2>
+                <span className="profile__edit_button">edit</span>
+              </div>
+              {this.createAboutDataList()}
+            </div>
+            <div className="profile__50">
+              <div className="profile__edit_header">
+                <h2>Roles</h2>
+                <span className="profile__edit_button">edit</span>
+              </div>
+              {this.createRolesList()}
             </div>
           </div>
         </div>
-        <div className="dashboard__container profile__body">
-          <div className="profile__50">
-            <div className="profile__edit_header">
-              <h2>About</h2>
-              <span className="profile__edit_button">edit</span>
-            </div>
-            {this.createAboutDataList()}
-          </div>
-          <div className="profile__50">
-            <div className="profile__edit_header">
-              <h2>Roles</h2>
-              <span className="profile__edit_button">edit</span>
-            </div>
-            {this.createRolesList()}
-          </div>
-        </div>
-      </div>
+      </React.Fragment>
     )
   }
 
@@ -225,25 +232,8 @@ class Profile extends Component {
     }
   }
 
-  handleAvatarChange = (e) => {
-    let newGravatar = e.target.files[0];
-    let reader = new FileReader();
-    reader.readAsDataURL(newGravatar);
-    reader.onload = event => {
-      let dataUrl = event.target.result;
-
-      let image = new Image();
-      image.src = dataUrl;
-      image.onload = () => {
-        const { height, width } = image;
-
-        // ensure image is squarish
-        if (Math.abs(height - width) <= 100)
-          return this.props.userProfilePictureActions.doAvatarUpload(newGravatar);
-
-        this.setState({ hasError: true, error: "Profile picture dimensions should be 1:1" });
-      }
-    }
+  handleProfilePictureChange = e => {
+    this.props.userProfilePictureActions.doAvatarUpload(e);
   }
 
   handleNameEmailUpdate = () => {
