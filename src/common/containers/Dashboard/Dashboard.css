@@ -6,8 +6,16 @@
 .dashboard__main {
   width: 100%;
   min-height: 100vh;
-  transition: padding 200ms linear;
+  padding-left: 220px;
   background-color: rgba(244, 247, 249, 1);
+}
+
+.dashboard__main[data-menu-state="compact"] {
+  padding-left: 64px;
+}
+
+.dashboard__main[data-menu-state~="closed"] {
+  padding: 0;
 }
 
 .dashboard__container {
@@ -31,10 +39,4 @@
   font-weight: lighter;
   margin: 0;
   color: rgb(58, 58, 58);
-}
-
-@media (min-width: 768px) {
-  .dashboard__main {
-    padding-left: 220px;
-  }
 }

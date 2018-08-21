@@ -3,6 +3,7 @@ import "./Dashboard.css";
 import React, { Component } from "react";
 import { Route } from "react-router-dom";
 import propTypes from "prop-types";
+import { connect } from "react-redux";
 
 import * as routes from "../../constants/routes";
 
@@ -18,7 +19,7 @@ import DashPosts from "./DashPosts";
 import DashComments from "./DashPosts/DashComments";
 import NewUser from "./NewUser";
 
-export default class Dashboard extends Component {
+class Dashboard extends Component {
   componentDidMount() {
     this.props.updateLocation("dashboard home");
   }
@@ -28,7 +29,7 @@ export default class Dashboard extends Component {
       <div className="dashboard">
         <PageMeta route="DASHBOARD" />
         <NavigationDashboard />
-        <main className="dashboard__main">
+        <main className="dashboard__main" data-menu-state={this.props.menu.dash}>
           <SearchBar />
           <Route exact path={this.props.match.url} 
             render={this.renderDashboard}></Route>
@@ -59,5 +60,17 @@ export default class Dashboard extends Component {
 
 Dashboard.propTypes = {
   updateLocation: propTypes.func,
-  match: propTypes.object
+  match: propTypes.object,
+  menu: propTypes.object
 };
+
+const mapStateToProps = state => {
+  return {
+    menu: state.menu
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  () => { return }
+)(Dashboard);
