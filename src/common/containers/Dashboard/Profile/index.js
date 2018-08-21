@@ -5,6 +5,7 @@ import propTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import moment from "moment";
+import _ from "lodash";
 
 import * as userProfilePictureActions from "../../../actions/userProfilePictureActions";
 import * as userActions from "../../../actions/userActions";
@@ -42,32 +43,60 @@ class Profile extends Component {
   }
 
   componentDidMount() {
-    // get user avatar
-    this.props.userProfilePictureActions.doAvatarGet();
+    if (!this.state.profilePicture)
+      this.props.userProfilePictureActions.doAvatarGet();
 
-    // get user data
-    this.props.userActions.doUserGet();
+    if (!this.state.user)
+      this.props.userActions.doUserGet();
+    
+    if (this.state.user && !this.state.student && this.state.user.isStudent)
+      this.state.studentActions.doGetStudent(this.state.user.uid);
   }
 
-  static getDerivedStateFromProps(nextProps) {
-    let newState = null;
-
-    if (nextProps.profilePicture.url && nextProps.profilePicture.url !== "") {
-      newState = {};
-      newState.profilePicture = nextProps.profilePicture.url;
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.profilePicture.url && nextProps.profilePicture.url !== "" &&
+    nextProps.profilePicture.url !== prevState.profilePicture) {
+      return {
+        profilePicture: nextProps.profilePicture.url
+      };
     }
 
-    if (nextProps.profilePicture.url === "") {
-      newState = newState || {};
-      newState.profilePicture = defAvatar;
+    if (nextProps.profilePicture.hasFailed) {
+      return {
+        profilePicture: defAvatar
+      };
     }
 
-    if (nextProps.user.hasGotten) {
-      newState = newState || {};
-      newState.user = nextProps.user.user;
+    if (nextProps.user.hasGotten &&
+    !_.isEqual(nextProps.user.user, prevState.user)) {
+      return {
+        user: nextProps.user.user
+      };
     }
 
-    return newState;
+    if (nextProps.student.hasGotten &&
+      !_.isEqual(nextProps.student.student, prevState.student)) {
+      return {
+        student: nextProps.student.student
+      };
+    }
+
+    return null;
+  }
+
+  getSnapshotBeforeUpdate(props) {
+    if (props.user.isGetting && this.props.user.hasGotten) {
+      return { gotUser: true };
+    }
+
+    return null;
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (snapshot) {
+      if (snapshot.gotUser && this.state.user && this.state.user.isStudent)
+        this.state.studentActions.doGetStudent(this.state.user.uid);
+    }
   }
 
   render() {
@@ -114,19 +143,7 @@ class Profile extends Component {
   }
 
   createHeaderInfo = () => {
-    if (!this.props.user.hasGotten) {
-      return (
-        <LoadingText options={{
-          class: "profile__header_loading",
-          bg: "transparent",
-          height: "10px",
-          lines: [
-            { color: "#FF443F", width: "100%" },
-            { color: "#FF443F", width: "50%" }
-          ]
-        }} />
-      )
-    } else if (this.props.user.hasGotten) {
+    if (this.state.user) {
       let user = this.state.user;
 
       return (
@@ -141,7 +158,19 @@ class Profile extends Component {
           </span>
         </span>
       );
-    }
+    } 
+
+    return (
+      <LoadingText options={{
+        class: "profile__header_loading",
+        bg: "transparent",
+        height: "10px",
+        lines: [
+          { color: "#FF443F", width: "100%" },
+          { color: "#FF443F", width: "50%" }
+        ]
+      }} />
+    )
   }
 
   renderUserData = () => {
