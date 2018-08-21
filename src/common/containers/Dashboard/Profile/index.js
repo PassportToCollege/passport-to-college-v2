@@ -14,6 +14,7 @@ import UserInfoItem from "../../../components/UserInfoItem";
 import LoadingText from "../../../components/LoadingText";
 import ImageUploader from "../../../components/ImageUploader";
 import Notification from "../../../components/Notification";
+import AnnotatedList from "../../../components/AnnotatedList";
 
 import { auth } from "../../../utils/firebase";
 
@@ -91,60 +92,41 @@ class Profile extends Component {
             </div>
           </div>
           <div className="dashboard__container profile__body">
-            <div className="profile__50">
-              <div className="profile__edit_header">
-                <h2>About</h2>
-                <span className="profile__edit_button">edit</span>
-              </div>
-              {this.createAboutDataList()}
-            </div>
-            <div className="profile__50">
-              <div className="profile__edit_header">
-                <h2>Roles</h2>
-                <span className="profile__edit_button">edit</span>
-              </div>
-              {this.createRolesList()}
-            </div>
+            {
+              this.state.user ?
+                <AnnotatedList data={[
+                  { label: "full name", text: this.state.user.name.full },
+                  {
+                    label: "born",
+                    text: `${moment.utc(moment(this.state.user.dob)).format("MMM DD, Y")} (${moment().diff(moment.utc(moment(this.state.user.dob)), "years")} years)`
+                  },
+                  { label: "gender", text: this.state.user.gender },
+                  { label: "country", text: this.state.user.address.country },
+                  { label: "phone", text: this.state.user.phone },
+                  { label: "role", text: this.state.user.isStaff ? this.state.user.role : "no role" }
+                ]} /> :
+                <LoadingText options={{
+                  class: "profile__about_loading",
+                  bg: "transparent",
+                  height: "10px",
+                  lines: [
+                    { color: "rgba(51,51,51,0.4)", width: "50%" },
+                    { color: "rgba(51,51,51,0.2)", width: "80%" },
+                    { color: "rgba(51,51,51,0.4)", width: "50%" },
+                    { color: "rgba(51,51,51,0.2)", width: "80%" },
+                    { color: "rgba(51,51,51,0.4)", width: "50%" },
+                    { color: "rgba(51,51,51,0.2)", width: "80%" },
+                    { color: "rgba(51,51,51,0.4)", width: "50%" },
+                    { color: "rgba(51,51,51,0.2)", width: "80%" }
+                  ]
+                }} />
+            }
           </div>
         </div>
       </React.Fragment>
     )
   }
-
-  createAboutDataList() {
-    if (!this.props.user.hasGotten) {
-      return (
-        <LoadingText options={{
-          class: "profile__about_loading",
-          bg: "transparent",
-          height: "10px",
-          lines: [
-            { color: "rgba(51,51,51,0.4)", width: "50%" },
-            { color: "rgba(51,51,51,0.2)", width: "80%" },
-            { color: "rgba(51,51,51,0.4)", width: "50%" },
-            { color: "rgba(51,51,51,0.2)", width: "80%" },
-            { color: "rgba(51,51,51,0.4)", width: "50%" },
-            { color: "rgba(51,51,51,0.2)", width: "80%" },
-            { color: "rgba(51,51,51,0.4)", width: "50%" },
-            { color: "rgba(51,51,51,0.2)", width: "80%" }
-          ]
-        }} />
-      )
-    } else if (this.props.user.hasGotten) {
-      let { gender, address, phone, dob } = this.state.user;
-      let dt = [
-       { label: "gender", data: gender },
-       { label: "country", data: address.country },
-       { label: "phone", data: phone },
-       { label: "dob", data: moment(dob).format("M/D/Y") }
-      ]
   
-      return dt.map((v, i) => {
-        return <UserInfoItem key={i} label={v.label} data={v.data} />
-      });
-    }
-  }
-
   createHeaderInfo = () => {
     if (!this.props.user.hasGotten) {
       return (
@@ -167,39 +149,6 @@ class Profile extends Component {
           <p>{user.email}</p>
         </span>
       );
-    }
-  }
-
-  createRolesList = () => {
-    if (!this.props.user.hasGotten) {
-      return (
-        <LoadingText options={{
-          class: "profile__about_loading",
-          bg: "transparent",
-          height: "10px",
-          lines: [
-            { color: "rgba(51,51,51,0.4)", width: "50%" },
-            { color: "rgba(51,51,51,0.2)", width: "80%" },
-            { color: "rgba(51,51,51,0.4)", width: "50%" },
-            { color: "rgba(51,51,51,0.2)", width: "80%" }
-          ]
-        }} />
-      )
-    } else if (this.props.user.hasGotten) {
-      return (
-        <span>
-          <UserInfoItem label="staff?"
-            data={
-              this.state.user.isStaff ?
-                this.state.user.role :
-                "you do not have a staff role"} />
-          <UserInfoItem label="student?"
-            data={
-              this.state.user.isStudent ?
-                "you are a student" :
-                "you are not a student"} />
-        </span>
-      )
     }
   }
 
