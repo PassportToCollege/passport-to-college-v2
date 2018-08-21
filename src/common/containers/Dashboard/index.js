@@ -72,5 +72,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  () => { return }
+  () => { return {}; }
 )(Dashboard);
