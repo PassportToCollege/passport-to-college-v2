@@ -10,11 +10,11 @@ import * as userProfilePictureActions from "../../../actions/userProfilePictureA
 import * as userActions from "../../../actions/userActions";
 
 import PageMeta from "../../../components/PageMeta";
-import UserInfoItem from "../../../components/UserInfoItem";
 import LoadingText from "../../../components/LoadingText";
 import ImageUploader from "../../../components/ImageUploader";
 import Notification from "../../../components/Notification";
 import AnnotatedList from "../../../components/AnnotatedList";
+import Button from "../../../components/Button";
 
 import { auth } from "../../../utils/firebase";
 
@@ -92,41 +92,13 @@ class Profile extends Component {
             </div>
           </div>
           <div className="dashboard__container profile__body">
-            {
-              this.state.user ?
-                <AnnotatedList data={[
-                  { label: "full name", text: this.state.user.name.full },
-                  {
-                    label: "born",
-                    text: `${moment.utc(moment(this.state.user.dob)).format("MMM DD, Y")} (${moment().diff(moment.utc(moment(this.state.user.dob)), "years")} years)`
-                  },
-                  { label: "gender", text: this.state.user.gender },
-                  { label: "country", text: this.state.user.address.country },
-                  { label: "phone", text: this.state.user.phone },
-                  { label: "role", text: this.state.user.isStaff ? this.state.user.role : "no role" }
-                ]} /> :
-                <LoadingText options={{
-                  class: "profile__about_loading",
-                  bg: "transparent",
-                  height: "10px",
-                  lines: [
-                    { color: "rgba(51,51,51,0.4)", width: "50%" },
-                    { color: "rgba(51,51,51,0.2)", width: "80%" },
-                    { color: "rgba(51,51,51,0.4)", width: "50%" },
-                    { color: "rgba(51,51,51,0.2)", width: "80%" },
-                    { color: "rgba(51,51,51,0.4)", width: "50%" },
-                    { color: "rgba(51,51,51,0.2)", width: "80%" },
-                    { color: "rgba(51,51,51,0.4)", width: "50%" },
-                    { color: "rgba(51,51,51,0.2)", width: "80%" }
-                  ]
-                }} />
-            }
+            {this.renderUserData()}
           </div>
         </div>
       </React.Fragment>
     )
   }
-  
+
   createHeaderInfo = () => {
     if (!this.props.user.hasGotten) {
       return (
@@ -145,11 +117,53 @@ class Profile extends Component {
 
       return (
         <span>
-          <h1 className="profile__name">{user.name.full}</h1>
-          <p>{user.email}</p>
+          <h3 className="profile__name">{user.name.full}</h3>
+          <p className="type__caption">{user.email}</p>
+          <span>
+            <Button text="edit" solid
+              doClick={() => this.setState({ editing: true })} />
+            <Button text="settings" solid
+              doClick={this.handleSettingsButtonClick} />
+          </span>
         </span>
       );
     }
+  }
+
+  renderUserData = () => {
+    if (this.state.user) {
+      return (
+        <AnnotatedList data={[
+          { label: "full name", text: this.state.user.name.full },
+          {
+            label: "born",
+            text: `${moment.utc(moment(this.state.user.dob)).format("MMM DD, Y")} (${moment().diff(moment.utc(moment(this.state.user.dob)), "years")} years)`
+          },
+          { label: "gender", text: this.state.user.gender },
+          { label: "country", text: this.state.user.address.country },
+          { label: "phone", text: this.state.user.phone },
+          { label: "role", text: this.state.user.isStaff ? this.state.user.role : "no role" }
+        ]} />
+      )
+    }
+
+    return (
+      <LoadingText options={{
+        class: "profile__about_loading",
+        bg: "transparent",
+        height: "10px",
+        lines: [
+          { color: "rgba(51,51,51,0.4)", width: "50%" },
+          { color: "rgba(51,51,51,0.2)", width: "80%" },
+          { color: "rgba(51,51,51,0.4)", width: "50%" },
+          { color: "rgba(51,51,51,0.2)", width: "80%" },
+          { color: "rgba(51,51,51,0.4)", width: "50%" },
+          { color: "rgba(51,51,51,0.2)", width: "80%" },
+          { color: "rgba(51,51,51,0.4)", width: "50%" },
+          { color: "rgba(51,51,51,0.2)", width: "80%" }
+        ]
+      }} />
+    );
   }
 
   handleProfilePictureChange = e => {

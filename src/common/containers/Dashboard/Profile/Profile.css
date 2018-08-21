@@ -99,15 +99,26 @@
 
 .profile__header_body .profile__header_info .profile__name {
   color: white;
-  font-family: "Nunito", "Roboto", sans-serif;
-  font-size: 3em;
-  font-weight: 200;
+  font-weight: 400;
 }
 
 .profile__header_body .profile__header_info p {
   margin-top: 0;
   color: white;
-  font-family: "Muli", "Nunito", "Roboto", sans-serif;
+}
+
+.profile__header_body .profile__header_info > span > span {
+  display: block;
+  margin-top: 32px;
+}
+
+.profile__header_body .profile__header_info > span > span .button {
+  background-color: #FF443F !important;
+  border-color: #FF443F !important;
+}
+
+.profile__header_body .profile__header_info > span > span .button:first-child {
+  margin-right: 1em;
 }
 
 /* Body */
