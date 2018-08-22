@@ -33,10 +33,9 @@ class Profile extends Component {
     this.state = {
       profilePicture: props.profilePicture.url,
       user: props.user.user,
-      editingHeaderInfo: false,
-      editingAbout: false,
-      editingRoles: false,
-      emailChanged: false
+      editingPersonal: false,
+      editingEducation: false,
+      updatedInfo: {}
     };
   }
 
@@ -87,6 +86,10 @@ class Profile extends Component {
       return { gotUser: true };
     }
 
+    if (props.user.isUpdating && this.props.user.hasUpdated) {
+      return { updatedUser: true };
+    }
+
     return null;
   }
 
@@ -94,6 +97,9 @@ class Profile extends Component {
     if (snapshot) {
       if (snapshot.gotUser && this.state.user && this.state.user.isStudent && !this.props.student.isGetting)
         this.props.studentActions.doStudentGet(this.state.user.uid);
+
+      if (snapshot.updatedUser)
+        this.setState({ editingPersonal: false, updatedInfo: {} });
     }
   }
 
@@ -118,14 +124,14 @@ class Profile extends Component {
         {
           this.state.editingPersonal ?
             <Modal classes={["modal__student_edit_profile"]}
-              doClose={() => this.setState({ editingPersonal: false })}>
+              doClose={() => this.setState({ editingPersonal: false, updatedInfo: {} })}>
               {this.renderPersonalForm()}
             </Modal> : null
         }
         {
           this.state.editingEducation ?
             <Modal classes={["modal__student_edit_profile"]}
-              doClose={() => this.setState({ editingEducation: false })}>
+              doClose={() => this.setState({ editingEducation: false, updatedInfo: {} })}>
               {this.renderEducationForm()}
             </Modal> : null
         }
@@ -430,8 +436,123 @@ class Profile extends Component {
     )
   }
 
+  renderInlineNotification = message => {
+    this.setState({
+      hasInlineNotification: true,
+      inlineNotificationClosed: false,
+      inlineNotification: message
+    });
+  }
+
+  closeInlineNotification = () => {
+    this.setState({
+      hasInlineNotification: false,
+      inlineNotificationClosed: true,
+      inlineNotification: null
+    });
+  }
+
   handleProfilePictureChange = e => {
     this.props.userProfilePictureActions.doAvatarUpload(e);
+  }
+
+  handleProfileSave = e => {
+    e.preventDefault();
+
+    const { updatedInfo } = this.state;
+
+    if (Object.keys(updatedInfo).length) {
+      if (updatedInfo.name) {
+        let { name } = this.state.student.user;
+        const { first, last } = updatedInfo.name;
+
+        if (first === "") {
+          return this.renderInlineNotification("first name is required");
+        }
+
+        if (last === "") {
+          return this.renderInlineNotification("last name is required");
+        }
+
+        if (first && last) {
+          updatedInfo.name.full = `${first} ${last}`;
+        } else if (first) {
+          updatedInfo.name.full = `${first} ${name.last}`;
+          updatedInfo.name.last = last;
+        } else if (last) {
+          updatedInfo.name.full = `${name.first} ${last}`;
+          updatedInfo.name.first = first;
+        }
+      }
+
+      if (updatedInfo.dob === "")
+        return this.renderInlineNotification("dob is required");
+
+      if (updatedInfo.address && !updatedInfo.address.country)
+        return this.renderInlineNotification("country is required");
+
+      this.setState({ updatedInfo });
+
+      return this.props.userActions.doUserUpdate(updatedInfo);
+    }
+
+    this.renderInlineNotification("you have not made any changes");
+  }
+
+  handleInputBlur = e => {
+    const { name, value } = e;
+
+    switch (name) {
+      case "name.first":
+        this.setState({
+          updatedInfo: Object.assign({}, this.state.updatedInfo, {
+            name: Object.assign({}, this.state.updatedInfo.name, { first: value })
+          })
+        });
+        break;
+      case "name.middle":
+        this.setState({
+          updatedInfo: Object.assign({}, this.state.updatedInfo, {
+            name: Object.assign({}, this.state.updatedInfo.name, { middle: value })
+          })
+        });
+        break;
+      case "name.last":
+        this.setState({
+          updatedInfo: Object.assign({}, this.state.updatedInfo, {
+            name: Object.assign({}, this.state.updatedInfo.name, { last: value })
+          })
+        });
+        break;
+      case "dob":
+        this.setState({
+          updatedInfo: Object.assign({}, this.state.updatedInfo, {
+            dob: new Date(value).getTime()
+          })
+        });
+        break;
+      case "country":
+        this.setState({
+          updatedInfo: Object.assign({}, this.state.updatedInfo, {
+            address: { country: value }
+          })
+        });
+        break;
+      default:
+        this.setState({ 
+          updatedInfo: Object.assign({}, this.state.updatedInfo, {
+            [name]: value
+          }) 
+        });
+    }
+  }
+
+  handleGenderSelect = gender => {
+    this.setState({ 
+      updatedInfo: Object.assign({}, this.state.updatedInfo, {
+        gender
+      }) 
+    });
   }
 }
 
