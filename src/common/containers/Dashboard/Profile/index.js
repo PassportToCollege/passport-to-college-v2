@@ -24,8 +24,6 @@ import FlexContainer from "../../../components/FlexContainer";
 import RadioList from "../../../components/RadioList";
 import Loader from "../../../components/Loader";
 
-import { auth } from "../../../utils/firebase";
-
 const defAvatar = require("../../../assets/images/default-gravatar.png");
 
 class Profile extends Component {
@@ -118,10 +116,17 @@ class Profile extends Component {
             null
         }
         {
-          this.state.editing ?
+          this.state.editingPersonal ?
             <Modal classes={["modal__student_edit_profile"]}
-              doClose={() => this.setState({ editing: false })}>
-              {this.renderForm()}
+              doClose={() => this.setState({ editingPersonal: false })}>
+              {this.renderPersonalForm()}
+            </Modal> : null
+        }
+        {
+          this.state.editingEducation ?
+            <Modal classes={["modal__student_edit_profile"]}
+              doClose={() => this.setState({ editingEducation: false })}>
+              {this.renderEducationForm()}
             </Modal> : null
         }
         <div className="profile__container">
@@ -159,7 +164,7 @@ class Profile extends Component {
           <p className="type__caption">{user.email}</p>
           <span>
             <Button text="edit" solid
-              doClick={() => this.setState({ editing: true })} />
+              doClick={() => this.setState({ editingPersonal: true })} />
             <Button text="settings" solid
               doClick={this.handleSettingsButtonClick} />
           </span>
@@ -254,7 +259,7 @@ class Profile extends Component {
     )
   }
 
-  renderForm = () => {
+  renderPersonalForm = () => {
     return (
       <Form doSubmit={this.handleProfileSave}>
         <h4>Edit Personal Information</h4>
@@ -326,7 +331,7 @@ class Profile extends Component {
               text={this.state.inlineNotification} /> : null
         }
         <Button solid
-          doClick={() => this.setState({ editing: false })}
+          doClick={() => this.setState({ editingPersonal: false })}
           styles={{
             backgroundColor: "#aaa"
           }}
@@ -348,33 +353,85 @@ class Profile extends Component {
     )
   }
 
+  renderEducationForm = () => {
+    return (
+      <Form doSubmit={this.handleEducationSave}>
+        <h4>Edit Education Information</h4>
+        <p>Make changes to your education information here</p>
+        <FlexContainer>
+          <span>
+            <Input inputName="highSchool"
+              inputDefault={this.state.student.highSchool}
+              whenBlur={this.handleInputBlur} />
+            <p className="create_user__input_label required">High School</p>
+          </span>
+          <span>
+            <Input inputName="university"
+              inputDefault={this.state.student.university}
+              whenBlur={this.handleInputBlur} />
+            <p className="create_user__input_label required">University</p>
+          </span>
+        </FlexContainer>
+        <FlexContainer>
+          <span>
+            <Input inputName="major"
+              inputDefault={this.state.student.major}
+              whenBlur={this.handleInputBlur} />
+            <p className="create_user__input_label required">Major</p>
+          </span>
+          <span>
+            <Input inputName="minor"
+              inputDefault={this.state.student.minor}
+              whenBlur={this.handleInputBlur} />
+            <p className="create_user__input_label">Minor</p>
+          </span>
+        </FlexContainer>
+        <FlexContainer>
+          <span>
+            <Input inputName="enrollmentYear"
+              inputType="number"
+              inputDefault={this.state.student.enrollmentYear}
+              whenBlur={this.handleInputBlur} />
+            <p className="create_user__input_label required">Enrollment Year</p>
+          </span>
+          <span>
+            <Input inputName="graduationYear"
+              inputType="number"
+              inputDefault={this.state.student.graduationYear}
+              whenBlur={this.handleInputBlur} />
+            <p className="create_user__input_label required">Expected Graduation</p>
+          </span>
+        </FlexContainer>
+        {
+          this.state.hasInlineNotification && !this.state.inlineNotificationClosed ?
+            <InlineNotification doClose={this.closeInlineNotification}
+              text={this.state.inlineNotification} /> : null
+        }
+        <Button solid
+          doClick={() => this.setState({ editingEducation: false })}
+          styles={{
+            backgroundColor: "#aaa"
+          }}
+          text="cancel" />
+        <Button solid type="submit"
+          styles={{
+            margin: "0 1em",
+          }}
+          text="save" />
+        {
+          this.props.student.isUpdating ?
+            <Loader width="32px"
+              styles={{
+                display: "inline-block",
+                verticalAlign: "middle"
+              }} /> : null
+        }
+      </Form>
+    )
+  }
+
   handleProfilePictureChange = e => {
     this.props.userProfilePictureActions.doAvatarUpload(e);
-  }
-
-  handleNameEmailUpdate = () => {
-    this.setState({ editingHeaderInfo: false });
-
-    this.props.userActions.doUserUpdate({
-      name: {
-        first: this.nameInput.value.split(" ")[0],
-        last: this.nameInput.value.split(" ").slice(1, 10).join(" "),
-        full: this.nameInput.value
-      },
-      email: this.emailInput.value,
-      password: this.state.emailChanged ? this.passwordInput.value : null
-    });
-  }
-
-  handleEmailInputChange = (e) => {
-    if(
-      e.target.value !== this.state.user.email ||
-      e.target.value !== auth.currentUser.email
-    ) {
-      this.setState({ emailChanged: true });
-    } else {
-      this.setState({ emailChanged: false });
-    }
   }
 }
 
