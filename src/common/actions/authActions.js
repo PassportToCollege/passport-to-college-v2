@@ -606,3 +606,46 @@ export const doLinkSocialAccount = provider => {
       })
   }
 }
+
+// UNLINK SOCIAL ACCOUNT
+export const unlinkSocialAccountInitiated = provider => {
+  return {
+    type: types.UNLINK_SOCIAL_ACCOUNT_INITIATED,
+    provider
+  };
+};
+
+export const unlinkSocialAccountFailed = (error, provider) => {
+  return {
+    type: types.UNLINK_SOCIAL_ACCOUNT_FAILED,
+    error, provider
+  };
+};
+
+export const socialAccountUnlinked = provider => {
+  return {
+    type: types.SOCIAL_ACCOUNT_UNLINKED,
+    provider
+  };
+};
+
+export const doUnlinkSocialAccount = provider => {
+  return dispatch => {
+    if (!provider)
+      return dispatch(unlinkSocialAccountFailed({ message: "no provider" }, null));
+
+    dispatch(unlinkSocialAccountInitiated(provider));
+
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        user.unlink(provider)
+          .then(() => {
+            dispatch(socialAccountUnlinked(provider));
+          })
+          .catch(error => {
+            dispatch(unlinkSocialAccountFailed(error, provider));
+          })
+      }
+    });
+  };
+};

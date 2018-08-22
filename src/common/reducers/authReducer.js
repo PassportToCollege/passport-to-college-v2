@@ -28,7 +28,10 @@ import {
   SIGNED_UP_WITH_SOCIAL,
   LINK_SOCIAL_ACCOUNT_INITIATED,
   LINK_SOCIAL_ACCOUNT_FAILED,
-  SOCIAL_ACCOUNT_LINKED
+  SOCIAL_ACCOUNT_LINKED,
+  UNLINK_SOCIAL_ACCOUNT_INITIATED,
+  UNLINK_SOCIAL_ACCOUNT_FAILED,
+  SOCIAL_ACCOUNT_UNLINKED
 } from "../actions/actionTypes";
 
 const auth = (state = initialState.auth, action) => {
@@ -218,6 +221,28 @@ const auth = (state = initialState.auth, action) => {
         failedToLinkSocialAccount: false,
         provider: action.provider,
         credentials: action.credentials
+      });
+    case UNLINK_SOCIAL_ACCOUNT_INITIATED:
+      return Object.assign({}, state, {
+        unlinkingSocialAccount: true,
+        unlinkedSocialAccount: false,
+        failedToUnlinkSocialAccount: false,
+        provider: action.provider
+      });
+    case UNLINK_SOCIAL_ACCOUNT_FAILED:
+      return Object.assign({}, state, {
+        unlinkingSocialAccount: false,
+        unlinkedSocialAccount: false,
+        failedToUnlinkSocialAccount: true,
+        provider: action.provider,
+        error: action.error
+      });
+    case SOCIAL_ACCOUNT_UNLINKED:
+      return Object.assign({}, state, {
+        unlinkingSocialAccount: false,
+        unlinkedSocialAccount: true,
+        failedToUnlinkSocialAccount: false,
+        provider: action.provider
       });
     default:
       return state;
