@@ -90,6 +90,10 @@ class Profile extends Component {
       return { updatedUser: true };
     }
 
+    if (props.student.isUpdating && this.props.student.hasUpdated) {
+      return { updatedStudent: true };
+    }
+
     return null;
   }
 
@@ -98,8 +102,16 @@ class Profile extends Component {
       if (snapshot.gotUser && this.state.user && this.state.user.isStudent && !this.props.student.isGetting)
         this.props.studentActions.doStudentGet(this.state.user.uid);
 
-      if (snapshot.updatedUser)
-        this.setState({ editingPersonal: false, updatedInfo: {} });
+      if (snapshot.updatedUser || snapshot.updatedStudent) {
+        this.setState({ 
+          editingPersonal: false,
+          editingEducation: false, 
+          updatedInfo: {},
+          hasNotification: true,
+          notificationClosed: false,
+          notification: "information updated successfully" 
+        });
+      }
     }
   }
 
@@ -494,6 +506,41 @@ class Profile extends Component {
       this.setState({ updatedInfo });
 
       return this.props.userActions.doUserUpdate(updatedInfo);
+    }
+
+    this.renderInlineNotification("you have not made any changes");
+  }
+
+  handleEducationSave = e => {
+    e.preventDefault();
+
+    const { updatedInfo } = this.state;
+
+    if (Object.keys(updatedInfo).length) {
+      const { 
+        highSchool,
+        university,
+        major,
+        enrollmentYear,
+        graduationYear 
+      } = updatedInfo;
+
+      if (highSchool === "")
+        return this.renderInlineNotification("high school is required");
+
+      if (university === "")
+        return this.renderInlineNotification("university is required");
+
+      if (major === "")
+        return this.renderInlineNotification("major is required");
+
+      if (enrollmentYear === "")
+        return this.renderInlineNotification("enrollment year is required");
+
+      if (graduationYear === "")
+        return this.renderInlineNotification("graduation year is required");
+
+      return this.props.studentActions.doStudentUpdate(this.state.student.uid, updatedInfo);
     }
 
     this.renderInlineNotification("you have not made any changes");
