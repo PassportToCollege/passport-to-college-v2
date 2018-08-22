@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
-import{ faTimesCircle } from "@fortawesome/fontawesome-free-solid";
+import{ faTimesCircle, faTimes, faCheck } from "@fortawesome/fontawesome-free-solid";
 import {
   faFacebookSquare,
   faGoogle,
@@ -17,7 +17,18 @@ import {
 import * as authActions from "../../actions/authActions";
 import * as userActions from "../../actions/userActions";
 
+import Loader from "../../components/Loader";
+
 class SocialConnection extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      willUnlink: false,
+      unlinking: false
+    };
+  }
+
   static propTypes = {
     provider: propTypes.object,
     user: propTypes.object,
@@ -50,15 +61,50 @@ class SocialConnection extends Component {
               <p className="type__uppercase type__caption">account name</p>
             </span>
           </span>
-          <i className="social_connection__unlink">
-            <FontAwesomeIcon icon={faTimesCircle} />
-          </i>
+          {
+            !this.state.unlinking && !this.state.willUnlink ?
+              <i className="social_connection__unlink"
+                onClick={() => this.setState({ willUnlink: true })}>
+                <FontAwesomeIcon icon={faTimesCircle} />
+              </i> : null
+
+          }
+          {
+            this.state.willUnlink ?
+              <span>
+                <p className="type__caption">Are you sure?</p>
+                <span>
+                  <i className="social_connection__unlink"
+                    onClick={this.handleSocialUnlink}>
+                    <FontAwesomeIcon icon={faCheck} />
+                  </i>
+                  <i className="social_connection__unlink"
+                    onClick={() => this.setState({ willUnlink: false })}>
+                    <FontAwesomeIcon icon={faTimes} />
+                  </i>
+                </span>
+              </span> : null
+          }
+          {
+            this.state.unlinking ?
+              <Loader width="32px" 
+                styles={{
+                  margin: "0"
+                }} /> : null
+          }
         </section>
         <section>
           <p>Display on public profile</p>
         </section>
       </div>
     )
+  }
+
+  handleSocialUnlink = () => {
+    this.setState({ 
+      willUnlink: false,
+      unlinking: true 
+    });
   }
 }
 

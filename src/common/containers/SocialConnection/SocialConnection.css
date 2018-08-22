@@ -42,7 +42,7 @@
           align-items: center;
 }
 
-.social_connection > section:first-child > span i {
+.social_connection > section:first-child > span:first-of-type i {
   font-size: 36px;
   margin-right: 20px;
 }
