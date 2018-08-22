@@ -1,6 +1,7 @@
 import "./Profile.css";
 
 import React, { Component } from "react";
+import { Route } from "react-router-dom";
 import propTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -11,6 +12,7 @@ import * as userProfilePictureActions from "../../../actions/userProfilePictureA
 import * as userActions from "../../../actions/userActions";
 import * as studentActions from "../../../actions/studentActions";
 import { auth } from "../../../utils/firebase";
+import * as routes from "../../../constants/routes";
 
 import PageMeta from "../../../components/PageMeta";
 import LoadingText from "../../../components/LoadingText";
@@ -26,6 +28,7 @@ import RadioList from "../../../components/RadioList";
 import Loader from "../../../components/Loader";
 import WYSIWYGEditor from "../../../components/Editor";
 import InfoStrip from "../../../components/InfoStrip";
+import Settings from "../../StudentDashboard/StudentDashboardSettings";
 
 const defAvatar = require("../../../assets/images/default-gravatar.png");
 
@@ -119,6 +122,20 @@ class Profile extends Component {
   }
 
   render() {
+    return (
+      <React.Fragment>
+        <Route exact path={routes.PROFILE.route}
+          render={this.renderDefault} />
+        <Route path={routes.PROFILE_SETTINGS.route}
+          render={props => {
+            return <Settings {...props} student={this.props.student}
+              studentActions={this.props.studentActions} />
+          }} />
+      </React.Fragment>
+    )
+  }
+
+  renderDefault = () => {
     return (
       <React.Fragment>
         <PageMeta more={
@@ -526,6 +543,10 @@ class Profile extends Component {
     });
   }
 
+  handleSettingsButtonClick = () => {
+    this.props.history.push(routes.PROFILE_SETTINGS.route);
+  }
+
   handleProfilePictureChange = e => {
     this.props.userProfilePictureActions.doAvatarUpload(e);
   }
@@ -686,7 +707,8 @@ Profile.propTypes = {
   userActions: propTypes.object,
   updateLocation: propTypes.func,
   student: propTypes.object,
-  studentActions: propTypes.object
+  studentActions: propTypes.object,
+  history: propTypes.object
 };
 
 const mapStateToProps = state => {
