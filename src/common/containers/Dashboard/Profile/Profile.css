@@ -143,3 +143,8 @@
 .profile__container .profile__body > .info_strip {
   margin-top: 64px;
 }
+
+.profile__container_settings {
+  padding-top: 2em;
+  padding-bottom: 2em;
+}

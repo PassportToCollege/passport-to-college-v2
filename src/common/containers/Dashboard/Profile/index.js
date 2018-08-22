@@ -53,7 +53,7 @@ class Profile extends Component {
       this.props.userActions.doUserGet();
     
     if (this.state.user && !this.state.student && this.state.user.isStudent)
-      this.state.studentActions.doGetStudent(this.state.user.uid);
+      this.props.studentActions.doStudentGet(this.state.user.uid);
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -126,11 +126,13 @@ class Profile extends Component {
       <React.Fragment>
         <Route exact path={routes.PROFILE.route}
           render={this.renderDefault} />
-        <Route path={routes.PROFILE_SETTINGS.route}
-          render={props => {
-            return <Settings {...props} student={this.props.student}
-              studentActions={this.props.studentActions} />
-          }} />
+        <section className="profile__container_settings">
+          <Route path={routes.PROFILE_SETTINGS.route}
+            render={props => {
+              return <Settings {...props} student={this.props.student}
+                studentActions={this.props.studentActions} />
+            }} />
+        </section>
       </React.Fragment>
     )
   }
@@ -275,7 +277,7 @@ class Profile extends Component {
   renderEducation = () => {
     if (this.state.user) {
       if (!this.state.user.isStudent)
-        return <h6>you are not a student</h6>
+        return <p className="type__medium type__center type__margin_top type__uppercase type__caption" style={{ width: "100%" }}>you are not a student</p>
       
       if (this.state.student) {
         return (
@@ -288,6 +290,10 @@ class Profile extends Component {
             { label: "expected graduation", text: this.state.student.graduationYear }
           ]} />
         )
+      }
+
+      if (this.props.student.hasFailed) {
+        return <p className="type__medium type__center type__margin_top type__uppercase type__caption" style={{ width: "100%" }}>no student data found</p>
       }
     }
 
@@ -313,7 +319,7 @@ class Profile extends Component {
   renderBio = () => {
     if (this.state.user) {
       if (!this.state.user.isStudent)
-        return null;
+        return <p className="type__medium type__center type__margin_top type__uppercase type__caption" style={{ width: "100%" }}>account type does not support bio</p>
 
       if (this.state.student) {
         return (

@@ -1,0 +1,58 @@
+.social_connection {
+  width: 100%;
+  max-width: 100%;
+}
+
+.social_connection > section {
+  padding: 16px 24px;
+  color: white;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row-wrap;
+          flex-flow: row-wrap;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.social_connection > section:first-child {
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+
+.social_connection > section:first-child > span {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row wrap;
+          flex-flow: row wrap;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.social_connection > section:first-child > span i {
+  font-size: 36px;
+  margin-right: 20px;
+}
+
+.social_connection[data-id="github.com"] > section:first-child { background-color: #000; }
+
+.social_connection > section:last-child {
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  padding: 28px 24px;
+}
+
+.social_connection[data-id="github.com"] > section:last-child { background-color: #222; }
