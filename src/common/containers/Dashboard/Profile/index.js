@@ -10,6 +10,7 @@ import _ from "lodash";
 import * as userProfilePictureActions from "../../../actions/userProfilePictureActions";
 import * as userActions from "../../../actions/userActions";
 import * as studentActions from "../../../actions/studentActions";
+import { auth } from "../../../utils/firebase";
 
 import PageMeta from "../../../components/PageMeta";
 import LoadingText from "../../../components/LoadingText";
@@ -24,6 +25,7 @@ import FlexContainer from "../../../components/FlexContainer";
 import RadioList from "../../../components/RadioList";
 import Loader from "../../../components/Loader";
 import WYSIWYGEditor from "../../../components/Editor";
+import InfoStrip from "../../../components/InfoStrip";
 
 const defAvatar = require("../../../assets/images/default-gravatar.png");
 
@@ -168,9 +170,18 @@ class Profile extends Component {
             </FlexContainer>
             {this.renderEducation()}
             <FlexContainer styles={{ justifyContent: "space-between" }}>
-              <h4>Bio</h4>
+              <h4 style={{ marginBottom: "16px" }}>Bio</h4>
             </FlexContainer>
             {this.renderBio()}
+            <InfoStrip stripStyles={{
+              padding: "2em 1em",
+              backgroundColor: "#FF443F",
+              fontSize: "12px",
+              fontFamily: "inherit",
+              textAlign: "left"
+            }} >
+              <p className="student_dashboard__meta_item">LAST SIGNED IN: {auth.currentUser ? auth.currentUser.metadata.lastSignInTime : null}</p>
+            </InfoStrip>
           </div>
         </div>
       </React.Fragment>

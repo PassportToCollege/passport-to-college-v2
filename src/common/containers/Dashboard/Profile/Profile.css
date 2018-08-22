@@ -139,3 +139,7 @@
   width: 100%;
   margin-top: 64px;
 }
+
+.profile__container .profile__body > .info_strip {
+  margin-top: 64px;
+}
