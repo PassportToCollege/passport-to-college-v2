@@ -136,6 +136,13 @@ class Profile extends Component {
           </div>
           <div className="dashboard__container profile__body">
             {this.renderUserData()}
+            <FlexContainer styles={{ justifyContent: "space-between" }}>
+              <h4>Education</h4>
+              <Button text="edit" solid
+                disabled={this.state.user && !this.state.user.isStudent}
+                doClick={() => this.setState({ editingEducation: true })} />
+            </FlexContainer>
+            {this.renderEducation()}
           </div>
         </div>
       </React.Fragment>
@@ -207,6 +214,44 @@ class Profile extends Component {
         ]
       }} />
     );
+  }
+
+  renderEducation = () => {
+    if (this.state.user) {
+      if (!this.state.user.isStudent)
+        return <h6>you are not a student</h6>
+      
+      if (this.state.student) {
+        return (
+          <AnnotatedList data={[
+            { label: "high school", text: this.state.student.highSchool },
+            { label: "university", text: this.state.student.university },
+            { label: "major", text: this.state.student.major },
+            { label: "minor", text: this.state.student.minor || "none" },
+            { label: "enrolled", text: this.state.student.enrollmentYear },
+            { label: "expected graduation", text: this.state.student.graduationYear }
+          ]} />
+        )
+      }
+    }
+
+    return (
+      <LoadingText options={{
+        class: "profile__about_loading",
+        bg: "transparent",
+        height: "10px",
+        lines: [
+          { color: "rgba(51,51,51,0.4)", width: "50%" },
+          { color: "rgba(51,51,51,0.2)", width: "80%" },
+          { color: "rgba(51,51,51,0.4)", width: "50%" },
+          { color: "rgba(51,51,51,0.2)", width: "80%" },
+          { color: "rgba(51,51,51,0.4)", width: "50%" },
+          { color: "rgba(51,51,51,0.2)", width: "80%" },
+          { color: "rgba(51,51,51,0.4)", width: "50%" },
+          { color: "rgba(51,51,51,0.2)", width: "80%" }
+        ]
+      }} />
+    )
   }
 
   renderForm = () => {

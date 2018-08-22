@@ -134,3 +134,8 @@
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
 }
+
+.profile__container .profile__body > .flex_container {
+  width: 100%;
+  margin-top: 64px;
+}
