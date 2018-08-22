@@ -23,6 +23,7 @@ import Input from "../../../components/Input";
 import FlexContainer from "../../../components/FlexContainer";
 import RadioList from "../../../components/RadioList";
 import Loader from "../../../components/Loader";
+import WYSIWYGEditor from "../../../components/Editor";
 
 const defAvatar = require("../../../assets/images/default-gravatar.png");
 
@@ -166,6 +167,10 @@ class Profile extends Component {
                 doClick={() => this.setState({ editingEducation: true })} />
             </FlexContainer>
             {this.renderEducation()}
+            <FlexContainer styles={{ justifyContent: "space-between" }}>
+              <h4>Bio</h4>
+            </FlexContainer>
+            {this.renderBio()}
           </div>
         </div>
       </React.Fragment>
@@ -275,6 +280,52 @@ class Profile extends Component {
         ]
       }} />
     )
+  }
+
+  renderBio = () => {
+    if (this.state.user) {
+      if (!this.state.user.isStudent)
+        return null;
+
+      if (this.state.student) {
+        return (
+          <WYSIWYGEditor saveButton
+            content={this.state.student.bio}
+            handleSave={this.handleBioSave}
+            editorStyles={{
+              margin: "0 auto",
+              maxWidth: "100%",
+              padding: "2em 1.875em",
+              backgroundColor: "#FFF",
+              border: "none"
+            }} 
+            controlStyles={{
+              maxWidth: "100%",
+              position: "static",
+              marginBottom: "0"
+            }} />
+        )
+      }
+
+      return (
+        <WYSIWYGEditor saveButton
+          handleSave={this.handleBioSave}
+          editorStyles={{
+            margin: "0 auto",
+            maxWidth: "100%",
+            padding: "2em 1.875em",
+            backgroundColor: "#FFF",
+            border: "none"
+          }}
+          controlStyles={{
+            maxWidth: "100%",
+            position: "static",
+            marginBottom: "0"
+          }} />
+      )
+    }
+    
+    return <Loader width="64px" />
   }
 
   renderPersonalForm = () => {
@@ -544,6 +595,20 @@ class Profile extends Component {
     }
 
     this.renderInlineNotification("you have not made any changes");
+  }
+
+  handleBioSave = content => {
+    if (_.isEqual(content, this.state.student.bio)) {
+      return this.setState({
+        hasNotification: true,
+        notificationClosed: false,
+        notification: "no changes made"
+      });
+    }
+
+    this.props.studentActions.doStudentUpdate(this.state.student.uid, {
+      bio: content
+    });
   }
 
   handleInputBlur = e => {
