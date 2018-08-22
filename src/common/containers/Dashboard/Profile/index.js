@@ -94,8 +94,8 @@ class Profile extends Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (snapshot) {
-      if (snapshot.gotUser && this.state.user && this.state.user.isStudent)
-        this.state.studentActions.doGetStudent(this.state.user.uid);
+      if (snapshot.gotUser && this.state.user && this.state.user.isStudent && !this.props.student.isGetting)
+        this.props.studentActions.doStudentGet(this.state.user.uid);
     }
   }
 

@@ -136,11 +136,12 @@ class App extends React.Component {
      if (!isAuthorized())
       return <Redirect to="/auth/sign-in" />
 
+    if (isAdmin())
+      return <Component {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }} />
+
     if (isStudent())
       return <Redirect to="/scholar/dashboard" />
 
-    if (isAdmin())
-      return <Component {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }} />
 
     return <Redirect to="/" />
   }
@@ -154,7 +155,7 @@ class App extends React.Component {
 
     if (isStudent())
       return <Component {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }} />
-    console("got here")
+
     return <Redirect to="/" />
   }
 
