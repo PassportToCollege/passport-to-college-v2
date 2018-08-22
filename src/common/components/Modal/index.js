@@ -17,6 +17,14 @@ export default class Modal extends Component {
     classes: propTypes.arrayOf(propTypes.string)
   }
 
+  componentDidMount() {
+    document.addEventListener("keyup", this.listenForEscape, false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("keyup", this.listenForEscape, false)
+  }
+
   render() {
     return (
       <div className={`modal__container modal ${makeClassString(this.props.classes)}`}
@@ -34,6 +42,18 @@ export default class Modal extends Component {
 
     if ("function" === typeof this.props.doClose)
       this.props.doClose();
+  }
+
+  listenForEscape = e => {
+    e.preventDefault();
+
+    const key = e.key || e.keyCode;
+
+    if (key === "Escape" || key === "Esc" || key === 27) {
+      this.closeModal()
+    }
+
+    return;
   }
 }
 
