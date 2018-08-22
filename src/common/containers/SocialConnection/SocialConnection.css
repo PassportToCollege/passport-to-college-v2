@@ -49,6 +49,11 @@
 
 .social_connection[data-id="github.com"] > section:first-child { background-color: #000; }
 
+.social_connection .social_connection__unlink {
+    cursor: pointer;
+    padding: 8px;
+}
+
 .social_connection > section:last-child {
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
