@@ -1,6 +1,7 @@
 .social_connection {
   width: 100%;
   max-width: 100%;
+  margin-bottom: 32px;
 }
 
 .social_connection > section {
@@ -48,6 +49,9 @@
 }
 
 .social_connection[data-id="github.com"] > section:first-child { background-color: #000; }
+.social_connection[data-id="facebook.com"] > section:first-child { background-color: #3B5998; }
+.social_connection[data-id="google.com"] > section:first-child { background-color: #4285F4; }
+.social_connection[data-id="linkedin.com"] > section:first-child { background-color: #0077B5; }
 
 .social_connection .social_connection__unlink {
     cursor: pointer;
@@ -61,3 +65,6 @@
 }
 
 .social_connection[data-id="github.com"] > section:last-child { background-color: #222; }
+.social_connection[data-id="google.com"] > section:last-child { background-color: #689DF6; }
+.social_connection[data-id="facebook.com"] > section:last-child { background-color: #5772AC; }
+.social_connection[data-id="linkedin.com"] > section:last-child { background-color: #058ED5; }

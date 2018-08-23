@@ -70,7 +70,9 @@ class StudentSettings extends Component {
             <PageMeta>
               <title>Settings | {this.state.student.user.name.full} | Student Dashboard | Passport to College</title>
             </PageMeta> :
-            <PageMeta route="STUDENT_DASHBOARD" />
+            <PageMeta>
+              <title>Settings | Dashboard | Passport to College</title>
+            </PageMeta>
         }
         <section className="student_dashboard__container student_dashboard__settings">
           <h4>Account</h4>

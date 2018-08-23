@@ -15,7 +15,6 @@ import {
 } from "@fortawesome/fontawesome-free-brands";
 
 import * as authActions from "../../actions/authActions";
-import * as userActions from "../../actions/userActions";
 
 import Loader from "../../components/Loader";
 
@@ -105,20 +104,20 @@ class SocialConnection extends Component {
       willUnlink: false,
       unlinking: true 
     });
+
+    this.props.authActions.doUnlinkSocialAccount(this.props.provider.providerId);
   }
 }
 
 const mapStateToProps = state => {
   return {
-    auth: state.auth,
-    user: state.user
+    auth: state.auth
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    authActions: bindActionCreators(authActions, dispatch),
-    userActions: bindActionCreators(userActions, dispatch)
+    authActions: bindActionCreators(authActions, dispatch)
   };
 };
 
