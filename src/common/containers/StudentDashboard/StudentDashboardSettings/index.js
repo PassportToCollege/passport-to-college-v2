@@ -77,26 +77,7 @@ class StudentSettings extends Component {
         <section className="student_dashboard__container student_dashboard__settings">
           <h4>Account</h4>
           <p>Make changes to your account settings here</p>
-          <FlexContainer styles={{ justifyContent: "space-between" }}>
-            <span>
-              <p className="type__uppercase type__caption">email</p>
-              {
-                this.state.student ?
-                  <h6>{this.state.student.user.email}</h6> :
-                  null
-              }
-            </span>
-            <Button solid text="change"
-              doClick={this.handleEmailChangeClick} />
-          </FlexContainer>
-          <FlexContainer styles={{ justifyContent: "space-between" }}>
-            <span>
-              <p className="type__uppercase type__caption">password</p>
-              <h6>{ this.state.passwordSet ? "***********" : "not set" }</h6>
-            </span>
-            <Button solid text={ this.state.passwordSet ? "change" : "create" }
-              doClick={this.handlePasswordChangeClick} />
-          </FlexContainer>
+          {this.renderPasswordProviderActions()}
           <h5>Connections</h5>
           <p>Connect you accounts</p>
           {
@@ -118,6 +99,46 @@ class StudentSettings extends Component {
           }
         </section>
       </React.Fragment>
+    )
+  }
+
+  renderPasswordProviderActions = () => {
+    if (this.state.passwordSet) {
+      return (
+        <React.Fragment>
+          <FlexContainer styles={{ justifyContent: "space-between" }}>
+            <span>
+              <p className="type__uppercase type__caption">email</p>
+              {
+                this.state.student ?
+                  <h6>{this.state.student.user.email}</h6> :
+                  null
+              }
+            </span>
+            <Button solid text="change"
+              doClick={this.handleEmailChangeClick} />
+          </FlexContainer>
+          <FlexContainer styles={{ justifyContent: "space-between" }}>
+            <span>
+              <p className="type__uppercase type__caption">password</p>
+              <h6>***********</h6>
+            </span>
+            <Button solid text={this.state.passwordSet ? "change" : "create"}
+              doClick={this.handlePasswordChangeClick} />
+          </FlexContainer>
+        </React.Fragment>
+      )
+    }
+
+    return (
+      <FlexContainer styles={{ justifyContent: "space-between" }}>
+        <span>
+          <p className="type__uppercase type__caption">no password provider</p>
+          <h6>Would you like to add an email password to sign in?</h6>
+        </span>
+        <Button solid text="yes"
+          doClick={this.handleAddPasswordProvider} />
+      </FlexContainer>
     )
   }
 
