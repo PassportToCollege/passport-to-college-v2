@@ -30,7 +30,8 @@ class StudentSettings extends Component {
     
     this.state = {
       student: props.student.student,
-      addingPassword: false
+      addingPassword: false,
+      newPasswordProvider: {}
     }
   }
 
@@ -95,7 +96,8 @@ class StudentSettings extends Component {
           <h5>Connections</h5>
           <p>Connect you accounts</p>
           {
-            this.state.hasInlineNotification && !this.state.inlineNotificationClosed ?
+            this.state.hasInlineNotification && !this.state.inlineNotificationClosed &&
+            !this.state.inlineLocation ?
               <InlineNotification text={this.state.inlineNotification}
                 doClose={this.closeInlineNotification} /> : null
           }
@@ -165,7 +167,7 @@ class StudentSettings extends Component {
           <span>
             <Select selectDefault=""
               selectName="email"
-              whenChange={this.handleEmailSelect}>
+              whenChange={this.handleInputChange}>
               <option value="" disabled>Select One</option>
               {
                 this.state.userProviders.map(provider => {
@@ -204,6 +206,12 @@ class StudentSettings extends Component {
             <p className="create_user__input_label required">Confirm Password</p>
           </span>
         </FlexContainer>
+        {
+          this.state.hasInlineNotification && !this.state.inlineNotificationClosed &&
+          this.state.inlineLocation === "modal" ?
+            <InlineNotification doClose={this.closeInlineNotification}
+              text={this.state.inlineNotification} /> : null
+        }
         <Button solid
           doClick={() => this.setState({ addingPassword: false })}
           styles={{
@@ -227,11 +235,22 @@ class StudentSettings extends Component {
     )
   }
 
-  renderInlineNotification = message => {
+  handleInputChange = e => {
+     const { name, value } = e;
+
+    this.setState({
+      newPasswordProvider: Object.assign({}, this.state.newPasswordProvider, {
+        [name]: value ? value : this.state.newPasswordProvider[name]
+      })
+    });
+  }
+
+  renderInlineNotification = (message, location) => {
     this.setState({
       hasInlineNotification: true,
       inlineNotificationClosed: false,
-      inlineNotification: message
+      inlineNotification: message,
+      inlineLocation: location
     });
   }
 
@@ -239,7 +258,8 @@ class StudentSettings extends Component {
     this.setState({
       hasInlineNotification: false,
       inlineNotificationClosed: true,
-      inlineNotification: null
+      inlineNotification: null,
+      inlineLocation: null
     });
   }
 
@@ -260,6 +280,18 @@ class StudentSettings extends Component {
       default:
         this.renderInlineNotification("unknown connection provided");
     }
+  }
+
+  handlePasswordProviderAdd = e => {
+    e.preventDefault();
+
+    const { newPasswordProvider } = this.state;
+
+    if (Object.keys(newPasswordProvider).length) {
+      return
+    }
+
+    this.renderInlineNotification("nothing to save", "modal");
   }
 }
 
