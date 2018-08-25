@@ -14,6 +14,12 @@ import FlexContainer from "../../../components/FlexContainer";
 import Button from "../../../components/Button";
 import ConnectionsStrip from "../../../components/ConnectionsStrip";
 import SocialConnection from "../../SocialConnection";
+import Modal from "../../../components/Modal";
+import Form from "../../../components/Form";
+import Input from "../../../components/Input";
+import Select from "../../../components/Select";
+import Loader from "../../../components/Loader";
+
 
 import { auth } from "../../../utils/firebase";
 import { isProviderLinked } from "../../../utils";
@@ -23,7 +29,8 @@ class StudentSettings extends Component {
     super(props);
     
     this.state = {
-      student: props.student.student
+      student: props.student.student,
+      addingPassword: false
     }
   }
 
@@ -73,6 +80,13 @@ class StudentSettings extends Component {
             <PageMeta>
               <title>Settings | Dashboard | Passport to College</title>
             </PageMeta>
+        }
+        {
+          this.state.addingPassword ?
+            <Modal classes={["modal__settings_add_password"]}
+              doClose={() => this.setState({ addingPassword: false })}>
+              {this.renderPasswordProviderForm()}
+            </Modal> : null
         }
         <section className="student_dashboard__container student_dashboard__settings">
           <h4>Account</h4>
@@ -137,8 +151,79 @@ class StudentSettings extends Component {
           <h6>Would you like to add an email password to sign in?</h6>
         </span>
         <Button solid text="yes"
-          doClick={this.handleAddPasswordProvider} />
+          doClick={() => this.setState({ addingPassword: true })} />
       </FlexContainer>
+    )
+  }
+
+  renderPasswordProviderForm = () => {
+    return (
+      <Form doSubmit={this.handlePasswordProviderAdd}>
+        <h4>Add Email and Password</h4>
+        <p>Add an email and password to your account for signing in</p>
+        <FlexContainer>
+          <span>
+            <Select selectDefault=""
+              selectName="email"
+              whenChange={this.handleEmailSelect}>
+              <option value="" disabled>Select One</option>
+              {
+                this.state.userProviders.map(provider => {
+                  return (
+                    <option key={provider.providerId} 
+                      value={provider.email}>
+                      {provider.providerId}({provider.email})
+                    </option>
+                  )
+                })
+              }
+            </Select>
+            <p className="create_user__input_label required">Choose an email address from an existing provider</p>
+          </span>
+        </FlexContainer>
+        <h5 className="type__center">or</h5>
+        <FlexContainer>
+          <span>
+            <Input inputType="email"
+              inputName="email"
+              whenBlur={this.handleInputChange} />
+            <p className="create_user__input_label required">Add new email address</p>
+          </span>
+        </FlexContainer>
+        <FlexContainer>
+          <span>
+            <Input inputType="password"
+              inputName="password"
+              whenBlur={this.handleInputChange} />
+            <p className="create_user__input_label required">Password</p>
+          </span>
+          <span>
+            <Input inputType="password"
+              inputName="password_confirm"
+              whenBlur={this.handleInputChange} />
+            <p className="create_user__input_label required">Confirm Password</p>
+          </span>
+        </FlexContainer>
+        <Button solid
+          doClick={() => this.setState({ addingPassword: false })}
+          styles={{
+            backgroundColor: "#aaa"
+          }}
+          text="cancel" />
+        <Button solid type="submit"
+          styles={{
+            margin: "0 1em",
+          }}
+          text="save" />
+        {
+          this.props.student.isUpdating ?
+            <Loader width="32px"
+              styles={{
+                display: "inline-block",
+                verticalAlign: "middle"
+              }} /> : null
+        }
+      </Form>
     )
   }
 
