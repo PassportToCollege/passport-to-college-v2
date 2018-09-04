@@ -14,7 +14,7 @@ import FlexContainer from "../../../components/FlexContainer";
 import Button from "../../../components/Button";
 import ConnectionsStrip from "../../../components/ConnectionsStrip";
 import SocialConnection from "../../SocialConnection";
-import Modal from "../../../components/Modal";
+import Modal, { SignInModal } from "../../../components/Modal";
 import Form from "../../../components/Form";
 import Input from "../../../components/Input";
 import Select from "../../../components/Select";
@@ -31,6 +31,7 @@ class StudentSettings extends Component {
     this.state = {
       student: props.student.student,
       addingPassword: false,
+      signingIn: false,
       newPasswordProvider: {}
     }
   }
@@ -68,6 +69,46 @@ class StudentSettings extends Component {
     return null;
   }
 
+  getSnapshotBeforeUpdate(props) {
+    if (props.auth.addingPasswordProvider && this.props.auth.addedPasswordProvider)
+      return { addedPasswordProvider: true };
+    
+    if (props.auth.addingPasswordProvider && this.props.auth.failedToAddPasswordProvider)
+      return { failedToAddPasswordProvider: true }
+
+    if (props.auth.signingInWithSocial && this.props.auth.hasSignedInWithSocial)
+      return { reauthorized: true };
+    
+    return null;
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (snapshot) {
+      if (snapshot.addedPasswordProvider) {
+        this.setState({
+          addingPassword: false,
+          userProviders: auth.currentUser.providerData,
+          passwordSet: true
+        })
+      }
+
+      if (snapshot.failedToAddPasswordProvider &&
+      this.props.auth.error.code === "auth/requires-recent-login") {
+        this.setState({
+          addingPassword: false,
+          signingIn: true
+        });
+      }
+
+      if (snapshot.reauthorized) {
+        this.setState({
+          addingPassword: true,
+          signingIn: false
+        });
+      }
+    }
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -88,6 +129,15 @@ class StudentSettings extends Component {
               doClose={() => this.setState({ addingPassword: false })}>
               {this.renderPasswordProviderForm()}
             </Modal> : null
+        }
+        {
+          this.state.signingIn ?
+            <SignInModal withEmail={false}
+              intro="Please verify your account by signing in with your current connected provider."
+              doClose={() => this.setState({ addingPassword: true, signingIn: false })}
+              doGoogle={this.handleSocialSignIn}
+              doFacebook={this.handleSocialSignIn} /> :
+            null
         }
         <section className="student_dashboard__container student_dashboard__settings">
           <h4>Account</h4>
@@ -128,7 +178,7 @@ class StudentSettings extends Component {
               {
                 this.state.student ?
                   <h6>{this.state.student.user.email}</h6> :
-                  null
+                  <h6>{auth.currentUser.email}</h6>
               }
             </span>
             <Button solid text="change"
@@ -165,7 +215,7 @@ class StudentSettings extends Component {
         <p>Add an email and password to your account for signing in</p>
         <FlexContainer>
           <span>
-            <Select selectDefault=""
+            <Select selectDefault={this.state.newPasswordProvider.email || ""}
               selectName="email"
               whenChange={this.handleInputChange}>
               <option value="" disabled>Select One</option>
@@ -188,6 +238,7 @@ class StudentSettings extends Component {
           <span>
             <Input inputType="email"
               inputName="email"
+              inputDefault={this.state.newPasswordProvider.email || ""}
               whenBlur={this.handleInputChange} />
             <p className="create_user__input_label required">Add new email address</p>
           </span>
@@ -196,12 +247,14 @@ class StudentSettings extends Component {
           <span>
             <Input inputType="password"
               inputName="password"
+              inputDefault={this.state.newPasswordProvider.password || ""}
               whenBlur={this.handleInputChange} />
             <p className="create_user__input_label required">Password</p>
           </span>
           <span>
             <Input inputType="password"
               inputName="password_confirm"
+              inputDefault={this.state.newPasswordProvider.password_confirm || ""}
               whenBlur={this.handleInputChange} />
             <p className="create_user__input_label required">Confirm Password</p>
           </span>
@@ -224,7 +277,7 @@ class StudentSettings extends Component {
           }}
           text="save" />
         {
-          this.props.student.isUpdating ?
+          this.props.auth.addingPasswordProvider ?
             <Loader width="32px"
               styles={{
                 display: "inline-block",
@@ -260,6 +313,12 @@ class StudentSettings extends Component {
       inlineNotificationClosed: true,
       inlineNotification: null,
       inlineLocation: null
+    });
+  }
+
+  handleSocialSignIn = provider => {
+    this.props.authActions.doSignInWithSocial(provider, {
+      match: auth.currentUser.uid
     });
   }
 
@@ -306,7 +365,7 @@ class StudentSettings extends Component {
       if (password !== password_confirm)
         return this.renderInlineNotification("passwords do not match", "modal");
 
-      
+      return this.props.authActions.doAddPasswordProvider(email, password);
     }
 
     this.renderInlineNotification("nothing to save", "modal");

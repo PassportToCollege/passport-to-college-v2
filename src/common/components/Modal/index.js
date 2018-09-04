@@ -566,7 +566,12 @@ export class SignInModal extends Component {
     doSignIn: propTypes.func,
     doSignUp: propTypes.func,
     heading: propTypes.string,
-    intro: propTypes.string
+    intro: propTypes.string,
+    withEmail: propTypes.bool
+  }
+
+  static defaultProps = {
+    withEmail: true
   }
 
   render() {
@@ -576,34 +581,40 @@ export class SignInModal extends Component {
         <div className="modal__bg" onClick={this.closeModal}></div>
         <div className="modal__content">
           <h3>Sign in</h3>
+          <p>{this.props.intro}</p>
           <TextedIconButton doClick={this.handleGoogleSignIn}
             icon="google" text="Google account" />
           <TextedIconButton doClick={this.handleFacebookSignIn}
             icon="facebook" text="Facebook account" />
-          <h3>Or with your email address:</h3>
-          <form className="form form__signin"
-            onSubmit={this.handlleSignIn}>
-            <div className="form__input_container">
-              <label htmlFor="email">Email address</label>
-              <input type="text" id="email" name="email" required
-                ref={input => this.emailInput = input} />
-            </div>
-            <div className="form__input_container">
-              <label htmlFor="password">Password</label>
-              <input type="password" id="password" name="password" required
-                ref={input => this.passwordInput = input} />
-            </div>
-            <Button type="submit" text="sign in" solid 
-              styles={{
-                backgroundColor: "#FF6561"
-              }}/>
-            <Button type="button" text="sign up instead" solid
-              doClick={this.handleSignUpInstead} 
-              styles={{
-                backgroundColor: "rgb(153,153,153)",
-                marginLeft: "1em"
-              }}/>
-          </form>
+          {
+            this.props.withEmail ?
+              <React.Fragment>
+                <h3>Or with your email address:</h3>
+                <form className="form form__signin"
+                  onSubmit={this.handlleSignIn}>
+                  <div className="form__input_container">
+                    <label htmlFor="email">Email address</label>
+                    <input type="text" id="email" name="email" required
+                      ref={input => this.emailInput = input} />
+                  </div>
+                  <div className="form__input_container">
+                    <label htmlFor="password">Password</label>
+                    <input type="password" id="password" name="password" required
+                      ref={input => this.passwordInput = input} />
+                  </div>
+                  <Button type="submit" text="sign in" solid 
+                    styles={{
+                      backgroundColor: "#FF6561"
+                    }}/>
+                  <Button type="button" text="sign up instead" solid
+                    doClick={this.handleSignUpInstead} 
+                    styles={{
+                      backgroundColor: "rgb(153,153,153)",
+                      marginLeft: "1em"
+                    }}/>
+                </form>
+              </React.Fragment> : null
+          }
         </div>
       </div>
     )

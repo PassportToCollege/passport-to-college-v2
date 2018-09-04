@@ -133,6 +133,12 @@ export const doSignInWithSocial = (provider, options) => {
               let user = snapshot.data();
               user.uid = results.user.uid;
 
+              if (options.match && options.match !== user.uid) {
+                return auth.signOut().then(() => {
+                  return dispatch(signInWithSocialFailed({ message: "incorrect account signed in" }, provider));
+                });
+              }
+
               if (options.strict && !user[options.strict]) {
                 return auth.signOut().then(() => {
                   return dispatch(signInWithSocialFailed({ message: "user type mismatch" }, provider));
