@@ -22,7 +22,7 @@ import Loader from "../../../components/Loader";
 
 
 import { auth } from "../../../utils/firebase";
-import { isProviderLinked } from "../../../utils";
+import { isProviderLinked, isEmail } from "../../../utils";
 
 class StudentSettings extends Component {
   constructor(props) {
@@ -288,7 +288,25 @@ class StudentSettings extends Component {
     const { newPasswordProvider } = this.state;
 
     if (Object.keys(newPasswordProvider).length) {
-      return
+      const {
+        email,
+        password,
+        password_confirm
+      } = this.state.newPasswordProvider;
+
+      if (!isEmail(email))
+        return this.renderInlineNotification("invalid email address", "modal");
+
+      if (!password)
+        return this.renderInlineNotification("password required", "modal");
+
+      if (!password_confirm)
+        return this.renderInlineNotification("password confirmation required", "modal");
+
+      if (password !== password_confirm)
+        return this.renderInlineNotification("passwords do not match", "modal");
+
+      
     }
 
     this.renderInlineNotification("nothing to save", "modal");

@@ -3,6 +3,7 @@ import firebase from "firebase";
 import moment from "moment";
 
 import * as types from "./actionTypes";
+import { isEmail } from "../utils";
 import { auth, db } from "../utils/firebase";
 import { User, SSID } from "../utils/utilityClasses";
 import Cookies from "universal-cookie";
@@ -649,3 +650,49 @@ export const doUnlinkSocialAccount = provider => {
     });
   };
 };
+
+// LINK PASSWORD PROVIDER
+export const addPasswordProviderInitiated = () => {
+  return {
+    type: types.ADD_PASSWORD_PROVIDER_INITIATED
+  };
+};
+
+export const addPasswordProviderFailed = error => {
+  return {
+    type: types.ADD_PASSWORD_PROVIDER_FAILED,
+    error
+  };
+};
+
+export const addedPasswordProvider = credentials => {
+  return {
+    type: types.ADDED_PASSWORD_PROVIDER,
+    credentials
+  };
+};
+
+export const doAddPasswordProvider = (email = "", password = "") => {
+  return dispatch => {
+    if (!email)
+      return dispatch(addPasswordProviderFailed({message: "no email provided"}));
+    
+    if (!password)
+      return dispatch(addPasswordProviderFailed({message: "no password provided"}));
+
+    if (!isEmail(email))
+      return dispatch(addPasswordProviderFailed({message: "invalid email provided"}));
+
+    dispatch(addPasswordProviderInitiated());
+
+    const credential = firebase.auth.EmailAuthProvider.credential(email, password);
+
+    auth.currentUser.linkAndRetrieveDataWithCredential(credential)
+      .then(userCred => {
+        dispatch(addedPasswordProvider(userCred));
+      })
+      .catch(error => {
+        dispatch(addPasswordProviderFailed(error));
+      })
+  }
+}
