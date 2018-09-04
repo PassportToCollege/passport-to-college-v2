@@ -5,6 +5,10 @@
   padding: 0 2em;
 }
 
+.student_dashboard .student_dashboard__settings {
+  padding-top: 2em;
+}
+
 .student_dashboard__settings > p {
   margin-bottom: 32px;
 }
@@ -19,6 +23,16 @@
 
 .student_dashboard__settings .flex_container > span > h6 {
   text-transform: none;
+}
+
+.student_dashboard__settings .settings__unlink_password {
+  cursor: pointer;;
+  display: block;
+  width: 100%;
+  text-align: right;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 2em;
 }
 
 

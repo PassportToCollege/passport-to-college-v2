@@ -79,6 +79,10 @@ class StudentSettings extends Component {
     if (props.auth.signingInWithSocial && this.props.auth.hasSignedInWithSocial)
       return { reauthorized: true };
     
+    if (this.state.removingPasswordProvider && props.auth.unlinkingSocialAccount &&
+    this.props.auth.unlinkedSocialAccount)
+      return { removedPassword: true }
+
     return null;
   }
 
@@ -104,6 +108,14 @@ class StudentSettings extends Component {
         this.setState({
           addingPassword: true,
           signingIn: false
+        });
+      }
+
+      if (snapshot.removedPassword) {
+        this.setState({
+          removingPasswordProvider: false,
+          passwordSet: false,
+          userProviders: auth.currentUser.providerData
         });
       }
     }
@@ -192,6 +204,19 @@ class StudentSettings extends Component {
             <Button solid text={this.state.passwordSet ? "change" : "create"}
               doClick={this.handlePasswordChangeClick} />
           </FlexContainer>
+          <span className="settings__unlink_password"
+          onClick={this.handlePasswordUnlink}>
+            Remove Password Login
+            {
+              this.state.removingPasswordProvider ?
+                <Loader width="16px"
+                  styles={{
+                    marginLeft: "16px",
+                    display: "inline-block",
+                    verticalAlign: "middle"
+                  }} /> : null
+            }
+          </span>
         </React.Fragment>
       )
     }
@@ -369,6 +394,14 @@ class StudentSettings extends Component {
     }
 
     this.renderInlineNotification("nothing to save", "modal");
+  }
+
+  handlePasswordUnlink = () => {
+    this.setState({ 
+      removingPasswordProvider: true
+    });
+
+    this.props.authActions.doUnlinkSocialAccount("password");
   }
 }
 
