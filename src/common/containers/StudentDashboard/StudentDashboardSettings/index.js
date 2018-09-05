@@ -81,9 +81,15 @@ class StudentSettings extends Component {
     
     if (this.state.removingPasswordProvider && props.auth.unlinkingSocialAccount &&
     this.props.auth.unlinkedSocialAccount)
-      return { removedPassword: true }
+      return { removedPassword: true };
+    
+    if (props.auth.unlinkingSocialAccount && this.props.auth.unlinkedSocialAccount)
+      return { unlinkedSocial: true };
+    
+    if (props.auth.linkingSocialAccount && this.props.auth.linkedSocialAccount)
+      return { linkedSocial: true };
 
-    return null;
+      return null;
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -115,6 +121,12 @@ class StudentSettings extends Component {
         this.setState({
           removingPasswordProvider: false,
           passwordSet: false,
+          userProviders: auth.currentUser.providerData
+        });
+      }
+
+      if (snapshot.unlinkedSocial || snapshot.linkedSocial) {
+        this.setState({
           userProviders: auth.currentUser.providerData
         });
       }
@@ -204,19 +216,22 @@ class StudentSettings extends Component {
             <Button solid text={this.state.passwordSet ? "change" : "create"}
               doClick={this.handlePasswordChangeClick} />
           </FlexContainer>
-          <span className="settings__unlink_password"
-          onClick={this.handlePasswordUnlink}>
-            Remove Password Login
-            {
-              this.state.removingPasswordProvider ?
-                <Loader width="16px"
-                  styles={{
-                    marginLeft: "16px",
-                    display: "inline-block",
-                    verticalAlign: "middle"
-                  }} /> : null
-            }
-          </span>
+          {
+            this.state.userProviders.length > 1 ?
+              <span className="settings__unlink_password"
+              onClick={this.handlePasswordUnlink}>
+                Remove Password Login
+                {
+                  this.state.removingPasswordProvider ?
+                    <Loader width="16px"
+                      styles={{
+                        marginLeft: "16px",
+                        display: "inline-block",
+                        verticalAlign: "middle"
+                      }} /> : null
+                }
+              </span> : null
+          }
         </React.Fragment>
       )
     }
