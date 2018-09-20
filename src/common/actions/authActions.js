@@ -702,3 +702,44 @@ export const doAddPasswordProvider = (email = "", password = "") => {
       })
   }
 }
+
+// CHANGE EMAIL ADDRESS
+export const changeEmailAddressInitiated = nEmail => {
+  return {
+    type: types.EMAIL_ADDRESS_CHANGE_INITIATED,
+    nEmail
+  };
+};
+
+export const changeEmailAddressFailed = (error, nEmail) => {
+  return {
+    type: types.EMAIL_ADDRESS_CHANGE_FAILED,
+    error, nEmail
+  };
+};
+
+export const changedEmailAddress = nEmail => {
+  return {
+    type: types.EMAIL_ADDRESS_CHANGED,
+    nEmail
+  };
+};
+
+export const doChangeEmailAddress = email => {
+  return dispatch => {
+    if (!isEmail(email))
+      return dispatch(changeEmailAddressFailed({ message: "invalid email address" }, email));
+
+    dispatch(changeEmailAddressInitiated(email));
+
+    const user = auth.currentUser;
+
+    user.updateEmail(email)
+      .then(() => {
+        dispatch(changedEmailAddress(email));
+      })
+      .catch(error => {
+        dispatch(changeEmailAddressFailed(error, email));
+      })
+  }
+}

@@ -155,6 +155,13 @@ class StudentSettings extends Component {
             </Modal> : null
         }
         {
+          this.state.changingEmail ?
+            <Modal classes={["modal__settings_change_email"]}
+              doClose={() => this.setState({ changingEmail: false })}>
+              {this.renderChangeEmailForm()}
+            </Modal> : null
+        }
+        {
           this.state.signingIn ?
             <SignInModal withEmail={false}
               intro="Please verify your account by signing in with your current connected provider."
@@ -206,7 +213,7 @@ class StudentSettings extends Component {
               }
             </span>
             <Button solid text="change"
-              doClick={this.handleEmailChangeClick} />
+              doClick={() => this.setState({ changingEmail: true })} />
           </FlexContainer>
           <FlexContainer styles={{ justifyContent: "space-between" }}>
             <span>
@@ -214,7 +221,7 @@ class StudentSettings extends Component {
               <h6>***********</h6>
             </span>
             <Button solid text={this.state.passwordSet ? "change" : "create"}
-              doClick={this.handlePasswordChangeClick} />
+              doClick={() => this.setState({ changingPassword: true })} />
           </FlexContainer>
           {
             this.state.userProviders.length > 1 ?
@@ -328,6 +335,48 @@ class StudentSettings extends Component {
     )
   }
 
+  renderChangeEmailForm = () => {
+    return (
+      <Form doSubmit={this.handleEmailChange}>
+        <h4>Change Your Email</h4>
+        <p>Enter your new email address below:</p>
+        {
+          this.state.hasInlineNotification && !this.state.inlineNotificationClosed &&
+          this.state.inlineLocation === "modal" ?
+            <InlineNotification doClose={this.closeInlineNotification}
+              text={this.state.inlineNotification} /> : null
+        }
+        <FlexContainer>
+          <span>
+            <Input inputType="email"
+              inputName="email"
+              inputDefault={this.state.newEmail || auth.currentUser.email}
+              whenBlur={e => this.setState({ newEmail: e.value })} />
+          </span>
+        </FlexContainer>
+        <Button solid
+          doClick={() => this.setState({ changingEmail: false })}
+          styles={{
+            backgroundColor: "#aaa"
+          }}
+          text="cancel" />
+        <Button solid type="submit"
+          styles={{
+            margin: "0 1em",
+          }}
+          text="save" />
+        {
+          this.props.auth.changingEmailAddress ?
+            <Loader width="32px"
+              styles={{
+                display: "inline-block",
+                verticalAlign: "middle"
+              }} /> : null
+        }
+      </Form>
+    )
+  }
+
   handleInputChange = e => {
      const { name, value } = e;
 
@@ -354,6 +403,19 @@ class StudentSettings extends Component {
       inlineNotification: null,
       inlineLocation: null
     });
+  }
+
+  handleEmailChange = e => {
+    e.preventDefault();
+
+    if (!this.state.newEmail ||
+    this.state.newEmail === auth.currentUser.email)
+      return this.renderInlineNotification("no change made", "modal");
+
+    if (!isEmail(this.state.newEmail))
+      return this.renderInlineNotification("invalid email address", "modal");
+
+    
   }
 
   handleSocialSignIn = provider => {

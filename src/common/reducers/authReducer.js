@@ -34,7 +34,10 @@ import {
   SOCIAL_ACCOUNT_UNLINKED,
   ADD_PASSWORD_PROVIDER_INITIATED,
   ADD_PASSWORD_PROVIDER_FAILED,
-  ADDED_PASSWORD_PROVIDER
+  ADDED_PASSWORD_PROVIDER,
+  EMAIL_ADDRESS_CHANGE_INITIATED,
+  EMAIL_ADDRESS_CHANGE_FAILED,
+  EMAIL_ADDRESS_CHANGED
 } from "../actions/actionTypes";
 
 const auth = (state = initialState.auth, action) => {
@@ -266,6 +269,28 @@ const auth = (state = initialState.auth, action) => {
         addedPasswordProvider: true,
         failedToAddPasswordProvider: false,
         credentials: action.credentials
+      });
+    case EMAIL_ADDRESS_CHANGE_INITIATED:
+      return Object.assign({}, state, {
+        changingEmailAddress: true,
+        changedEmailAddress: false,
+        failedToChangeEmailAddress: false,
+        nEmail: action.nEmail
+      });
+    case EMAIL_ADDRESS_CHANGE_FAILED:
+      return Object.assign({}, state, {
+        changingEmailAddress: false,
+        changedEmailAddress: false,
+        failedToChangeEmailAddress: true,
+        nEmail: action.nEmail,
+        error: action.error
+      });
+    case EMAIL_ADDRESS_CHANGED:
+      return Object.assign({}, state, {
+        changingEmailAddress: false,
+        changedEmailAddress: true,
+        failedToChangeEmailAddress: false,
+        nEmail: action.nEmail
       });
     default:
       return state;
