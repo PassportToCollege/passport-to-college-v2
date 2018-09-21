@@ -1,7 +1,6 @@
 import Cookies from "universal-cookie";
 import moment from "moment";
-
-import BadWords from "./badwords.en";
+import { auth } from "./firebase";
 
 const cookies = new Cookies();
 
@@ -31,6 +30,13 @@ export const isApplicant = () => {
   
     return false;
 };
+
+export const isStudent = () => {
+  if (isAuthorized())
+    return cookies.get("ssid").isStudent;
+
+  return false;
+}
 
 export const isEmail = str => {
   // eslint-disable-next-line no-useless-escape
@@ -155,165 +161,95 @@ export const initializeFacebook = (d, s, id) => {
   fjs.parentNode.insertBefore(js, fjs);
 }
 
-export class User {
-  constructor(uid, email, name, options) {
-    this.uid = uid;
-    this.email = email;
-    this.isAdmin = options.admin || false;
-    this.isApplicant = options.applicant || false;
-    this.isStudent = options.student || false;
-    this.isStaff = options.staff || false;
-    this.hasProfilePicture = options.hasProfilePicture || !!options.photo || false;
-    this.emailConfirmed = options.emailConfirmed || false;
-    this.photo = options.photo || "";
+export const getClassificationYear = classification => {
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
 
-    let n = name.split(" ");
-    if (n.length === 3) {
-      this.name = {
-        first: n[0],
-        middle: n[1],
-        last: n[2],
-        full: [n[0], n[2]].join(" ")
-      }
-    } else {
-      this.name = {
-        first: n[0],
-        last: n[1],
-        full: name
-      }
-    }
-  }
+  switch (classification) {
+    case "freshman":
+    case "freshmen":
+      if (month <= 5)
+        return year + 3;
 
-  get data() {   
-    return this.getData(); 
-  }
+      return year + 4;
+    case "sophomore":
+    case "sophomores":
+      if (month <= 5)
+        return year + 2;
 
-  getData() {
-    const { uid, name, email, isAdmin, isApplicant, isStudent, isStaff, emailConfirmed, photo, hasProfilePicture } = this;
-    return {
-      uid, name, email,
-      isAdmin, isApplicant, isStudent,
-      isStaff, emailConfirmed, photo, hasProfilePicture
-    };
+      return year + 3;
+    case "junior":
+    case "juniors":
+      if (month <= 5)
+        return year + 1;
+
+      return year + 2;
+    case "senior":
+    case "seniors":
+      if (month <= 5)
+        return year;
+
+      return year + 1;
+    default:
+      return 0;
   }
 }
 
-export class SSID {
-  constructor(user) {
-    this.user = user || {};
+export const shuffle = (arr = []) => {
+  if (!arr.length)
+    return arr;
+
+  let m = arr.length, t, i;
+
+  while (m) {
+    i = Math.floor(Math.random() * m--);
+
+    t = arr[m];
+    arr[m] = arr[i];
+    arr[i] = t;
   }
 
-  create() {
-    const d = {
-      uid: this.user.uid,
-      isAdmin: this.user.isAdmin,
-      isApplicant: this.user.isApplicant,
-      isStaff: this.user.isStaff,
-      isStudent: this.user.isStudent,
-      createdAt: new Date()
-    }
-
-    return cookies.set("ssid", d, { path: "/", maxAge: 60 * 60 * 24 * 3 });
-  }
-
-  destroy() {
-    return cookies.remove("ssid", { path: "/" });
-  }
+  return arr;
 }
 
-export class Comment {
-  // TODO: search messages for bad words and censor
-  constructor(user = {}, content = {}, post) {
-    this.user = user;
-    this.message = {
-      text: this.censorText(convertBlocksToText(content.blocks)),
-      html: {
-        entityMap: content.entityMap,
-        blocks: this.censorBlocks(content.blocks)
-      }
-    };
-    this.post = post;
-    this.isConversation = true;
-    this.isDeleted = false;
-    this.hasReplies = false;
-    this.replies = 0;
-    this.postedOn = new Date(moment.utc(moment()).toDate()).getTime();
-  }
-
-  get data() {   
-    return this.getData(); 
-  }
-
-  censorBlocks(blocks) {
-    const bwKeys = Object.keys(BadWords);
-    
-    for (let badword of bwKeys) {
-      const re = new RegExp(badword, "gi");
-      const hearts = this.heartify(badword.length);
-
-      for (let block of blocks) {
-        let { text } = block;
-        const bwi = text.toLowerCase().indexOf(badword);
-
-        if (bwi > -1) {
-          block.text = text.replace(re, hearts);
+export const verifyImageDimensions = (image, ratio = 133) => {
+  return new Promise((resolve, reject) => {
+    let ni = image.files[0],
+      reader = new FileReader();
+  
+    reader.readAsDataURL(ni);
+    reader.onload = e => {
+      let dUrl = e.target.result,
+        image = new Image();
+  
+      image.src = dUrl;
+      image.onload = () => {
+        const { width, height } = image;
+        
+        if (((width / height) * 100) >= ratio) {
+          return resolve({
+            image: ni,
+            url: dUrl
+          })
         }
-      }
-    }
 
-    return blocks;
-  }
-
-  censorText(text) {
-    const bwKeys = Object.keys(BadWords);
-
-    for (let badword of bwKeys) {
-      const re = new RegExp(badword, "gi");
-      const hearts = this.heartify(badword.length);
-      const bwi = text.toLowerCase().indexOf(badword)
-
-      if (bwi > -1) {
-        text = text.replace(re, hearts);
-      }
-    }
-
-    return text;
-  }
-
-  heartify(length) {
-    let r = "";
-
-    for (let i = 0; i < length; i++)
-      r += "*";
-
-    return r;
-  }
-
-  getData() {
-    const { 
-      user, message, hasReplies, postedOn, post, isConversation, replies,
-      isDeleted
-    } = this;
-
-    return {
-      user, message, hasReplies, postedOn, post, isConversation, replies,
-      isDeleted
+        return reject({
+          message: "ratio not met",
+          url: dUrl,
+          ratio: (width / height) * 100
+        });
+      };
     };
-  }
+  });
 }
 
-export class Reply extends Comment {
-  constructor(user = {}, content ={}, post, comment) {
-    super(user, content, post);
-    this.isConversation = false;
-    this.parent = comment;
-  }
+export const isProviderLinked = provider => {
+  provider = provider.toLowerCase();
 
-  getData() {
-    const { user, message, hasReplies, postedOn, parent, post, isDeleted } = this;
+  const pi = auth.currentUser.providerData.findIndex(p => {
+    return p.providerId.indexOf(provider) > -1;
+  });
 
-    return {
-      user, message, hasReplies, postedOn, parent, post, isDeleted
-    };
-  }
+  return pi > -1;
 }

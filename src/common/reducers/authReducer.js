@@ -25,7 +25,19 @@ import {
   SIGNED_IN_WITH_SOCIAL,
   SIGN_UP_WITH_SOCIAL_INITIATED,
   SIGN_UP_WITH_SOCIAL_FAILED,
-  SIGNED_UP_WITH_SOCIAL
+  SIGNED_UP_WITH_SOCIAL,
+  LINK_SOCIAL_ACCOUNT_INITIATED,
+  LINK_SOCIAL_ACCOUNT_FAILED,
+  SOCIAL_ACCOUNT_LINKED,
+  UNLINK_SOCIAL_ACCOUNT_INITIATED,
+  UNLINK_SOCIAL_ACCOUNT_FAILED,
+  SOCIAL_ACCOUNT_UNLINKED,
+  ADD_PASSWORD_PROVIDER_INITIATED,
+  ADD_PASSWORD_PROVIDER_FAILED,
+  ADDED_PASSWORD_PROVIDER,
+  EMAIL_ADDRESS_CHANGE_INITIATED,
+  EMAIL_ADDRESS_CHANGE_FAILED,
+  EMAIL_ADDRESS_CHANGED
 } from "../actions/actionTypes";
 
 const auth = (state = initialState.auth, action) => {
@@ -192,6 +204,93 @@ const auth = (state = initialState.auth, action) => {
         hasFailed: true,
         email: action.email,
         error: action.error
+      });
+    case LINK_SOCIAL_ACCOUNT_INITIATED:
+      return Object.assign({}, state, {
+        linkingSocialAccount: true,
+        linkedSocialAccount: false,
+        failedToLinkSocialAccount: false,
+        provider: action.provider
+      });
+    case LINK_SOCIAL_ACCOUNT_FAILED:
+      return Object.assign({}, state, {
+        linkingSocialAccount: false,
+        linkedSocialAccount: false,
+        failedToLinkSocialAccount: true,
+        provider: action.provider,
+        error: action.error
+      });
+    case SOCIAL_ACCOUNT_LINKED:
+      return Object.assign({}, state, {
+        linkingSocialAccount: false,
+        linkedSocialAccount: true,
+        failedToLinkSocialAccount: false,
+        provider: action.provider,
+        credentials: action.credentials
+      });
+    case UNLINK_SOCIAL_ACCOUNT_INITIATED:
+      return Object.assign({}, state, {
+        unlinkingSocialAccount: true,
+        unlinkedSocialAccount: false,
+        failedToUnlinkSocialAccount: false,
+        provider: action.provider
+      });
+    case UNLINK_SOCIAL_ACCOUNT_FAILED:
+      return Object.assign({}, state, {
+        unlinkingSocialAccount: false,
+        unlinkedSocialAccount: false,
+        failedToUnlinkSocialAccount: true,
+        provider: action.provider,
+        error: action.error
+      });
+    case SOCIAL_ACCOUNT_UNLINKED:
+      return Object.assign({}, state, {
+        unlinkingSocialAccount: false,
+        unlinkedSocialAccount: true,
+        failedToUnlinkSocialAccount: false,
+        provider: action.provider
+      });
+    case ADD_PASSWORD_PROVIDER_INITIATED:
+      return Object.assign({}, state, {
+        addingPasswordProvider: true,
+        addedPasswordProvider: false,
+        failedToAddPasswordProvider: false
+      });
+    case ADD_PASSWORD_PROVIDER_FAILED:
+      return Object.assign({}, state, {
+        addingPasswordProvider: false,
+        addedPasswordProvider: false,
+        failedToAddPasswordProvider: true,
+        error: action.error
+      });
+    case ADDED_PASSWORD_PROVIDER:
+      return Object.assign({}, state, {
+        addingPasswordProvider: false,
+        addedPasswordProvider: true,
+        failedToAddPasswordProvider: false,
+        credentials: action.credentials
+      });
+    case EMAIL_ADDRESS_CHANGE_INITIATED:
+      return Object.assign({}, state, {
+        changingEmailAddress: true,
+        changedEmailAddress: false,
+        failedToChangeEmailAddress: false,
+        nEmail: action.nEmail
+      });
+    case EMAIL_ADDRESS_CHANGE_FAILED:
+      return Object.assign({}, state, {
+        changingEmailAddress: false,
+        changedEmailAddress: false,
+        failedToChangeEmailAddress: true,
+        nEmail: action.nEmail,
+        error: action.error
+      });
+    case EMAIL_ADDRESS_CHANGED:
+      return Object.assign({}, state, {
+        changingEmailAddress: false,
+        changedEmailAddress: true,
+        failedToChangeEmailAddress: false,
+        nEmail: action.nEmail
       });
     default:
       return state;

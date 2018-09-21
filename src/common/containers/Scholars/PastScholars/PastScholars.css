@@ -1,0 +1,18 @@
+.scholars__past {
+  height: 100%;
+  background-color: rgb(210, 210, 210);
+  padding: 2em 0;
+}
+
+.scholars__past .student_info_card__container {
+  margin: 2em auto;
+  max-width: 1140px;
+}
+
+.scholars__past .student_info_card__container:first-child {
+  margin-top: 0;
+}
+
+.scholars__past .student_info_card__container:last-child {
+  margin-bottom: 0;
+}

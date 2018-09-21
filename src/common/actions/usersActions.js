@@ -3,6 +3,7 @@ import axios from "axios";
 
 import { db } from "../utils/firebase";
 import * as types from "./actionTypes";
+import { doCreateStudent } from "./studentActions";
 
 const EMAIL_API = process.env.REACT_APP_EMAIL_API;
 const Console = console;
@@ -375,6 +376,41 @@ export const doCreateUser = data => {
       });
   }
 }
+
+export const doCreateFullUser = (user = {}, student = {}) => {
+  return dispatch => {
+    if (!Object.keys(user).length)
+      return dispatch(createUserFailed({ message: "no user data provided" }, null));
+
+    dispatch(createUserInitiated(user));
+
+    const { email } = user;
+    db.collection("users")
+      .where("email", "==", email)
+      .get()
+      .then(snapshot => {
+        if (!snapshot.empty)
+          return dispatch(createUserFailed({ message: "user already exists" }, user));
+
+        if (!user.uid)
+          user.uid = `${uid(24)}_ac_less`;
+
+        return db.collection("users")
+          .doc(user.uid)
+          .set(user)
+          .then(() => {
+            dispatch(userCreated(user));
+
+            if (Object.keys(student).length) {
+              dispatch(doCreateStudent(student));
+            }
+          })
+          .catch(error => {
+            dispatch(createUserFailed(error, user));
+          });
+      })
+  }
+};
 
 // UPDATE actions
 export const userUpdateInitiated = (uid, data) => {

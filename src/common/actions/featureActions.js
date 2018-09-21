@@ -1,6 +1,8 @@
 import { db } from "../utils/firebase";
+import { deletePostHero } from "../utils/firebase/functions";
 import * as types from "./actionTypes";
 import * as featuresActions from "./featuresActions";
+import { doCategoryPostsUpdate } from "./postCategoryActions";
 
 // GET actions
 export const featureGetInitiated = feature => {
@@ -32,10 +34,10 @@ export const doFeatureGet = feature => {
       .doc(feature)
       .get()
       .then(snapshot => {
-        if (snapshot.exists)
-          return dispatch(featureGetDone(snapshot.data()));
-
-        return dispatch(featureGetFailed({ message: "no feature found" }, feature));
+        if (!snapshot.exists)
+          return dispatch(featureGetFailed({ message: "no feature found" }, feature));
+        
+        dispatch(featureGetDone(snapshot.data()));
       })
       .catch(error => {
         dispatch(featureGetFailed(error, feature));
@@ -65,25 +67,23 @@ export const featureCreationFailed = (error, data) => {
   };
 };
 
-export const doCreateFeature = (data, options) => {
+export const doCreateFeature = (feature, options) => {
   return dispatch => {
-    dispatch(featureCreationInitiated(data));
+    dispatch(featureCreationInitiated(feature));
 
     options = options || {};
 
-    // make feature active
-    data.isActive = true;
-
-    db.collection("features")
-      .add(data)
+    db.collection("posts")
+      .doc(feature.id)
+      .set(feature)
       .then(() => {
-        dispatch(featureCreated(data));
+        dispatch(featureCreated(feature));
 
         if (options.refresh)
-          return dispatch(featuresActions.doGetFeaturesByUser(data.student));
+          return dispatch(featuresActions.doGetFeaturesByUser(feature.student));
       })
       .catch(error => {
-        dispatch(featureCreationFailed(error, data));
+        dispatch(featureCreationFailed(error, feature));
       })
   }
 }
@@ -117,7 +117,7 @@ export const doFeatureUpdate = (feature, data, options) => {
 
     options = options || {};
 
-    db.collection("features")
+    db.collection("posts")
       .doc(feature)
       .update(data)
       .then(() => {
@@ -160,10 +160,14 @@ export const doFeatureDelete = (feature, options) => {
 
     options = options || {};
 
-    return db.collection("features")
-      .doc(feature.fid)
+    return db.collection("posts")
+      .doc(feature.id)
       .delete()
       .then(() => {
+        if (feature.hasHero)
+          deletePostHero(feature.id);
+
+        dispatch(doCategoryPostsUpdate("student_features", "dec"));
         dispatch(featureDeleted(feature));
 
         if (options.refresh)

@@ -1,0 +1,121 @@
+.view_scholar {
+  background-color: white;
+}
+
+/* Name */
+.view_scholar__name {
+  background-color: #53D1D7;
+}
+
+.view_scholar__name > span {
+  display: flex;
+  justify-content: flex-end;
+  width: 1140px;
+  max-width: 100%;
+  margin: 0 auto;
+  color: white;
+}
+
+.view_scholar__name > span > h3 {
+  max-width: 570px;
+  flex: 0 1 570px;
+  padding: 0 3rem 3.5rem;
+}
+
+/* Picture block */
+.view_scholar__profile {
+  display: flex;
+  flex-flow: row wrap-reverse;
+  justify-content: center;
+  width: 1140px;
+  max-width: 100%;
+  margin: 0 auto;
+  background-color: #f1f1f1;
+}
+
+.view_scholar__profile > span {
+  max-width: 570px;
+  min-width: 300px;
+  flex: 1 1 570px;
+}
+
+.view_scholar__profile > span > img {
+  max-width: 100%;
+}
+
+.view_scholar__profile > span .colored_strip {
+  color: white;
+}
+
+/* Bio block */
+.view_scholar__bio {
+  padding: 7rem 2rem;
+  background-color: #f1f1f1;
+}
+
+/* Facts block */
+.view_scholar__facts {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding-top: 45px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.view_scholar__facts > .labeled_icon_card {
+  margin-bottom: 45px;
+}
+
+.view_scholar__facts .view_scholar__facts_section_overflow {
+  width: 350px;
+  height: 395px;
+  background-color: #11A5AC;
+}
+
+/* Accomplishments block */
+.view_scholar__accomplishments {
+  background-color: #f1f1f1;
+}
+
+.view_scholar__accomplishments > div {
+  width: 1140px;
+  max-width: 100%;
+  padding-top: 45px;
+  margin: 0 auto;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+
+.view_scholar__accomplishments .labeled_icon_card {
+  background-color: white;
+  margin-bottom: 45px;
+}
+
+.view_scholar__accomplishments .labeled_icon_card > h4 > a {
+  color: #333;
+}
+
+.view_scholar__accomplishments .invisible_flex_padder {
+  margin-bottom: 45px;
+  padding: 2em;
+}
+
+/* More scholars block */
+
+.view_scholar__more_scholars {
+  width: 1140px;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 3rem;
+}
+
+.view_scholar__more_scholars .more_scholars__container {
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  margin-top: 3rem;
+}

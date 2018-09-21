@@ -3,9 +3,11 @@ import firebase from "firebase";
 import moment from "moment";
 
 import * as types from "./actionTypes";
+import { isEmail } from "../utils";
 import { auth, db } from "../utils/firebase";
-import { User, SSID } from "../utils";
+import { User, SSID } from "../utils/utilityClasses";
 import Cookies from "universal-cookie";
+import { doUserUpdate } from "./userActions";
 
 const cookies = new Cookies();
 const EMAIL_API = process.env.REACT_APP_EMAIL_API;
@@ -131,6 +133,12 @@ export const doSignInWithSocial = (provider, options) => {
             if (snapshot.exists) {
               let user = snapshot.data();
               user.uid = results.user.uid;
+
+              if (options.match && options.match !== user.uid) {
+                return auth.signOut().then(() => {
+                  return dispatch(signInWithSocialFailed({ message: "incorrect account signed in" }, provider));
+                });
+              }
 
               if (options.strict && !user[options.strict]) {
                 return auth.signOut().then(() => {
@@ -547,3 +555,193 @@ export const doSendEmailConfirmation = (uid, email) => {
       });
   };
 };
+
+// LINK SOCIAL ACCOUNT
+export const linkSocialAccountInitiated = provider => {
+  return {
+    type: types.LINK_SOCIAL_ACCOUNT_INITIATED,
+    provider
+  };
+};
+
+export const linkSocialAccountFailed = (error, provider) => {
+  return {
+    type: types.LINK_SOCIAL_ACCOUNT_FAILED,
+    error, provider
+  };
+};
+
+export const socialAccountLinked = (provider, credentials) => {
+  return {
+    type: types.SOCIAL_ACCOUNT_LINKED,
+    provider, credentials
+  };
+};
+
+export const doLinkSocialAccount = provider => {
+  return dispatch => {
+    if (!provider)
+      return dispatch(linkSocialAccountFailed({ message: "no provider" }, null));
+
+    dispatch(linkSocialAccountInitiated(provider));
+
+    let p;
+    switch (provider) {
+      case "google":
+        p = new firebase.auth.GoogleAuthProvider();
+        break;
+      case "facebook":
+        p = new firebase.auth.FacebookAuthProvider();
+        break;
+      case "github":
+        p = new firebase.auth.GithubAuthProvider();
+        break;
+      case "twitter":
+        p = new firebase.auth.TwitterAuthProvider();
+        break;
+      default:
+        return linkSocialAccountFailed({
+          message: "unknown provider"
+        }, provider);
+    }
+
+    auth.currentUser.linkWithPopup(p)
+      .then(result => {
+        dispatch(socialAccountLinked(provider, result.credentials));
+      })
+      .catch(error => {
+        dispatch(linkSocialAccountFailed(error, provider));
+      })
+  }
+}
+
+// UNLINK SOCIAL ACCOUNT
+export const unlinkSocialAccountInitiated = provider => {
+  return {
+    type: types.UNLINK_SOCIAL_ACCOUNT_INITIATED,
+    provider
+  };
+};
+
+export const unlinkSocialAccountFailed = (error, provider) => {
+  return {
+    type: types.UNLINK_SOCIAL_ACCOUNT_FAILED,
+    error, provider
+  };
+};
+
+export const socialAccountUnlinked = provider => {
+  return {
+    type: types.SOCIAL_ACCOUNT_UNLINKED,
+    provider
+  };
+};
+
+export const doUnlinkSocialAccount = provider => {
+  return dispatch => {
+    if (!provider)
+      return dispatch(unlinkSocialAccountFailed({ message: "no provider" }, null));
+
+    dispatch(unlinkSocialAccountInitiated(provider));
+
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        user.unlink(provider)
+          .then(() => {
+            dispatch(socialAccountUnlinked(provider));
+          })
+          .catch(error => {
+            dispatch(unlinkSocialAccountFailed(error, provider));
+          })
+      }
+    });
+  };
+};
+
+// LINK PASSWORD PROVIDER
+export const addPasswordProviderInitiated = () => {
+  return {
+    type: types.ADD_PASSWORD_PROVIDER_INITIATED
+  };
+};
+
+export const addPasswordProviderFailed = error => {
+  return {
+    type: types.ADD_PASSWORD_PROVIDER_FAILED,
+    error
+  };
+};
+
+export const addedPasswordProvider = credentials => {
+  return {
+    type: types.ADDED_PASSWORD_PROVIDER,
+    credentials
+  };
+};
+
+export const doAddPasswordProvider = (email = "", password = "") => {
+  return dispatch => {
+    if (!email)
+      return dispatch(addPasswordProviderFailed({message: "no email provided"}));
+    
+    if (!password)
+      return dispatch(addPasswordProviderFailed({message: "no password provided"}));
+
+    if (!isEmail(email))
+      return dispatch(addPasswordProviderFailed({message: "invalid email provided"}));
+
+    dispatch(addPasswordProviderInitiated());
+
+    const credential = firebase.auth.EmailAuthProvider.credential(email, password);
+
+    auth.currentUser.linkAndRetrieveDataWithCredential(credential)
+      .then(userCred => {
+        dispatch(addedPasswordProvider(userCred));
+      })
+      .catch(error => {
+        dispatch(addPasswordProviderFailed(error));
+      })
+  }
+}
+
+// CHANGE EMAIL ADDRESS
+export const changeEmailAddressInitiated = nEmail => {
+  return {
+    type: types.EMAIL_ADDRESS_CHANGE_INITIATED,
+    nEmail
+  };
+};
+
+export const changeEmailAddressFailed = (error, nEmail) => {
+  return {
+    type: types.EMAIL_ADDRESS_CHANGE_FAILED,
+    error, nEmail
+  };
+};
+
+export const changedEmailAddress = nEmail => {
+  return {
+    type: types.EMAIL_ADDRESS_CHANGED,
+    nEmail
+  };
+};
+
+export const doChangeEmailAddress = email => {
+  return dispatch => {
+    if (!isEmail(email))
+      return dispatch(changeEmailAddressFailed({ message: "invalid email address" }, email));
+
+    dispatch(changeEmailAddressInitiated(email));
+
+    const user = auth.currentUser;
+
+    user.updateEmail(email)
+      .then(() => {
+        dispatch(doUserUpdate({ email, emailConfirmed: false }));
+        dispatch(changedEmailAddress(email));
+      })
+      .catch(error => {
+        dispatch(changeEmailAddressFailed(error, email));
+      })
+  }
+}

@@ -10,7 +10,7 @@ class NavigationEditPost extends Component {
   render() {
     return (
       <nav className="edit_post__nav">
-        <h4>options</h4>
+        <p>options</p>
         <ul className="edit_post__nav_list">
           <li className="edit_post__save"
             onClick={this.savePost}>save</li>
@@ -41,7 +41,7 @@ class NavigationEditPost extends Component {
           <li className="edit_post__delete"
             onClick={this.deletePost}>delete</li>
         </ul>
-        <h4>category</h4>
+        <p>category</p>
         <ul className="edit_post__nav_list categories_list">
           <li className="edit_post__add_category"
             onClick={this.props.addingCategory}>add category</li>
@@ -63,7 +63,7 @@ class NavigationEditPost extends Component {
               }) : null
           }
         </ul>
-        <h4>settings</h4>
+        <p>settings</p>
         <ul className="edit_post__nav_list settings_list">
           <li className="edit_post__comments">
             <Link to={`/admin/dashboard/post/${this.props.post ? this.props.post.id : ""}/comments`}>

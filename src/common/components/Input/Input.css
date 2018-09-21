@@ -8,4 +8,10 @@ input.input {
   padding: 1em;
   font-family: "Roboto", sans-serif;
   margin: 0 0 1em;
+  transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+}
+
+input.input:hover,
+input.input:focus {
+  border-color: rgba(128, 150, 162, 1);
 }

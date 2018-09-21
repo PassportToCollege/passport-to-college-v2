@@ -1,0 +1,70 @@
+.social_connection {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 32px;
+}
+
+.social_connection > section {
+  padding: 16px 24px;
+  color: white;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row-wrap;
+          flex-flow: row-wrap;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.social_connection > section:first-child {
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+
+.social_connection > section:first-child > span {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row wrap;
+          flex-flow: row wrap;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.social_connection > section:first-child > span:first-of-type i {
+  font-size: 36px;
+  margin-right: 20px;
+}
+
+.social_connection[data-id="github.com"] > section:first-child { background-color: #000; }
+.social_connection[data-id="facebook.com"] > section:first-child { background-color: #3B5998; }
+.social_connection[data-id="google.com"] > section:first-child { background-color: #4285F4; }
+.social_connection[data-id="linkedin.com"] > section:first-child { background-color: #0077B5; }
+
+.social_connection .social_connection__unlink {
+    cursor: pointer;
+    padding: 8px;
+}
+
+.social_connection > section:last-child {
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  padding: 28px 24px;
+}
+
+.social_connection[data-id="github.com"] > section:last-child { background-color: #222; }
+.social_connection[data-id="google.com"] > section:last-child { background-color: #689DF6; }
+.social_connection[data-id="facebook.com"] > section:last-child { background-color: #5772AC; }
+.social_connection[data-id="linkedin.com"] > section:last-child { background-color: #058ED5; }

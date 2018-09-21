@@ -1,5 +1,65 @@
+/*
+  Reset
+  http://meyerweb.com/eric/tools/css/reset/
+   v4.0 | 20180602
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+main, menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+  font-size: 100%;
+  font-family: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, main, menu, nav, section {
+	display: block;
+}
+/* HTML5 hidden-attribute fix for newer browsers */
+*[hidden] {
+    display: none;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/* 
+  Custom Styles
+*/
+
 * {
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -16,27 +76,114 @@ html,
 html,
 body {
   font-family: "Roboto", san-serif;
-  font-size: 14px;
+  color: rgb(51,51,51);
+  font-size: 16px;
   margin: 0;
+  letter-spacing: 0.03125rem;
+  line-height: 1.2;
+}
+
+/* Type */
+
+h1 {
+  font-size: 96px;
+  font-weight: light;
+  letter-spacing: -0.09375rem;
+}
+
+h2 {
+  font-size: 60px;
+  font-weight: light;
+  letter-spacing: -0.03125rem;
+}
+
+h3 {
+  font-size: 48px;
+  letter-spacing: 0;
+}
+
+h4 {
+  font-size: 34px;
+  letter-spacing: 0.015625rem;
+}
+
+h5 {
+  font-size: 24px;
+  letter-spacing: 0;
+}
+
+h6 {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.009375rem;
+  text-transform: uppercase;
+}
+
+button,
+.type__button {
+  font-size: 100%;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.015625rem;
+}
+
+.type__caption {
+  font-size: 12px;
+  letter-spacing: 0.025rem;
+}
+
+.type__smaller {
+  font-size: 14px;
+  letter-spacing: 0.015625rem;
 }
 
 .type__small {
-  font-size: 0.765em;
+  font-size: 12px;
+  letter-spacing: 0.015625rem;
+}
+
+.type__subtitle {
+  font-size: 14px;
+  font-weight: 600px;
 }
 
 .type__block {
   display: block;
 }
 
+.type__medium {
+  font-weight: 600;
+}
+
 .type__bold {
   font-weight: bold;
 }
 
-.type__margin_top {
-  margin-top: 1em !important;
+.type__boldest {
+  font-weight: 900;
 }
 
-/* Resets */
+.type__margin_top {
+  margin-top: 16px !important;
+}
+
+.type__uppercase {
+  text-transform: uppercase;
+}
+
+.type__center {
+  text-align: center;
+}
+
+.type__spacey {
+  letter-spacing: 0.25em;
+}
+
+.type__color_white {
+  color: white;
+}
+
+/* Custom Resets */
 
 .reset__body_top_padding {
   margin-top: -125px;
@@ -65,11 +212,15 @@ a:focus {
 .app__main {
   width: 100%;
   min-height: 100%;
+  -webkit-transition: -webkit-transform 250ms linear 200ms;
+  transition: -webkit-transform 250ms linear 200ms;
   transition: transform 250ms linear 200ms;
+  transition: transform 250ms linear 200ms, -webkit-transform 250ms linear 200ms;
 }
 
 .app__main[data-hamburger="open"] {
-  transform: translateX(-400px);
+  -webkit-transform: translateX(-400px);
+          transform: translateX(-400px);
   overflow-x: hidden;
 }
 
@@ -77,4 +228,9 @@ a:focus {
   padding-top: 125px;
   position: relative;
   min-height: calc(100vh - 125px);
+}
+
+.app__main .inline_container > *{
+  display: inline-block;
+  vertical-align: middle;
 }

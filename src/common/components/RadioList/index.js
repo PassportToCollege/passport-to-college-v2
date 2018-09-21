@@ -7,12 +7,24 @@ import Radio from "../Radio";
 
 export default class RadioList extends Component {
   state = {
-    active: "none"
+    active: this.props.checked || "none"
   }
 
   static propTypes = {
     radios: propTypes.arrayOf(propTypes.object),
-    onRadioChange: propTypes.func
+    onRadioChange: propTypes.func,
+    reset: propTypes.bool,
+    checked: propTypes.string
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.reset && prevState.active !== "none") {
+      return {
+        active: "none"
+      };
+    }
+
+    return null;
   }
 
   getSnapshotBeforeUpdate(prevProps, prevState) {
@@ -29,11 +41,11 @@ export default class RadioList extends Component {
 
   render() {
     return (
-      <ul className="radio_list">
+      <ul className="radio_list" role="tablist">
         {
           this.props.radios.map(radio => {
             return (
-              <li key={radio.value}
+              <li key={radio.value} role="tab"
                 onClick={() => this.setState({ active: radio.value })}>
                 <Radio active={this.state.active === radio.value} />
                 <span>{radio.label}</span>

@@ -51,7 +51,7 @@ class User extends Component {
             {
               this.props.users.hasGottenUser && this.state.user ?
                 <span>
-                  <h1>{this.state.user.name.full}</h1>
+                  <h3>{this.state.user.name.full}</h3>
                   {
                     this.state.user.address ?
                       <p>{this.state.user.address.country}</p> :

@@ -1,0 +1,27 @@
+.labeled_icon_card {
+  max-width: 350px;
+  height: 350px;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f1f1f1;
+  color: #333;
+  padding: 2em;
+  flex: 0 1 350px;
+}
+
+.labeled_icon_card .labeled_icon_card__icon {
+  display: block;
+  width: 100%;
+  text-align: right;
+  color: #555;
+  font-size: 18px;
+}
+
+.labeled_icon_card .labeled_icon_card__label {
+  opacity: 0.85;
+  width: 100%;
+  color: #555;
+}
+

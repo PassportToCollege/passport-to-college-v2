@@ -1,0 +1,25 @@
+.classification_block .flex_container > section:last-child {
+  margin-top: -200px;
+}
+
+.classification_block .flex_container > section {
+  flex: 1 1 384px;
+}
+
+.classification_block .classification_block__empty_picture {
+  display: block;
+  height: 0;
+  padding-top: 100%;
+  background-color: rgb(51, 51, 51);
+}
+
+.classification_block .classification_block__empty {
+  display: block;
+  overflow: hidden;
+  height: 0;
+  padding-top: 63.63%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  box-sizing: content-box;
+}

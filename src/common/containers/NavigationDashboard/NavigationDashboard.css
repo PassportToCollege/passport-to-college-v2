@@ -1,0 +1,151 @@
+nav.dashboard__navigation {
+  background-color: #333;
+  position: fixed;
+  z-index: 99;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 220px;
+  transition: transform 200ms linear;
+}
+
+/* Top Container */
+.dashboard__navigation__top {
+  padding: 2em 1em;
+  background-color: #111;
+  text-align: center;
+}
+
+/* Avatar */
+.dashboard__navigation_avatar_container {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  margin: 0 auto 1em;
+  overflow: hidden;
+  background-color: white;
+  color: white;
+}
+
+.dashboard__navigation_avatar_container img {
+  max-width: 64px;
+}
+
+/* Edit Profile Link */
+.dashboard__navigation__top > a {
+  color: #FF6561;
+  text-transform: lowercase;
+}
+
+/* Navs */
+.dashboard__navigation_container {
+  padding: 2em 0;
+}
+
+.dashboard__navigation_container hr {
+  margin: 1em 0;
+  border-color: rgba(255,255,255,0.25);
+}
+
+.dashboard__navigation_container > ul > li > a {
+  display: block;
+  padding: 0.85em 0.5em;
+  color: white;
+  text-transform: lowercase;
+  font-weight: bold;
+}
+
+.dashboard__navigation_container>ul>li>a > span {
+  display: inline-block;
+  margin-left: 1em;
+}
+
+.dashboard__navigation_container > ul > li > a.active,
+.dashboard__navigation_container > ul > li > a:hover {
+  color: #FF6561;
+}
+
+/* Nav compact */
+nav.dashboard__navigation[data-state="compact"] {
+  width: 64px;
+}
+
+nav.dashboard__navigation[data-state="compact"] .dashboard__navigation_avatar_container {
+  width: 32px;
+  height: 32px;
+  margin: 0;
+}
+
+nav.dashboard__navigation[data-state="compact"] .dashboard__navigation_avatar_container img {
+  max-width: 32px;
+}
+
+nav.dashboard__navigation[data-state="compact"] .dashboard__navigation__top > h5 {
+  display: none;
+}
+
+nav.dashboard__navigation[data-state="compact"] .dashboard__navigation_container > ul > li {
+  text-align: center;
+}
+
+nav.dashboard__navigation[data-state="compact"] .dashboard__navigation_container > ul > li > a > span {
+  display: none;
+}
+
+nav.dashboard__navigation[data-state="compact"] .dashboard__navigation_container > ul > li > a {
+  position: relative;
+}
+
+nav.dashboard__navigation[data-state="compact"] .dashboard__navigation_container > ul > li > a:hover > span {
+  position: absolute;
+  display: block;
+  text-align: left;
+  margin: 0;
+  width: max-content;
+  top: 50%;
+  transform: translate(64px, -50%);
+  background-color: rgba(51,51,51,0.5);
+  padding: 0.5em;
+  font-size: 12px;
+  font-weight: 400;
+  border-radius: 7px;
+  color: white;
+}
+
+/* Nav closed */
+nav.dashboard__navigation[data-state~="closed"] {
+  transform: translateX(-100%);
+}
+
+/* State toggler */
+.dashboard__navigation_state_toggler {
+  position: fixed;
+  display: block;
+  color: white;
+  bottom: 0;
+  left: 0;
+  padding: 1em;
+  cursor: pointer;
+  text-align: center;
+  font-size: 20px;
+  z-index: 99;
+}
+
+.dashboard__navigation[data-state="full"] .dashboard__navigation_state_toggler {
+  width: 220px;
+}
+
+.dashboard__navigation[data-state="compact"] .dashboard__navigation_state_toggler,
+.dashboard__navigation[data-state~="closed"] .dashboard__navigation_state_toggler {
+  width: 64px;
+}
+
+.dashboard__navigation[data-state="full"] .dashboard__navigation_state_toggler:hover,
+.dashboard__navigation[data-state="compact"] .dashboard__navigation_state_toggler:hover {
+  background-color: #111111;
+}
+
+.dashboard__navigation[data-state~="closed"] .dashboard__navigation_state_toggler {
+  left: 100%;
+  color: #111;
+}

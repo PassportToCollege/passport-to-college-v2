@@ -21,7 +21,7 @@ const AccomplishmentsList = ({ accomplishments, actions, listStyles, doDelete, d
 }
 
 AccomplishmentsList.propTypes = {
-  accomplishments: propTypes.object,
+  accomplishments: propTypes.arrayOf(propTypes.object),
   listStyles: propTypes.object,
   actions: propTypes.bool,
   doDelete: propTypes.func,

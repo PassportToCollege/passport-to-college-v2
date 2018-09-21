@@ -16,9 +16,11 @@ import post from "./postReducer";
 import posts from "./postsReducer";
 import postCategories from "./postCategoriesReducer";
 import comments from "./commentReducer";
+import menu from "./menuReducer";
 
 const rootReducer = combineReducers({
   hamburgerState,
+  menu,
   auth,
   userProfilePicture,
   user,
