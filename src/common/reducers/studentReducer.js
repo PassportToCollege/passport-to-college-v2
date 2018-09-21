@@ -8,7 +8,11 @@ import {
   STUDENT_UPDATED,
   STUDENT_ACCOMPLISHMENT_DELETE_INITIATED,
   STUDENT_ACCOMPLISHMENT_DELETED,
-  STUDENT_ACCOMPLISHMENT_DELETE_FAILED
+  STUDENT_ACCOMPLISHMENT_DELETE_FAILED,
+  CREATE_COMMENT_INITIATED,
+  CREATE_STUDENT_FAILED,
+  STUDENT_CREATED,
+  CREATE_STUDENT_INITIATED
 } from "../actions/actionTypes";
 
 const student = (state = initialState.student, action) => {
@@ -81,6 +85,33 @@ const student = (state = initialState.student, action) => {
         hasFailed: true,
         slug: action.slug,
         error: action.error
+      });
+    case CREATE_COMMENT_INITIATED:
+      return Object.assign({}, state, {
+        creatingStudent: true,
+        createdStudent: false,
+        failedToCreateStudent: false
+      });
+    case CREATE_STUDENT_INITIATED:
+      return Object.assign({}, state, {
+        creatingStudent: true,
+        createdStudent: false,
+        failedToCreateStudent: false
+      });
+    case CREATE_STUDENT_FAILED:
+      return Object.assign({}, state, {
+        creatingStudent: false,
+        createdStudent: false,
+        failedToCreateStudent: true,
+        error: action.error,
+        newStudent: action.student
+      });
+    case STUDENT_CREATED:
+      return Object.assign({}, state, {
+        creatingStudent: false,
+        createdStudent: true,
+        failedToCreateStudent: false,
+        newStudent: action.student
       });
     default:
       return state;

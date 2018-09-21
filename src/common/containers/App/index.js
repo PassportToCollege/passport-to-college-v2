@@ -13,7 +13,9 @@ import {
   initializeFacebook,
   isBrowser,
   activeUser,
-  isApplicant
+  isApplicant,
+  isStudent,
+  isAdmin
 } from "../../utils";
 
 import Hamburger from "../Hamburger";
@@ -23,6 +25,7 @@ import Footer from "../Footer";
 import Home from '../Home';
 import Stories from "../Stories";
 import Story from "../Story";
+import Scholars from "../Scholars";
 import CommunityGuidlines from "../Stories/CommunityGuidlines";
 import SignIn from "../Auth/SignIn";
 import SignUp from "../Auth/SignUp";
@@ -30,6 +33,7 @@ import ResetPassword from "../Auth/ResetPassword";
 import ConfirmEmail from "../Auth/ConfirmEmail";
 
 import Dashboard from "../Dashboard";
+import StudentDashboard from "../StudentDashboard";
 import Apply from "../Apply";
 import ApplicationPortal from "../Apply/Portal";
 
@@ -85,6 +89,7 @@ class App extends React.Component {
           {this.selectNavigation()}
           <div className={`app__body app__body_${this.state.location.replace(" on-white", "")}`} style={bodyStyles}>
             <Route exact path={routes.LANDING.route} render={props => this.landingMiddleware(props)}></Route>
+            <Route path={routes.SCHOLARS.route} render={props => this.defaultRouteMiddleware(props, Scholars)}></Route> 
             <Route exact path={routes.STORIES.route} render={props => this.defaultRouteMiddleware(props, Stories)}></Route>
             <Route exact path={routes.COMMUNITY_GUIDLINES.route} render={props => this.defaultRouteMiddleware(props, CommunityGuidlines)}></Route>
             <Route exact path={routes.STORY.route} render={props => this.defaultRouteMiddleware(props, Story)}></Route>
@@ -93,7 +98,8 @@ class App extends React.Component {
             <Route path={routes.SIGN_UP.route} render={props => this.authMiddleware(props, SignUp)}></Route>
             <Route path={routes.RESET_PASSWORD.route} render={(props) => this.authMiddleware(props, ResetPassword)}></Route>
             <Route path={routes.CONFIRM_EMAIL_ADDRESS.route} render={(props) => this.defaultRouteMiddleware(props, ConfirmEmail)}></Route>
-            <Route path={routes.DASHBOARD.route} render={props => this.protectedMiddleware(props, Dashboard)}></Route>
+            <Route path={routes.DASHBOARD.route} render={props => this.protectedAdminMiddleware(props, Dashboard)}></Route>
+            <Route path={routes.STUDENT_DASHBOARD.route} render={props => this.protectedStudentMiddleware(props, StudentDashboard)}></Route>
             <Route exact path={routes.APPLY.route} render={props => this.applyLandingMiddleware(props, Apply)}></Route>
             <Route path={routes.APPLY_PORTAL.route} render={props => this.applicationPortalMiddleware(props, ApplicationPortal)}></Route>
           </div>
@@ -124,6 +130,33 @@ class App extends React.Component {
       return <Redirect to="/auth/sign-in" />
 
     return <Component {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }} />
+  }
+
+  protectedAdminMiddleware(props, Component) {
+     if (!isAuthorized())
+      return <Redirect to="/auth/sign-in" />
+
+    if (isAdmin())
+      return <Component {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }} />
+
+    if (isStudent())
+      return <Redirect to="/scholar/dashboard" />
+
+
+    return <Redirect to="/" />
+  }
+
+  protectedStudentMiddleware(props, Component) {
+    if (!isAuthorized())
+      return <Redirect to="/auth/sign-in" />
+
+    if (isAdmin())
+      return <Redirect to="/admin/dashboard" />
+
+    if (isStudent())
+      return <Component {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }} />
+
+    return <Redirect to="/" />
   }
 
   applyLandingMiddleware(props) {

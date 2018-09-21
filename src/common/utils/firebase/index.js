@@ -1,7 +1,7 @@
 import "firebase/firestore";
 import firebase from "firebase";
 
-import { isBrowser } from "../utils";
+import { isBrowser } from "../index";
 
 global.XMLHttpRequest = require("xhr2");
 

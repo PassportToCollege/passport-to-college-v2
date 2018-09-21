@@ -471,3 +471,70 @@ export const doPostsPaginate = (page, category) => {
     }
   };
 };
+
+export const getAccomplishmentsByUserInitiated = student => {
+  return {
+    type: types.GET_ACCOMPLISHMENTS_BY_USER_INITIATED,
+    student
+  };
+};
+
+export const getAccomplishmentsByUserFailed = (error, student) => {
+  return {
+    type: types.GET_ACCOMPLISHMENTS_BY_USER_FAILED,
+    error, student
+  };
+};
+
+export const gotAccomplishmentsByUser = (posts, student) => {
+  return {
+    type: types.GOT_ACCOMPLISHMENTS_BY_USER,
+    posts, student
+  };
+};
+
+export const doGetAccomplishmentsByUser = (student, state = "all") => {
+  return dispatch => {
+    if (!student.length)
+      return dispatch(getAccomplishmentsByUserFailed({ message: "no student provided" }, null));
+
+    dispatch(getAccomplishmentsByUserInitiated(student));
+
+    let ref = db.collection("posts")
+      .where("isAccomplishment", "==", true)
+      .where("student", "==", student);
+
+    switch (state) {
+      case "published":
+        ref = ref.where("state.published", "==", true);
+        break;
+      case "archived":
+        ref = ref.where("state.archived", "==", true);
+        break;
+      case "draft":
+        ref = ref.where("state.draft", "==", true);
+        break;
+      case "all":
+      default:
+        break;
+    }
+
+    ref.orderBy("createdAt", "desc")
+      .get()
+      .then(snapshots => {
+        if (snapshots.empty)
+          return dispatch(getAccomplishmentsByUserFailed({ message: "no accomplishments found" }, student));
+
+        let posts = [];
+        snapshots.forEach(snapshot => {
+          posts.push(snapshot.data());
+        });
+
+        dispatch(gotAccomplishmentsByUser(posts, student));
+      })
+      .catch(error => {
+        Console.log(error);
+        dispatch(getAccomplishmentsByUserFailed(error, student));
+      })
+  }
+}

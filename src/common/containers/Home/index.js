@@ -20,6 +20,7 @@ import InfoStrip from "../../components/InfoStrip";
 import PostCardGrid from "../../components/PostCardGrid";
 import Loader from "../../components/Loader";
 import ToTopContainer from "../../components/ToTopContainer";
+import Title from "../../components/Title";
 
 import infoCardBg from "../../assets/images/info_card__bg.JPG";
 import headerBg0 from "../../assets/images/home__header_bg_0.jpg";
@@ -40,19 +41,37 @@ class Home extends Component {
     this.state = {
       flipStrip: false,
       stats: props.stats.stats,
-      features: props.features.features,
+      features: props.features.activeFeatures,
       posts: props.posts.mostRecent,
       showHeader: true
     }
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { stats, features, posts } = prevState;
-    return {
-      stats: nextProps.stats.hasGotten && !_.isEqual(nextProps.stats.stats, stats) ? nextProps.stats.stats : stats,
-      features: nextProps.features.hasGotten && !_.isEqual(nextProps.features.features, features) ? nextProps.features.features : features,
-      posts: nextProps.posts.gotMostRecent && !_.isEqual(nextProps.posts.mostRecent, posts) ? nextProps.posts.mostRecent : posts
-    };
+    let { features, stats, posts } = prevState;
+
+    if (nextProps.features.gotActive &&
+    !_.isEqual(nextProps.features.activeFeatures, features)) {
+      return {
+        features: nextProps.features.activeFeatures
+      };
+    }
+
+    if (nextProps.stats.hasGotten &&
+    !_.isEqual(nextProps.stats.stats, stats)) {
+      return {
+        stats: nextProps.stats.stats
+      };
+    }
+
+    if (nextProps.posts.gotMostRecent &&
+    !_.isEqual(nextProps.posts.mostRecent, posts)) {
+      return {
+        posts: nextProps.posts.mostRecent
+      };
+    }
+
+    return null;
   }
   
   componentDidMount() {
@@ -60,7 +79,7 @@ class Home extends Component {
 
     this.props.updateLocation("landing");
     this.props.statsActions.doStatsGet();
-    this.props.featuresActions.doGetActiveFeatures();
+    this.props.featuresActions.doGetActiveFeatures("published");
   }
 
   componentWillUnmount() {
@@ -124,27 +143,31 @@ class Home extends Component {
         </section>
         <section className="home__section home__featured_students_title">
           <div className="home__section_inner">
-            <h1>featured students</h1>
+            <Title classes={[
+              "type__color_white",
+              "type__center"
+            ]}>featured students</Title>
           </div>
         </section>
         <section className="home__section home__featured_students">
           <div className="home__section_inner">
             {
-              this.props.features.hasGotten && this.state.features ?
+              this.state.features ?
                 this.state.features.map(feature => {
                   return (
                     <InfoCard key={feature.id}
+                      target={`/stories/read/${feature.id}`}
                       bgOverlay="rgba(51,51,51,0.9)"
                       bgColor="rgba(51,51,51,0.9)"
-                      bgImage={feature.profilePic}
                       feature={true}
-                      title={feature.name}
+                      featureData={feature}
+                      title={feature.student.user.name.full}
                       university={feature.student.university} />
                   )
                 }) : null
             }
             {
-              this.props.features.hasGotten && this.state.features
+              this.state.features
               && this.state.features.length%2 === 0 ?
                   <InfoCard blank={true} bgColor="transparent" /> : null
             }
@@ -156,7 +179,7 @@ class Home extends Component {
         </section>
         <section className="home__section home__posts">
           <div className="home__section_inner">
-            <h1>most recent stories</h1>
+            <Title classes={["type__center"]}>most recent stories</Title>
             {
               this.props.posts.gettingMostRecent ?
                 <Loader color="#FFCB61" /> : null

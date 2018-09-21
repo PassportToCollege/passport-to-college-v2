@@ -3,9 +3,9 @@
   position: relative;
 }
 
-.user__section > div > div > h2 {
+.user__section > div > div > h4 {
   margin-top: 0;
-  font-family: "Nunito", "Roboto", sans-serif;
+  margin-bottom: 16px;
   font-weight: 400;
 }
 
@@ -48,6 +48,7 @@
 .user__section .user__no_features {
   text-align: center;
   min-width: 100%;
+  color: rgb(128, 150, 162);
 }
 
 .user__no_accomplishments,

@@ -6,7 +6,7 @@ import propTypes from "prop-types";
 class Input extends Component {
   render() {
     return (
-      <input className="input" 
+      <input className="input"
         ref={input => this.input = input}
         type={this.props.inputType}
         defaultValue={this.props.inputDefault}

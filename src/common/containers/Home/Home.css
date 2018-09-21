@@ -56,13 +56,9 @@
   padding: 5em 3em 285px;
 }
 
-.home__section.home__featured_students_title h1 {
-  text-align: center;
-  font-weight: bold;
-  text-transform: uppercase;
+.home__section.home__featured_students_title h2 {
   color: white;
-  font-size: 2.85em;
-  letter-spacing: 0.25em;
+  margin-bottom: 1em;
 }
 
 .home__container .home__section.home__featured_students {
@@ -79,13 +75,8 @@
 
 /* Posts section */
 
-.home__section.home__posts .home__section_inner>h1 {
-  text-align: center;
-  font-weight: bold;
-  text-transform: uppercase;
-  font-size: 2.85em;
-  letter-spacing: 0.25em;
-  width: 100%;
+.home__section.home__posts .home__section_inner>h2 {
+  margin-bottom: 1em;
 }
 
 .home__section.home__posts .home__section_inner>.home__most_recent_posts>.no__posts {

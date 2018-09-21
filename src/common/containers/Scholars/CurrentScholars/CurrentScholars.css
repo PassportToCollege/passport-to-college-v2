@@ -1,0 +1,86 @@
+.scholars__current {
+  background-color: rgb(210,210,210);
+  position: relative;
+}
+
+/* Hero */
+.scholars__current .scholars__current_hero {
+  position: relative;
+  max-height: 760px;
+}
+
+.scholars__current .scholars__current_hero > span {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background-color: #53D1D7;
+}
+
+.scholars__current .scholars__current_hero > img {
+  position: relative;
+  width: 1140px;
+  max-width: 100%;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Content */
+.scholars__current .scholars__current_content {
+  background-color: white;
+}
+
+.scholars__current .scholars__current_content > .topic_section {
+  padding-bottom: 18.5em;
+}
+
+.scholars__current .scholars__current_content .flex_container {
+  max-width: 1140px;
+  margin: 0 auto;
+  flex-flow: row wrap-reverse;
+}
+
+.scholars__current .scholars__current_content .flex_container > section {
+  flex: 1 0 50%;
+}
+
+.scholars__current .scholars__current_content .flex_container > section .scroll_switcher {
+  min-height: 370px;
+}
+
+/* Freshmen */
+.scholars__current .scholars__current_content .scholars__current_freshmen {
+  background-color: rgba(51, 51, 51, 0.2);
+  padding-bottom: 200px;
+}
+
+/* Sophomores */
+.scholars__current .scholars__current_content .scholars__current_sophomores {
+  padding-bottom: 200px;
+}
+
+.scholars__current .scholars__current_content .scholars__current_sophomores .flex_container {
+  flex-flow: row-reverse wrap !important;
+}
+
+/* Juniors */
+.scholars__current .scholars__current_content .scholars__current_juniors {
+  background-color: rgba(51, 51, 51, 0.2);
+  padding-bottom: 200px;
+}
+
+/* Seniors */
+.scholars__current .scholars__current_content .scholars__current_seniors .flex_container {
+  flex-flow: row-reverse wrap !important;
+}
+
+.scholars__current .colored_strip {
+  text-align: center;
+  color: white;
+}
+
+.scholars__current .colored_strip > h3 {
+  margin-bottom: 16px;
+}

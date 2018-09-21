@@ -25,7 +25,7 @@ class WYSIWYGEditor extends Component {
 
     let content = [];
     let blocks = [];
-
+    
     if ("object" === typeof props.content && props.content !== null) {
       blocks = props.content.blocks;
       content = convertFromRaw(props.content);

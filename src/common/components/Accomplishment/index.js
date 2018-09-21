@@ -2,27 +2,40 @@ import "./Accomplishment.css";
 
 import React from "react";
 import propTypes from "prop-types";
+import moment from "moment";
 
 import IconButton from "../IconButton";
 
 const Accomplishment = ({ accomplishment, actions, doDelete, doEdit }) => {
   const handleDelete = () => {
     if ("function" === typeof doDelete)
-      doDelete(accomplishment.slug);
+      doDelete(accomplishment);
   }
   const handleEdit = () => {
     if ("function" === typeof doEdit)
-      doEdit(accomplishment.slug);
+      doEdit(accomplishment);
   }
 
   return (
     <div className="accomplishment">
       <section className="accomplishment__meta">
-        <span>{accomplishment.slug}</span>
-        <h2>{accomplishment.title}</h2>
+        {
+          accomplishment.state.published ?
+            <p className="type__caption accomplishment__published">published</p>:
+            null
+        }
+        {
+          accomplishment.state.draft ?
+            <p className="type__caption accomplishment__draft">draft</p>:
+            null
+        }
+        <h5>{accomplishment.title}</h5>
+        <p className="type__caption">
+          {moment.utc(moment(accomplishment.createdAt)).format("MMM D, YYYY")}
+        </p>
       </section>
       <section className="accomplishment__excerpt">
-        <p>{accomplishment.details.excerpt}</p>
+        <p>{accomplishment.excerpt}</p>
       </section>
       {
         actions ?

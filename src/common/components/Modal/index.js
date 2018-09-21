@@ -5,7 +5,6 @@ import propTypes from "prop-types";
 import moment from "moment";
 
 import { NationalTest, CreateUserForm } from "../Forms";
-import WYSIWYGEditor from "../Editor";
 import Button from "../Button";
 import TextedIconButton from "../TextedIconButton";
 
@@ -16,6 +15,14 @@ export default class Modal extends Component {
     children: propTypes.any,
     doClose: propTypes.func,
     classes: propTypes.arrayOf(propTypes.string)
+  }
+
+  componentDidMount() {
+    document.addEventListener("keyup", this.listenForEscape, false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("keyup", this.listenForEscape, false)
   }
 
   render() {
@@ -35,6 +42,18 @@ export default class Modal extends Component {
 
     if ("function" === typeof this.props.doClose)
       this.props.doClose();
+  }
+
+  listenForEscape = e => {
+    e.preventDefault();
+
+    const key = e.key || e.keyCode;
+
+    if (key === "Escape" || key === "Esc" || key === 27) {
+      this.closeModal()
+    }
+
+    return;
   }
 }
 
@@ -144,46 +163,6 @@ export class CreateUserModal extends Component {
   inputChanged = e => {
     if ("function" === typeof this.props.handleInputChange)
       this.props.handleInputChange(e);
-  }
-}
-
-export class ViewFeatureModal extends Component {
-  static propTypes = {
-    doClose: propTypes.func,
-    feature: propTypes.object
-  }
-
-  render() {
-    const { feature } = this.props;
-
-    return (
-      <div className="modal__container modal__view_feature"
-        ref={div => this.modalContainer = div}>
-        <div className="modal__bg" onClick={this.closeModal}></div>
-        <div className="modal__content">
-          <h4>Created On</h4>
-          <span>{moment(feature.createdAt).format("MM-DD-Y")}</span>
-          <h4>Expires On</h4>
-          <span>{moment(feature.expDate).format("MM-DD-Y")}</span>
-          <h4>Details</h4>
-          <WYSIWYGEditor readonly content={feature.details}
-            editorStyles={{
-              border: "none",
-              padding: "0",
-              minHeight: "auto"
-            }} />
-          <h4>Active?</h4>
-          <span>{feature.isActive ? "yes" : "no"}</span>
-        </div>
-      </div>
-    )
-  }
-
-  closeModal = () => {
-    this.modalContainer.classList.add("close");
-
-    if ("function" === typeof this.props.doClose)
-      this.props.doClose();
   }
 }
 
@@ -587,7 +566,16 @@ export class SignInModal extends Component {
     doSignIn: propTypes.func,
     doSignUp: propTypes.func,
     heading: propTypes.string,
-    intro: propTypes.string
+    intro: propTypes.string,
+    withEmail: propTypes.bool,
+    signup: propTypes.bool,
+    cancelButton: propTypes.bool
+  }
+
+  static defaultProps = {
+    withEmail: true,
+    signup: true,
+    cancelButton: false
   }
 
   render() {
@@ -596,35 +584,53 @@ export class SignInModal extends Component {
         ref={div => this.modalContainer = div}>
         <div className="modal__bg" onClick={this.closeModal}></div>
         <div className="modal__content">
-          <h3>Sign in</h3>
+          <h4>Sign in</h4>
+          <p>{this.props.intro}</p>
           <TextedIconButton doClick={this.handleGoogleSignIn}
             icon="google" text="Google account" />
           <TextedIconButton doClick={this.handleFacebookSignIn}
             icon="facebook" text="Facebook account" />
-          <h3>Or with your email address:</h3>
-          <form className="form form__signin"
-            onSubmit={this.handlleSignIn}>
-            <div className="form__input_container">
-              <label htmlFor="email">Email address</label>
-              <input type="text" id="email" name="email" required
-                ref={input => this.emailInput = input} />
-            </div>
-            <div className="form__input_container">
-              <label htmlFor="password">Password</label>
-              <input type="password" id="password" name="password" required
-                ref={input => this.passwordInput = input} />
-            </div>
-            <Button type="submit" text="sign in" solid 
-              styles={{
-                backgroundColor: "#FF6561"
-              }}/>
-            <Button type="button" text="sign up instead" solid
-              doClick={this.handleSignUpInstead} 
-              styles={{
-                backgroundColor: "rgb(153,153,153)",
-                marginLeft: "1em"
-              }}/>
-          </form>
+          {
+            this.props.withEmail ?
+              <React.Fragment>
+                <h4>Or with your email address:</h4>
+                <form className="form form__signin"
+                  onSubmit={this.handlleSignIn}>
+                  <div className="form__input_container">
+                    <label htmlFor="email">Email address</label>
+                    <input type="text" id="email" name="email" required
+                      ref={input => this.emailInput = input} />
+                  </div>
+                  <div className="form__input_container">
+                    <label htmlFor="password">Password</label>
+                    <input type="password" id="password" name="password" required
+                      ref={input => this.passwordInput = input} />
+                  </div>
+                  {
+                    this.props.cancelButton ?
+                      <Button type="button" text="cancel" solid
+                        doClick={this.closeModal} 
+                        styles={{
+                          backgroundColor: "rgb(153,153,153)",
+                          marginRight: "1em"
+                        }}/> : null
+                  }
+                  <Button type="submit" text="sign in" solid 
+                    styles={{
+                      backgroundColor: "#FF6561"
+                    }}/>
+                  {
+                    this.props.signup ?
+                      <Button type="button" text="sign up instead" solid
+                        doClick={this.handleSignUpInstead} 
+                        styles={{
+                          backgroundColor: "rgb(153,153,153)",
+                          marginLeft: "1em"
+                        }}/> : null
+                  }
+                </form>
+              </React.Fragment> : null
+          }
         </div>
       </div>
     )

@@ -11,6 +11,7 @@ import { queryToObject } from "../../../utils";
 
 import * as usersActions from "../../../actions/usersActions";
 import * as statsActions from "../../../actions/statsActions";
+import * as routes from "../../../constants/routes";
 
 import PageMeta from "../../../components/PageMeta";
 import LoadingText from "../../../components/LoadingText";
@@ -19,6 +20,7 @@ import Indicator from "../../../components/Indicator";
 import { CreateUserModal } from "../../../components/Modal";
 import Notification from "../../../components/Notification";
 import { Table, TableData, TableHeader, TableRow } from "../../../components/Table";
+import CardNavigation from "../../../components/CardNavigation";
 
 const cookies = new Cookies();
 
@@ -30,6 +32,7 @@ class Users extends Component {
       stats: props.stats.stats,
       users: props.users.users,
       creatingUser: false,
+      createdUser: false,
       createUserModalData: {},
       notificationClosed: false
     }
@@ -37,9 +40,10 @@ class Users extends Component {
 
   componentDidMount() {
     const { search } = this.props.location;
+    const { user_type } = this.props.match.params;
     const { page } = queryToObject(search) || { page: 1 };
 
-    this.props.usersActions.doUsersGet(parseInt(page, 10));
+    this.props.usersActions.doUsersGet(parseInt(page, 10), user_type || "all");
     this.setState({ page });
 
     this.props.statsActions.doStatsGet();
@@ -77,6 +81,35 @@ class Users extends Component {
     return newState;
   }
 
+  getSnapshotBeforeUpdate(props) {
+    if (props.match.params.user_type !== this.props.match.params.user_type) {
+      return {
+        userTypeChanged: true
+      };
+    }
+
+    if (props.users.isCreating && this.props.users.hasCreated) {
+      return {
+        createdUser: true
+      };
+    }
+
+    return null;
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (snapshot && snapshot.userTypeChanged) {
+        if (!this.props.users.isGettingUsers) {
+        const { user_type } = this.props.match.params;
+        this.props.usersActions.doUsersGet(1, user_type || "all");
+      }
+    }
+
+    if (snapshot && snapshot.createdUser) {
+      this.setState({ createdUser: true });
+    }
+  }
+
   render() {
     return (
       <div className="dashboard__container users__container">
@@ -91,7 +124,7 @@ class Users extends Component {
             null
         }
         {
-          this.props.users.hasCreated ?
+          this.state.createdUser ?
             <Notification doClose={this.handleNotificationClose}
               text="User created successfully. Close to refresh." /> :
             null
@@ -103,13 +136,40 @@ class Users extends Component {
             null
         }
         <header>
-          <h1>Users</h1>
+          <h2>Users</h2>
+          <CardNavigation locations={[
+            { 
+              pathname: routes.USERS.route,
+              label: "All Users",
+              icon: "users"
+            },
+            {
+              pathname: routes.USERS_STUDENTS.route,
+              label: routes.USERS_STUDENTS.name,
+              icon: "students"
+            },
+            {
+              pathname: routes.USERS_APPLICANTS.route,
+              label: routes.USERS_APPLICANTS.name,
+              icon: "applicants"
+            },
+            {
+              pathname: routes.USERS_ADMINS.route,
+              label: routes.USERS_ADMINS.name,
+              icon: "admins"
+            },
+            {
+              pathname: routes.USERS_STAFF.route,
+              label: routes.USERS_STAFF.name,
+              icon: "staff"
+            }
+          ]} />
           {
             this.props.stats.hasGotten && this.state.stats &&
               this.props.users.hasGottenUsers ?
               <span className="users__stats">
                 Showing
-              <b> {this.state.users.length} </b>
+              <b> {this.state.users.length || 0} </b>
                 out of
               <b> {this.state.stats.users.total} </b>
                 users
@@ -128,9 +188,8 @@ class Users extends Component {
             doClick={this.openAddUserModal}
             styles={{
               position: "absolute",
-              right: "2em",
-              top: "50%",
-              transform: "translateY(-50%)",
+              right: "0",
+              top: "1em",
               backgroundColor: "#FFCB61"
             }} />
         </header>
@@ -141,7 +200,7 @@ class Users extends Component {
                 <TableHeader heading="name" />
                 <TableHeader heading="email" />
                 <TableHeader heading="admin?" />
-                <TableHeader heading="applicant" />
+                <TableHeader heading="applicant?" />
                 <TableHeader heading="student?" />
                 <TableHeader heading="staff?" />
               </TableRow>
@@ -180,7 +239,7 @@ class Users extends Component {
   }
   
   handleNotificationClose = () => {
-    this.setState({ notificationClosed: true, hasError: false });
+    this.setState({ notificationClosed: true, hasError: false, createdUser: false });
 
     // get users if user was created successfully
     if (this.props.users.hasCreated) {
@@ -264,7 +323,8 @@ Users.propTypes = {
   stats: propTypes.object,
   statsActions: propTypes.object,
   location: propTypes.object,
-  history: propTypes.object
+  history: propTypes.object,
+  match: propTypes.object
 };
 
 const mapStateToProps = state => {

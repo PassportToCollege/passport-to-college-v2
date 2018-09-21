@@ -3,6 +3,8 @@ import { db, auth, storage } from "../utils/firebase";
 import moment from "moment";
 
 import { doPostsGetMostRecent } from "./postsActions";
+import { doCategoryPostsUpdate } from "./postCategoryActions";
+import { deletePostHero } from "../utils/firebase/functions";
 
 const Console = console;
 
@@ -27,9 +29,21 @@ export const postCreated = id => {
   };
 };
 
-export const doPostCreate = () => {
+export const doPostCreate = (post = {}) => {
   return dispatch => {
     dispatch(createPostInitiated());
+    
+    if ("object" === typeof post && Object.keys(post).length) {
+      return db.collection("posts")
+        .doc(post.id)
+        .set(post)
+        .then(() => {
+          dispatch(postCreated(post.id));
+        })
+        .catch(error => {
+          dispatch(createPostFailed(error));
+        });
+    }
 
     auth.onAuthStateChanged(user => {
       if (user) {
@@ -133,9 +147,9 @@ export const doPostGet = id => {
           // get user if author is uid
           if ("string" === typeof postData.author) {
             return db.collection("users")
-              .doc(postData.author)
-              .get()
-              .then(author => {
+            .doc(postData.author)
+            .get()
+            .then(author => {
                 if (author.exists) {
                   postData.author = author.data();
                   return dispatch(postGetDone(postData));
@@ -251,3 +265,54 @@ export const doUpdateConversationsCount = updateType => {
     updateType
   };
 };
+
+// DELETE actions
+export const postDeleteInitiated = post => {
+  return {
+    type: types.POST_DELETE_INITIATED,
+    post
+  };
+};
+
+export const postDeleteFailed = (error, post) => {
+  return {
+    type: types.POST_DELETE_FAILED,
+    error, post
+  };
+};
+
+export const postDeleted = post => {
+  return {
+    type: types.POST_DELETED,
+    post
+  };
+};
+
+export const doPostDelete = (post = {}) => {
+  return dispatch => {
+    if ("object" !== typeof post || 
+    ("object" === typeof post && !Object.keys(post).length))
+      return dispatch(postDeleteFailed({ message: "post must be object with props" }, null));
+
+    dispatch(postDeleteInitiated(post));
+
+    return db.collection("posts")
+      .doc(post.id)
+      .delete()
+      .then(() => {
+        if (post.hasHero)
+          deletePostHero(post.id);
+
+        for (let key of Object.keys(post.category)) {
+          if (post.category[key])
+            dispatch(doCategoryPostsUpdate(key, "dec"));
+        }
+
+        dispatch(postDeleted(post));
+      })
+      .catch(error => {
+        Console.log(error);
+        dispatch(postDeleteFailed(error, post));
+      });
+  }
+}

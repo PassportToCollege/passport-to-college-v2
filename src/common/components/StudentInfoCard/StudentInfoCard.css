@@ -1,0 +1,58 @@
+.student_info_card__container {
+  padding: 2em;
+}
+
+.student_info_card__container .editor__editor {
+  letter-spacing: .05em;
+}
+
+.student_info_card__container.student_info_card__single_column {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-evenly;
+  align-items: flex-start;
+}
+
+.student_info_card__container.student_info_card__single_column > h5,
+.student_info_card__container.student_info_card__single_column > p {
+  width: 100%;
+  text-align: center;
+}
+
+.student_info_card__container.student_info_card__single_column > span {
+  margin: 2em 0;
+}
+
+.student_info_card__container.student_info_card__two_columns {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.student_info_card__container.student_info_card__two_columns > section:first-child {
+  max-width: 300px;
+  flex: 0 1 300px;
+}
+
+.student_info_card__container.student_info_card__two_columns > section:first-child > h5,
+.student_info_card__container.student_info_card__two_columns > section:first-child > p {
+  margin-left: 16px;
+}
+
+.student_info_card__container.student_info_card__two_columns > section:first-child > nav {
+  margin: 3em 0 3em 16px;
+}
+
+.student_info_card__container.student_info_card__two_columns > section:first-child > nav > h4 {
+  cursor: pointer;
+}
+
+.student_info_card__container.student_info_card__two_columns > section:first-child > nav > h4[data-active="active"] {
+  color: #FF6561;
+}
+
+.student_info_card__container.student_info_card__two_columns > section:last-child {
+  flex: 1 1 auto;
+  padding: 0 2.34em 0 4em;
+}

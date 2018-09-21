@@ -15,7 +15,10 @@ import {
   POST_GET_HERO_INITIATED,
   POST_GET_HERO_DONE,
   POST_GET_HERO_FAILED,
-  POST_UPDATE_LOCAL_CONVERSATIONS_COUNT
+  POST_UPDATE_LOCAL_CONVERSATIONS_COUNT,
+  POST_DELETE_INITIATED,
+  POST_DELETE_FAILED,
+  POST_DELETED
 } from "../actions/actionTypes";
 
 const post = (state = initialState.post, action) => {
@@ -132,6 +135,28 @@ const post = (state = initialState.post, action) => {
         heroGetFailed: true,
         id: action.id,
         error: action.error
+      });
+    case POST_DELETE_INITIATED:
+      return Object.assign({}, state, {
+        deletingPost: true,
+        deletedPost: false,
+        failedToDeletePost: false,
+        dPost: action.post
+      });
+    case POST_DELETE_FAILED:
+      return Object.assign({}, state, {
+        deletingPost: false,
+        deletedPost: false,
+        failedToDeletePost: true,
+        dPost: action.post,
+        error: action.error
+      });
+    case POST_DELETED:
+      return Object.assign({}, state, {
+        deletingPost: false,
+        deletedPost: true,
+        failedToDeletePost: false,
+        dPost: action.post
       });
     default:
       return state;

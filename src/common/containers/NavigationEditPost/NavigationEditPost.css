@@ -6,18 +6,17 @@
   height: 100vh;
 }
 
-.edit_post__nav>h4 {
+.edit_post__nav>p {
   width: 100%;
   margin: 0;
   padding: 2.5em 2em 2.5em 5.5em;
   color: white;
   text-transform: lowercase;
-  font-family: "Nunito", sans-serif;
   font-weight: 900;
   position: relative;
 }
 
-.edit_post__nav>h4::before {
+.edit_post__nav>p::before {
   content: "\f085";
   font-family: FontAwesome;
   color: rgba(255, 255, 255, 0.8);

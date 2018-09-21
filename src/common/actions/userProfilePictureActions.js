@@ -1,6 +1,8 @@
 import * as types from "./actionTypes";
 import { auth, storage } from "../utils/firebase";
 
+import { doUserUpdate } from "./usersActions";
+
 // GET actions
 export const avatarGetInitiated = () => {
   return {
@@ -115,8 +117,7 @@ export const doAvatarUpload = (file, options) => {
       return avatarRef.put(file)
         .then(() => {
           dispatch(avatarUploaded());
-
-          // get new avatar
+          dispatch(doUserUpdate(options.uid, { hasProfilePicture: true }));
           dispatch(doAvatarGetByUid(options.uid));
         })
         .catch(error => {
@@ -132,8 +133,7 @@ export const doAvatarUpload = (file, options) => {
         avatarRef.put(file)
           .then(() => {
             dispatch(avatarUploaded());
-
-            // get new avatar
+            dispatch(doUserUpdate(user, { hasProfilePicture: true }))
             dispatch(doAvatarGet());
           })
           .catch(error => {
