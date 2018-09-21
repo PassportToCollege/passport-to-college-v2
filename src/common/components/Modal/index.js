@@ -567,11 +567,15 @@ export class SignInModal extends Component {
     doSignUp: propTypes.func,
     heading: propTypes.string,
     intro: propTypes.string,
-    withEmail: propTypes.bool
+    withEmail: propTypes.bool,
+    signup: propTypes.bool,
+    cancelButton: propTypes.bool
   }
 
   static defaultProps = {
-    withEmail: true
+    withEmail: true,
+    signup: true,
+    cancelButton: false
   }
 
   render() {
@@ -580,7 +584,7 @@ export class SignInModal extends Component {
         ref={div => this.modalContainer = div}>
         <div className="modal__bg" onClick={this.closeModal}></div>
         <div className="modal__content">
-          <h3>Sign in</h3>
+          <h4>Sign in</h4>
           <p>{this.props.intro}</p>
           <TextedIconButton doClick={this.handleGoogleSignIn}
             icon="google" text="Google account" />
@@ -589,7 +593,7 @@ export class SignInModal extends Component {
           {
             this.props.withEmail ?
               <React.Fragment>
-                <h3>Or with your email address:</h3>
+                <h4>Or with your email address:</h4>
                 <form className="form form__signin"
                   onSubmit={this.handlleSignIn}>
                   <div className="form__input_container">
@@ -602,16 +606,28 @@ export class SignInModal extends Component {
                     <input type="password" id="password" name="password" required
                       ref={input => this.passwordInput = input} />
                   </div>
+                  {
+                    this.props.cancelButton ?
+                      <Button type="button" text="cancel" solid
+                        doClick={this.closeModal} 
+                        styles={{
+                          backgroundColor: "rgb(153,153,153)",
+                          marginRight: "1em"
+                        }}/> : null
+                  }
                   <Button type="submit" text="sign in" solid 
                     styles={{
                       backgroundColor: "#FF6561"
                     }}/>
-                  <Button type="button" text="sign up instead" solid
-                    doClick={this.handleSignUpInstead} 
-                    styles={{
-                      backgroundColor: "rgb(153,153,153)",
-                      marginLeft: "1em"
-                    }}/>
+                  {
+                    this.props.signup ?
+                      <Button type="button" text="sign up instead" solid
+                        doClick={this.handleSignUpInstead} 
+                        styles={{
+                          backgroundColor: "rgb(153,153,153)",
+                          marginLeft: "1em"
+                        }}/> : null
+                  }
                 </form>
               </React.Fragment> : null
           }

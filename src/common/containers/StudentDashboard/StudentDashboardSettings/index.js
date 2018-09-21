@@ -9,7 +9,7 @@ import _ from "lodash";
 import * as authActions from "../../../actions/authActions";
 
 import PageMeta from "../../../components/PageMeta";
-import { InlineNotification } from "../../../components/Notification";
+import Notification, { InlineNotification } from "../../../components/Notification";
 import FlexContainer from "../../../components/FlexContainer";
 import Button from "../../../components/Button";
 import ConnectionsStrip from "../../../components/ConnectionsStrip";
@@ -88,6 +88,12 @@ class StudentSettings extends Component {
     
     if (props.auth.linkingSocialAccount && this.props.auth.linkedSocialAccount)
       return { linkedSocial: true };
+    
+    if (props.auth.changingEmailAddress && this.props.auth.changedEmailAddress)
+      return { changedEmailAddress: true };
+
+    if (props.auth.changingEmailAddress && this.props.auth.failedToChangeEmailAddress)
+      return { failedToChangeEmailAddress: true };
 
       return null;
   }
@@ -110,12 +116,8 @@ class StudentSettings extends Component {
         });
       }
 
-      if (snapshot.reauthorized) {
-        this.setState({
-          addingPassword: true,
-          signingIn: false
-        });
-      }
+      if (snapshot.reauthorized)
+        this.handleSignInModalClose();
 
       if (snapshot.removedPassword) {
         this.setState({
@@ -130,6 +132,28 @@ class StudentSettings extends Component {
           userProviders: auth.currentUser.providerData
         });
       }
+
+      if (snapshot.changedEmailAddress) {
+        this.setState({
+          changingEmail: false,
+          hasNotification: true,
+          notificationClosed: false,
+          notification: "Email address updated. Check your email to verify change."
+        });
+      }
+
+      if (snapshot.failedToChangeEmailAddress &&
+      this.props.auth.error.code === "auth/requires-recent-login") {
+        this.setState({
+          changedEmail: false,
+          signingIn: true,
+          modalReferer: "changeEmail"
+        });
+      }
+
+      if (snapshot.failedToChangeEmailAddress &&
+      this.props.auth.error.code === "auth/email-already-in-use")
+        this.renderInlineNotification(this.props.auth.error.message, "modal");
     }
   }
 
@@ -148,6 +172,16 @@ class StudentSettings extends Component {
             </PageMeta>
         }
         {
+          this.state.hasNotification && !this.state.notificationClosed ?
+            <Notification doClose={
+              () => this.setState({ 
+                notificationClosed: true, 
+                hasNotification: false,
+                notification: null
+              })}
+              text={this.state.notification} /> : null
+        }
+        {
           this.state.addingPassword ?
             <Modal classes={["modal__settings_add_password"]}
               doClose={() => this.setState({ addingPassword: false })}>
@@ -163,9 +197,9 @@ class StudentSettings extends Component {
         }
         {
           this.state.signingIn ?
-            <SignInModal withEmail={false}
+            <SignInModal signup={false} cancelButton
               intro="Please verify your account by signing in with your current connected provider."
-              doClose={() => this.setState({ addingPassword: true, signingIn: false })}
+              doClose={this.handleSignInModalClose}
               doGoogle={this.handleSocialSignIn}
               doFacebook={this.handleSocialSignIn} /> :
             null
@@ -377,6 +411,18 @@ class StudentSettings extends Component {
     )
   }
 
+  handleSignInModalClose = () => {
+    const referer = this.state.modalReferer
+    
+    if (referer === "changeEmail")
+      return this.setState({ changingEmail: true, signingIn: false, modalReferer: null });
+
+    this.setState({
+      addingPassword: true,
+      signingIn: false
+    });
+  }
+
   handleInputChange = e => {
      const { name, value } = e;
 
@@ -415,7 +461,7 @@ class StudentSettings extends Component {
     if (!isEmail(this.state.newEmail))
       return this.renderInlineNotification("invalid email address", "modal");
 
-    
+    this.props.authActions.doChangeEmailAddress(this.state.newEmail);
   }
 
   handleSocialSignIn = provider => {

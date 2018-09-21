@@ -7,6 +7,7 @@ import { isEmail } from "../utils";
 import { auth, db } from "../utils/firebase";
 import { User, SSID } from "../utils/utilityClasses";
 import Cookies from "universal-cookie";
+import { doUserUpdate } from "./userActions";
 
 const cookies = new Cookies();
 const EMAIL_API = process.env.REACT_APP_EMAIL_API;
@@ -736,6 +737,7 @@ export const doChangeEmailAddress = email => {
 
     user.updateEmail(email)
       .then(() => {
+        dispatch(doUserUpdate({ email, emailConfirmed: false }));
         dispatch(changedEmailAddress(email));
       })
       .catch(error => {
