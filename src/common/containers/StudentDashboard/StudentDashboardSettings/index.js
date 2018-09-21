@@ -239,7 +239,9 @@ class StudentSettings extends Component {
         <React.Fragment>
           <FlexContainer styles={{ justifyContent: "space-between" }}>
             <span>
-              <p className="type__uppercase type__caption">email</p>
+              <p className="type__uppercase type__caption">
+                email { !auth.currentUser.emailVerified ? "(not verified)" : "" }
+              </p>
               {
                 this.state.student ?
                   <h6>{this.state.student.user.email}</h6> :
