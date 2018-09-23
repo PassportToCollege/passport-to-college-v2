@@ -6,10 +6,14 @@ import { bindActionCreators } from "redux"
 import propTypes from "prop-types";
 
 import * as usersActions from "../../actions/usersActions";
+import { about } from "../../constants/pages";
 
 import Header from "../../components/Header";
 import TopicSection from "../../components/TopicSection";
 import ToTopContainer from "../../components/ToTopContainer";
+import IconBullet from "../../components/IconBullet";
+import PageMeta from "../../components/PageMeta";
+import FlexContainer from "../../components/FlexContainer";
 
 import headerImage from "../../assets/images/about_us__header.jpg";
 
@@ -31,12 +35,15 @@ class AboutUs extends Component {
 
   render() {
     return (
-      <ToTopContainer>
-        <Header 
-          scrollEl="about_main"
-          background={headerImage} />
-        {this.renderMain()}
-      </ToTopContainer>
+      <React.Fragment>
+        <PageMeta route="ABOUT_US" />
+        <ToTopContainer>
+          <Header 
+            scrollEl="about_main"
+            background={headerImage} />
+          {this.renderMain()}
+        </ToTopContainer>
+      </React.Fragment>
     )
   }
 
@@ -45,15 +52,28 @@ class AboutUs extends Component {
       <main id="about_main">
         <TopicSection heading="about us"
         content={
-          <p>
-            We connect with students from all over the world who are beating the odds. Students who, against all types of challenges, have demonstrated tenacity, strong work ethics, will power, integrity and a burning desire to succeed.
-          </p>
+          <p>{about.intro}</p>
         } 
         sectionStyles={{
           width: "1140px",
           maxWidth: "100%",
           margin: "0 auto"
         }} />
+        <section className="about__wwd">
+          <FlexContainer>
+            {
+              about.wwd.map((item, i) => {
+                return (
+                  <IconBullet key={`${item.icon}_${i}`}
+                    heading={item.heading}
+                    icon={item.icon}>
+                    <p>{item.info}</p>  
+                  </IconBullet>
+                )
+              })
+            }
+          </FlexContainer>
+        </section>
       </main>
     )
   }

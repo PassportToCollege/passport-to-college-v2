@@ -5,3 +5,22 @@
 main#about_main {
   background-color: white;
 }
+
+section.about__wwd {
+  background-color: #f8f8f8;
+  padding: 90px 2em;
+}
+
+section.about__wwd .flex_container {
+  max-width: 1000px;
+  margin: 0 auto;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+}
+
+section.about__wwd .flex_container .icon_bullet {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 0 50%;
+          flex: 1 0 50%;
+}
