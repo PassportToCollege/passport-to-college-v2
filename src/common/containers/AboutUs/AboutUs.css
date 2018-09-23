@@ -20,7 +20,16 @@ section.about__wwd .flex_container {
 }
 
 section.about__wwd .flex_container .icon_bullet {
+  width: 100%;
   -webkit-box-flex: 1;
-      -ms-flex: 1 0 50%;
-          flex: 1 0 50%;
+      -ms-flex: 1 0 100%;
+          flex: 1 0 100%;
+}
+
+@media (min-width: 600px) {
+  section.about__wwd .flex_container .icon_bullet {
+    -webkit-box-flex: 1;
+        -ms-flex: 1 0 50%;
+            flex: 1 0 50%;
+  }
 }
