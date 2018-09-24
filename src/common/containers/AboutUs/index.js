@@ -74,6 +74,15 @@ class AboutUs extends Component {
             }
           </FlexContainer>
         </section>
+        <section className="about__staff">
+          <FlexContainer classes={["about__staff_header"]}>
+            <h4>
+              The people behind <br/>
+              Passport to College
+            </h4>
+            <p>{about.staffIntro}</p>
+          </FlexContainer>
+        </section>
       </main>
     )
   }
