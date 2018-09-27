@@ -82,6 +82,7 @@ class AboutUs extends Component {
             </h4>
             <p>{about.staffIntro}</p>
           </FlexContainer>
+          
         </section>
       </main>
     )

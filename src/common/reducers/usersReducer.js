@@ -17,7 +17,10 @@ import {
   USERS_UPDATED,
   USERS_GET_BY_ID_INITIATED,
   USERS_GET_BY_ID_FAILED,
-  USERS_GET_BY_ID_SUCCESS
+  USERS_GET_BY_ID_SUCCESS,
+  USERS_ADD_BIO_INITIATED,
+  USERS_ADD_BIO_FAILED,
+  ADDED_BIO
 } from "../actions/actionTypes";
 
 const users = (state = initialState.users, action) => {
@@ -160,6 +163,30 @@ const users = (state = initialState.users, action) => {
         updateFailed: false,
         data: action.data,
         uid: action.user
+      });
+    case USERS_ADD_BIO_INITIATED:
+      return Object.assign({}, state, {
+        addingBio: true,
+        addedBio: false,
+        failedToAddBio: false,
+        uid: action.user
+      });
+    case USERS_ADD_BIO_FAILED:
+      return Object.assign({}, state, {
+        addingBio: false,
+        addedBio: false,
+        failedToAddBio: true,
+        error: action.error,
+        uid: action.user,
+        bio: action.bio
+      });
+    case ADDED_BIO:
+      return Object.assign({}, state, {
+        addingBio: false,
+        addedBio: true,
+        failedToAddBio: false,
+        uid: action.user,
+        bio: action.bio
       });
     default:
       return state;

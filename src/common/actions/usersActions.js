@@ -1,5 +1,6 @@
 import { uid } from "rand-token";
 import axios from "axios";
+import _ from "lodash";
 
 import { db } from "../utils/firebase";
 import * as types from "./actionTypes";
@@ -477,4 +478,55 @@ export const doUserUpdate = (uid, data, options) => {
         return dispatch(userUpdateFailed(error, uid, data));
       })
   }
-}
+};
+
+export const addBioInitiated = (user, bio) => {
+  return {
+    type: types.USERS_ADD_BIO_INITIATED,
+    user,
+    bio
+  };
+};
+
+export const addBioFailed = (error, user, bio) => {
+  return {
+    type: types.USERS_ADD_BIO_FAILED,
+    error,
+    user,
+    bio
+  };
+};
+
+export const bioAdded = (user, bio) => {
+  return {
+    type: types.ADDED_BIO,
+    user, bio
+  };
+};
+
+export const doAddBio = (user = "", bio = {}, options = {}) => {
+  return dispatch => {
+    if (typeof user !== "string" && !user.length)
+      return dispatch(addBioFailed({ message: "invalid/no user provided" }, user, bio));
+
+    if (typeof bio !== "object" && _.isEmpty(bio))
+      return dispatch(addBioFailed({ message: "invalid/no bio provided" }, user, bio));
+
+    dispatch(addBioInitiated(user, bio));
+
+    db.collection("users")
+      .doc(user)
+      .update({ bio })
+      .then(() => {
+        dispatch(bioAdded(user, bio));
+
+        // dispatch user get to update props
+        // with new user data
+        if (options.refresh)
+          return dispatch(doGetUserByUid(uid));
+      })
+      .catch(error => {
+        dispatch(addBioFailed(error, user, bio));
+      });
+  };
+};
