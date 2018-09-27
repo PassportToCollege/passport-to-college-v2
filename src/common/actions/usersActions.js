@@ -523,7 +523,7 @@ export const doAddBio = (user = "", bio = {}, options = {}) => {
         // dispatch user get to update props
         // with new user data
         if (options.refresh)
-          return dispatch(doGetUserByUid(uid));
+          return dispatch(doGetUserByUid(user));
       })
       .catch(error => {
         dispatch(addBioFailed(error, user, bio));
