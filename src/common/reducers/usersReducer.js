@@ -20,7 +20,10 @@ import {
   USERS_GET_BY_ID_SUCCESS,
   USERS_ADD_BIO_INITIATED,
   USERS_ADD_BIO_FAILED,
-  ADDED_BIO
+  ADDED_BIO,
+  USERS_GET_FOUNDER_INITIATED,
+  USERS_GET_FOUNDER_FAILED,
+  GOT_FOUNDER
 } from "../actions/actionTypes";
 
 const users = (state = initialState.users, action) => {
@@ -187,6 +190,26 @@ const users = (state = initialState.users, action) => {
         failedToAddBio: false,
         uid: action.user,
         bio: action.bio
+      });
+    case USERS_GET_FOUNDER_INITIATED:
+      return Object.assign({}, state, {
+        gettingFounder: true,
+        gotFounder: false,
+        failedToGetFounder: false
+      });
+    case USERS_GET_FOUNDER_FAILED:
+      return Object.assign({}, state, {
+        gettingFounder: false,
+        gotFounder: false,
+        failedToGetFounder: true,
+        error: action.error
+      });
+    case GOT_FOUNDER:
+      return Object.assign({}, state, {
+        gettingFounder: false,
+        gotFounder: true,
+        failedToGetFounder: false,
+        founder: action.founder
       });
     default:
       return state;

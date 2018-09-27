@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux"
 import propTypes from "prop-types";
+import _ from "lodash";
 
 import * as usersActions from "../../actions/usersActions";
 import { about } from "../../constants/pages";
@@ -20,7 +21,9 @@ import headerImage from "../../assets/images/about_us__header.jpg";
 class AboutUs extends Component {
   constructor(props) {
     super(props);
-    this.state = {}
+    this.state = {
+      founder: props.users.founder
+    }
   }
 
   static propTypes = {
@@ -31,6 +34,17 @@ class AboutUs extends Component {
 
   componentDidMount() {
     this.props.updateLocation("about");
+
+    if (!this.state.founder)
+      this.props.usersActions.doGetFounder();
+  }
+
+  static getDerivedStateFromProps(nextProps, state) {
+    if (nextProps.users.gotFounder && !_.isEqual(state.founder, nextProps.users.founder)) {
+      return { founder: nextProps.users.founder };
+    }
+
+    return null;
   }
 
   render() {

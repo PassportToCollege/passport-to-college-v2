@@ -269,6 +269,51 @@ export const doGetUsersByUid = (users = []) => {
   }
 }
 
+export const getFounderInitiated = () => {
+  return {
+    type: types.USERS_GET_FOUNDER_FAILED
+  };
+};
+
+export const getFounderFailed = error =>  {
+  return {
+    type: types.USERS_GET_FOUNDER_FAILED,
+    error
+  };
+};
+
+export const gotFounder = founder => {
+  return {
+    type: types.GOT_FOUNDER,
+    founder
+  };
+};
+
+export const doGetFounder = () => {
+  return dispatch => {
+    dispatch(getFounderInitiated());
+
+    db.collection("users")
+      .where("isStaff", "==", true)
+      .where("role", "==", "Founder")
+      .get()
+      .then(snapshots => {
+        if (snapshots.empty)
+          dispatch(getFounderFailed({ message: "founder not found" }));
+
+        let founder;
+        snapshots.forEach(snapshot => {
+          founder = snapshot.data();
+        });
+
+        dispatch(gotFounder(founder));
+      })
+      .catch(error => {
+        dispatch(getFounderFailed(error));
+      })
+  }
+}
+
 // CREATE actions
 export const createUserInitiated = data => {
   return {
