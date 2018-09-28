@@ -311,8 +311,83 @@ export const doGetFounder = () => {
       .catch(error => {
         dispatch(getFounderFailed(error));
       })
-  }
-}
+  };
+};
+
+export const getStaffInitiated = () => {
+  return {
+    type: types.USERS_GET_STAFF_INITIATED
+  };
+};
+
+export const getStaffFailed = error => {
+  return {
+    type: types.USERS_GET_STAFF_FAILED,
+    error
+  };
+};
+
+export const gotStaff = staff => {
+  return {
+    type: types.GOT_STAFF,
+    staff
+  };
+};
+
+export const doGetStaff = () => {
+  return dispatch => {
+    dispatch(getStaffInitiated());
+
+    db.collection("users")
+      .where("isStaff", "==", true)
+      .get()
+      .then(staffSnaps => {
+        if (staffSnaps.empty)
+          return dispatch(getStaffFailed({ message: "no staff found" }));
+
+        let staff = [];
+        let studentStaff = [];
+
+        staffSnaps.forEach(snap => {
+          let data = snap.data();
+
+          if (data.isStudent) {
+            studentStaff.push(data.uid);
+          } else if (!data.isStudent && data.role !== "Founder") {
+            staff.push(data);
+          }
+        });
+
+        if (studentStaff.length) {
+          let promises = [];
+          for (let student of studentStaff) {
+            promises.push(db.collection("students").doc(student).get());
+          }
+
+          Promise.all(promises)
+            .then(snapshots => {
+              if (!snapshots.length)
+                return dispatch(getStaffFailed({ message: "no student staff found" }));
+
+              for (let snapshot of snapshots) {
+                if (!snapshot.empty)
+                  staff.push(snapshot.data());
+              }
+
+              dispatch(gotStaff(staff));
+            })
+            .catch(error => {
+              dispatch(getStaffFailed(error));
+            })
+        } else {
+          dispatch(gotStaff(staff));
+        }
+      })
+      .catch(error => {
+        dispatch(getStaffFailed(error));
+      })
+  };
+};
 
 // CREATE actions
 export const createUserInitiated = data => {

@@ -22,7 +22,8 @@ class AboutUs extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      founder: props.users.founder
+      founder: props.users.founder,
+      staff: props.users.staff
     }
   }
 
@@ -37,11 +38,18 @@ class AboutUs extends Component {
 
     if (!this.state.founder)
       this.props.usersActions.doGetFounder();
+
+    if (!this.state.staff)
+      this.props.usersActions.doGetStaff();
   }
 
   static getDerivedStateFromProps(nextProps, state) {
     if (nextProps.users.gotFounder && !_.isEqual(state.founder, nextProps.users.founder)) {
       return { founder: nextProps.users.founder };
+    }
+
+    if (nextProps.users.gotStaff && !_.isEqual(state.staff, nextProps.users.staff)) {
+      return { staff: nextProps.users.staff };
     }
 
     return null;
