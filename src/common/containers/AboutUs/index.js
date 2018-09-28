@@ -15,6 +15,7 @@ import ToTopContainer from "../../components/ToTopContainer";
 import IconBullet from "../../components/IconBullet";
 import PageMeta from "../../components/PageMeta";
 import FlexContainer from "../../components/FlexContainer";
+import RoleCard from "../../components/RoleCard";
 
 import headerImage from "../../assets/images/about_us__header.jpg";
 
@@ -104,7 +105,23 @@ class AboutUs extends Component {
             </h4>
             <p>{about.staffIntro}</p>
           </FlexContainer>
-          
+          <FlexContainer classes={["about__staff_staff"]}>
+            {
+              this.state.founder ?
+                <RoleCard founder staff={this.state.founder} /> :
+                null
+            }
+            {
+              this.state.staff ?
+                this.state.staff.map(member => {
+                  if (member.user) {
+                    return <RoleCard key={member.user.uid} staff={member} />
+                  }
+
+                  return <RoleCard key={member.uid} staff={member} />
+                }) : null
+            }
+          </FlexContainer>
         </section>
       </main>
     )

@@ -66,3 +66,10 @@ section.about__staff .about__staff_header > p {
       -ms-flex: 1 1 600px;
           flex: 1 1 600px;
 }
+
+section.about__staff .flex_container.about__staff_staff {
+  margin: 4em auto 2em;
+  -webkit-box-pack: justify !important;
+      -ms-flex-pack: justify !important;
+          justify-content: space-between !important;
+}
