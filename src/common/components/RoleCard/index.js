@@ -81,10 +81,10 @@ class RoleCard extends Component {
               null
           }
         </span>
-        <span className="role_card__info">
+        <Link to={`/scholars/view/scholar/${this.state.staff.uid}`} className="role_card__info">
           <h5>{this.state.staff.user.name.full}</h5>
           <p>{this.state.staff.user.role}</p>
-        </span>
+        </Link>
       </React.Fragment>
     );
   }

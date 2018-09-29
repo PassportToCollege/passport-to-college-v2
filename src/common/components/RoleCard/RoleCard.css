@@ -31,14 +31,19 @@
   padding: 1em;
   -webkit-transform: translate(45px, -26px);
           transform: translate(45px, -26px);
-  border-bottom: 8px solid #FF6561;
-  border-right: 5px solid #FF6561;
-
+  border-bottom: 5px solid #53D1D7;
+  border-right: 2px solid #53D1D7;
+  -webkit-transition: border 200ms ease-in;
+  transition: border 200ms ease-in;
+  cursor: pointer;
 }
 
 .role_card.founder_card .role_card__info {
-  -webkit-box-shadow: none;
-          box-shadow: none;
   border-bottom: 8px solid #53D1D7;
   border-right: 5px solid #53D1D7;
+}
+
+.role_card a.role_card__info,
+.role_card a.role_card__info:visited {
+  color: #333;
 }
