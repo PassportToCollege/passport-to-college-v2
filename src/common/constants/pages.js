@@ -33,5 +33,6 @@ export const about = {
     }
   ],
   staffIntro: "We are an exceptional non-profit for several reasons. One such reason is that we are run by the very students that we serve. There are no paid staff. Scholars hold voluntary positions of service for their entire undergraduate years of study; some even into their graduate years of study and careers.",
-  showStoriesCTA: true
+  showStoriesCTA: true,
+  storiesCTABg: require("../assets/images/stories_cta_about_us.jpg")
 }

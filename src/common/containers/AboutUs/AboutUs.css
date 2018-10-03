@@ -73,3 +73,69 @@ section.about__staff .flex_container.about__staff_staff {
       -ms-flex-pack: justify !important;
           justify-content: space-between !important;
 }
+
+section.about__staff_stories_cta .stories_cta__bg {
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  width: 100%;
+  padding-top: 570px;
+}
+
+section.about__staff_stories_cta .stories_cta__content {
+  background-color: rgb(53, 53, 53);
+}
+
+section.about__staff_stories_cta .stories_cta__content > div {
+  max-width: 1140px;
+  margin: 0 auto;
+  position: relative;
+  min-height: 235px;
+}
+
+section.about__staff_stories_cta .stories_cta__content > div > span {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column nowrap;
+          flex-flow: column nowrap;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  max-width: 470px;
+  height: 470px;
+  padding: 2em;
+  background-color: #53D1D7;
+  color: white;
+  position: absolute;
+  top: -235px;
+  left: 0;
+  -webkit-box-flex: 1;
+      -ms-flex: 1 0 470px;
+          flex: 1 0 470px;
+}
+
+section.about__staff_stories_cta .stories_cta__content > div > span > h2 {
+  text-transform: uppercase;
+  font-weight: 400;
+  margin-bottom: 0.5em;
+}
+
+section.about__staff_stories_cta .stories_cta__content > div > span .button {
+  color: #333 !important;
+  background-color: white !important;
+  border-color: white !important;
+}
+
+@media (min-width: 470px) {
+  section.about__staff_stories_cta .stories_cta__content > div > span {
+    width: 470px;
+    padding: 2em 4em;
+  }
+}

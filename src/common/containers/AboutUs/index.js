@@ -8,6 +8,7 @@ import _ from "lodash";
 
 import * as usersActions from "../../actions/usersActions";
 import { about } from "../../constants/pages";
+import { STORIES as storiesRoute } from "../../constants/routes";
 
 import Header from "../../components/Header";
 import TopicSection from "../../components/TopicSection";
@@ -16,6 +17,7 @@ import IconBullet from "../../components/IconBullet";
 import PageMeta from "../../components/PageMeta";
 import FlexContainer from "../../components/FlexContainer";
 import RoleCard from "../../components/RoleCard";
+import LinkButton from "../../components/LinkButton";
 
 import headerImage from "../../assets/images/about_us__header.jpg";
 
@@ -123,8 +125,33 @@ class AboutUs extends Component {
             }
           </FlexContainer>
         </section>
+        {this.renderStoriesCTA()}
       </main>
     )
+  }
+
+  renderStoriesCTA = () => {
+    if (about.showStoriesCTA) {
+      return (
+        <section className="about__staff_stories_cta">
+          <div className="stories_cta__bg"
+            style={{
+              backgroundImage: `url(${about.storiesCTABg})`
+            }}></div>
+          <div className="stories_cta__content">
+            <div>
+              <span>
+                <h2>more<br></br> about us</h2>
+                <LinkButton default text="stories" 
+                  target={storiesRoute.route}/>
+              </span>
+            </div>
+          </div>
+        </section>
+      )
+    }
+
+    return null;
   }
 }
 
