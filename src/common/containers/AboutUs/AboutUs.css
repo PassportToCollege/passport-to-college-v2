@@ -108,20 +108,20 @@ section.about__staff_stories_cta .stories_cta__content > div > span {
   -webkit-box-align: start;
       -ms-flex-align: start;
           align-items: flex-start;
-  max-width: 470px;
-  height: 470px;
+  max-width: 400px;
+  height: 400px;
   padding: 2em;
   background-color: #53D1D7;
   color: white;
   position: absolute;
-  top: -235px;
+  top: -200px;
   left: 0;
   -webkit-box-flex: 1;
-      -ms-flex: 1 0 470px;
-          flex: 1 0 470px;
+      -ms-flex: 1 0 400px;
+          flex: 1 0 400px;
 }
 
-section.about__staff_stories_cta .stories_cta__content > div > span > h2 {
+section.about__staff_stories_cta .stories_cta__content > div > span > h3 {
   text-transform: uppercase;
   font-weight: 400;
   margin-bottom: 0.5em;

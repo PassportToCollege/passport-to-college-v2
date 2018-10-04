@@ -141,7 +141,7 @@ class AboutUs extends Component {
           <div className="stories_cta__content">
             <div>
               <span>
-                <h2>more<br></br> about us</h2>
+                <h3>more<br></br> about us</h3>
                 <LinkButton default text="stories" 
                   target={storiesRoute.route}/>
               </span>
