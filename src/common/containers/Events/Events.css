@@ -1,3 +1,9 @@
 .app__main > .app__body.app__body_events {
   padding-top: 0;
 }
+
+#events__main .topic_section > h4 {
+  max-width: 350px;
+  margin: 0 auto;
+  font-weight: 400;
+}
