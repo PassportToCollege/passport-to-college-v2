@@ -9,12 +9,16 @@ import { faHome } from "@fortawesome/fontawesome-free-solid";
 const LinkButton = props => {
   props = props || {};
   let icon;
+  let classes = `link__button ${props.classes || ""}`;
+
+  if (props.default)
+    classes += " link__button_default";
 
   if (props.icon === "faHome")
     icon = faHome;
 
   return (
-    <Link to={props.target} className={`link__button ${props.classes || ""}`}>
+    <Link to={props.target} className={classes}>
       {
         props.text ? props.text : null
       }
@@ -32,7 +36,12 @@ LinkButton.propTypes = {
   target: propTypes.string,
   text: propTypes.string,
   classes: propTypes.string,
-  icon: propTypes.string
+  icon: propTypes.string,
+  default: propTypes.bool
 };
+
+LinkButton.defaultProps = {
+  default: false
+}
 
 export default LinkButton;

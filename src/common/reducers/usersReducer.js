@@ -17,7 +17,16 @@ import {
   USERS_UPDATED,
   USERS_GET_BY_ID_INITIATED,
   USERS_GET_BY_ID_FAILED,
-  USERS_GET_BY_ID_SUCCESS
+  USERS_GET_BY_ID_SUCCESS,
+  USERS_ADD_BIO_INITIATED,
+  USERS_ADD_BIO_FAILED,
+  ADDED_BIO,
+  USERS_GET_FOUNDER_INITIATED,
+  USERS_GET_FOUNDER_FAILED,
+  GOT_FOUNDER,
+  USERS_GET_STAFF_INITIATED,
+  USERS_GET_STAFF_FAILED,
+  GOT_STAFF
 } from "../actions/actionTypes";
 
 const users = (state = initialState.users, action) => {
@@ -160,6 +169,70 @@ const users = (state = initialState.users, action) => {
         updateFailed: false,
         data: action.data,
         uid: action.user
+      });
+    case USERS_ADD_BIO_INITIATED:
+      return Object.assign({}, state, {
+        addingBio: true,
+        addedBio: false,
+        failedToAddBio: false,
+        uid: action.user
+      });
+    case USERS_ADD_BIO_FAILED:
+      return Object.assign({}, state, {
+        addingBio: false,
+        addedBio: false,
+        failedToAddBio: true,
+        error: action.error,
+        uid: action.user,
+        bio: action.bio
+      });
+    case ADDED_BIO:
+      return Object.assign({}, state, {
+        addingBio: false,
+        addedBio: true,
+        failedToAddBio: false,
+        uid: action.user,
+        bio: action.bio
+      });
+    case USERS_GET_FOUNDER_INITIATED:
+      return Object.assign({}, state, {
+        gettingFounder: true,
+        gotFounder: false,
+        failedToGetFounder: false
+      });
+    case USERS_GET_FOUNDER_FAILED:
+      return Object.assign({}, state, {
+        gettingFounder: false,
+        gotFounder: false,
+        failedToGetFounder: true,
+        error: action.error
+      });
+    case GOT_FOUNDER:
+      return Object.assign({}, state, {
+        gettingFounder: false,
+        gotFounder: true,
+        failedToGetFounder: false,
+        founder: action.founder
+      });
+    case USERS_GET_STAFF_INITIATED:
+      return Object.assign({}, state, {
+        gettingStaff: true,
+        gotStaff: false,
+        failedToGetStaff: false
+      });
+    case USERS_GET_STAFF_FAILED:
+      return Object.assign({}, state, {
+        gettingStaff: false,
+        gotStaff: false,
+        failedToGetStaff: true,
+        error: action.error
+      });
+    case GOT_STAFF:
+      return Object.assign({}, state, {
+        gettingStaff: false,
+        gotStaff: true,
+        failedToGetStaff: false,
+        staff: action.staff
       });
     default:
       return state;

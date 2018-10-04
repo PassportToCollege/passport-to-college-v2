@@ -17,9 +17,15 @@
   border-radius: 50%;
   width: 3.525em;
   height: 3.525em;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .link__button.fixed {
@@ -36,4 +42,27 @@
 
 .link__button.solid {
   background-color: #FF6561;
+}
+
+.link__button.link__button_default {
+  font-weight: 600;
+  font-size: 1em;
+  text-transform: uppercase;
+  color: #333;
+  padding: 0.75em 0.9625em;
+  outline: none;
+  background-color: white;
+  cursor: pointer;
+  border-radius: 3px;
+  -webkit-transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+  transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+  letter-spacing: 2.5px;
+}
+
+.buttlink__button.link__button_defaulton:hover,
+.link__button.link__button_default:focus {
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12),
+    0 1px 2px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12),
+    0 1px 2px rgba(0, 0, 0, 0.24);
 }

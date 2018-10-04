@@ -81,6 +81,9 @@ class UserSection extends Component {
           this.props.postsActions.doGetAccomplishmentsByUser(this.props.userId, "all");
         }
       }
+
+      if (this.state.student && !this.state.user.isStudent)
+        this.setState({ student: null });
     }
   }
 
@@ -176,6 +179,9 @@ class UserSection extends Component {
       };
     }
 
+    if (prevProps.user.addingBio && this.props.user.addedBio)
+      return { addedBio: true };
+
     return null;
   }
 
@@ -222,6 +228,14 @@ class UserSection extends Component {
         hasNotification: true,
         notificationClosed: false,
         notification: "Accomplishment deleted successefully"
+      });
+    }
+
+    if (snapshot && snapshot.addedBio) {
+      this.setState({
+        hasNotification: true,
+        notification: "Bio saved",
+        notificationClosed: false
       });
     }
   }
@@ -765,6 +779,7 @@ class UserSection extends Component {
             } /> : null
         }
         {
+          this.state.user && this.state.user.isStudent &&
           this.props.student.hasGotten && this.state.student
           && this.state.student.bio && this.state.student.bio.blocks ?
             <WYSIWYGEditor content={this.state.student.bio} saveButton
@@ -782,20 +797,36 @@ class UserSection extends Component {
                 marginBottom: "0"
               }} />
               :
-            <WYSIWYGEditor saveButton
-              handleSave={this.handleBioSave}
-              editorStyles={{
-                margin: "0 auto",
-                maxWidth: "100%",
-                padding: "2em 1.875em",
-                backgroundColor: "#FFF",
-                border: "none"
-              }}
-              controlStyles={{
-                maxWidth: "100%",
-                position: "static",
-                marginBottom: "0"
-              }} />
+            this.state.user && this.state.user.bio &&
+            this.state.user.bio.blocks ?
+              <WYSIWYGEditor content={this.state.user.bio} saveButton
+                handleSave={this.handleBioSave}
+                editorStyles={{
+                  margin: "0 auto",
+                  maxWidth: "100%",
+                  padding: "2em 1.875em",
+                  backgroundColor: "#FFF",
+                  border: "none"
+                }} 
+                controlStyles={{
+                  maxWidth: "100%",
+                  position: "static",
+                  marginBottom: "0"
+                }} /> :
+              <WYSIWYGEditor saveButton
+                handleSave={this.handleBioSave}
+                editorStyles={{
+                  margin: "0 auto",
+                  maxWidth: "100%",
+                  padding: "2em 1.875em",
+                  backgroundColor: "#FFF",
+                  border: "none"
+                }}
+                controlStyles={{
+                  maxWidth: "100%",
+                  position: "static",
+                  marginBottom: "0"
+                }} />
         }
       </section>
     );
@@ -872,13 +903,14 @@ class UserSection extends Component {
   }
 
   handleBioSave = content => {
-    // update student with content
-    // and refresh student
-    this.props.studentActions.doStudentUpdate(this.state.uid, { bio: content });
-    this.setState({
-      hasNotification: true,
-      notification: "Bio saved",
-      notificationClosed: false
+    if (this.state.user.isStudent) {
+      // update student with content
+      // and refresh student
+      return this.props.studentActions.doStudentUpdate(this.state.uid, { bio: content });
+    }
+
+    this.props.usersActions.doAddBio(this.state.uid, content, {
+      refresh: true
     });
   }
 

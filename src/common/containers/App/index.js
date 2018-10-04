@@ -23,6 +23,7 @@ import Navigation from "../Navigation";
 import Footer from "../Footer";
 
 import Home from '../Home';
+import About from "../AboutUs";
 import Stories from "../Stories";
 import Story from "../Story";
 import Scholars from "../Scholars";
@@ -89,6 +90,7 @@ class App extends React.Component {
           {this.selectNavigation()}
           <div className={`app__body app__body_${this.state.location.replace(" on-white", "")}`} style={bodyStyles}>
             <Route exact path={routes.LANDING.route} render={props => this.landingMiddleware(props)}></Route>
+            <Route exact path={routes.ABOUT_US.route} render={props => this.defaultRouteMiddleware(props, About)}></Route>
             <Route path={routes.SCHOLARS.route} render={props => this.defaultRouteMiddleware(props, Scholars)}></Route> 
             <Route exact path={routes.STORIES.route} render={props => this.defaultRouteMiddleware(props, Stories)}></Route>
             <Route exact path={routes.COMMUNITY_GUIDLINES.route} render={props => this.defaultRouteMiddleware(props, CommunityGuidlines)}></Route>
