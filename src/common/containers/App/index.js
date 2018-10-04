@@ -24,6 +24,7 @@ import Footer from "../Footer";
 
 import Home from '../Home';
 import About from "../AboutUs";
+import Events from "../Events";
 import Stories from "../Stories";
 import Story from "../Story";
 import Scholars from "../Scholars";
@@ -91,6 +92,7 @@ class App extends React.Component {
           <div className={`app__body app__body_${this.state.location.replace(" on-white", "")}`} style={bodyStyles}>
             <Route exact path={routes.LANDING.route} render={props => this.landingMiddleware(props)}></Route>
             <Route exact path={routes.ABOUT_US.route} render={props => this.defaultRouteMiddleware(props, About)}></Route>
+            <Route exact path={routes.EVENTS.route} render={props => this.defaultRouteMiddleware(props, Events)}></Route>
             <Route path={routes.SCHOLARS.route} render={props => this.defaultRouteMiddleware(props, Scholars)}></Route> 
             <Route exact path={routes.STORIES.route} render={props => this.defaultRouteMiddleware(props, Stories)}></Route>
             <Route exact path={routes.COMMUNITY_GUIDLINES.route} render={props => this.defaultRouteMiddleware(props, CommunityGuidlines)}></Route>
