@@ -14,14 +14,13 @@
 }
 
 .role_card .role_card__image {
+  background-color: #333;
   max-width: 230px;
-  -webkit-box-flex: 1;
-      -ms-flex: 1 0 230px;
-          flex: 1 0 230px;
 }
 
 .role_card .role_card__image > img {
   max-width: 100%;
+  line-height: 0;
 }
 
 .role_card .role_card__info {
@@ -46,4 +45,22 @@
 .role_card a.role_card__info,
 .role_card a.role_card__info:visited {
   color: #333;
+}
+
+@media (max-width: 320px) {
+  .role_card {
+    margin-bottom: 16px;
+  }
+
+  .role_card .role_card__image {
+    max-width: 100%;
+  }
+
+  .role_card .role_card__info,
+  .role_card.founder_card .role_card__info {
+    -webkit-transform: translate(0);
+            transform: translate(0);
+    border-right: none;
+    width: 100%;
+  }
 }
