@@ -2,7 +2,7 @@ import "./Events.css";
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux"
+import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
 
 import { events } from "../../constants/pages";
@@ -11,6 +11,7 @@ import Header from "../../components/Header";
 import TopicSection from "../../components/TopicSection";
 import ToTopContainer from "../../components/ToTopContainer";
 import PageMeta from "../../components/PageMeta";
+import Event from "../../components/Event";
 
 import headerImage from "../../assets/images/events__header.jpg";
 
@@ -54,8 +55,27 @@ class Events extends Component {
           maxWidth: "100%",
           margin: "0 auto"
         }} />
+        <section className="events__content">
+          {
+            events.events.length ?
+              this.renderEvents() :
+              <p>No events yet.</p>
+          }
+        </section>
       </main>
     )
+  }
+
+  renderEvents = () => {
+    return (
+      <React.Fragment>
+        {
+          events.events.map(event => {
+            return <Event key={event.title} event={event} />
+          })
+        }
+      </React.Fragment>
+    );
   }
 }
 

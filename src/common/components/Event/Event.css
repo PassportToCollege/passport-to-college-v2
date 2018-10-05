@@ -1,0 +1,31 @@
+.event {
+
+}
+
+.event > header {
+  padding: 3em;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.event > header > div {
+  padding: 4em 2em;
+  text-align: center;
+  color: white;
+}
+
+.event > header > div > h4 {
+  font-weight: 900;
+  margin-bottom: 24px;
+  letter-spacing: 5px;
+}
+
+.event > header > div > h5 {
+  font-weight: 500;
+}
+
+.event > header > div > p {
+  font-size: 18px;
+  font-weight: 500;
+} 
