@@ -38,7 +38,8 @@ class Event extends Component {
         </header>
         <main>
           <p>{this.props.event.excerpt}</p>
-          <Button solid doClick={this.handleMoreClick}
+          <Button solid text="more"
+            doClick={this.handleMoreClick}
             styles={{
               backgroundColor: makeRGB(this.props.event.accent),
               borderColor: makeRGB(this.props.event.accent)

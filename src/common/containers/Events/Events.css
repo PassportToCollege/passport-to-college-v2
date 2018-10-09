@@ -1,9 +1,26 @@
 .app__main > .app__body.app__body_events {
   padding-top: 0;
+  background-color: #f8f8f8;
+}
+
+#events__main .topic_section {
+  background-color: #ffffff;
+  width: 100% !important;
 }
 
 #events__main .topic_section > h4 {
   max-width: 350px;
   margin: 0 auto;
   font-weight: 400;
+}
+
+#events__main .events__content {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+@media (min-width: 992px) {
+  #events__main .events__content {
+    padding-bottom: 2em;
+  }
 }
