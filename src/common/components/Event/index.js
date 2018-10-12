@@ -44,6 +44,10 @@ class Event extends Component {
               backgroundColor: makeRGB(this.props.event.accent),
               borderColor: makeRGB(this.props.event.accent)
             }} />
+          <span className="event__accent"
+            style={{
+              backgroundColor: makeRGB(this.props.event.accent, 0.75)
+            }}></span>
         </main>
       </div>
     )

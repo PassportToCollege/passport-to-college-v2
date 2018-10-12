@@ -1,7 +1,3 @@
-.event {
-
-}
-
 .event > header {
   padding: 3em;
   background-position: center;
@@ -35,13 +31,22 @@
   position: relative;
 }
 
+.event > main .event__accent {
+  display: none;
+}
+
 .event > main > p {
   margin: 0 auto 1em;
+  line-height: 1.325;
+  position: relative;
+  z-index: 2;
 }
 
 .event > main > .button {
   display: block;
   margin: 0 auto;
+  position: relative;
+  z-index: 2;
 }
 
 @media (min-width: 992px) {
@@ -60,22 +65,7 @@
     -ms-flex-align: center;
     align-items: center;
     position: relative;
-  }
-          
-  .event:not(:last-of-type) {
-    margin-bottom: 60px; 
-  }
-
-  .event:not(:last-of-type)::after {
-    content: "";
-    position: absolute;
-    width: 5px;
-    height: 60px;
-    background-color: white;
-    bottom: -60px;
-    left: 50%;
-    -webkit-transform: translateX(-50%);
-            transform: translateX(-50%);
+    margin-bottom: 1em;
   }
 
   .event > header {
@@ -88,6 +78,11 @@
     -webkit-box-ordinal-group: 3;
         -ms-flex-order: 2;
             order: 2;
+  }
+
+  .event > main {
+    padding: 2em 3em;
+    position: relative;
   }
 
   .event:nth-child(2n+1) > main::before {
@@ -117,5 +112,21 @@
      top: 50%;
      -webkit-transform: translateY(-50%);
      transform: translateY(-50%);
+  }
+
+  .event > main .event__accent {
+    display: block;
+    position: absolute;
+    width: 100vw;
+    height: 50%;
+    top: 13px;
+  }
+
+  .event:nth-child(2n) > main .event__accent {
+    right: 1.5em;
+  }
+
+  .event:nth-child(2n+1) > main .event__accent {
+    left: 1.5em;
   }
 }

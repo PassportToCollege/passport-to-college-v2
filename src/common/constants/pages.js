@@ -45,7 +45,7 @@ export const events = {
       where: "Claflin University - Orangeburg, SC",
       when: "SUNDAY MAY 13 2015",
       excerpt: "What’s important is the fucking drive to see a project through no matter what. Saul Bass on failure: Failure is built into creativity… the creative act involves this element of ‘newness’ and ‘experimentalism,’ then one must expect and accept the fucking possibility of failure. You won’t get good at anything by doing it a lot fucking aimlessly.",
-      accent: [83, 209, 215],
+      accent: [255, 203, 97],
       hero: require("../assets/images/event__temp_hero.jpg"),
       hasGallery: false
     },
@@ -54,7 +54,7 @@ export const events = {
       where: "Claflin University - Orangeburg, SC",
       when: "SUNDAY MAY 13 2016",
       excerpt: "What’s important is the fucking drive to see a project through no matter what. Saul Bass on failure: Failure is built into creativity… the creative act involves this element of ‘newness’ and ‘experimentalism,’ then one must expect and accept the fucking possibility of failure. You won’t get good at anything by doing it a lot fucking aimlessly.",
-      accent: [83, 209, 215],
+      accent: [255, 101, 97],
       hero: require("../assets/images/event__temp_hero.jpg"),
       hasGallery: false
     },
@@ -72,7 +72,7 @@ export const events = {
       where: "Claflin University - Orangeburg, SC",
       when: "SUNDAY MAY 13 2018",
       excerpt: "What’s important is the fucking drive to see a project through no matter what. Saul Bass on failure: Failure is built into creativity… the creative act involves this element of ‘newness’ and ‘experimentalism,’ then one must expect and accept the fucking possibility of failure. You won’t get good at anything by doing it a lot fucking aimlessly.",
-      accent: [83,209,215],
+      accent: [255,203,97],
       hasGallery: false
     }
   ]
