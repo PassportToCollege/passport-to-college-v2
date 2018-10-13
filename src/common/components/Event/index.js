@@ -5,7 +5,7 @@ import propTypes from "prop-types";
 
 import { makeRGB } from "../../utils";
 
-import Button from "../Button";
+import Button, { BackButton } from "../Button";
 import Modal from "../Modal";
 
 class Event extends Component {
@@ -58,6 +58,8 @@ class Event extends Component {
     return (
       <Modal classes={["event__expanded"]}
         doClose={() => this.setState({ layout: "card" })}>
+        <BackButton text="back"
+          doClick={() => this.setState({ layout: "card" })} />
         {this.getEventHeader(false)}
       </Modal>
     )

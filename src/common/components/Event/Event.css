@@ -137,6 +137,13 @@
   padding: 0;
 }
 
+.modal.event__expanded .modal__content .button__back {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: white;
+}
+
 .modal.event__expanded .modal__content > header {
   width: 100%;
   height: 300px;
