@@ -7,6 +7,7 @@ import { makeRGB } from "../../utils";
 
 import Button, { BackButton } from "../Button";
 import Modal from "../Modal";
+import FlexContainer from "../FlexContainer";
 
 class Event extends Component {
   constructor(props) {
@@ -61,6 +62,7 @@ class Event extends Component {
         <BackButton text="back"
           doClick={() => this.setState({ layout: "card" })} />
         {this.getEventHeader(false)}
+        {this.getExpandedEventContent()}
       </Modal>
     )
   }
@@ -84,6 +86,21 @@ class Event extends Component {
         }
       </header>
     )
+  }
+
+  getExpandedEventContent = () => {
+    return (
+      <div className="event__expanded_content">
+        <FlexContainer classes={["event__expanded_content_header"]}>
+          <h4>{this.props.event.title}</h4>
+          <span>
+            <h5>@ {this.props.event.where}</h5>
+            <p>{this.props.event.when}</p>
+          </span>
+        </FlexContainer>
+        <p>{this.props.event.details || this.props.event.excerpt}</p>
+      </div>
+    );
   }
 }
 

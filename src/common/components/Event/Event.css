@@ -151,3 +151,25 @@
   background-size: cover;
   background-repeat: no-repeat;
 }
+
+.modal.event__expanded .modal__content .event__expanded_content {
+  padding: 4em 2em;
+}
+
+.modal.event__expanded .modal__content .event__expanded_content .event__expanded_content_header {
+  -webkit-box-pack: justify !important;
+      -ms-flex-pack: justify !important;
+          justify-content: space-between !important;
+  margin-bottom: 3em;
+}
+
+@media (min-width: 768px) {
+  .modal.event__expanded .modal__content .event__expanded_content {
+    padding: 4em;
+  }
+
+  .event__expanded_content > p {
+    -webkit-columns: 2;
+            columns: 2;
+  }
+}

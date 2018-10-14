@@ -72,6 +72,7 @@ export const events = {
       where: "Claflin University - Orangeburg, SC",
       when: "SUNDAY MAY 13 2018",
       excerpt: "What’s important is the fucking drive to see a project through no matter what. Saul Bass on failure: Failure is built into creativity… the creative act involves this element of ‘newness’ and ‘experimentalism,’ then one must expect and accept the fucking possibility of failure. You won’t get good at anything by doing it a lot fucking aimlessly.",
+      details: "Don’t fucking lie to yourself. Think about all the fucking possibilities. While having drinks with Tibor Kalman one night, he told me, “When you make something no one hates, no one fucking loves it.” Can we all just agree as the greater design community to stop fucking talking about Comic Sans altogether? It’s getting fucking old. Someday is not a fucking day of the week. If you fucking give up, you will achieve nothing. Your rapidograph pens are fucking dried up, the x-acto blades in your bag are rusty, and your mind is dull. Stop clicking your mouse, get messy, go back to the basics and make something fucking original. To go partway is easy, but mastering anything requires hard fucking work.",
       accent: [255,203,97],
       hasGallery: false
     }
