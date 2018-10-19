@@ -163,12 +163,18 @@
   margin-bottom: 3em;
 }
 
+.modal.event__expanded .modal__content .event__expanded_content > h4 {
+  text-align: center;
+  margin: 1em auto;
+  padding: 1em 0;
+}
+
 @media (min-width: 768px) {
   .modal.event__expanded .modal__content .event__expanded_content {
     padding: 4em;
   }
 
-  .event__expanded_content > p {
+  .event__expanded_content > p.event__expanded_details {
     -webkit-columns: 2;
             columns: 2;
   }

@@ -98,7 +98,15 @@ class Event extends Component {
             <p>{this.props.event.when}</p>
           </span>
         </FlexContainer>
-        <p>{this.props.event.details || this.props.event.excerpt}</p>
+        <p className="event__expanded_details">{this.props.event.details || this.props.event.excerpt}</p>
+        <h4 style={{
+          borderTop: `2px solid ${makeRGB(this.props.event.accent)}`
+        }}>Gallery</h4>
+        {
+          this.props.event.gallery ?
+            <p>gallery</p> :
+            <p className="type__center">Sorry, this event does not have a gallery.</p>
+        }
       </div>
     );
   }
