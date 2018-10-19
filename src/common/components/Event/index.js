@@ -103,7 +103,7 @@ class Event extends Component {
           borderTop: `2px solid ${makeRGB(this.props.event.accent)}`
         }}>Gallery</h4>
         {
-          this.props.event.gallery ?
+          this.props.event.hasGallery ?
             <p>gallery</p> :
             <p className="type__center">Sorry, this event does not have a gallery.</p>
         }

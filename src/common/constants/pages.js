@@ -47,7 +47,39 @@ export const events = {
       excerpt: "What’s important is the fucking drive to see a project through no matter what. Saul Bass on failure: Failure is built into creativity… the creative act involves this element of ‘newness’ and ‘experimentalism,’ then one must expect and accept the fucking possibility of failure. You won’t get good at anything by doing it a lot fucking aimlessly.",
       accent: [255, 203, 97],
       hero: require("../assets/images/event__temp_hero.jpg"),
-      hasGallery: false
+      hasGallery: true,
+      gallery: [
+        {
+          photo: require("../assets/images/gallery/1.png"),
+          caption: "Intently stare at the same spot the fat cat sat on the mat bat away with paws lounge in doorway.",
+          id: "558JUSH586GDYEWQ"
+        },
+        {
+          photo: require("../assets/images/gallery/2.jpg"),
+          caption: "Demand to be let outside at once, and expect owner to wait for me as i think about it ignore the squirrels, you'll never catch them anyway yet leave hair on owner's clothes.",
+          id: "9499UBDIBIUDB"
+        },
+        {
+          photo: require("../assets/images/gallery/3.jpg"),
+          caption: "Hunt anything that moves the dog smells bad. Have secret plans eat and than sleep on your face purr while eating curl into a furry donut really likes hummus need to check on human.",
+          id: "5849YDEGUDEVBDUEYV"
+        },
+        {
+          photo: require("../assets/images/gallery/4.jpg"),
+          caption: "Under the bed i like frogs and 0 gravity, or meow relentlessly pursues moth but hiding behind the couch until lured out by a feathery toy, meoooow.",
+          id: "3022YIBDYBIYDBIBDIB"
+        },
+        {
+          photo: require("../assets/images/gallery/5.jpg"),
+          caption: "Massacre a bird in the living room and then look like the cutest and most innocent animal on the planet more napping, more napping all the napping is exhausting for burrow under covers flee in terror at cucumber discovered on floor.",
+          id: "899HDUIBIUBDIBIDB"
+        },
+        {
+          photo: require("../assets/images/gallery/6.jpg"),
+          caption: "Swat at dog the dog smells bad.",
+          id: "548GDYUYBUEYVUEV"
+        }
+      ]
     },
     {
       title: "Graduation 2016 | Claflin University",
