@@ -163,9 +163,19 @@
   margin-bottom: 3em;
 }
 
-.modal.event__expanded .modal__content .event__expanded_content > h4 {
+.modal.event__expanded .modal__content .event__expanded_content .event__expanded_content_header > * {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.event__expanded_gallery {
+  padding-bottom: 4em;
+}
+
+.event__expanded_gallery > h4 {
   text-align: center;
-  margin: 1em auto;
+  margin: 0 auto;
   padding: 1em 0;
 }
 

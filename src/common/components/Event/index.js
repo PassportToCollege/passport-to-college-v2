@@ -8,6 +8,7 @@ import { makeRGB } from "../../utils";
 import Button, { BackButton } from "../Button";
 import Modal from "../Modal";
 import FlexContainer from "../FlexContainer";
+import Gallery from "../Gallery";
 
 class Event extends Component {
   constructor(props) {
@@ -90,24 +91,25 @@ class Event extends Component {
 
   getExpandedEventContent = () => {
     return (
-      <div className="event__expanded_content">
-        <FlexContainer classes={["event__expanded_content_header"]}>
-          <h4>{this.props.event.title}</h4>
-          <span>
-            <h5>@ {this.props.event.where}</h5>
-            <p>{this.props.event.when}</p>
-          </span>
-        </FlexContainer>
-        <p className="event__expanded_details">{this.props.event.details || this.props.event.excerpt}</p>
-        <h4 style={{
-          borderTop: `2px solid ${makeRGB(this.props.event.accent)}`
-        }}>Gallery</h4>
-        {
-          this.props.event.hasGallery ?
-            <p>gallery</p> :
-            <p className="type__center">Sorry, this event does not have a gallery.</p>
-        }
-      </div>
+      <React.Fragment>
+        <div className="event__expanded_content">
+          <FlexContainer classes={["event__expanded_content_header"]}>
+            <h4>{this.props.event.title}</h4>
+            <span>
+              <h5>@ {this.props.event.where}</h5>
+              <p>{this.props.event.when}</p>
+            </span>
+          </FlexContainer>
+          <p className="event__expanded_details">{this.props.event.details || this.props.event.excerpt}</p>
+        </div>
+        <div className="event__expanded_gallery">
+          {
+            this.props.event.hasGallery ?
+              <Gallery gallery={this.props.event.gallery} /> :
+              <p className="type__center">Sorry, this event does not have a gallery.</p>
+          }
+        </div>
+      </React.Fragment>
     );
   }
 }

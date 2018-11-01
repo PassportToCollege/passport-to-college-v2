@@ -76,7 +76,7 @@ html,
 html,
 body {
   font-family: "Roboto", san-serif;
-  color: rgb(51,51,51);
+  color: rgba(51,51,51, 0.9);
   font-size: 14px;
   margin: 0;
   letter-spacing: 0.03125rem;
@@ -87,28 +87,33 @@ body {
 
 h1 {
   font-size: 96px;
+  font-family: "Muli", sans-serif;
   font-weight: light;
   letter-spacing: -0.09375rem;
 }
 
 h2 {
   font-size: 60px;
+  font-family: "Muli", sans-serif;
   font-weight: light;
   letter-spacing: -0.03125rem;
 }
 
 h3 {
   font-size: 48px;
+  font-family: "Muli", sans-serif;
   letter-spacing: 0;
 }
 
 h4 {
   font-size: 34px;
+  font-family: "Muli", sans-serif;
   letter-spacing: 0.015625rem;
 }
 
 h5 {
   font-size: 24px;
+  font-family: "Muli", sans-serif;
   letter-spacing: 0;
 }
 
