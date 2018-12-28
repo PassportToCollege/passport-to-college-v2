@@ -1,5 +1,6 @@
 import { uid } from "rand-token";
 import axios from "axios";
+import _ from "lodash";
 
 import { db } from "../utils/firebase";
 import * as types from "./actionTypes";
@@ -268,6 +269,126 @@ export const doGetUsersByUid = (users = []) => {
   }
 }
 
+export const getFounderInitiated = () => {
+  return {
+    type: types.USERS_GET_FOUNDER_FAILED
+  };
+};
+
+export const getFounderFailed = error =>  {
+  return {
+    type: types.USERS_GET_FOUNDER_FAILED,
+    error
+  };
+};
+
+export const gotFounder = founder => {
+  return {
+    type: types.GOT_FOUNDER,
+    founder
+  };
+};
+
+export const doGetFounder = () => {
+  return dispatch => {
+    dispatch(getFounderInitiated());
+
+    db.collection("users")
+      .where("isStaff", "==", true)
+      .where("role", "==", "Founder")
+      .get()
+      .then(snapshots => {
+        if (snapshots.empty)
+          dispatch(getFounderFailed({ message: "founder not found" }));
+
+        let founder;
+        snapshots.forEach(snapshot => {
+          founder = snapshot.data();
+        });
+
+        dispatch(gotFounder(founder));
+      })
+      .catch(error => {
+        dispatch(getFounderFailed(error));
+      })
+  };
+};
+
+export const getStaffInitiated = () => {
+  return {
+    type: types.USERS_GET_STAFF_INITIATED
+  };
+};
+
+export const getStaffFailed = error => {
+  return {
+    type: types.USERS_GET_STAFF_FAILED,
+    error
+  };
+};
+
+export const gotStaff = staff => {
+  return {
+    type: types.GOT_STAFF,
+    staff
+  };
+};
+
+export const doGetStaff = () => {
+  return dispatch => {
+    dispatch(getStaffInitiated());
+
+    db.collection("users")
+      .where("isStaff", "==", true)
+      .get()
+      .then(staffSnaps => {
+        if (staffSnaps.empty)
+          return dispatch(getStaffFailed({ message: "no staff found" }));
+
+        let staff = [];
+        let studentStaff = [];
+
+        staffSnaps.forEach(snap => {
+          let data = snap.data();
+
+          if (data.isStudent) {
+            studentStaff.push(data.uid);
+          } else if (!data.isStudent && data.role !== "Founder") {
+            staff.push(data);
+          }
+        });
+
+        if (studentStaff.length) {
+          let promises = [];
+          for (let student of studentStaff) {
+            promises.push(db.collection("students").doc(student).get());
+          }
+
+          Promise.all(promises)
+            .then(snapshots => {
+              if (!snapshots.length)
+                return dispatch(getStaffFailed({ message: "no student staff found" }));
+
+              for (let snapshot of snapshots) {
+                if (!snapshot.empty)
+                  staff.push(snapshot.data());
+              }
+
+              dispatch(gotStaff(staff));
+            })
+            .catch(error => {
+              dispatch(getStaffFailed(error));
+            })
+        } else {
+          dispatch(gotStaff(staff));
+        }
+      })
+      .catch(error => {
+        dispatch(getStaffFailed(error));
+      })
+  };
+};
+
 // CREATE actions
 export const createUserInitiated = data => {
   return {
@@ -477,4 +598,55 @@ export const doUserUpdate = (uid, data, options) => {
         return dispatch(userUpdateFailed(error, uid, data));
       })
   }
-}
+};
+
+export const addBioInitiated = (user, bio) => {
+  return {
+    type: types.USERS_ADD_BIO_INITIATED,
+    user,
+    bio
+  };
+};
+
+export const addBioFailed = (error, user, bio) => {
+  return {
+    type: types.USERS_ADD_BIO_FAILED,
+    error,
+    user,
+    bio
+  };
+};
+
+export const bioAdded = (user, bio) => {
+  return {
+    type: types.ADDED_BIO,
+    user, bio
+  };
+};
+
+export const doAddBio = (user = "", bio = {}, options = {}) => {
+  return dispatch => {
+    if (typeof user !== "string" && !user.length)
+      return dispatch(addBioFailed({ message: "invalid/no user provided" }, user, bio));
+
+    if (typeof bio !== "object" && _.isEmpty(bio))
+      return dispatch(addBioFailed({ message: "invalid/no bio provided" }, user, bio));
+
+    dispatch(addBioInitiated(user, bio));
+
+    db.collection("users")
+      .doc(user)
+      .update({ bio })
+      .then(() => {
+        dispatch(bioAdded(user, bio));
+
+        // dispatch user get to update props
+        // with new user data
+        if (options.refresh)
+          return dispatch(doGetUserByUid(user));
+      })
+      .catch(error => {
+        dispatch(addBioFailed(error, user, bio));
+      });
+  };
+};

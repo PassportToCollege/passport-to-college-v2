@@ -253,3 +253,10 @@ export const isProviderLinked = provider => {
 
   return pi > -1;
 }
+
+export const makeRGB = (arr = [0,0,0], opacity = 1) => {
+  if (arr.length < 3 || arr.length > 3)
+    return "rgba(0,0,0,1)";
+
+  return `rgba(${arr[0]}, ${arr[1]}, ${arr[2]}, ${opacity})`;
+}

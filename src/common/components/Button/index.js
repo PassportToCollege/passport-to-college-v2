@@ -4,6 +4,15 @@ import React, { Component } from "react";
 import propTypes from "prop-types";
 
 class Button extends Component {
+  static propTypes = {
+    styles: propTypes.object,
+    type: propTypes.string,
+    doClick: propTypes.func,
+    text: propTypes.string,
+    solid: propTypes.bool,
+    disabled: propTypes.bool
+  }
+
   handleClick = (e) => {
     if ("function" === typeof this.props.doClick)
       this.props.doClick(e);
@@ -38,13 +47,23 @@ class Button extends Component {
   }
 }
 
-Button.propTypes = {
-  styles: propTypes.object,
-  type: propTypes.string,
+export const BackButton = ({ doClick, text }) => {
+  const handleClick = () => {
+    if ("function" === typeof doClick)
+      return doClick();
+  }
+
+  return (
+    <button type="button" className="button__back"
+      onClick={handleClick}>
+      {text}
+    </button>
+  )
+};
+
+BackButton.propTypes = {
   doClick: propTypes.func,
-  text: propTypes.string,
-  solid: propTypes.bool,
-  disabled: propTypes.bool
+  text: propTypes.string
 };
 
 export default Button;

@@ -1,0 +1,19 @@
+header.header {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+header.header > i {
+  display: block;
+  margin: 0 auto;
+  padding: 392px 0 67px;
+  background-color: transparent;
+  text-align: center;
+}
+
+header.header > i > img {
+  cursor: pointer;
+  padding: 16px;
+}

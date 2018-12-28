@@ -1,19 +1,18 @@
 .topic_section {
-  padding: 4em 3em 6em;
+  padding: 60px 3em;
   text-align: center;
 }
 
 .topic_section > h5 {
-  font-size: 1.14em;
+  font-size: 16px;
   text-transform: uppercase;
   color: rgba(51,51,51,0.5);
-  margin-bottom: 4em;
+  margin-bottom: 45px;
 }
 
 .topic_section > p {
-  max-width: 750px;
-  font-family: "Muli", sans-serif;
-  font-size: 2.14em;
+  max-width: 600px;
+  font-size: 20px;
   line-height: 1.75 ;
   margin: 0 auto;
 }
