@@ -3,10 +3,10 @@
   "version": "2.0.0",
   "license": "MIT",
   "scripts": {
-    "start:local": "razzle start",
+    "start": "NODE_ENV=production node build/server.js",
     "build": "razzle build",
     "test": "razzle test --env=jsdom",
-    "start": "NODE_ENV=production node build/server.js",
+    "dev": "razzle start",
     "heroku-postbuild": "yarn run build"
   },
   "dependencies": {
@@ -38,8 +38,8 @@
     "xhr2": "^0.1.4"
   },
   "engines": {
-    "node": "~10.15.0",
-    "npm": "~6.4.1",
-    "yarn": "^1.12.3"
+    "node": "^8.1.x",
+    "npm": "^5.4.0",
+    "yarn": "^0.28.4"
   }
 }
