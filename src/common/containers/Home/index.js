@@ -141,39 +141,45 @@ class Home extends Component {
               }}/>
           </div>
         </section>
-        <section className="home__section home__featured_students_title">
-          <div className="home__section_inner">
-            <Title classes={[
-              "type__color_white",
-              "type__center"
-            ]}>featured students</Title>
-          </div>
-        </section>
-        <section className="home__section home__featured_students">
-          <div className="home__section_inner">
-            {
-              this.state.features ?
-                this.state.features.map(feature => {
-                  return (
-                    <InfoCard key={feature.id}
-                      target={`/stories/read/${feature.id}`}
-                      bgOverlay="rgba(51,51,51,0.9)"
-                      bgColor="rgba(51,51,51,0.9)"
-                      feature={true}
-                      featureData={feature}
-                      title={feature.student.user.name.full}
-                      university={feature.student.university} />
-                  )
-                }) : null
-            }
-            {
-              this.state.features
-              && this.state.features.length%2 === 0 ?
-                  <InfoCard blank={true} bgColor="transparent" /> : null
-            }
-            <InfoCard blank={true} bgColor="#FFCB61" />
-          </div>
-        </section>
+        {
+          this.state.features && this.state.features.length ?
+            <React.Fragment>
+              <section className="home__section home__featured_students_title">
+                <div className="home__section_inner">
+                  <Title classes={[
+                    "type__color_white",
+                    "type__center"
+                  ]}>featured students</Title>
+                </div>
+              </section>
+              <section className="home__section home__featured_students">
+                <div className="home__section_inner">
+                  {
+                    this.state.features ?
+                      this.state.features.map(feature => {
+                        return (
+                          <InfoCard key={feature.id}
+                            target={`/stories/read/${feature.id}`}
+                            bgOverlay="rgba(51,51,51,0.9)"
+                            bgColor="rgba(51,51,51,0.9)"
+                            feature={true}
+                            featureData={feature}
+                            title={feature.student.user.name.full}
+                            university={feature.student.university} />
+                        )
+                      }) : null
+                  }
+                  {
+                    this.state.features
+                    && this.state.features.length%2 === 0 ?
+                        <InfoCard blank={true} bgColor="transparent" /> : null
+                  }
+                  <InfoCard blank={true} bgColor="#FFCB61" />
+                </div>
+              </section>
+            </React.Fragment> :
+            null
+        }
         <section className="home__section" style={{ padding: "0" }}>
           <InfoStrip content="Passport to College connects with students from all over the world who are beating the odds." />
         </section>
@@ -189,7 +195,7 @@ class Home extends Component {
                 this.props.posts.error.message === "no posts found" ?
                 <div className="no__posts">
                   <img src={EmptyStateYellow} alt="no posts" />
-                  <h4>Oops! Looks like there are no stories yet.</h4>
+                  <h5>Oops! Looks like there are no stories yet.</h5>
                 </div> : null
             }
             {
