@@ -3,7 +3,7 @@ import "./InfoCard.css";
 import React, { Component } from "react";
 import propTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { getPostHero } from "../../utils/firebase/functions";
+import { getPostHero, getProfilePicture } from "../../utils/firebase/functions";
 
 import LinkButton from "../LinkButton";
 
@@ -27,11 +27,14 @@ class InfoCard extends Component {
     feature: propTypes.bool,
     university: propTypes.string,
     target: propTypes.string,
-    featureData: propTypes.object
+    featureData: propTypes.object,
+    founder: propTypes.bool,
+    uid: propTypes.string
   }
 
   static defaultProps = {
-    feature: false
+    feature: false,
+    founder: false
   }
 
   componentDidMount() {
@@ -40,6 +43,18 @@ class InfoCard extends Component {
         getPostHero(this.props.featureData.id)
           .then(url => {
             this.setState({ bgImage: url });
+          })
+          .catch(error => {
+            console.log(error);
+          })
+    }
+
+    if (this.props.founder && !this.props.bgImage) {
+      getProfilePicture(this.props.uid)
+        .then(url => {
+            this.setState({
+              bgImage: url
+            });
           })
           .catch(error => {
             console.log(error);

@@ -18,6 +18,7 @@ import PageMeta from "../../components/PageMeta";
 import FlexContainer from "../../components/FlexContainer";
 import RoleCard from "../../components/RoleCard";
 import LinkButton from "../../components/LinkButton";
+import InfoCard from "../../components/InfoCard";
 
 import headerImage from "../../assets/images/about_us__header.jpg";
 
@@ -110,9 +111,16 @@ class AboutUs extends Component {
           <FlexContainer classes={["about__staff_staff"]}>
             {
               this.state.founder ?
-                <RoleCard founder staff={this.state.founder} /> :
-                null
+                <React.Fragment>
+                  <InfoCard founder
+                    uid={this.state.founder.uid} 
+                    title={this.state.founder.name.full}
+                    content="Founder" />
+                </React.Fragment>
+                : null
             }
+          </FlexContainer>
+          <FlexContainer>
             {
               this.state.staff ?
                 this.state.staff.map(member => {
