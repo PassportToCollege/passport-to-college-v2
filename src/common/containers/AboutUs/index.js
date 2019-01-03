@@ -113,6 +113,7 @@ class AboutUs extends Component {
               this.state.founder ?
                 <React.Fragment>
                   <InfoCard founder
+                    bgOverlay="rgba(58,58,58,0.65)"
                     uid={this.state.founder.uid} 
                     title={this.state.founder.name.full}
                     content="Founder" />

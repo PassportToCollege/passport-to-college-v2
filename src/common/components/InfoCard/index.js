@@ -73,7 +73,9 @@ class InfoCard extends Component {
     }
 
     return (
-      <div className={`info_card${this.props.feature ? " info_card__feature" : ""}`} 
+      < div className = {
+        `info_card${this.props.feature ? " info_card__feature" : ""} ${this.props.founder ? "info_card__founder" : ""}`
+      }
         style={{
           backgroundColor: this.props.bgColor,
           backgroundImage: `url("${this.props.bgImage || this.state.bgImage}")`
