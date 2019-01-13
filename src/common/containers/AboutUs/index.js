@@ -121,6 +121,8 @@ class AboutUs extends Component {
                 : null
             }
           </FlexContainer>
+        </section>
+        <section>
           <FlexContainer>
             {
               this.state.staff ?
