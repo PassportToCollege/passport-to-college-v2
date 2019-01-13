@@ -1,5 +1,6 @@
 .app__main>.app__body.app__body_contact_us {
   padding-top: 73px;
+  background-color: white;
 }
 
 #contact_us {
@@ -27,4 +28,69 @@
   text-transform: uppercase;
   letter-spacing: 3px;
   margin-bottom: 0.5em;
+}
+
+#contact_us > section > div {
+  padding-top: 2em;
+}
+
+#contact_us>section>div>p::before {
+  content: "\f095";
+  font-family: FontAwesome;
+  color: #53d1d7;
+  font-size: 0.95em;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 1em 1em 1em 0;
+}
+
+#contact_us > section > div > a {
+  color: inherit;
+}
+
+#contact_us>section>div>a::before {
+  content: "\f1fa";
+  font-family: FontAwesome;
+  color: #53d1d7;
+  font-size: 0.95em;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 1em 1em 1em 0;
+}
+
+#contact_us > section .contact_us__socials {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 4em 0 2em;
+}
+
+#contact_us > section .contact_us__socials > a {
+  font-size: 2em;
+  opacity: 0.85;
+  -webkit-transition: opacity 200ms linear;
+  transition: opacity 200ms linear;
+  padding: 1em;
+}
+
+#contact_us > section .contact_us__socials > a.contact_us__socials_facebook {
+  color: #3b5998;
+}
+
+#contact_us>section .contact_us__socials>a.contact_us__socials_twitter {
+  color: #00aced;
+}
+
+#contact_us>section .contact_us__socials>a.contact_us__socials_linkedin {
+  color: #007bb6
+}
+
+#contact_us > section .contact_us__socials > a:hover {
+  opacity: 1;
 }

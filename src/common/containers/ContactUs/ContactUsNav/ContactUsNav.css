@@ -39,4 +39,5 @@ nav.contact_us__nav > a > span {
 nav.contact_us__nav > a > span:hover,
 nav.contact_us__nav > a.active > span {
   opacity: 1;
+  border-bottom: 2px solid #53d1d7;
 }
