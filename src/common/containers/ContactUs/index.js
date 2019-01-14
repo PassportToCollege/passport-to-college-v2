@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import { Route, Link } from "react-router-dom";
 import propTypes from "prop-types";
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
+import { faPhone, faAt } from "@fortawesome/fontawesome-free-solid";
 import {
   faFacebook, faTwitterSquare, faLinkedin
 } from "@fortawesome/fontawesome-free-brands";
@@ -51,14 +52,25 @@ class ContactUs extends Component {
   renderMain = () => {
     return (
       <section>
-        <h5>Let's do something great!</h5>
+        <h4>Let's do something great!</h4>
         <p>Passport to College connects with students from all over the world who are beating the odds.</p>
-        <div>
-          <p className="contact_us__phone">1.408.761.2843</p>
-          <a href="mailto:passportcollege@gmail.com">
-            passportcollege@gmail.com
-          </a>
-          <div className="contact_us__socials">
+        <div className="contact_us__phone_email">
+          <section className="contact_us__phone">
+            <span><FontAwesomeIcon icon={faPhone} /></span>
+            <h5>Give us a call</h5>
+            <p>1.408.761.2843</p>
+          </section>
+          <section className="contact_us__email">
+            <span><FontAwesomeIcon icon={faAt} /></span>
+            <h5>Send us an email</h5>
+            <a href="mailto:passportcollege@gmail.com">
+              passportcollege@gmail.com
+            </a>
+          </section>
+        </div>
+        <div className="contact_us__socials">
+          <h5>Connect online</h5>
+          <section>
             <Link to="/" className="contact_us__socials_facebook">
               <FontAwesomeIcon icon={faFacebook} />
             </Link>
@@ -68,7 +80,7 @@ class ContactUs extends Component {
             <Link to="/" className="contact_us__socials_linkedin">
               <FontAwesomeIcon icon={faLinkedin} />
             </Link>
-          </div>
+          </section>
         </div>
       </section>
     );
