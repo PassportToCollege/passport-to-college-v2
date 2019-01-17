@@ -37,30 +37,33 @@ const Footer = ({ posts }) => {
             })
           }
         </ul>
-        <section className="footer__posts">
-          <h6>recent stories</h6>
-          {
-            posts.gotMostRecent ?
-              posts.mostRecent.map(post => {
-                return (
-                  <NavLink exact key={`footer_${post.id}`}
-                    activeClassName="active" 
-                    to={`/stories/read/${post.id}`}
-                    className="footer__post_item">
-                    <p>{post.title}</p>
-                    <p className="type__caption">by {post.author.name.full}</p>
-                  </NavLink>
-                )
-              }) : posts.mostRecentGetFailed ? null : <Loader />
-          }
-          {
+        {
+          posts.mostRecent && !posts.mostRecentGetFailed ?
+            <section className="footer__posts">
+              <h6>recent stories</h6>
+              {
+                posts.mostRecent.map(post => {
+                  return (
+                    <NavLink exact key={`footer_${post.id}`}
+                      activeClassName="active" 
+                      to={`/stories/read/${post.id}`}
+                      className="footer__post_item">
+                      <p>{post.title}</p>
+                      <p className="type__caption">by {post.author.name.full}</p>
+                    </NavLink>
+                  )
+                })
+              }
+            </section> :
             posts.mostRecentGetFailed &&
             posts.error.message === "no posts found" ?
-              <span className="no__posts">
-                No stories available yet.
-              </span> : null
-          }
-        </section>
+              <section className="footer__posts">
+                <h6>recent stories</h6>
+                <span className="no__posts">
+                  No stories available yet.
+                </span>
+              </section> : null
+        }
         <section className="footer__contact">
           <h6>connect with us</h6>
           <div className="footer__contact_socials">

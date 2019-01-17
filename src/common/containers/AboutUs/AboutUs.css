@@ -74,6 +74,21 @@ section.about__staff .flex_container.about__staff_staff {
           justify-content: space-between !important;
 }
 
+section.about__staff .flex_container.about__staff_staff .info_card__founder {
+  max-width: 400px;
+  min-height: 400px;
+  -webkit-box-flex: 0;
+      -ms-flex: 0 1 400px;
+          flex: 0 1 400px;
+}
+
+section.about__staff .flex_container.about__staff_staff .editor__container {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  margin: 45px auto 0;
+}
+
 section.about__staff_stories_cta .stories_cta__bg {
   background-position: center;
   background-size: cover;

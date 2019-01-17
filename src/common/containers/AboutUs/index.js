@@ -19,6 +19,7 @@ import FlexContainer from "../../components/FlexContainer";
 import RoleCard from "../../components/RoleCard";
 import LinkButton from "../../components/LinkButton";
 import InfoCard from "../../components/InfoCard";
+import WYSIWYGEditor from "../../components/Editor";
 
 import headerImage from "../../assets/images/about_us__header.jpg";
 
@@ -117,12 +118,18 @@ class AboutUs extends Component {
                     uid={this.state.founder.uid} 
                     title={this.state.founder.name.full}
                     content="Founder" />
+                  <WYSIWYGEditor readonly
+                    content={this.state.founder.bio} 
+                    editorStyles={{
+                      border: "none",
+                      minHeight: "auto"
+                    }} />
                 </React.Fragment>
                 : null
             }
           </FlexContainer>
         </section>
-        <section>
+        {/* <section>
           <FlexContainer>
             {
               this.state.staff ?
@@ -135,7 +142,7 @@ class AboutUs extends Component {
                 }) : null
             }
           </FlexContainer>
-        </section>
+        </section> */}
         {this.renderStoriesCTA()}
       </main>
     )
