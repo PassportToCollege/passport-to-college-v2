@@ -2,14 +2,13 @@ import "./ContactUsNav.css";
 
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
-import propTypes from "prop-types";
 
 import FontAwesomeIcon from "@fortawesome/react-fontawesome";
-import { faEnvelope, faIdCard } from "@fortawesome/fontawesome-free-solid";
+import { /*faEnvelope,*/ faIdCard } from "@fortawesome/fontawesome-free-solid";
 
 import {
   CONTACT_US,
-  CONTACT_US_MESSAGE
+  // CONTACT_US_MESSAGE
 } from "../../../constants/routes";
 
 class ContactUsNav extends Component {
@@ -17,7 +16,6 @@ class ContactUsNav extends Component {
     super(props);
     this.state = {}
   }
-  static propTypes = {}
 
   render() {
     
@@ -30,14 +28,14 @@ class ContactUsNav extends Component {
             <FontAwesomeIcon icon={faIdCard} />
           </span>
         </NavLink>
-        <NavLink exact
+        {/* <NavLink exact
           to={CONTACT_US_MESSAGE.route}
           activeClassName="active"
           title="Send Message">
           <span>
             <FontAwesomeIcon icon={faEnvelope} />
           </span>
-        </NavLink>
+        </NavLink> */}
       </nav>
     );
   }

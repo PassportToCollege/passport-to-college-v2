@@ -94,7 +94,7 @@ class App extends React.Component {
             <Route exact path={routes.LANDING.route} render={props => this.landingMiddleware(props)}></Route>
             <Route exact path={routes.ABOUT_US.route} render={props => this.defaultRouteMiddleware(props, About)}></Route>
             <Route path={routes.CONTACT_US.route} render={props => this.defaultRouteMiddleware(props, ContactUs)}></Route>
-            <Route exact path={routes.EVENTS.route} render={props => this.defaultRouteMiddleware(props, Events)}></Route>
+            {/* <Route exact path={routes.EVENTS.route} render={props => this.defaultRouteMiddleware(props, Events)}></Route> */}
             <Route path={routes.SCHOLARS.route} render={props => this.defaultRouteMiddleware(props, Scholars)}></Route> 
             <Route exact path={routes.STORIES.route} render={props => this.defaultRouteMiddleware(props, Stories)}></Route>
             <Route exact path={routes.COMMUNITY_GUIDLINES.route} render={props => this.defaultRouteMiddleware(props, CommunityGuidlines)}></Route>
