@@ -17,7 +17,7 @@ const mainNavItems = [
   routes.LANDING,
   routes.ABOUT_US,
   routes.SCHOLARS,
-  routes.EVENTS,
+  // routes.EVENTS,
   routes.STORIES,
   routes.CONTACT_US
 ]

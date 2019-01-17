@@ -10,6 +10,7 @@ export const STORIES_CATEGORY = { name: "Stories by Category", route: "/stories/
 export const STORY = { name: "Story", route: "/stories/read/:post_id" };
 export const COMMUNITY_GUIDLINES = { name: "Community Guidlines", route: "/stories/community-guidlines" };
 export const CONTACT_US = { name: "Contact Us", route: "/contact-us" };
+export const CONTACT_US_MESSAGE = { name: "Send Message | Contact Us", route: "/contact-us/send-message" };
 
 // Admin Routes
 export const DASHBOARD = { name: "Dashboard", route: "/admin/dashboard" };
