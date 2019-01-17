@@ -69,6 +69,7 @@ class ParallaxHeader extends Component {
               </div>
               <ScrollIndicator />
               <span className="apply__button">
+                  
                 <Link to="/apply">apply</Link>
               </span>
             </div> :
