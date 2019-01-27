@@ -67,13 +67,13 @@ const Footer = ({ posts }) => {
         <section className="footer__contact">
           <h6>connect with us</h6>
           <div className="footer__contact_socials">
-            <Link to="/">
+            <Link to="https://www.facebook.com/aptitudeplusopportunity/">
               <FontAwesomeIcon icon={faFacebook} />
             </Link>
-            <Link to="/">
+            <Link to="https://twitter.com/PasstoCollege">
               <FontAwesomeIcon icon={faTwitterSquare} />
             </Link>
-            <Link to="/">
+            <Link to="https://www.linkedin.com/company-beta/8998407/">
               <FontAwesomeIcon icon={faLinkedin} />
             </Link>
           </div>
