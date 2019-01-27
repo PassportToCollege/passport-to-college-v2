@@ -76,7 +76,7 @@ class SocialShare extends Component {
               } /> : null
         }
         <div className="social_share">
-          <h4 className="social_share__label">Share:</h4>
+          <h5 className="social_share__label">Share:</h5>
           {
             this.props.facebook ?
               <IconButton icon="facebook" solid
