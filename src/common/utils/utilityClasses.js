@@ -236,7 +236,7 @@ export class Student {
     const month = date.getMonth() + 1;
 
     return (
-      (year - this.enrollmentYear === 1) ||
+      ((year - this.enrollmentYear === 1) && (month > 5)) ||
       ((this.graduationYear - year === 2) &&
         month <= 5)
     );
@@ -248,7 +248,7 @@ export class Student {
     const month = date.getMonth() + 1;
 
     return (
-      (year - this.enrollmentYear === 2) ||
+      ((year - this.enrollmentYear === 2) && (month > 5)) ||
       ((this.graduationYear - year === 1) &&
         month <= 5)
     );
