@@ -67,17 +67,17 @@ const Footer = ({ posts }) => {
         <section className="footer__contact">
           <h6>connect with us</h6>
           <div className="footer__contact_socials">
-            <Link to="https://www.facebook.com/aptitudeplusopportunity/">
+            <a href="https://www.facebook.com/aptitudeplusopportunity/" target="_blank" rel="noopener noreferrer">
               <FontAwesomeIcon icon={faFacebook} />
-            </Link>
-            <Link to="https://twitter.com/PasstoCollege">
+            </a>
+            <a href="https://twitter.com/PasstoCollege" target="_blank" rel="noopener noreferrer">
               <FontAwesomeIcon icon={faTwitterSquare} />
-            </Link>
-            <Link to="https://www.linkedin.com/company-beta/8998407/">
+            </a>
+            <a href="https://www.linkedin.com/company-beta/8998407/" target="_blank" rel="noopener noreferrer">
               <FontAwesomeIcon icon={faLinkedin} />
-            </Link>
+            </a>
           </div>
-          <Link to="/">passportcollege@gmail.com</Link>
+          <a href="mailto:passportcollege@gmail.com">passportcollege@gmail.com</a>
         </section>
       </main>
       <section className="footer__copyright">
