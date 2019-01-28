@@ -114,7 +114,7 @@ class CurrentScholars extends Component {
             topBg: "#53D1D7",
             bottomBg: "#11A5AC",
             info: this.state.freshmen && this.state.freshmen.length ?
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam venenatis rhoncus congue. Praesent eget facilisis tellus. Etiam quis est eu sem tristique consectetur a vel lacus. Praesent eu justo eleifend, blandit sem ut, laoreet sem.</p> :
+            <p></p> :
             <p>Looks like we are still matching our newest scholars with awesome universities. Please check back to see our newest additions and learn more about them.</p>
           }} />
       );
@@ -133,7 +133,7 @@ class CurrentScholars extends Component {
           header={{
             topBg: "#FFCB61",
             bottomBg: "#FFB318",
-            info: <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam venenatis rhoncus congue. Praesent eget facilisis tellus. Etiam quis est eu sem tristique consectetur a vel lacus. Praesent eu justo eleifend, blandit sem ut, laoreet sem.</p>
+            info: <p></p>
           }} />
       );
     }
@@ -151,7 +151,7 @@ class CurrentScholars extends Component {
           header={{
             topBg: "#FF6561",
             bottomBg: "#FF443F",
-            info: <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam venenatis rhoncus congue. Praesent eget facilisis tellus. Etiam quis est eu sem tristique consectetur a vel lacus. Praesent eu justo eleifend, blandit sem ut, laoreet sem.</p>
+            info: <p></p>
           }} />
       );
     }
@@ -169,7 +169,7 @@ class CurrentScholars extends Component {
           header={{
             topBg: "#53D1D7",
             bottomBg: "#11A5AC",
-            info: <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam venenatis rhoncus congue. Praesent eget facilisis tellus. Etiam quis est eu sem tristique consectetur a vel lacus. Praesent eu justo eleifend, blandit sem ut, laoreet sem.</p>
+            info: <p></p>
           }} />
       );
     }

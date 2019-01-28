@@ -1,11 +1,22 @@
 .info_card {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
   min-height: 570px;
   max-width: 570px;
-  flex: 0 1 570px;
+  -webkit-box-flex: 0;
+      -ms-flex: 0 1 570px;
+          flex: 0 1 570px;
   padding: 4em;
   color: white;
   background-size: cover;
@@ -14,7 +25,9 @@
 }
 
 .info_card.info_card__feature {
-  justify-content: flex-end;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
 }
 
 .info_card > .info_card__overlay {
@@ -25,7 +38,7 @@
   top: 0;
 }
 
-.info_card .info_card__content > h3 {
+.info_card:not([class*="info_card__founder"]) .info_card__content>h3 {
   position: relative;
   margin-bottom: 2.5em;
   padding-left: 4em;
@@ -33,13 +46,14 @@
   font-size: 1.28571429em;
 }
 
-.info_card .info_card__content > h3::before {
+.info_card:not([class*="info_card__founder"]) .info_card__content > h3::before {
   content: "";
   display: block;
   position: absolute;
   left: 0;
   top: 50%;
-  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
   width: 48px;
   height: 48px;
   border-radius: 50%;
@@ -59,7 +73,41 @@
   position: relative;
   color: white;
   width: 100%;
+  -webkit-transition: -webkit-transform 200ms ease-in-out;
+  transition: -webkit-transform 200ms ease-in-out;
   transition: transform 200ms ease-in-out;
+  transition: transform 200ms ease-in-out, -webkit-transform 200ms ease-in-out;
+}
+
+/* Founder card */
+.info_card.info_card__founder {
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+}
+
+.info_card.info_card__founder .info_card__content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column nowrap;
+          flex-flow: column nowrap;
+}
+
+.info_card.info_card__founder .info_card__content >h3 {
+  -webkit-box-ordinal-group: 3;
+      -ms-flex-order: 2;
+          order: 2;
+  position: relative;
+}
+
+.info_card.info_card__founder .info_card__content >p {
+  -webkit-box-ordinal-group: 2;
+      -ms-flex-order: 1;
+          order: 1;
+  text-transform: uppercase;
 }
 
 @media screen and (max-width: 1156px) {

@@ -37,44 +37,47 @@ const Footer = ({ posts }) => {
             })
           }
         </ul>
-        <section className="footer__posts">
-          <h6>recent stories</h6>
-          {
-            posts.gotMostRecent ?
-              posts.mostRecent.map(post => {
-                return (
-                  <NavLink exact key={`footer_${post.id}`}
-                    activeClassName="active" 
-                    to={`/stories/read/${post.id}`}
-                    className="footer__post_item">
-                    <p>{post.title}</p>
-                    <p className="type__caption">by {post.author.name.full}</p>
-                  </NavLink>
-                )
-              }) : posts.mostRecentGetFailed ? null : <Loader />
-          }
-          {
+        {
+          posts.mostRecent && !posts.mostRecentGetFailed ?
+            <section className="footer__posts">
+              <h6>recent stories</h6>
+              {
+                posts.mostRecent.map(post => {
+                  return (
+                    <NavLink exact key={`footer_${post.id}`}
+                      activeClassName="active" 
+                      to={`/stories/read/${post.id}`}
+                      className="footer__post_item">
+                      <p>{post.title}</p>
+                      <p className="type__caption">by {post.author.name.full}</p>
+                    </NavLink>
+                  )
+                })
+              }
+            </section> :
             posts.mostRecentGetFailed &&
             posts.error.message === "no posts found" ?
-              <span className="no__posts">
-                No stories available yet.
-              </span> : null
-          }
-        </section>
+              <section className="footer__posts">
+                <h6>recent stories</h6>
+                <span className="no__posts">
+                  No stories available yet.
+                </span>
+              </section> : null
+        }
         <section className="footer__contact">
           <h6>connect with us</h6>
           <div className="footer__contact_socials">
-            <Link to="/">
+            <a href="https://www.facebook.com/aptitudeplusopportunity/" target="_blank" rel="noopener noreferrer">
               <FontAwesomeIcon icon={faFacebook} />
-            </Link>
-            <Link to="/">
+            </a>
+            <a href="https://twitter.com/PasstoCollege" target="_blank" rel="noopener noreferrer">
               <FontAwesomeIcon icon={faTwitterSquare} />
-            </Link>
-            <Link to="/">
+            </a>
+            <a href="https://www.linkedin.com/company-beta/8998407/" target="_blank" rel="noopener noreferrer">
               <FontAwesomeIcon icon={faLinkedin} />
-            </Link>
+            </a>
           </div>
-          <Link to="/">passportcollege@gmail.com</Link>
+          <a href="mailto:passportcollege@gmail.com">passportcollege@gmail.com</a>
         </section>
       </main>
       <section className="footer__copyright">

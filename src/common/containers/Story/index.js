@@ -21,6 +21,8 @@ import SocialShare from "../../components/SocialShare";
 import Responder from "../Responder";
 import CommentSection from "../CommentSection";
 
+const showComments = false;
+
 class Story extends Component {
   constructor(props) {
     super(props);
@@ -168,8 +170,7 @@ class Story extends Component {
                   lineHeight: "1.5em",
                   fontSize: "1.5em",
                   maxWidth: "100%",
-                  padding: "2em 3em",
-                  fontFamily: `"PlayFair Dislay", serif`
+                  padding: "2em 3em"
                 }} />
               {
                 this.state.post.category ?
@@ -213,36 +214,40 @@ class Story extends Component {
             <PostCardGrid posts={this.state.more} /> : null
           }
         </BorderTopContainer>
-        <section className="story__responses">
-          <h4> 
-            Conversations 
+        {
+          showComments ? 
+          <section className="story__responses">
+            <h4> 
+              Conversations 
+              {
+                this.props.post.hasGotten && this.state.post && this.state.post.conversations ? 
+                  ` (${this.props.post.post.conversations})` : ""
+              } 
+            </h4>
             {
-              this.props.post.hasGotten && this.state.post && this.state.post.conversations ? 
-                ` (${this.props.post.post.conversations})` : ""
-            } 
-          </h4>
-          {
-            this.props.post.hasGotten && this.state.post ?
-              <Responder  postId={this.state.id}
-                post={this.state.post} 
-                onResponse={this.handleResponse} /> : null
-          }
-          {
-            this.props.post.hasGotten && this.state.post ?
-              <CommentSection post={this.state.post} 
-                newComment={this.state.newResponse} 
-                all={this.state.allConversations} /> :
-              null
-          }
-          {
-            this.props.post.hasGotten && this.state.post && this.props.comments.gotComments &&
-            this.props.comments.comments.length < this.state.post.conversations ?
-              <span className="story__response_view_all"
-                onClick={() => this.setState({ allConversations: true })}>
-                view all conversations
-              </span> : null
-          }
-        </section>
+              this.props.post.hasGotten && this.state.post ?
+                <Responder  postId={this.state.id}
+                  post={this.state.post} 
+                  onResponse={this.handleResponse} /> : null
+            }
+            {
+              this.props.post.hasGotten && this.state.post ?
+                <CommentSection post={this.state.post} 
+                  newComment={this.state.newResponse} 
+                  all={this.state.allConversations} /> :
+                null
+            }
+            {
+              this.props.post.hasGotten && this.state.post && this.props.comments.gotComments &&
+              this.props.comments.comments.length < this.state.post.conversations ?
+                <span className="story__response_view_all"
+                  onClick={() => this.setState({ allConversations: true })}>
+                  view all conversations
+                </span> : null
+            }
+          </section> :
+          null
+        }
       </main>
     )
   }

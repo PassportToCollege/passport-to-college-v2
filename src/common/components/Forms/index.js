@@ -44,7 +44,7 @@ export class SignInForm extends Component {
       <form className="form auth__form signin__form" method="post" onSubmit={this.props.handleSubmit}>
         {
           this.props.title ?
-            <h2 className="form__title">{this.props.title}</h2> : null
+            <h5 className="form__title">{this.props.title}</h5> : null
         }
         <div className="form__social_signins">
           <TextedIconButton icon="google" text="Google Account"
@@ -62,7 +62,7 @@ export class SignInForm extends Component {
         </div>
         {
           this.props.subtitle ?
-          <h2 className="form__title">{this.props.subtitle}</h2> :
+          <h5 className="form__title">{this.props.subtitle}</h5> :
           null
         }
         <div className="form__input_container">
@@ -249,7 +249,7 @@ export const StartApplication = props => {
     <form className="form auth__form start_application__form" method="post" onSubmit={props.handleAccountCreation}>
       {
         props.title ?
-          <h2 className="form__title">{props.title}</h2> :
+          <h5 className="form__title">{props.title}</h5> :
           null
       }
       <div className="form__social_signins">
@@ -268,7 +268,7 @@ export const StartApplication = props => {
       </div>
       {
         props.subtitle ?
-          <h2 className="form__title">{props.subtitle}</h2> :
+          <h5 className="form__title">{props.subtitle}</h5> :
           null
       }
       <div className="form__input_container">

@@ -18,6 +18,8 @@ import PageMeta from "../../components/PageMeta";
 import FlexContainer from "../../components/FlexContainer";
 import RoleCard from "../../components/RoleCard";
 import LinkButton from "../../components/LinkButton";
+import InfoCard from "../../components/InfoCard";
+import WYSIWYGEditor from "../../components/Editor";
 
 import headerImage from "../../assets/images/about_us__header.jpg";
 
@@ -110,9 +112,25 @@ class AboutUs extends Component {
           <FlexContainer classes={["about__staff_staff"]}>
             {
               this.state.founder ?
-                <RoleCard founder staff={this.state.founder} /> :
-                null
+                <React.Fragment>
+                  <InfoCard founder
+                    bgOverlay="rgba(58,58,58,0.65)"
+                    uid={this.state.founder.uid} 
+                    title={this.state.founder.name.full}
+                    content="Founder" />
+                  <WYSIWYGEditor readonly
+                    content={this.state.founder.bio} 
+                    editorStyles={{
+                      border: "none",
+                      minHeight: "auto"
+                    }} />
+                </React.Fragment>
+                : null
             }
+          </FlexContainer>
+        </section>
+        {/* <section>
+          <FlexContainer>
             {
               this.state.staff ?
                 this.state.staff.map(member => {
@@ -124,7 +142,7 @@ class AboutUs extends Component {
                 }) : null
             }
           </FlexContainer>
-        </section>
+        </section> */}
         {this.renderStoriesCTA()}
       </main>
     )
