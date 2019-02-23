@@ -438,7 +438,6 @@ export const doCreateUser = data => {
 
     const { email } = data;
 
-    // check if user with email already exists
     db.collection("users")
       .where("email", "==", email)
       .get()

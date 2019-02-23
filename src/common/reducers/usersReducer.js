@@ -28,6 +28,8 @@ import {
   USERS_GET_STAFF_FAILED,
   GOT_STAFF
 } from "../actions/actionTypes";
+import UserSideEffects from "../side-effects/users";
+import StatsSideEffects from "../side-effects/stats";
 
 const users = (state = initialState.users, action) => {
   switch (action.type) {
@@ -72,13 +74,28 @@ const users = (state = initialState.users, action) => {
         data: action.data,
         error: action.error
       });
-    case USERS_NEW_USER_CREATED:
+    case USERS_NEW_USER_CREATED: 
+    {
+      const user = action.data;
+      let statsToUpdate = ["users.total"];
+
+      if (user.isAdmin)
+        statsToUpdate.push("users.admins");
+
+      if (user.isStudent)
+        statsToUpdate.push("users.students");
+      
+      if (user.isStaff)
+        statsToUpdate.push("users.staff");
+      
+      StatsSideEffects.incrementStats(statsToUpdate)
       return Object.assign({}, state, {
         isCreating: false,
         hasCreated: true,
         hasFailed: false,
         data: action.data
       });
+    }
     case USERS_SEND_SIGNUP_EMAIL_INITIATED:
       return Object.assign({}, state, {
         isSending: true,
