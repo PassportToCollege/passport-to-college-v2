@@ -194,10 +194,15 @@ class StudentDashboard extends Component {
                     label: "born",
                     text: `${moment.utc(moment(this.state.student.user.dob)).format("MMM DD, Y")} (${moment().diff(moment.utc(moment(this.state.student.user.dob)), "years")} years)`
                   },
-                  { label: "gender", text: this.state.student.user.gender },
-                  { label: "country", text: this.state.student.user.address.country },
+                  { label: "gender", text: this.state.student.user.gender || "not set" },
+                  {
+                    label: "country",
+                    text: this.state.student.user.address 
+                      ? this.state.student.user.address.country 
+                      : "not set"
+                  },
                   { label: "email", text: this.state.student.user.email },
-                  { label: "phone", text: this.state.student.user.phone },
+                  { label: "phone", text: this.state.student.user.phone || "not set" },
                   { label: "role", text: this.state.student.user.isStaff ? this.state.student.user.role : "no role" }
                 ]} /> : null
             }
@@ -267,7 +272,7 @@ class StudentDashboard extends Component {
         <FlexContainer>
           <span>
             <Input inputName="country"
-              inputDefault={this.state.student.user.address.country}
+              inputDefault={this.state.student.user.address ? this.state.student.user.address.country : ""}
               inputPlaceholder="Jamaica"
               whenBlur={this.handleInputBlur} />
             <p className="create_user__input_label required">Country</p>

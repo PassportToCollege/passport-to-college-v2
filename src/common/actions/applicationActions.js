@@ -5,7 +5,7 @@ import * as types from "./actionTypes";
 import { db } from "../utils/firebase";
 
 const Console = console;
-const EMAIL_API = process.env.REACT_APP_EMAIL_API;
+const EMAIL_API = process.env.RAZZLE_EMAIL_API;
 
 // GET actions
 export const applicationGetInitiated = user => {

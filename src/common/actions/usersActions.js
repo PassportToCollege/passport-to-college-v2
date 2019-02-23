@@ -6,7 +6,7 @@ import { db } from "../utils/firebase";
 import * as types from "./actionTypes";
 import { doCreateStudent } from "./studentActions";
 
-const EMAIL_API = process.env.REACT_APP_EMAIL_API;
+const EMAIL_API = process.env.RAZZLE_EMAIL_API;
 const Console = console;
 
 // GET actions
