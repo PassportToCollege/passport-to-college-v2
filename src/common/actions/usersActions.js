@@ -404,10 +404,11 @@ export const createUserFailed = (error, data) => {
   };
 };
 
-export const userCreated = data => {
+export const userCreated = (data, accountType = "temp") => {
   return {
     type: types.USERS_NEW_USER_CREATED,
-    data
+    data,
+    accountType
   };
 };
 
@@ -519,7 +520,7 @@ export const doCreateFullUser = (user = {}, student = {}) => {
           .doc(user.uid)
           .set(user)
           .then(() => {
-            dispatch(userCreated(user));
+            dispatch(userCreated(user, "full"));
 
             if (Object.keys(student).length) {
               dispatch(doCreateStudent(student));

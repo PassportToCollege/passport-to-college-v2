@@ -13,6 +13,7 @@ import {
   USER_REAUTHENTICATION_FAILED,
   USER_REAUTHENTICATION_INITIATED
 } from "../actions/actionTypes";
+import UserSideEffects from "../side-effects/users";
 
 const user = (state = initialState.user, action) => {
   switch(action.type) {
@@ -61,6 +62,19 @@ const user = (state = initialState.user, action) => {
         uid: action.user
       });
     case USER_UPDATE_INITIATED:
+    {
+      const updatedUser = Object.assign({}, state.user, action.updatedUser);
+      let sideEffects = [];
+
+      if (updatedUser.isStudent)
+        sideEffects.push(UserSideEffects.updateStudentFromUser(action.user, updatedUser));
+      
+      if (updatedUser.isApplicant)
+        sideEffects.push(UserSideEffects.updateApplicationFromUser(action.user, updatedUser));
+
+      Promise.all(sideEffects)
+        .then(() => console.log("Updated user relationships."));
+
       return Object.assign({}, state, {
         isUpdating: true,
         hasFailed: false,
@@ -69,6 +83,7 @@ const user = (state = initialState.user, action) => {
         uid: action.user,
         data: action.data
       });
+    }
     case USER_UPDATE_FAILED:
       return Object.assign({}, state, {
         isUpdating: false,

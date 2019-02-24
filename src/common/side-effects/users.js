@@ -1,10 +1,11 @@
 import { db } from "../utils/firebase";
 
 export default  {
-  updateStudentFromUser : user => {
+  updateStudentFromUser : (uid, user) => {
     return new Promise((resolve, reject) => {
-      const { uid } = user;
-  
+      if (!uid.length) 
+        return reject({ message:  "no uid provided" });
+
       db
         .collection("students")
         .doc(uid)
@@ -16,9 +17,10 @@ export default  {
     });
   },
 
-  updateApplicationFromUser : user => {
+  updateApplicationFromUser : (uid, user) => {
     return new Promise((resolve, reject) => {
-      const { uid } = user;
+      if (!uid.length) 
+        return reject({ message:  "no uid provided" });
 
       db
         .collection("applications")

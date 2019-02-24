@@ -76,11 +76,12 @@ export const userUpdateFailed = (uid, data, error) => {
   };
 };
 
-export const userUpdated = (uid, data) => {
+export const userUpdated = (uid, data, updatedUser) => {
   return {
     type: types.USER_UPDATED,
     user: uid,
-    data
+    data,
+    updatedUser
   };
 };
 
@@ -128,8 +129,8 @@ export const authEmailUpdateFailed = (uid, error) => {
   };
 }
 
-export const doUserUpdate = (data, uid) => {
-  let user = auth.currentUser;
+export const doUserUpdate = (data, uid, user) => {
+  user = user || auth.currentUser;
   uid = uid || user.uid;
 
   return dispatch => {
@@ -139,7 +140,8 @@ export const doUserUpdate = (data, uid) => {
       .doc(uid)
       .update(data)
       .then(() => {
-        dispatch(userUpdated(uid, data));
+        const updatedUser = Object.assign({}, user, data);
+        dispatch(userUpdated(uid, data, updatedUser));
 
         // dispatch user get to update props
         // with new user data

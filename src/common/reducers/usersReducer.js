@@ -76,19 +76,24 @@ const users = (state = initialState.users, action) => {
       });
     case USERS_NEW_USER_CREATED: 
     {
-      const user = action.data;
-      let statsToUpdate = ["users.total"];
+      if (action.accountType === "full")
+      {
+        const user = action.data;
+        let statsToUpdate = ["users.total"];
+  
+        if (user.isAdmin)
+          statsToUpdate.push("users.admins");
+  
+        if (user.isStudent)
+          statsToUpdate.push("users.students");
+        
+        if (user.isStaff)
+          statsToUpdate.push("users.staff");
+        
+        StatsSideEffects.incrementStats(statsToUpdate)
+          .then(() => console.log("Updated user stats."));
+      }
 
-      if (user.isAdmin)
-        statsToUpdate.push("users.admins");
-
-      if (user.isStudent)
-        statsToUpdate.push("users.students");
-      
-      if (user.isStaff)
-        statsToUpdate.push("users.staff");
-      
-      StatsSideEffects.incrementStats(statsToUpdate)
       return Object.assign({}, state, {
         isCreating: false,
         hasCreated: true,
@@ -180,6 +185,12 @@ const users = (state = initialState.users, action) => {
         error: action.error
       });
     case USERS_UPDATED:
+      Promise.all([
+        UserSideEffects.updateStudentFromUser(action.user, action.data),
+        UserSideEffects.updateApplicationFromUser(action.user, action.data)
+      ])
+      .then(() => console.log("Updated user relationships."));
+
       return Object.assign({}, state, {
         isUpdating: false,
         hasUpdated: true,
@@ -204,6 +215,13 @@ const users = (state = initialState.users, action) => {
         bio: action.bio
       });
     case ADDED_BIO:
+    {
+      const user = { bio: action.bio };
+
+      Promise.all([
+        UserSideEffects.updateStudentFromUser(action.user, user),
+        UserSideEffects.updateApplicationFromUser(action.user, user)
+      ])
       return Object.assign({}, state, {
         addingBio: false,
         addedBio: true,
@@ -211,6 +229,7 @@ const users = (state = initialState.users, action) => {
         uid: action.user,
         bio: action.bio
       });
+    }
     case USERS_GET_FOUNDER_INITIATED:
       return Object.assign({}, state, {
         gettingFounder: true,

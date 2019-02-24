@@ -435,7 +435,7 @@ class StudentDashboard extends Component {
 
       this.setState({ updatedInfo });
 
-      return this.props.userActions.doUserUpdate(updatedInfo);
+      return this.props.userActions.doUserUpdate(updatedInfo, this.state.student.uid, this.state.student.user);
     }
 
     this.renderInlineNotification("you have not made any changes");
