@@ -1,21 +1,17 @@
 import initialState from "./initialState";
-import {
-  DASHBOARD_MENU_STATE_CLOSED,
-  DASHBOARD_MENU_STATE_COMPACT,
-  DASHBOARD_MENU_STATE_FULL
-} from "../actions/actionTypes";
+import ActionTypes from "../actions/actionTypes";
 
-const menu = (state = initialState.menu, action) => {
+const menu = (state : any = initialState.menu, action : any) : any => {
   switch (action.type) {
-    case DASHBOARD_MENU_STATE_CLOSED:
+    case ActionTypes.Menu.Closed:
       return Object.assign({}, state, {
         dash: `${state.dash} closed`
       });
-    case DASHBOARD_MENU_STATE_COMPACT:
+    case ActionTypes.Menu.Compact:
       return Object.assign({}, state, {
         dash: "compact"
       });
-    case DASHBOARD_MENU_STATE_FULL:
+    case ActionTypes.Menu.Full:
       return Object.assign({}, state, {
         dash: "full"
       });

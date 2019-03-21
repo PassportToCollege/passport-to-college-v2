@@ -1,7 +1,7 @@
 import initialState from "./initialState";
 import ActionTypes from "../actions/actionTypes";
 
-const hamburgerState = (state = initialState.hamburgerState, action : any) : any => {
+const hamburgerState = (state : any = initialState.hamburgerState, action : any) : any => {
   switch(action.type) {
     case ActionTypes.Hamburger.Open:
     case ActionTypes.Hamburger.Close:

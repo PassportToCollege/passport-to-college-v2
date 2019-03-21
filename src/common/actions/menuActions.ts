@@ -1,19 +1,19 @@
-import * as types from "./actionTypes";
+import ActionTypes from "./actionTypes";
 
 export const makeDashMenuFull = () => {
   return {
-    type: types.DASHBOARD_MENU_STATE_FULL
+    type: ActionTypes.Menu.Full
   };
 }
 
 export const makeDashMenuCompact = () => {
   return {
-    type: types.DASHBOARD_MENU_STATE_COMPACT
+    type: ActionTypes.Menu.Compact
   };
 }
 
 export const closeDashMenu = () => {
   return {
-    type: types.DASHBOARD_MENU_STATE_CLOSED
+    type: ActionTypes.Menu.Closed
   };
 }

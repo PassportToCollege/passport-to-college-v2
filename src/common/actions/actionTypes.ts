@@ -1,17 +1,15 @@
 // HAMBURGER MENU Actions
-// TODO: merge hamburger menu actions with menu actions
-export const OPEN_HAMBURGER = "OPEN_HAMBURGER";
-export const CLOSE_HAMBURGER = "CLOSE_HAMBURGER";
-
 enum Hamburger {
   Open = 0,
   Close = 1
-}
+};
 
 // MENU actions
-export const DASHBOARD_MENU_STATE_FULL = "DASHBOARD_MENU_STATE_FULL";
-export const DASHBOARD_MENU_STATE_COMPACT = "DASHBOARD_MENU_STATE_COMPACT";
-export const DASHBOARD_MENU_STATE_CLOSED = "DASHBOARD_MENU_STATE_CLOSED";
+enum Menu {
+  Full = 0,
+  Compact = 1,
+  Closed = 2
+};
 
 // AUTH Actions
 export const REMOVE_AUTH_ERRORS = "REMOVE_AUTH_ERRORS";
@@ -272,5 +270,6 @@ export const CREATE_EVENT_FAILED = "CREATE_EVENT_FAILED";
 export const CREATED_EVENT = "CREATED_EVENT";
 
 export default {
-  Hamburger
+  Hamburger,
+  Menu
 }
