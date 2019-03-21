@@ -3,7 +3,7 @@ import postMeta from "./post-meta";
 
 export default (req : any, res : any, markup : string) => {
   const { url } = req;
-  const assets = process.env.RAZZLE_ASSETS_MANIFEST || "";
+  const assets : any = require(process.env.RAZZLE_ASSETS_MANIFEST!);
   const helmet = Helmet.renderStatic();
 
   if (url.indexOf("stories") > -1 && url.indexOf("read") > -1) {
@@ -23,7 +23,9 @@ export default (req : any, res : any, markup : string) => {
                   ${helmet.meta.toString()}
                   ${helmet.title.toString()}
                   <meta name="viewport" content="width=device-width, initial-scale=1">
-                  <link href="//fonts.googleapis.com/css?family=Muli:400,600,700,800,900|Nunito:200,400,800,900|Roboto:100,400,400i,500,700,900|Playfair+Display:400,400i,700,700i,900,900i" rel="stylesheet" />
+                  <link 
+                    href="//fonts.googleapis.com/css?family=Muli:400,600,700,800,900|Nunito:200,400,800,900|Roboto:100,400,400i,500,700,900|Playfair+Display:400,400i,700,700i,900,900i" 
+                    rel="stylesheet" />
                   ${assets.client.css
                     ? `<link rel="stylesheet" href="${assets.client.css}">`
                     : ''}
@@ -49,7 +51,9 @@ export default (req : any, res : any, markup : string) => {
                   <meta property="og:url" content="${process.env.RAZZLE_URL}/${url}" />
                   ${results.metas}
                   <meta name="viewport" content="width=device-width, initial-scale=1">
-                  <link href="//fonts.googleapis.com/css?family=Muli:400,600,700,800,900|Nunito:200,400,800,900|Roboto:100,400,400i,500,700,900|Playfair+Display:400,400i,700,700i,900,900i" rel="stylesheet" />
+                  <link 
+                    href="//fonts.googleapis.com/css?family=Muli:400,600,700,800,900|Nunito:200,400,800,900|Roboto:100,400,400i,500,700,900|Playfair+Display:400,400i,700,700i,900,900i" 
+                    rel="stylesheet" />
                   ${assets.client.css
                     ? `<link rel="stylesheet" href="${assets.client.css}">`
                     : ''}
@@ -76,7 +80,9 @@ export default (req : any, res : any, markup : string) => {
               ${helmet.meta.toString()}
               ${helmet.title.toString()}
               <meta name="viewport" content="width=device-width, initial-scale=1">
-              <link href="//fonts.googleapis.com/css?family=Muli:400,600,700,800,900|Nunito:200,400,800,900|Roboto:100,400,400i,500,700,900|Playfair+Display:400,400i,700,700i,900,900i" rel="stylesheet" />
+              <link 
+                href="//fonts.googleapis.com/css?family=Muli:400,600,700,800,900|Nunito:200,400,800,900|Roboto:100,400,400i,500,700,900|Playfair+Display:400,400i,700,700i,900,900i" 
+                rel="stylesheet" />
               ${assets.client.css
                 ? `<link rel="stylesheet" href="${assets.client.css}">`
                 : ''}

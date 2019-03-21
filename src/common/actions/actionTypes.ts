@@ -3,6 +3,11 @@
 export const OPEN_HAMBURGER = "OPEN_HAMBURGER";
 export const CLOSE_HAMBURGER = "CLOSE_HAMBURGER";
 
+enum Hamburger {
+  Open = 0,
+  Close = 1
+}
+
 // MENU actions
 export const DASHBOARD_MENU_STATE_FULL = "DASHBOARD_MENU_STATE_FULL";
 export const DASHBOARD_MENU_STATE_COMPACT = "DASHBOARD_MENU_STATE_COMPACT";
@@ -265,3 +270,7 @@ export const GOT_CONVERSATIONS = "GOT_CONVERSATIONS";
 export const CREATE_EVENT_INITIATED = "CREATE_EVENT_INITIATED";
 export const CREATE_EVENT_FAILED = "CREATE_EVENT_FAILED";
 export const CREATED_EVENT = "CREATED_EVENT";
+
+export default {
+  Hamburger
+}
