@@ -1,7 +1,7 @@
 import * as routes from "../../common/constants/routes";
 import Renderer from "./renderer";
 
-export default (context, req, res, markup) => {
+export default (context : any, req : any, res : any, markup : string) => {
   if (context.url) {
     let { ssid } = req.cookies;
     const { url } = req;

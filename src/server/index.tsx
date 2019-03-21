@@ -12,10 +12,11 @@ import App from "../common/containers/App";
 import handleRedirects from "./middleware/handle-redirects";
 
 const server = express();
+const pubDirectory: string = process.env.RAZZLE_PUBLIC_DIR || "";
 
 server
   .disable('x-powered-by')
-  .use(express.static(process.env.RAZZLE_PUBLIC_DIR))
+  .use(express.static(pubDirectory))
   .use(cookieParser())
   .get('/*', (req, res) => {
     const context = {};

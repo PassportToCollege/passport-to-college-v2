@@ -9,11 +9,11 @@ if (!admin.apps.length) {
   });
 }
 
-export default id => {
+export default (id : string) => {
   return admin.firestore().collection("posts")
     .doc(id)
     .get()
-    .then(snapshot => {
+    .then((snapshot : any) => {
       if (snapshot.exists) {
         const post = snapshot.data();
         return new Promise(resolve => {

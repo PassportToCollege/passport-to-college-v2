@@ -106,8 +106,8 @@ class App extends React.Component {
             <Route path={routes.CONFIRM_EMAIL_ADDRESS.route} render={(props) => this.defaultRouteMiddleware(props, ConfirmEmail)}></Route>
             <Route path={routes.DASHBOARD.route} render={props => this.protectedAdminMiddleware(props, Dashboard)}></Route>
             <Route path={routes.STUDENT_DASHBOARD.route} render={props => this.protectedStudentMiddleware(props, StudentDashboard)}></Route>
-            <Route exact path={routes.APPLY.route} render={props => this.applyLandingMiddleware(props, Apply)}></Route>
-            <Route path={routes.APPLY_PORTAL.route} render={props => this.applicationPortalMiddleware(props, ApplicationPortal)}></Route>
+            <Route path={routes.APPLY.route} render={props => this.defaultRouteMiddleware(props, ApplicationPortal)}></Route>
+            {/* <Route path={routes.APPLY_PORTAL.route} render={props => this.applicationPortalMiddleware(props, ApplicationPortal)}></Route> */}
           </div>
           {
             this.state.location !== "" &&
@@ -174,13 +174,6 @@ class App extends React.Component {
     }
 
     return <Apply {...props} updateLocation={newLocation => { this.setState({ location: newLocation }); }} />
-  }
-
-  applicationPortalMiddleware(props) {
-    if (isApplicant())
-      return <ApplicationPortal {...props} updateLocation={newLocation => { this.setState({ location: newLocation }); }} />
-      
-    return <Redirect to="/apply/" />
   }
 
   landingMiddleware(props) {

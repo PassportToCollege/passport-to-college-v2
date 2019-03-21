@@ -1,12 +1,12 @@
-import app from "./server";
+import app from "./server/index";
 import http from "http";
 
-const Console = console;
-const server = http.createServer(app);
+const Console : any = console;
+const server : any = http.createServer(app);
 
-let currentApp = app;
+let currentApp : any = app;
 
-server.listen(process.env.PORT || 3000, error => {
+server.listen(process.env.PORT || 3000, (error: any) => {
   if (error) {
     Console.log(error);
   }

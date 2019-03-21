@@ -1,5 +1,5 @@
 import React from 'react';
-import BrowserRouter from 'react-router-dom/BrowserRouter';
+import { BrowserRouter } from 'react-router-dom';
 import { hydrate } from 'react-dom';
 import { Provider } from "react-redux";
 

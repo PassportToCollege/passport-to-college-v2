@@ -1,15 +1,15 @@
 import Helmet from "react-helmet";
 import postMeta from "./post-meta";
 
-export default (req, res, markup) => {
+export default (req : any, res : any, markup : string) => {
   const { url } = req;
-  const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
+  const assets = process.env.RAZZLE_ASSETS_MANIFEST || "";
   const helmet = Helmet.renderStatic();
 
   if (url.indexOf("stories") > -1 && url.indexOf("read") > -1) {
     const id = url.split("/")[3];
 
-    postMeta(id).then(results => {
+    postMeta(id).then((results : any) => {
       if (results.error) {
         res.status(200).send(
             `
