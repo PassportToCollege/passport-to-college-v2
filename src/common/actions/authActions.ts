@@ -2,63 +2,68 @@ import axios from "axios";
 import firebase from "firebase";
 import moment from "moment";
 
-import * as types from "./actionTypes";
+import ActionTypes from "./actionTypes";
 import { isEmail } from "../utils";
-import { auth, db } from "../utils/firebase";
-import { User, SSID } from "../utils/utilityClasses";
+import { auth, db } from "../utils/firebase/index";
+import { SSID } from "../utils/utilityClasses";
+import User from "../models/User";
 import Cookies from "universal-cookie";
 import { doUserUpdate } from "./userActions";
 
-const cookies = new Cookies();
-const EMAIL_API = process.env.REACT_APP_EMAIL_API;
+const cookies : any = new Cookies();
+const EMAIL_API : string = process.env.REACT_APP_EMAIL_API || "";
+const { Auth } = ActionTypes;
 
 // @SIGN IN
-export const signInInitiated = () => {
+export const signInInitiated = () : any => {
   return { 
-    type: types.SIGN_IN_AUTHORIZING, 
+    type: Auth.SignInAuthorizing, 
     user: null 
   };
 };
 
-export const gettingSignedInUser = () => {
+export const gettingSignedInUser = () : any => {
   return {
-    type: types.SIGN_IN_GETTING_USER,
+    type: Auth.GettingUser,
     user: null
   };
 };
 
-export const signInDone = user => {
+export const signInDone = (user : any) : any => {
   return {
-    type: types.SIGNED_IN,
+    type: Auth.SignedIn,
     user
   };
 };
 
-export const signInFailed = (error) => {
+export const signInFailed = (error : any) : any => {
   return {
-    type: types.SIGN_IN_FAILED,
+    type: Auth.SignInFailed,
     error,
     user: null
   };
 };
 
-export const doSignIn = (email, password) => {
-  return dispatch => {
+export const doSignIn = (email : string, password : string) : any => {
+  return (dispatch : any) => {
     dispatch(signInInitiated());
 
     auth.signInWithEmailAndPassword(email, password)
-      .then(userCredential => {
+      .then((userCredential : any) => {
         dispatch(gettingSignedInUser());
 
-        const { uid } = userCredential.user;
-
+        const { uid } = userCredential.user!;
+        
         // get user
         db.collection("users")
           .doc(uid)
           .get()
-          .then(doc => {
+          .then((doc : any) => {
             if (doc.exists) {
-              let user = doc.data();
+              let user : User = new User({
+                uid,
+                ...doc.data()
+              });
 
               // set cookie
               const d = {
@@ -76,43 +81,38 @@ export const doSignIn = (email, password) => {
             }
           })
         })
-        .catch(error => {
+        .catch((error : any) => {
           dispatch(signInFailed(error));
       })
   };
 };
 
-export const signInWithSocialInitiated = provider => {
+export const signInWithSocialInitiated = (provider : string) : any => {
   return {
-    type: types.SIGN_IN_WITH_SOCIAL_INITIATED,
+    type: Auth.SignInAuthorizing_Social,
     provider
   };
 };
 
-export const signInWithSocialFailed = (error, provider) => {
+export const signInWithSocialFailed = (error : any, provider : string) : any => {
   return {
-    type: types.SIGN_IN_WITH_SOCIAL_FAILED,
+    type: Auth.SignInFailed_Social,
     error, provider
   };
 };
 
-export const signedInWithSocial = user => {
+export const signedInWithSocial = (user : User) : any => {
   return {
-    type: types.SIGNED_IN_WITH_SOCIAL,
+    type: Auth.SignedIn_Social,
     user
   };
 };
 
-export const doSignInWithSocial = (provider, options) => {
-  return dispatch => {
-    if ("string" !== typeof provider)
-      return signInWithSocialFailed({ message: "provider type error" }, provider);
-
+export const doSignInWithSocial = (provider : string, options : any = {}) : any => {
+  return (dispatch : any) => {
     dispatch(signInWithSocialInitiated(provider));
-      
-    options = options || {};
     
-    let p;
+    let p : any;
     switch (provider) {
       case "google":
         p = new firebase.auth.GoogleAuthProvider();
@@ -125,14 +125,14 @@ export const doSignInWithSocial = (provider, options) => {
     }
 
     return auth.signInWithPopup(p)
-      .then(results => {
+      .then((results : any) => {
         db.collection("users")
           .doc(results.user.uid)
           .get()
-          .then(snapshot => {
+          .then((snapshot : any) => {
             if (snapshot.exists) {
-              let user = snapshot.data();
-              user.uid = results.user.uid;
+              let snapData = snapshot.data;
+              let user = new User({ uid: results.user.uid, ...snapData});
 
               if (options.match && options.match !== user.uid) {
                 return auth.signOut().then(() => {
@@ -157,37 +157,37 @@ export const doSignInWithSocial = (provider, options) => {
             });
           })
       })
-      .catch(error => {
+      .catch((error : any) => {
         return dispatch(signInWithSocialFailed(error, provider));
       });
   };
 };
 
 // @SIGN OUT
-export const signOutInitiated = user => {
+export const signOutInitiated = (user : User) : any => {
   return {
-    type: types.SIGN_OUT_AUTHORIZING,
+    type: Auth.SignOutAuthorizing,
     user
   };
 };
 
-export const signOutDone = () => {
+export const signOutDone = () : any => {
   return {
-    type: types.SIGNED_OUT,
+    type: Auth.SignedOut,
     user: null
   };
 };
 
-export const signOutFailed = error => {
+export const signOutFailed = (error : any) : any => {
   return {
-    type: types.SIGN_OUT_FAILED,
+    type: Auth.SignOutFailed,
     error,
     user: null
   };
 };
 
-export const doSignOut = user => {
-  return dispatch => {
+export const doSignOut = (user : User) : any => {
+  return (dispatch : any) : void => {
     dispatch(signOutInitiated(user));
 
     auth.signOut()
@@ -197,124 +197,103 @@ export const doSignOut = user => {
 
         dispatch(signOutDone());
       })
-      .catch(error => {
+      .catch((error : any) => {
         dispatch(signOutFailed(error));
       })
   };
 };
 
 // @ACCOUNT CREATION
-export const accountCreationInitialized = data => {
+export const accountCreationInitialized = (userData : any) : any => {
   return {
-    type: types.ACCOUNT_CREATION_INITIATED,
-    data
+    type: Auth.CreatingAccount,
+    data: userData
   };
 };
 
-export const accountCreated = data => {
+export const accountCreated = (userData : User) : any => {
   return {
-    type: types.ACCOUNT_CREATED,
-    data
+    type: Auth.CreatedAccount,
+    data : userData
   };
 };
 
-export const accountCreationFailed = (data, error) => {
+export const accountCreationFailed = (userData : any, error : any) : any => {
   return {
-    type: types.ACCOUNT_CREATION_FAILED,
-    data, 
+    type: Auth.CreatingAccountFailed,
+    data : userData, 
     error
   };
 };
 
-export const addingDataToUserDbs = () => {
+export const addingDataToUserDbs = () : any => {
   return {
-    type: types.ACCOUNT_CREATION_ADDING_TO_USER_DBS
+    type: Auth.AddingToDb
   };
 };
 
-export const addingDataToUserDbsFailed = error => {
+export const addingDataToUserDbsFailed = (error : any) : any => {
   return {
-    type: types.ACCOUNT_CREATION_ADDING_TO_USER_DBS_FAILED,
+    type: Auth.AddingToDbFailed,
     error
   };
 };
 
-export const addedDataToUserDbs = () => {
+export const addedDataToUserDbs = () : any => {
   return {
-    type: types.ACCOUNT_CREATION_ADDED_TO_USER_DBS
+    type: Auth.AddedToDb
   };
 }
 
-export const sendEmailConfirmationEmailInitated = email => {
+export const sendEmailConfirmationEmailInitated = (email : string) : any => {
   return {
-    type: types.EMAIL_CONFIRMATION_SEND_INITIATED,
+    type: Auth.AccountCreatedEmailSending,
     email
   };
 };
 
-export const sendEmailConfirmationEmailSent = email => {
+export const sendEmailConfirmationEmailSent = (email : string) : any => {
   return {
-    type: types.EMAIL_CONFIRMATION_SENT,
+    type: Auth.AccountCreatedEmailSent,
     email
   };
 };
 
-export const sendEmailConfirmationEmailFailed = (error, email) => {
+export const sendEmailConfirmationEmailFailed = (error : any, email : string) : any => {
   return {
-    type: types.EMAIL_CONFIRMATION_SEND_FAILED,
+    type: Auth.AccountCreatedEmailFailed,
     email, error
   };
 };
 
-export const doAccountCreate = (data) => {
-  return dispatch => {
-    dispatch(accountCreationInitialized(data));
+export const doAccountCreate = (userData : any) : any => {
+  return (dispatch : any) => {
+    dispatch(accountCreationInitialized(userData));
 
-    auth.createUserWithEmailAndPassword(data.email, data.password)
-      .then(userCredential => {
-        const { user } = userCredential;
+    auth.createUserWithEmailAndPassword(userData.email, userData.password)
+      .then((userCredential : any) => {
+        const { user } : any = userCredential;
         
         // create user data object
-        let userData = {
+        let newUser = new User({
           uid: user.uid,
-          email: data.email,
-          isAdmin: data.isAdmin || false,
-          isApplicant: data.isApplicant || false,
-          isStudent: data.isStudent || false,
-          isStaff: data.isStaff || false,
-          emailConfirmed: data.emailConfirmed || false
-        };
-
-        if ("string" === typeof data.name) {
-          let name = data.name.split(" ");
-          
-          if (name.length === 3) {
-            userData.name = {
-              first: name[0],
-              middle: name[1],
-              last: name[2],
-              full: [name[0], name[2]].join(" ")
-            }
-          } else {
-            userData.name = {
-              first: name[0],
-              last: name[1],
-              full: data.name
-            }
-          }
-        } else if ("object" === typeof data.name) {
-          userData.name = data.name;
-        }
+          email: userData.email,
+          isAdmin: userData.isAdmin || false,
+          isApplicant: userData.isApplicant || false,
+          isStudent: userData.isStudent || false,
+          isStaff: userData.isStaff || false,
+          emailConfirmed: userData.emailConfirmed || false
+        });
 
         let batch = db.batch();
-        let userRef = db.collection("users").doc(user.uid);
+        let userRef = db.collection("users").doc(newUser._uid);
 
         batch.set(userRef, userData);
 
-        if (data.isApplicant) {
-          batch.set(db.collection("applications").doc(user.uid), {
-            uid: user.uid, 
-            user: userData,
+        if (newUser.isApplicant) {
+          batch.set(db.collection("applications").doc(newUser._uid), {
+            uid: newUser._uid, 
+            user: newUser.data,
             state: {
               draft: true,
               pending: false,
@@ -325,80 +304,75 @@ export const doAccountCreate = (data) => {
           });
         }
         
-        if (data.isStudent) {
+        if (newUser.isStudent) {
           batch.set(db.collection("students").doc(user.uid), {
-            uid: user.uid, 
-            user: userData 
+            uid: newUser._uid, 
+            user: newUser.data 
           });
         }
 
         // delete temp user if uid has temp
-        if (data.uid && data.uid.indexOf("temp") > -1)
-          batch.delete(db.collection("users").doc(data.uid));
+        if (newUser._uid && newUser._uid.indexOf("temp") > -1)
+          batch.delete(db.collection("users").doc(newUser._uid));
 
         dispatch(addingDataToUserDbs());
 
         batch.commit()
           .then(() => {
             dispatch(addedDataToUserDbs());
-            dispatch(accountCreated(data));
+            dispatch(accountCreated(newUser));
 
             // send welcome and confirmation email
             // to applicants
-            if (data.isApplicant) {
-              dispatch(sendEmailConfirmationEmailInitated(data.email));
+            if (newUser.isApplicant) {
+              dispatch(sendEmailConfirmationEmailInitated(newUser.email));
   
               // send email with api
-              axios.get(`${EMAIL_API}/s/welcome/${user.uid}`)
+              axios.get(`${EMAIL_API}/s/welcome/${newUser._uid}`)
                 .then(() => {
-                  dispatch(sendEmailConfirmationEmailSent(data.email));
+                  dispatch(sendEmailConfirmationEmailSent(newUser.email));
                 })
                 .catch(error => {
-                  dispatch(sendEmailConfirmationEmailFailed(error, data.email));
+                  dispatch(sendEmailConfirmationEmailFailed(error, newUser.email));
                 })
             }
           })
-          .catch(error => {
+          .catch((error : any) => {
             dispatch(addingDataToUserDbsFailed(error));
           })
       })
-      .catch(error => {
-        dispatch(accountCreationFailed(data, error));
+      .catch((error : any) => {
+        dispatch(accountCreationFailed(userData, error));
       })
   };
 };
 
-export const signUpWithSocialInitiated = provider => {
+export const signUpWithSocialInitiated = (provider : string) : any => {
   return {
-    type: types.SIGN_UP_WITH_SOCIAL_INITIATED,
+    type: Auth.CreatingAccount_Social,
     provider
   };
 };
 
-export const signUpWithSocialFailed = (error, provider) => {
+export const signUpWithSocialFailed = (error : any, provider : string) : any => {
   return {
-    type: types.SIGN_UP_WITH_SOCIAL_FAILED,
+    type: Auth.CreatingAccountFailed_Social,
     error, provider
   };
 };
 
-export const signedUpWithSocial = provider => {
+export const signedUpWithSocial = (provider : any) : any => {
   return {
-    type: types.SIGNED_UP_WITH_SOCIAL,
+    type: Auth.CreatedAccount_Social,
     provider
   };
 };
 
-export const doSignUpWithSocial = (provider, options) => {
-  return dispatch => {
-    if ("string" !== typeof provider)
-      return signUpWithSocialFailed({ message: "provider type error" }, provider);
-
+export const doSignUpWithSocial = (provider : string, options : any = {}) : any => {
+  return (dispatch : any) => {
     dispatch(signUpWithSocialInitiated(provider));
 
-    options = options || {};
-
-    let p;
+    let p : any;
     switch (provider) {
       case "google":
         p = new firebase.auth.GoogleAuthProvider();
@@ -411,13 +385,13 @@ export const doSignUpWithSocial = (provider, options) => {
     }
 
     return auth.signInWithPopup(p)
-      .then(results => {
+      .then((results : any) => {
         db.collection("users")
           .doc(results.user.uid)
           .get()
-          .then(snapshot => {
+          .then((snapshot : any) => {
             if (snapshot.exists) {
-              let data = snapshot.data();
+              let data : any = snapshot.data();
 
               if (data.isAdmin || data.isApplicant || data.isStudent) {
                 return auth.signOut().then(() => {
@@ -431,7 +405,12 @@ export const doSignUpWithSocial = (provider, options) => {
             const { user } = results;
             options.photo = user.photoURL;
 
-            const newUser = new User(user.uid, user.email, user.displayName, options);
+            const newUser = new User({
+              uid : user.uid, 
+              email: user.email, 
+              name: user.displayName, 
+              ...options
+            });
             const userData = newUser.data;
 
             let batch = db.batch();
@@ -475,21 +454,21 @@ export const doSignUpWithSocial = (provider, options) => {
                       userCookie.create();
 
                       dispatch(signedUpWithSocial(provider));
-                      dispatch(signedInWithSocial(userData));
+                      dispatch(signedInWithSocial(newUser));
                     })
                     .catch(error => {
                       dispatch(signedUpWithSocial(provider));
-                      dispatch(signedInWithSocial(userData));
+                      dispatch(signedInWithSocial(newUser));
                       dispatch(sendEmailConfirmationEmailFailed(error, user.email));
                     })
                 }
               })
-              .catch(error => {
+              .catch((error : any) => {
                 dispatch(addingDataToUserDbsFailed(error));
               })
           });
       })
-      .catch(error => {
+      .catch((error : any) => {
         return dispatch(signUpWithSocialFailed(error, provider));
       })
   }
@@ -497,36 +476,36 @@ export const doSignUpWithSocial = (provider, options) => {
 
 
 // @REMOVE ERRORS
-export const removeAuthErrors = () => {
+export const removeAuthErrors = () : any => {
   return {
-    type: types.REMOVE_AUTH_ERRORS
+    type: Auth.RemoveErrors
   }
 }
 
 // @SEND RESET PASSWORD EMAIL
-export const resetPasswordEmailSendInitiated = email => {
+export const resetPasswordEmailSendInitiated = (email : string) : any => {
   return {
-    type: types.RESET_PASSWORD_EMAIL_INITIATED,
+    type: Auth.ResetPasswordEmailSending,
     email
   };
 };
 
-export const resetPasswordEmailSendFailed = (error, email) => {
+export const resetPasswordEmailSendFailed = (error : any, email : string) : any => {
   return {
-    type: types.RESET_PASSWORD_EMAIL_FAILED,
+    type: Auth.ResetPasswordEmailFailed,
     email, error
   };
 };
 
-export const resetPasswordEmailSent = email => {
+export const resetPasswordEmailSent = (email : string) : any => {
   return {
-    type: types.RESET_PASSWORD_EMAIL_SENT,
+    type: Auth.ResetPasswordEmailSent,
     email
   };
 };
 
-export const doResetPasswordEmailSend = email => {
-  return dispatch => {
+export const doResetPasswordEmailSend = (email : string) : any => {
+  return (dispatch : any) => {
     dispatch(resetPasswordEmailSendInitiated(email));
 
     // send password reset email
@@ -534,15 +513,15 @@ export const doResetPasswordEmailSend = email => {
       .then(() => {
         dispatch(resetPasswordEmailSent(email));
       })
-      .catch(error => {
+      .catch((error : any) => {
         dispatch(resetPasswordEmailSendFailed(error, email));
       });
   }
 }
 
 // @SEND EMAIL CONFIRMATION
-export const doSendEmailConfirmation = (uid, email) => {
-  return dispatch => {
+export const doSendEmailConfirmation = (uid : string, email : string) : any => {
+  return (dispatch : any) => {
     dispatch(sendEmailConfirmationEmailInitated(email));
 
     // send email with api
@@ -557,35 +536,35 @@ export const doSendEmailConfirmation = (uid, email) => {
 };
 
 // LINK SOCIAL ACCOUNT
-export const linkSocialAccountInitiated = provider => {
+export const linkSocialAccountInitiated = (provider : string) : any => {
   return {
-    type: types.LINK_SOCIAL_ACCOUNT_INITIATED,
+    type: Auth.LinkingSocialAccount,
     provider
   };
 };
 
-export const linkSocialAccountFailed = (error, provider) => {
+export const linkSocialAccountFailed = (error : any, provider : string | null) : any => {
   return {
-    type: types.LINK_SOCIAL_ACCOUNT_FAILED,
+    type: Auth.LinkingSocialAccountFailed,
     error, provider
   };
 };
 
-export const socialAccountLinked = (provider, credentials) => {
+export const socialAccountLinked = (provider : string, credentials : any) : any => {
   return {
-    type: types.SOCIAL_ACCOUNT_LINKED,
+    type: Auth.LinkedSocialAccount,
     provider, credentials
   };
 };
 
-export const doLinkSocialAccount = provider => {
-  return dispatch => {
+export const doLinkSocialAccount = (provider : string) : any => {
+  return (dispatch : any) => {
     if (!provider)
       return dispatch(linkSocialAccountFailed({ message: "no provider" }, null));
 
     dispatch(linkSocialAccountInitiated(provider));
 
-    let p;
+    let p : any;
     switch (provider) {
       case "google":
         p = new firebase.auth.GoogleAuthProvider();
@@ -606,51 +585,51 @@ export const doLinkSocialAccount = provider => {
     }
 
     auth.currentUser.linkWithPopup(p)
-      .then(result => {
+      .then((result : any) => {
         dispatch(socialAccountLinked(provider, result.credentials));
       })
-      .catch(error => {
+      .catch((error : any) => {
         dispatch(linkSocialAccountFailed(error, provider));
       })
   }
 }
 
 // UNLINK SOCIAL ACCOUNT
-export const unlinkSocialAccountInitiated = provider => {
+export const unlinkSocialAccountInitiated = (provider : any) : any => {
   return {
-    type: types.UNLINK_SOCIAL_ACCOUNT_INITIATED,
+    type: Auth.UnlinkingSocialAccount,
     provider
   };
 };
 
-export const unlinkSocialAccountFailed = (error, provider) => {
+export const unlinkSocialAccountFailed = (error : any, provider : string | null) : any => {
   return {
-    type: types.UNLINK_SOCIAL_ACCOUNT_FAILED,
+    type: Auth.UnlinkingSocialAccountFailed,
     error, provider
   };
 };
 
-export const socialAccountUnlinked = provider => {
+export const socialAccountUnlinked = (provider : string) : any => {
   return {
-    type: types.SOCIAL_ACCOUNT_UNLINKED,
+    type: Auth.UnlinkedSocialAccount,
     provider
   };
 };
 
-export const doUnlinkSocialAccount = provider => {
-  return dispatch => {
+export const doUnlinkSocialAccount = (provider : string) : any => {
+  return (dispatch : any) => {
     if (!provider)
       return dispatch(unlinkSocialAccountFailed({ message: "no provider" }, null));
 
     dispatch(unlinkSocialAccountInitiated(provider));
 
-    auth.onAuthStateChanged(user => {
+    auth.onAuthStateChanged((user : any) => {
       if (user) {
         user.unlink(provider)
           .then(() => {
             dispatch(socialAccountUnlinked(provider));
           })
-          .catch(error => {
+          .catch((error : any) => {
             dispatch(unlinkSocialAccountFailed(error, provider));
           })
       }
@@ -659,28 +638,28 @@ export const doUnlinkSocialAccount = provider => {
 };
 
 // LINK PASSWORD PROVIDER
-export const addPasswordProviderInitiated = () => {
+export const addPasswordProviderInitiated = () : any => {
   return {
-    type: types.ADD_PASSWORD_PROVIDER_INITIATED
+    type: Auth.AddingPasswordProvider
   };
 };
 
-export const addPasswordProviderFailed = error => {
+export const addPasswordProviderFailed = (error : any) : any => {
   return {
-    type: types.ADD_PASSWORD_PROVIDER_FAILED,
+    type: Auth.AddingPasswordProviderFailed,
     error
   };
 };
 
-export const addedPasswordProvider = credentials => {
+export const addedPasswordProvider = (credentials : any) : any => {
   return {
-    type: types.ADDED_PASSWORD_PROVIDER,
+    type: Auth.AddedPasswordProvider,
     credentials
   };
 };
 
-export const doAddPasswordProvider = (email = "", password = "") => {
-  return dispatch => {
+export const doAddPasswordProvider = (email = "", password = "") : any => {
+  return (dispatch : any) => {
     if (!email)
       return dispatch(addPasswordProviderFailed({message: "no email provided"}));
     
@@ -695,39 +674,39 @@ export const doAddPasswordProvider = (email = "", password = "") => {
     const credential = firebase.auth.EmailAuthProvider.credential(email, password);
 
     auth.currentUser.linkAndRetrieveDataWithCredential(credential)
-      .then(userCred => {
+      .then((userCred : any) => {
         dispatch(addedPasswordProvider(userCred));
       })
-      .catch(error => {
+      .catch((error : any) => {
         dispatch(addPasswordProviderFailed(error));
       })
   }
 }
 
 // CHANGE EMAIL ADDRESS
-export const changeEmailAddressInitiated = nEmail => {
+export const changeEmailAddressInitiated = (nEmail : string) : any => {
   return {
-    type: types.EMAIL_ADDRESS_CHANGE_INITIATED,
+    type: Auth.ChangingEmailAddress,
     nEmail
   };
 };
 
-export const changeEmailAddressFailed = (error, nEmail) => {
+export const changeEmailAddressFailed = (error : any, nEmail : string) : any => {
   return {
-    type: types.EMAIL_ADDRESS_CHANGE_FAILED,
+    type: Auth.ChangingEmailAddressFailed,
     error, nEmail
   };
 };
 
-export const changedEmailAddress = nEmail => {
+export const changedEmailAddress = (nEmail : string) : any => {
   return {
-    type: types.EMAIL_ADDRESS_CHANGED,
+    type: Auth.ChangedEmailAddress,
     nEmail
   };
 };
 
-export const doChangeEmailAddress = email => {
-  return dispatch => {
+export const doChangeEmailAddress = (email : string) : any => {
+  return (dispatch : any) => {
     if (!isEmail(email))
       return dispatch(changeEmailAddressFailed({ message: "invalid email address" }, email));
 
@@ -740,7 +719,7 @@ export const doChangeEmailAddress = email => {
         dispatch(doUserUpdate({ email, emailConfirmed: false }));
         dispatch(changedEmailAddress(email));
       })
-      .catch(error => {
+      .catch((error : any) => {
         dispatch(changeEmailAddressFailed(error, email));
       })
   }

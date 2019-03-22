@@ -15,15 +15,15 @@ if (!firebase.apps.length) {
   });
 }
 
-export const  db = firebase.firestore();
+export const  db : any = firebase.firestore()!;
 const settings = {
   timestampsInSnapshots: true
 };
 
 db.settings(settings);
 
-export const auth = firebase.auth();
-export let storage = null;
+export const auth : any = firebase.auth()!;
+export let storage : any = null;
 
 if (isBrowser)
-  storage = firebase.storage();
+  storage = firebase.storage()!;

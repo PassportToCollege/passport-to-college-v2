@@ -1,55 +1,57 @@
 // HAMBURGER MENU Actions
 enum Hamburger {
   Open = 0,
-  Close = 1
+  Close = 1,
 };
 
 // MENU actions
 enum Menu {
   Full = 0,
   Compact = 1,
-  Closed = 2
+  Closed = 2,
 };
 
 // AUTH Actions
-export const REMOVE_AUTH_ERRORS = "REMOVE_AUTH_ERRORS";
-export const SIGN_IN_AUTHORIZING = "SIGN_IN_AUTHORIZING";
-export const SIGN_IN_GETTING_USER = "SIGN_IN_GETTING_USER";
-export const SIGNED_IN = "SIGNED_IN";
-export const SIGN_IN_FAILED = "SIGN_IN_FAILED";
-export const SIGN_IN_WITH_SOCIAL_INITIATED = "SIGN_IN_WITH_SOCIAL_INITIATED";
-export const SIGN_IN_WITH_SOCIAL_FAILED = "SIGN_IN_WITH_SOCIAL_FAILED";
-export const SIGNED_IN_WITH_SOCIAL = "SIGNED_IN_WITH_SOCIAL";
-export const SIGN_UP_WITH_SOCIAL_INITIATED = "SIGN_UP_WITH_SOCIAL_INITIATED";
-export const SIGN_UP_WITH_SOCIAL_FAILED = "SIGN_UP_WITH_SOCIAL_FAILED";
-export const SIGNED_UP_WITH_SOCIAL = "SIGNED_UP_WITH_SOCIAL";
-export const SIGN_OUT_AUTHORIZING = "SIGN_OUT_AUTHORIZING";
-export const SIGNED_OUT = "SIGNED_OUT";
-export const SIGN_OUT_FAILED = "SIGN_OUT_FAILED";
-export const ACCOUNT_CREATION_INITIATED = "ACCOUNT_CREATION_INITIATED";
-export const ACCOUNT_CREATION_FAILED = "ACCOUNT_CREATION_FAILED";
-export const ACCOUNT_CREATED = "ACCOUNT_CREATED";
-export const ACCOUNT_CREATION_ADDING_TO_USER_DBS = "ACCOUNT_CREATION_ADDING_TO_USER_DBS";
-export const ACCOUNT_CREATION_ADDED_TO_USER_DBS = "ACCOUNT_CREATION_ADDED_TO_USER_DBS";
-export const ACCOUNT_CREATION_ADDING_TO_USER_DBS_FAILED = "ACCOUNT_CREATION_ADDING_TO_USER_DBS_FAILED";
-export const RESET_PASSWORD_EMAIL_INITIATED = "RESET_PASSWORD_EMAIL_INITIATED";
-export const RESET_PASSWORD_EMAIL_SENT = "RESET_PASSWORD_EMAIL_SENT";
-export const RESET_PASSWORD_EMAIL_FAILED = "RESET_PASSWORD_EMAIL_FAILED";
-export const EMAIL_CONFIRMATION_SEND_INITIATED = "EMAIL_CONFIRMATION_SEND_INITIATED";
-export const EMAIL_CONFIRMATION_SENT = "EMAIL_CONFIRMATION_SENT";
-export const EMAIL_CONFIRMATION_SEND_FAILED = "EMAIL_CONFIRMATION_SEND_FAILED";
-export const LINK_SOCIAL_ACCOUNT_INITIATED = "LINK_SOCIAL_ACCOUNT_INITIATED";
-export const LINK_SOCIAL_ACCOUNT_FAILED = "LINK_SOCIAL_ACCOUNT_FAILED";
-export const SOCIAL_ACCOUNT_LINKED = "SOCIAL_ACCOUNT_LINKED";
-export const UNLINK_SOCIAL_ACCOUNT_INITIATED = "UNLINK_SOCIAL_ACCOUNT_INITIATED";
-export const UNLINK_SOCIAL_ACCOUNT_FAILED = "UNLINK_SOCIAL_ACCOUNT_FAILED";
-export const SOCIAL_ACCOUNT_UNLINKED = "SOCIAL_ACCOUNT_UNLINKED";
-export const ADD_PASSWORD_PROVIDER_INITIATED = "ADD_PASSWORD_PROVIDER_INITIATED";
-export const ADD_PASSWORD_PROVIDER_FAILED = "ADD_PASSWORD_PROVIDER_FAILED";
-export const ADDED_PASSWORD_PROVIDER = "ADDED_PASSWORD_PROVIDER";
-export const EMAIL_ADDRESS_CHANGE_INITIATED = "EMAIL_ADDRESS_CHANGE_INITIATED";
-export const EMAIL_ADDRESS_CHANGE_FAILED = "EMAIL_ADDRESS_CHANGE_FAILED";
-export const EMAIL_ADDRESS_CHANGED = "EMAIL_ADDRESS_CHANGED";
+enum Auth {
+  RemoveErrors = 0,
+  SignInAuthorizing = 1,
+  SignInAuthorizing_Social = 2,
+  SignedIn = 3,
+  SignedIn_Social = 4,
+  SignInFailed = 5,
+  SignInFailed_Social = 6,
+  GettingUser = 7,
+  CreatingAccount = 8,
+  CreatingAccount_Social = 9,
+  CreatedAccount = 10,
+  CreatedAccount_Social = 11,
+  CreatingAccountFailed = 12,
+  CreatingAccountFailed_Social = 13,
+  AddingToDb = 14,
+  AddedToDb = 15,
+  AddingToDbFailed = 16,
+  SignOutAuthorizing = 17,
+  SignedOut = 18,
+  SignOutFailed = 19,
+  ResetPasswordEmailSending = 20,
+  ResetPasswordEmailSent = 21,
+  ResetPasswordEmailFailed = 22,
+  AccountCreatedEmailSending = 23,
+  AccountCreatedEmailSent = 24,
+  AccountCreatedEmailFailed = 25,
+  LinkingSocialAccount = 26,
+  LinkedSocialAccount = 27,
+  LinkingSocialAccountFailed = 28,
+  UnlinkingSocialAccount = 29,
+  UnlinkedSocialAccount = 30,
+  UnlinkingSocialAccountFailed = 31,
+  AddingPasswordProvider = 32,
+  AddedPasswordProvider = 33,
+  AddingPasswordProviderFailed = 34,
+  ChangingEmailAddress = 35,
+  ChangedEmailAddress = 36,
+  ChangingEmailAddressFailed = 37
+}
 
 // PROFILE PICTURE Actions
 export const PROFILE_PICTURE_GET_INITIATED = "PROFILE_PICTURE_GET_INITIATED";
@@ -271,5 +273,6 @@ export const CREATED_EVENT = "CREATED_EVENT";
 
 export default {
   Hamburger,
-  Menu
+  Menu,
+  Auth
 }
