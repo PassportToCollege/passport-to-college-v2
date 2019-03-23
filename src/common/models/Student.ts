@@ -47,7 +47,7 @@ export default class Student implements iStudent {
       this.graduationYear &&
       this.major &&
       this.university &&
-      Object.keys(this.user)
+      Object.keys(this.User.data)
     );
   }
 
