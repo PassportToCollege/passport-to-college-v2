@@ -2,7 +2,7 @@ import iUser from "./iUser"
 
 export default interface iStudent {
   User : iUser;
-  uid : string;
+  readonly uid : string;
   bio? : any;
   enrollmentYear? : number;
   graduationYear? : number;
