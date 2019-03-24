@@ -2,39 +2,42 @@
   Contains actions for the currently logged in user.
 */
 
-import * as types from "./actionTypes";
 import firebase from "firebase";
 import { auth, db } from "../utils/firebase";
+import { isEmail } from "../utils/index";
 
+import ActionTypes from "./actionTypes";
+import User from "../models/User";
+
+const UserActions = ActionTypes.User;
 const Console = console;
 
 // USER GET actions
-
-export const userGetInitiated = uid => {
+export const userGetInitiated = (uid : string) : any => {
   return {
-    type: types.USER_GET_INITIATED,
+    type: UserActions.GettingUser,
     user: uid
   };
 };
 
-export const userGetFailed = (uid, error) => {
+export const userGetFailed = (uid : string, error : any) : any => {
   return {
-    type: types.USER_GET_FAILED,
+    type: UserActions.GettingUserFailed,
     user: uid,
     error
   };
 };
 
-export const userGetSuccessful = user => {
+export const userGetSuccessful = (user : User) : any => {
   return {
-    type: types.USER_GET_SUCCESS,
+    type: UserActions.GotUser,
     user
   };
 };
 
-export const doUserGet = () => {
-  return dispatch => {
-    auth.onAuthStateChanged(user => {
+export const doUserGet = () : any => {
+  return (dispatch : any) => {
+    auth.onAuthStateChanged((user : any) => {
       if (user) {
         let uid = auth.currentUser.uid;
         dispatch(userGetInitiated(uid));
@@ -42,14 +45,15 @@ export const doUserGet = () => {
         db.collection("users")
           .doc(uid)
           .get()
-          .then(doc => {
+          .then((doc : any) => {
               if(doc.exists) {
-                dispatch(userGetSuccessful(doc.data()));
+                let user = new User(doc.data());
+                dispatch(userGetSuccessful(user));
               } else {
-                dispatch(userGetFailed(uid, `No user found with uid: ${uid}.`));
+                dispatch(userGetFailed(uid, { message: `No user found with uid: ${uid}.`}));
               }
             })
-            .catch(error => {
+            .catch((error : any) => {
               dispatch(userGetFailed(uid, error));
             })
       }
@@ -58,105 +62,108 @@ export const doUserGet = () => {
 };
 
 // USER UPDATE actions
-
-export const userUpdateInitiated = (uid, data) => {
+export const userUpdateInitiated = (uid : string, newData : any) : any => {
   return {
-    type: types.USER_UPDATE_INITIATED,
+    type: UserActions.UpdatingUser,
     user: uid,
-    data
+    data: newData
   };
 };
 
-export const userUpdateFailed = (uid, data, error) => {
+export const userUpdateFailed = (uid : string, newData : any, error : any) : any => {
   return {
-    type: types.USER_UPDATE_FAILED,
+    type: UserActions.UpdatingUserFailed,
     user: uid,
-    data,
+    dat: newData,
     error
   };
 };
 
-export const userUpdated = (uid, data) => {
+export const userUpdated = (uid : string, newData : any) : any => {
   return {
-    type: types.USER_UPDATED,
+    type: UserActions.UpdatedUser,
     user: uid,
-    data
+    data: newData
   };
 };
 
-export const reauthenticationInitiated = uid => {
+export const reauthenticationInitiated = (uid : string) : any => {
   return {
-    type: types.USER_REAUTHENTICATION_INITIATED,
+    type: UserActions.ReauthenticatingUser,
     user: uid
   }
 }
 
-export const reauthenticationSuccess = uid => {
+export const reauthenticationSuccess = (uid : string) : any => {
   return {
-    type: types.USER_REAUTHENTICATED,
+    type: UserActions.ReauthenticatedUser,
     user: uid
   }
 }
 
-export const reauthenticationFailed = (uid, error) => {
+export const reauthenticationFailed = (uid : string, error : any) : any => {
   return {
-    type: types.USER_REAUTHENTICATION_FAILED,
+    type: UserActions.ReauthentcatingUserFailed,
     user: uid,
     error
   }
 }
 
-export const authEmailUpdateInitiated = uid => {
+export const authEmailUpdateInitiated = (uid : string) : any => {
   return {
-    type: types.USER_AUTH_EMAIL_UPDATE_INITIATED,
+    type: UserActions.UpdatingUserEmail,
     user: uid
   };
 }
 
-export const authEmailUpdated = uid => {
+export const authEmailUpdated = (uid : string) : any => {
   return {
-    type: types.USER_AUTH_EMAIL_UPDATED,
+    type: UserActions.UpdatedUserEmail,
     user: uid
   };
 }
 
-export const authEmailUpdateFailed = (uid, error) => {
+export const authEmailUpdateFailed = (uid : string, error : any) : any => {
   return {
-    type: types.USER_AUTH_EMAIL_UPDATE_FAILED,
+    type: UserActions.UpdatingUserEmailFailed,
     user: uid,
     error
   };
 }
 
-export const doUserUpdate = (data, uid) => {
+export const doUserUpdate = (newData : any, uid : any, refresh : boolean = false) : any => {
   let user = auth.currentUser;
   uid = uid || user.uid;
 
-  return dispatch => {
-    dispatch(userUpdateInitiated(uid, data));
+  return (dispatch : any) => {
+    dispatch(userUpdateInitiated(uid, newData));
 
     db.collection("users")
       .doc(uid)
-      .update(data)
+      .update(newData)
       .then(() => {
-        dispatch(userUpdated(uid, data));
+        dispatch(userUpdated(uid, newData));
 
         // dispatch user get to update props
         // with new user data
-        return dispatch(doUserGet(uid));
+        if (refresh)
+          dispatch(doUserGet());
       })
-      .catch(error => {
-        return dispatch(userUpdateFailed(uid, data, error));
+      .catch((error : any) => {
+        return dispatch(userUpdateFailed(uid, newData, error));
       })
   };
 };
 
-export const doUserEmailUpdate = email => {
+export const doUserEmailUpdate = (email : string) : any => {
   let user = auth.currentUser;
   let uid = user.uid;
 
-  return dispatch => {
-    dispatch(userUpdateInitiated(uid, {email}));
+  return (dispatch : any) => {
+    if (!isEmail(email))
+      return dispatch(authEmailUpdateFailed(uid, { message: "Invalid email provided." }));
+
+    dispatch(userUpdateInitiated(uid, { email }));
     dispatch(authEmailUpdateInitiated(uid));
 
     user.updateEmail(email)
@@ -164,31 +171,24 @@ export const doUserEmailUpdate = email => {
         dispatch(authEmailUpdated(uid));
 
         // update user in db
-        db.collection("users")
-          .doc(uid)
-          .update({ email })
-          .then(() => {
-            dispatch(userUpdated(uid, { email }));
-          })
-          .catch(error => {
-            Console.log(error)
-            return dispatch(userUpdateFailed(uid, { email }, error));
-          })
+        doUserUpdate({email}, uid);
       })
-      .catch(error => {
+      .catch((error : any) => {
         Console.log(error)
         return dispatch(userUpdateFailed(uid, { email }, error));
       })
   }
 }
 
-export const doUserEmailUpdateWithReauthentication = (email, password) => {
+export const doUserEmailUpdateWithReauthentication = (email : string, password : string) : any => {
   let user = auth.currentUser;
   let uid = user.uid;
 
-  return dispatch => {
-    dispatch(userUpdateInitiated(uid, {email}));
+  return (dispatch : any) => {
+    if (!isEmail(email))
+      return dispatch(userUpdateFailed(uid, { email }, { message: "Invalid email provided." }));
 
+    dispatch(userUpdateInitiated(uid, {email}));
     dispatch(reauthenticationInitiated(uid));
 
     let credential = firebase.auth.EmailAuthProvider.credential(user.email, password);
@@ -202,41 +202,14 @@ export const doUserEmailUpdateWithReauthentication = (email, password) => {
             dispatch(authEmailUpdated(uid));
 
             // update user in db
-            db.collection("users")
-              .doc(uid)
-              .update({email})
-              .then(() => {
-                dispatch(userUpdated(uid, {email}));
-              })
-              .catch(error => {
-                return dispatch(userUpdateFailed(uid, {email}, error));
-              })
+            doUserUpdate({ email }, uid);
           })
-          .catch(error => {
+          .catch((error : any) => {
             return dispatch(userUpdateFailed(uid, {email}, error));
           })
       })
-      .catch(error => {
+      .catch((error : any) => {
         return dispatch(reauthenticationFailed(uid, error));
       })
   }
 }
-
-export const doUserUpdateWithoutGet = (data, uid) => {
-  let user = auth.currentUser;
-  uid = uid || user.uid;
-
-  return dispatch => {
-    dispatch(userUpdateInitiated(uid, data));
-
-    db.collection("users")
-      .doc(uid)
-      .update(data)
-      .then(() => {
-        dispatch(userUpdated(uid, data));
-      })
-      .catch(error => {
-        return dispatch(userUpdateFailed(uid, data, error));
-      })
-  };
-};
