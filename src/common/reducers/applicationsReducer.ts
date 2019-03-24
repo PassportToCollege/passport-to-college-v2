@@ -1,20 +1,18 @@
 import initialState from "./initialState";
-import {
-  APPLICATIONS_GET_INITIATED, 
-  APPLICATIONS_GET_SUCCESS,
-  APPLICATION_SUBMIT_FAILED
-} from "../actions/actionTypes";
+import ActionTypes from "../actions/actionTypes";
 
-const applications = (state = initialState.applications, action) => {
+const ApplicationActions = ActionTypes.Application;
+
+const applications = (state : any = initialState.applications, action : any) : any => {
   switch (action.type) {
-    case APPLICATIONS_GET_INITIATED:
+    case ApplicationActions.GettingApplications:
       return Object.assign({}, state, {
         isGetting: true,
         hasFailed: false,
         hasGotten: false,
         page: action.page
       });
-    case APPLICATIONS_GET_SUCCESS:
+    case ApplicationActions.GotApplications:
       return Object.assign({}, state, {
         isGetting: false,
         hasFailed: false,
@@ -22,7 +20,7 @@ const applications = (state = initialState.applications, action) => {
         page: action.page,
         applications: action.applications
       });
-    case APPLICATION_SUBMIT_FAILED:
+    case ApplicationActions.GettingApplicationsFailed:
       return Object.assign({}, state, {
         isGetting: false,
         hasFailed: false,

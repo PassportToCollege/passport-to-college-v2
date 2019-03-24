@@ -1,32 +1,18 @@
 import initialState from "./initialState";
-import {
-  APPLICATION_GET_FAILED,
-  APPLICATION_GET_INITIATED,
-  APPLICATION_GET_SUCCESS,
-  APPLICATION_UPDATE_FAILED,
-  APPLICATION_UPDATE_INITIATED,
-  APPLICATION_UPDATED,
-  APPLICATION_TEST_DELETE_FAILED,
-  APPLICATION_TEST_DELETE_INITIATED,
-  APPLICATION_TEST_DELETED,
-  APPLICATION_SUBMIT_INITIATED,
-  APPLICATION_SUBMIT_FAILED,
-  APPLICATION_SUBMITTED,
-  APPLICATION_SUBMITTED_EMAIL_INITIATED,
-  APPLICATION_SUBMITTED_EMAIL_SENT,
-  APPLICATION_SUBMITTED_EMAIL_FAILED
-} from "../actions/actionTypes";
+import ActionTypes from "../actions/actionTypes";
 
-const application = (state = initialState.application, action) => {
+const ApplicationActions = ActionTypes.Application;
+
+const application = (state = initialState.application, action : any) : any => {
   switch (action.type) {
-    case APPLICATION_GET_INITIATED:
+    case ApplicationActions.GettingApplication:
       return Object.assign({}, state, {
         isGetting: true,
         hasFailed: false,
         hasGotten: false,
         user: action.user
       });
-    case APPLICATION_GET_FAILED:
+    case ApplicationActions.GettingApplicationFailed:
       return Object.assign({}, state, {
         isGetting: false,
         hasFailed: true,
@@ -34,14 +20,14 @@ const application = (state = initialState.application, action) => {
         error: action.error,
         user: action.user
       });
-    case APPLICATION_GET_SUCCESS:
+    case ApplicationActions.GotApplication:
       return Object.assign({}, state, {
         isGetting: false,
         hasFailed: false,
         hasGotten: true,
         application: action.application
       });
-    case APPLICATION_UPDATE_INITIATED:
+    case ApplicationActions.UpdatingApplication:
       return Object.assign({}, state, {
         isUpdating: true,
         hasUpdated: false,
@@ -49,7 +35,7 @@ const application = (state = initialState.application, action) => {
         user: action.user,
         data: action.data
       });
-    case APPLICATION_UPDATED:
+    case ApplicationActions.UpdatedApplication:
       return Object.assign({}, state, {
         isUpdating: false,
         hasUpdated: true,
@@ -57,7 +43,7 @@ const application = (state = initialState.application, action) => {
         user: action.user,
         data: action.data
       });
-    case APPLICATION_UPDATE_FAILED:
+    case ApplicationActions.UpdatingApplicationFailed:
       return Object.assign({}, state, {
         isUpdating: false,
         hasUpdated: false,
@@ -66,7 +52,7 @@ const application = (state = initialState.application, action) => {
         data: action.data,
         error: action.error
       });
-    case APPLICATION_TEST_DELETE_INITIATED:
+    case ApplicationActions.DeletingTest:
       return Object.assign({}, state, {
         isDeleting: true,
         hasDeleted: false,
@@ -74,7 +60,7 @@ const application = (state = initialState.application, action) => {
         user: action.user,
         test: action.test
       });
-    case APPLICATION_TEST_DELETE_FAILED:
+    case ApplicationActions.DeletingTestFailed:
       return Object.assign({}, state, {
         isDeleting: false,
         hasDeleted: false,
@@ -83,7 +69,7 @@ const application = (state = initialState.application, action) => {
         test: action.test,
         error: action.error
       });
-    case APPLICATION_TEST_DELETED:
+    case ApplicationActions.DeletingTestFailed:
       return Object.assign({}, state, {
         isDeleting: false,
         hasDeleted: true,
@@ -91,7 +77,7 @@ const application = (state = initialState.application, action) => {
         user: action.user,
         test: action.test
       });
-    case APPLICATION_SUBMIT_INITIATED:
+    case ApplicationActions.SubmittingApplication:
       return Object.assign({}, state, {
         isSubmitting: true,
         hasSubmitted: false,
@@ -99,7 +85,7 @@ const application = (state = initialState.application, action) => {
         user: action.user,
         date: action.date
       });
-    case APPLICATION_SUBMIT_FAILED:
+    case ApplicationActions.SubmittingApplicationFailed:
       return Object.assign({}, state, {
         isSubmitting: false,
         hasSubmitted: false,
@@ -108,7 +94,7 @@ const application = (state = initialState.application, action) => {
         date: action.date,
         error: action.error
       });
-    case APPLICATION_SUBMITTED:
+    case ApplicationActions.SubmittedApplication:
       return Object.assign({}, state, {
         isSubmitting: false,
         hasSubmitted: true,
@@ -116,21 +102,21 @@ const application = (state = initialState.application, action) => {
         user: action.user,
         date: action.date
       });
-    case APPLICATION_SUBMITTED_EMAIL_INITIATED:
+    case ApplicationActions.SendingSubmissionEmail:
       return Object.assign({}, state, {
         isSending: true,
         hasSent: false,
         emailHasFailed: false,
         user: action.user
       });
-    case APPLICATION_SUBMITTED_EMAIL_SENT:
+    case ApplicationActions.SentSubmissionEmail:
       return Object.assign({}, state, {
         isSending: false,
         hasSent: true,
         emailHasFailed: false,
         user: action.user
       });
-    case APPLICATION_SUBMITTED_EMAIL_FAILED:
+    case ApplicationActions.SendingSubmissionEmailFailed:
       return Object.assign({}, state, {
         isSending: false,
         hasSent: false,
