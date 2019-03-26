@@ -1,5 +1,6 @@
 import iUser from "../imodels/iUser";
 import iContentEditable from "./iContentEditable";
+import iPost from "./iPost";
 
 export default interface iComment {
   User : iUser;
@@ -11,6 +12,6 @@ export default interface iComment {
   isConversation : boolean;
   isDeleted : boolean;
   hasReplies : boolean;
-  replies : Array<string>;
+  replies : string[];
   postedOn : Date;
 }

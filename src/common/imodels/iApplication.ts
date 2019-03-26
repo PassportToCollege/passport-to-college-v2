@@ -39,10 +39,17 @@ export enum USTest {
   ACT = 2,
 }
 
+export interface iApplicationState {
+  pending : boolean,
+  draft : boolean,
+  accepted : boolean,
+  rejected : boolean
+}
+
 export default interface iApplication {
   User : iUser;
   readonly uid : string;
-  state : Object;
+  state : iApplicationState;
   essay? : iContentEditable;
   educationLevel? : EducationLevel;
   gpa? : number;

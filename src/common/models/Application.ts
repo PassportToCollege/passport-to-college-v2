@@ -3,7 +3,8 @@ import iApplication, {
   IncomeLevel,
   Interest,
   WorkEthic,
-  USTest
+  USTest,
+  iApplicationState
 } from "../imodels/iApplication";
 import iContentEditable from "../imodels/iContentEditable";
 import User from "./User";
@@ -11,7 +12,7 @@ import User from "./User";
 export default class Application implements iApplication {
   User : User;
   uid : string;
-  state : any;
+  state : iApplicationState;
   essay?: iContentEditable;
   educationLevel?: EducationLevel;
   gpa?: number;
@@ -20,7 +21,7 @@ export default class Application implements iApplication {
   score?: number;
   startedOn?: Date;
   usTest?: USTest;
-  tests?: any;
+  tests?: Object;
   workEthic?: WorkEthic;
   lastSchool?: string;
 

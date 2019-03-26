@@ -716,7 +716,7 @@ export const doChangeEmailAddress = (email : string) : any => {
 
     user.updateEmail(email)
       .then(() => {
-        dispatch(doUserUpdate({ email, emailConfirmed: false }));
+        dispatch(doUserUpdate({ email, emailConfirmed: false }, user.uid, true));
         dispatch(changedEmailAddress(email));
       })
       .catch((error : any) => {

@@ -1,16 +1,22 @@
 import iUser from "./iUser";
 import iContentEditable from "./iContentEditable";
 
+export interface iPostState {
+  draft : boolean;
+  archived : boolean;
+  published : boolean;
+}
+
 export default interface iPost {
-  id : string;
-  author : iUser;
+  readonly id : string;
+  author? : iUser;
   title : string;
   excerpt : string;
   full : iContentEditable;
   hasHero : boolean;
   createdAt : Date;
-  state : Object;
-  conversations : Array<string>;
-  category : Object;
-  likes : Object
+  state : iPostState;
+  conversations? : string[];
+  category? : Object;
+  likes? : Object
 } 
