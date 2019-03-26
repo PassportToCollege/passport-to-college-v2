@@ -19,6 +19,8 @@ export default class Post implements iPost {
 
   constructor(author : User, postData : iPost) {
     this.author = author;
+    this.id = postData.id || uid(20);
+
     this.title = "";
     this.excerpt = "";
     this.full = {
