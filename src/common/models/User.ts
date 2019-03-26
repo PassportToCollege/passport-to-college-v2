@@ -5,19 +5,25 @@ import { isEmail } from "../utils";
 export default class User implements iUser {
   uid: string;
   email: string;
-  name: any;
+  name: {
+    first : string,
+    middle? : string,
+    last : string
+  };
   isAdmin: boolean;
   isApplicant: boolean;
   isStudent: boolean;
   isStaff: boolean;
   emailConfirmed: boolean;
   hasProfilePicture: boolean;
-  address: any;
-  gender: string;
-  role: string;
-  dob: number;
-  phone: string;
-  photo: string;
+  address: {
+    country : string
+  };
+  gender?: string;
+  role?: string;
+  dob?: number;
+  phone?: string;
+  photo?: string;
 
 
   constructor(user: any) {
@@ -31,7 +37,7 @@ export default class User implements iUser {
     this.isStaff = false;
     this.emailConfirmed = false;
     this.hasProfilePicture = false;
-    this.address = {};
+    this.address = { country: "" };
     this.gender = "";
     this.role = "";
     this.dob = 0;

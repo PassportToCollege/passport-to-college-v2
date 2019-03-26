@@ -42,7 +42,7 @@ export enum USTest {
 export default interface iApplication {
   User : iUser;
   readonly uid : string;
-  state : any;
+  state : Object;
   essay? : iContentEditable;
   educationLevel? : EducationLevel;
   gpa? : number;
@@ -51,7 +51,7 @@ export default interface iApplication {
   score? : number;
   startedOn? : Date;
   usTest? : USTest;
-  tests? : any;
+  tests? : Object;
   workEthic? : WorkEthic;
   lastSchool? : string;
 }

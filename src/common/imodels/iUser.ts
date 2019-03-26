@@ -10,14 +10,20 @@ export enum UserType {
 export default interface User {
   readonly uid: string;
   email: string;
-  name: any;
+  name: {
+    first : string,
+    middle? : string,
+    last: string
+  };
+  address: {
+    country : string
+  };
   isAdmin?: boolean;
   isApplicant?: boolean;
   isStudent?: boolean;
   isStaff?: boolean;
   emailConfirmed?: boolean;
   hasProfilePicture?: boolean;
-  address?: any;
   gender?: string;
   role?: string;
   dob?: number;

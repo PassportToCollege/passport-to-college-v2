@@ -1,9 +1,10 @@
 import iUser from "./iUser"
+import iContentEditable from "./iContentEditable";
 
 export default interface iStudent {
   User : iUser;
   readonly uid : string;
-  bio? : any;
+  bio? : iContentEditable;
   enrollmentYear? : number;
   graduationYear? : number;
   university? : string;
