@@ -16,6 +16,7 @@
     "@fortawesome/react-fontawesome": "0.0.19",
     "@google-cloud/storage": "^1.6.0",
     "@types/cookie-parser": "^1.4.1",
+    "@types/lodash": "^4.14.123",
     "@types/react-helmet": "^5.0.8",
     "@types/react-redux": "^7.0.5",
     "@types/universal-cookie": "^2.2.0",

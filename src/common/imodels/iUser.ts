@@ -1,4 +1,12 @@
 
+export enum UserType {
+  Any = 0,
+  Admin = 1,
+  Student = 2,
+  Applicant = 3,
+  Staff = 4,
+}
+
 export default interface User {
   readonly uid: string;
   email: string;
