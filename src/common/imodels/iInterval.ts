@@ -1,6 +1,5 @@
 export default interface iInterval {
-  start : Function;
-  stop : Function;
-  restart : Function;
-  reset : Function;
+  functionToRun : Function; /* function to run when interval ticks */
+  interval : number; /* interval in milliseconds */
+  running?: NodeJS.Timer /* interval returned from setInterval */
 }

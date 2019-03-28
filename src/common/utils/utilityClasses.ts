@@ -6,35 +6,6 @@ import BadWords from "./badwords.en";
 import { convertBlocksToText, isEmail } from ".";
 import { auth } from "./firebase";
 
-const cookies = new Cookies();
-
-export class SSID {
-  constructor(user) {
-    this.user = user || {};
-  }
-
-  create() {
-    const d = {
-      uid: this.user.uid,
-      isAdmin: this.user.isAdmin,
-      isApplicant: this.user.isApplicant,
-      isStaff: this.user.isStaff,
-      isStudent: this.user.isStudent,
-      createdAt: new Date()
-    }
-
-    return cookies.set("ssid", d, {
-      path: "/",
-      maxAge: 60 * 60 * 24 * 3
-    });
-  }
-
-  destroy() {
-    return cookies.remove("ssid", {
-      path: "/"
-    });
-  }
-}
 
 export class Comment {
   constructor(user = {}, content = {}, post) {
@@ -160,42 +131,6 @@ export class Reply extends Comment {
   }
 }
 
-export class Interval {
-  constructor(fn, time = 2000) {
-    if ("function" === typeof fn) {
-      this.fn = fn;
-    } else {
-      this.fn = () => {
-        console.log("interval running");
-      };
-    }
-
-    this.time = time;
-  }
-
-  start() {
-    this.interval = setInterval(() => {
-      this.fn();
-    }, this.time);
-
-    return this.interval;
-  }
-
-  stop() {
-    clearInterval(this.interval);
-    return this;
-  }
-
-  restart() {
-    return this.stop().start();
-  }
-
-  reset(time) {
-    this.time = time;
-
-    return this.restart();
-  }
-}
 
 export class Post {
   constructor(postOrTitle = "", author = "", excerpt = "", full = {}, meta = {}) {
