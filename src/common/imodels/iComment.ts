@@ -9,9 +9,9 @@ export default interface iComment {
     html : iContentEditable
   };
   Post : iPost;
+  postedOn : Date;
   isConversation : boolean;
   isDeleted : boolean;
   hasReplies : boolean;
-  replies : string[];
-  postedOn : Date;
+  replies? : string[];
 }
