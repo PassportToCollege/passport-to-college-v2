@@ -11,7 +11,7 @@ export default class Post implements iPost {
   excerpt : string;
   full : iContentEditable;
   hasHero : boolean;
-  createdAt : Date;
+  createdAt : number | Date;
   state : iPostState;
   conversations? : string[];
   category? : Object;
@@ -40,7 +40,7 @@ export default class Post implements iPost {
     }
   }
 
-  getPostData(useCase : string = "display") : Object {
+  public getPostData(useCase : string = "display") : iPost {
     const {
       id, title, author, excerpt, full,
       createdAt, category, state, conversations,
@@ -49,7 +49,7 @@ export default class Post implements iPost {
 
     return {
       id, title, author, excerpt, full,
-      createdAt: useCase === "save" ? createdAt.getTime() : createdAt,
+      createdAt: useCase === "save" ? (<Date>createdAt).getTime() : createdAt,
       category, state, conversations,
       likes, hasHero
     };

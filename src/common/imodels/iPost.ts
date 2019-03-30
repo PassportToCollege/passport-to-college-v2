@@ -14,7 +14,7 @@ export default interface iPost {
   excerpt : string;
   full : iContentEditable;
   hasHero : boolean;
-  createdAt : Date;
+  createdAt : number | Date;
   state : iPostState;
   conversations? : string[];
   category? : Object;
