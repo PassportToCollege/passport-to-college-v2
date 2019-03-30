@@ -59,38 +59,6 @@ export class Post {
   }
 }
 
-export class Feature extends Post {
-  constructor(post = {}, active = true, student = "", expiration = "") {
-    super(post);
-
-    this.isFeature = true;
-    this.category = { student_features: true };
-    this.isActive = !!active;
-    this.student = student;
-    this.expiration = expiration;
-  }
-
-  get data() {
-    return this.getData();
-  }
-
-  getData() {
-    const {
-      id, title, author,excerpt, full,
-      createdAt, category, state, conversations,
-      likes, isFeature, student, expiration, hasHero,
-      isActive
-    } = this;
-
-    return {
-      id, title, author, excerpt, full,
-      createdAt, category, state, conversations,
-      likes, isFeature, student, expiration, hasHero,
-      isActive
-    };
-  }
-}
-
 export class Accomplishment extends Post {
   constructor(post = {}, student = "") {
     super(post);

@@ -23,7 +23,7 @@ export default class Feature extends Post implements iFeature
     this.expiration = expiration;
   }
 
-  public getFeatureData() : iPost | iFeature {
+  public getFeatureData(useCase: string = "display") : iPost | iFeature {
     const {
       id, title, author, excerpt, full,
       createdAt, category, state, conversations,
@@ -33,7 +33,8 @@ export default class Feature extends Post implements iFeature
 
     return {
       id, title, author, excerpt, full,
-      createdAt, category, state, conversations,
+      createdAt: useCase === "save" ? (<Date>createdAt).getTime() : createdAt, 
+      category, state, conversations,
       likes, isFeature, Student, expiration, hasHero,
       isActive
     };
