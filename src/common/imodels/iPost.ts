@@ -1,15 +1,24 @@
 import iUser from "./iUser";
 import iContentEditable from "./iContentEditable";
+import { iStringBooleanPair } from "./iObjectTypes";
 
-export interface iPostState {
+export enum PostUpdateType
+{
+  Decrease = -1,
+  Increase = 1
+}
+
+export interface iPostState 
+{
   draft : boolean;
   archived : boolean;
   published : boolean;
 }
 
-export default interface iPost {
+export default interface iPost 
+{
   readonly id : string;
-  author? : iUser;
+  author : string;
   title : string;
   excerpt : string;
   full : iContentEditable;
@@ -17,6 +26,6 @@ export default interface iPost {
   createdAt : number | Date;
   state : iPostState;
   conversations? : string[];
-  category? : Object;
-  likes? : Object
+  category? : iStringBooleanPair;
+  likes? : iStringBooleanPair
 } 

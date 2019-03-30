@@ -1,5 +1,6 @@
 import iUser from "./iUser";
 import iContentEditable from "./iContentEditable";
+import { iStringTestPair } from "./iObjectTypes";
 
 export enum EducationLevel {
   NoHighSchool = "no high school",
@@ -58,7 +59,7 @@ export default interface iApplication {
   score? : number;
   startedOn? : Date;
   usTest? : USTest;
-  tests? : Object;
+  tests? : iStringTestPair;
   workEthic? : WorkEthic;
   lastSchool? : string;
 }

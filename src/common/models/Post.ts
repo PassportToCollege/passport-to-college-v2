@@ -3,21 +3,22 @@ import { uid } from "rand-token";
 import User from "../models/User";
 import iContentEditable from "../imodels/iContentEditable";
 import iPost, { iPostState } from "../imodels/iPost";
+import { iStringBooleanPair } from "../imodels/iObjectTypes";
 
 export default class Post implements iPost {
   readonly id : string;
-  author : User;
+  author : string;
   title : string;
   excerpt : string;
   full : iContentEditable;
   hasHero : boolean;
   createdAt : number | Date;
   state : iPostState;
+  category? : iStringBooleanPair;
+  likes? : iStringBooleanPair;
   conversations? : string[];
-  category? : Object;
-  likes? : Object;
 
-  constructor(author : User, postData : iPost) {
+  constructor(author : string, postData : iPost) {
     this.author = author;
     this.id = postData.id || uid(20);
 
