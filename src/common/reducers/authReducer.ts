@@ -8,7 +8,7 @@ const auth = (state : any = initialState.auth, action : any) : any => {
     case Auth.RemoveErrors :
       return Object.assign({}, state, {
         isAuthorizing: false,
-        hasFailed: false,
+        failedToAuthorize: false,
         isCreating: false,
         isAddingToDbs: false,
         failedToSignInWithSocial: false,
@@ -20,21 +20,21 @@ const auth = (state : any = initialState.auth, action : any) : any => {
       return Object.assign({}, state, {
         isAuthorizing: true,
         hasAuthorized: false,
-        hasFailed: false,
+        failedToAuthorize: false,
         activeUser: action.user
       });
     case Auth.GettingUser:
       return Object.assign({}, state, {
         isAuthorizing: false,
         hasAuthorized: false,
-        hasFailed: false,
+        failedToAuthorize: false,
         activeUser: null
       });
     case Auth.SignedIn:
       return Object.assign({}, state, {
         isAuthorizing: false,
         hasAuthorized: true,
-        hasFailed: false,
+        failedToAuthorize: false,
         activeUser: action.user
       });
     case Auth.SignInFailed:
@@ -42,7 +42,7 @@ const auth = (state : any = initialState.auth, action : any) : any => {
       return Object.assign({}, state, {
         hasFailed: true,
         isAuthorizing: false,
-        hasAuthorized: false,
+        failedToAuthorize: false,
         activeUser: false,
         error: action.error
       });
@@ -52,7 +52,7 @@ const auth = (state : any = initialState.auth, action : any) : any => {
         hasAuthorized: false,
         hasSignedInWithSocial: false,
         hasSignedOut: true,
-        hasFailed: false,
+        failedToAuthorize: false,
         activeUser: false
       });
     case Auth.SignInAuthorizing_Social:
@@ -148,7 +148,7 @@ const auth = (state : any = initialState.auth, action : any) : any => {
       return Object.assign({}, state, {
         isSending: true,
         hasSent: false,
-        hasFailed: false,
+        failedToSendEmail: false,
         email: action.email
       });
     case Auth.ResetPasswordEmailSent:
@@ -156,7 +156,7 @@ const auth = (state : any = initialState.auth, action : any) : any => {
       return Object.assign({}, state, {
         isSending: false,
         hasSent: true,
-        hasFailed: false,
+        failedToSendEmail: false,
         email: action.email
       });
     case Auth.ResetPasswordEmailFailed:
@@ -164,7 +164,7 @@ const auth = (state : any = initialState.auth, action : any) : any => {
       return Object.assign({}, state, {
         isSending: false,
         hasSent: false,
-        hasFailed: true,
+        failedToSendEmail: true,
         email: action.email,
         error: action.error
       });

@@ -1,56 +1,40 @@
 import initialState from "./initialState";
-import { 
-  POST_CREATE_INITIATED, 
-  POST_CREATE_FAILED, 
-  POST_CREATED,
-  POST_GET_INITIATED,
-  POST_GET_FAILED,
-  POST_GET_DONE,
-  POST_UPDATE_INITIATED,
-  POST_UPDATE_FAILED,
-  POST_UPDATED,
-  POST_UPLOAD_HERO_INITIATED,
-  POST_UPLOAD_HERO_FAILED,
-  POST_HERO_UPLOADED,
-  POST_GET_HERO_INITIATED,
-  POST_GET_HERO_DONE,
-  POST_GET_HERO_FAILED,
-  POST_UPDATE_LOCAL_CONVERSATIONS_COUNT,
-  POST_DELETE_INITIATED,
-  POST_DELETE_FAILED,
-  POST_DELETED
-} from "../actions/actionTypes";
+import ActionTypes from "../actions/actionTypes";
+import iAction from "../imodels/iAction";
+import iAppState from "../imodels/iAppState";
 
-const post = (state = initialState.post, action) => {
+const PostActions = ActionTypes.Post;
+
+const post = (state : iAppState = initialState.Post, action : iAction) : iAppState => {
   switch (action.type) {
-    case POST_CREATE_INITIATED:
+    case PostActions.CreatingPost:
       return Object.assign({}, state, {
         isCreating: true,
         hasCreated: false,
         postCreationFailed: false
       });
-    case POST_CREATE_FAILED:
+    case PostActions.CreatingPostFailed:
       return Object.assign({}, state, {
         isCreating: false,
         hasCreated: false,
         postCreationFailed: true,
         error: action.error
       });
-    case POST_CREATED:
+    case PostActions.CreatedPost:
       return Object.assign({}, state, {
         isCreating: false,
         hasCreated: true,
         postCreationFailed: false,
         id: action.id
       });
-    case POST_GET_INITIATED:
+    case PostActions.GettingPost:
       return Object.assign({}, state, {
         isGetting: true,
         hasGotten: false,
         postGetFailed: false,
         id: action.id
       });
-    case POST_GET_FAILED:
+    case PostActions.GettingPostFailed:
       return Object.assign({}, state, {
         isGetting: false,
         hasGotten: false,
@@ -58,14 +42,14 @@ const post = (state = initialState.post, action) => {
         id: action.id,
         error: action.error
       });
-    case POST_GET_DONE:
+    case PostActions.GotPost:
       return Object.assign({}, state, {
         isGetting: false,
         hasGotten: true,
         postGetFailed: false,
         post: action.post
       });
-    case POST_UPDATE_INITIATED:
+    case PostActions.UpdatingPost:
       return Object.assign({}, state, {
         isUpdating: true,
         hasUpdated: false,
@@ -73,7 +57,7 @@ const post = (state = initialState.post, action) => {
         data: action.data,
         id: action.id
       });
-    case POST_UPDATE_FAILED:
+    case PostActions.UpdatingPostFailed:
       return Object.assign({}, state, {
         isUpdating: false,
         hasUpdated: false,
@@ -82,53 +66,53 @@ const post = (state = initialState.post, action) => {
         id: action.id,
         error: action.error
       });
-    case POST_UPDATED:
+    case PostActions.UpdatedPost:
       return Object.assign({}, state, {
         isUpdating: false,
         hasUpdated: true,
         postUpdateFailed: false
       });
-    case POST_UPDATE_LOCAL_CONVERSATIONS_COUNT:
+    case PostActions.UpdateLocalConversationsCount:
       return Object.assign({}, state, {
         updatedLocalConversationsCount: true,
         post: Object.assign({}, state.post, {
           conversations: action.updateType === "inc" ? state.post.conversations + 1 : state.post.conversations - 1
         })
       });
-    case POST_UPLOAD_HERO_INITIATED:
+    case PostActions.UpdatingHero:
       return Object.assign({}, state, {
         isUploading: true,
         hasUploaded: false,
         heroUploadFailed: false
       });
-    case POST_HERO_UPLOADED:
+    case PostActions.UpdatedHero:
       return Object.assign({}, state, {
         isUploading: false,
         hasUploaded: true,
         heroUploadFailed: false
       });
-    case POST_UPLOAD_HERO_FAILED:
+    case PostActions.UpdatingHeroFailed:
       return Object.assign({}, state, {
         isUploading: false,
         hasUploaded: false,
         heroUploadFailed: true,
         error: action.error
       });
-    case POST_GET_HERO_INITIATED:
+    case PostActions.GettingHero:
       return Object.assign({}, state, {
         gettingHero: true,
         gotHero: false,
         heroGetFailed: false,
         id: action.id
       });
-    case POST_GET_HERO_DONE:
+    case PostActions.GotHero:
       return Object.assign({}, state, {
         gettingHero: false,
         gotHero: true,
         heroGetFailed: false,
         hero: action.hero
       });
-    case POST_GET_HERO_FAILED:
+    case PostActions.GettingHeroFailed:
       return Object.assign({}, state, {
         gettingHero: false,
         gotHero: false,
@@ -136,14 +120,14 @@ const post = (state = initialState.post, action) => {
         id: action.id,
         error: action.error
       });
-    case POST_DELETE_INITIATED:
+    case PostActions.DeletingPost:
       return Object.assign({}, state, {
         deletingPost: true,
         deletedPost: false,
         failedToDeletePost: false,
         dPost: action.post
       });
-    case POST_DELETE_FAILED:
+    case PostActions.DeletingPostFailed:
       return Object.assign({}, state, {
         deletingPost: false,
         deletedPost: false,
@@ -151,7 +135,7 @@ const post = (state = initialState.post, action) => {
         dPost: action.post,
         error: action.error
       });
-    case POST_DELETED:
+    case PostActions.DeletedPost:
       return Object.assign({}, state, {
         deletingPost: false,
         deletedPost: true,

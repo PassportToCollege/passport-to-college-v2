@@ -1,21 +1,22 @@
 import initialState from "./initialState";
 import ActionTypes from "../actions/actionTypes";
+import iAppState from "../imodels/iAppState";
 
 const ApplicationActions = ActionTypes.Application;
 
-const application = (state = initialState.application, action : any) : any => {
+const application = (state : iAppState = initialState.Application, action : any) : iAppState => {
   switch (action.type) {
     case ApplicationActions.GettingApplication:
       return Object.assign({}, state, {
         isGetting: true,
-        hasFailed: false,
+        failedToGetApplication: false,
         hasGotten: false,
         user: action.user
       });
     case ApplicationActions.GettingApplicationFailed:
       return Object.assign({}, state, {
         isGetting: false,
-        hasFailed: true,
+        failedToGetApplication: true,
         hasGotten: false,
         error: action.error,
         user: action.user
@@ -23,7 +24,7 @@ const application = (state = initialState.application, action : any) : any => {
     case ApplicationActions.GotApplication:
       return Object.assign({}, state, {
         isGetting: false,
-        hasFailed: false,
+        failedToGetApplication: false,
         hasGotten: true,
         application: action.application
       });
@@ -31,7 +32,7 @@ const application = (state = initialState.application, action : any) : any => {
       return Object.assign({}, state, {
         isUpdating: true,
         hasUpdated: false,
-        hasFailed: false,
+        failedToUpdateApplication: false,
         user: action.user,
         data: action.data
       });
@@ -39,7 +40,7 @@ const application = (state = initialState.application, action : any) : any => {
       return Object.assign({}, state, {
         isUpdating: false,
         hasUpdated: true,
-        hasFailed: false,
+        failedToUpdateApplication: false,
         user: action.user,
         data: action.data
       });
@@ -47,33 +48,33 @@ const application = (state = initialState.application, action : any) : any => {
       return Object.assign({}, state, {
         isUpdating: false,
         hasUpdated: false,
-        hasFailed: true,
+        failedToUpdateApplication: true,
         user: action.user,
         data: action.data,
         error: action.error
       });
     case ApplicationActions.DeletingTest:
       return Object.assign({}, state, {
-        isDeleting: true,
-        hasDeleted: false,
-        hasFailed: false,
+        deletingTest: true,
+        deletedTest: false,
+        failedToDeleteTest: false,
         user: action.user,
         test: action.test
       });
     case ApplicationActions.DeletingTestFailed:
       return Object.assign({}, state, {
-        isDeleting: false,
-        hasDeleted: false,
-        hasFailed: true,
+        deletingTest: false,
+        deletedTest: false,
+        failedToDeleteTest: true,
         user: action.user,
         test: action.test,
         error: action.error
       });
     case ApplicationActions.DeletingTestFailed:
       return Object.assign({}, state, {
-        isDeleting: false,
-        hasDeleted: true,
-        hasFailed: false,
+        deletingTest: false,
+        deletedTest: true,
+        failedToDeleteTest: false,
         user: action.user,
         test: action.test
       });
@@ -104,23 +105,23 @@ const application = (state = initialState.application, action : any) : any => {
       });
     case ApplicationActions.SendingSubmissionEmail:
       return Object.assign({}, state, {
-        isSending: true,
+        sendingSubmissionEmail: true,
         hasSent: false,
         emailHasFailed: false,
         user: action.user
       });
     case ApplicationActions.SentSubmissionEmail:
       return Object.assign({}, state, {
-        isSending: false,
-        hasSent: true,
-        emailHasFailed: false,
+        sendingSubmissionEmail: false,
+        sentSubmissionEmail: true,
+        sendingSubmissionEmailFailed: false,
         user: action.user
       });
     case ApplicationActions.SendingSubmissionEmailFailed:
       return Object.assign({}, state, {
-        isSending: false,
-        hasSent: false,
-        emailHasFailed: true,
+        sendingSubmissionEmail: false,
+        sentSubmissionEmail: false,
+        sendingSubmissionEmailFailed: true,
         user: action.user,
         error: action.error
       });
