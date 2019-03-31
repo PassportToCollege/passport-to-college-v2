@@ -33,7 +33,6 @@ export const doApplicationsGet = page => {
       db.collection("applications")
         .where("state.draft", "==", false)
         .orderBy("startedOn", "desc")
-        .limit(-1)
         .get()
         .then(snapshots => {
           if (snapshots.empty)
