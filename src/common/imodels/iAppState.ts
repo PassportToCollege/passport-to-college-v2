@@ -3,6 +3,7 @@ import iUser from "./iUser";
 import Post from "../models/Post";
 import User from "../models/User";
 import Application from "../models/Application";
+import PostCategory from "../models/PostCategory";
 
 interface ApplicationState
 {
@@ -79,6 +80,33 @@ interface PostState
   failedToDeletePost? : boolean;
 }
 
+interface PostCategoryState
+{
+  slug? : string;
+  error? : iError;
+  uCategory? : PostCategory;
+
+  gettingCategory? : boolean;
+  gotCategory? : boolean;
+  getCategoryFailed? : boolean;
+
+  isAdding? : boolean;
+  hasAdded? : boolean;
+  categoryAddFailed? : boolean;
+
+  isUpdating? : boolean;
+  hasUpdated? : boolean;
+  updateFailed? : boolean;
+
+  gettingCategories? : boolean;
+  gotCategories? : boolean;
+  getCategoriesFailed? : boolean;
+
+  updatingCategoryPosts? : boolean;
+  updatedCategoryPosts? : boolean;
+  failedToUpdatedCategoryPosts? : boolean;
+}
+
 interface HamburgerState
 {
   current : number;
@@ -138,6 +166,7 @@ export default interface iAppState {
   Application : ApplicationState;
   Applications : ApplicationsState;
   Post : PostState;
+  PostCategory: PostCategoryState;
   Hamburger : HamburgerState;
   Menu : MenuState;
   Auth : AuthState;

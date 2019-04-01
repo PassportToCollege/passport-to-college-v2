@@ -1,38 +1,21 @@
-import initialState from "./initialState";
-import {
-  CATEGORY_GET_INITIATED,
-  CATEGORIES_GET_DONE,
-  CATEGORY_GET_FAILED,
-  CATEGORY_ADD_INITIATED,
-  CATEGORY_ADD_FAILED,
-  CATEGORY_ADDED,
-  CATEGORIES_GET_INITIATED,
-  CATEGORY_GET_DONE,
-  CATEGORIES_GET_FAILED,
-  CATEGORY_UPDATE_INITIATED,
-  CATEGORY_UPDATE_FAILED,
-  CATEGORY_UPDATED,
-  UPDATE_CATEGORY_POSTS_INITIATED,
-  UPDATE_CATEGORY_POSTS_FAILED,
-  CATEGORY_POSTS_UPDATED
-} from "../actions/actionTypes";
+import iAppState from "../imodels/iAppState";
+import iAction from "../imodels/iAction";
 
-const postCategories = (state = initialState.postCategories, action) => {
+import initialState from "./initialState";
+import ActionTypes from "../actions/actionTypes";
+
+const CategoryActions = ActionTypes.Category;
+
+const postCategories = (state : iAppState["PostCategory"] = initialState.PostCategory, action : iAction) : iAppState["PostCategory"] => {
   switch (action.type) {
-    case CATEGORY_GET_INITIATED:
+    case CategoryActions.GettingCategory:
       return Object.assign({}, state, {
         gettingCategory: true,
         gotCategory: false,
         getCategoryFailed: false,
-        isAdding: false,
-        hasAdded: false,
-        categoryAddFailed: false,
-        isUpdating: false,
-        hasUpdated: true,
-        updateFailed: false,
         slug: action.slug
       });
-    case CATEGORY_GET_FAILED:
+    case CategoryActions.GettingCategoryFailed:
       return Object.assign({}, state, {
         gettingCategory: false,
         gotCategory: false,
@@ -40,66 +23,60 @@ const postCategories = (state = initialState.postCategories, action) => {
         slug: action.slug,
         error: action.error
       });
-    case CATEGORY_GET_DONE:
+    case CategoryActions.GotCategory:
       return Object.assign({}, state, {
         gettingCategory: false,
         gotCategory: true,
         getCategoryFailed: false,
         category: action.category
       });
-    case CATEGORY_ADD_INITIATED:
+    case CategoryActions.AddingCategory:
       return Object.assign({}, state, {
         isAdding: true,
         hasAdded: false,
         categoryAddFailed: false
       });
-    case CATEGORY_ADD_FAILED:
+    case CategoryActions.AddingCategoryFailed:
       return Object.assign({}, state, {
         isAdding: false,
         hasAdded: false,
         categoryAddFailed: true,
         error: action.error
       });
-    case CATEGORY_ADDED:
+    case CategoryActions.AddedCategory:
       return Object.assign({}, state, {
         isAdding: false,
         hasAdded: true,
         categoryAddFailed: false
       });
-    case CATEGORIES_GET_INITIATED:
+    case CategoryActions.GettingCategories:
       return Object.assign({}, state, {
         gettingCategories: true,
         gotCategories: false,
-        getCategoriesFailed: false,
-        isAdding: false,
-        hasAdded: false,
-        categoryAddFailed: false,
-        isUpdating: false,
-        hasUpdated: true,
-        updateFailed: false
+        getCategoriesFailed: false
       });
-    case CATEGORIES_GET_DONE:
+    case CategoryActions.GotCategories:
       return Object.assign({}, state, {
         gettingCategories: false,
         gotCategories: true,
         getCategoriesFailed: false,
         categories: action.categories
       });
-    case CATEGORIES_GET_FAILED:
+    case CategoryActions.GettingCategoriesFailed:
       return Object.assign({}, state, {
         gettingCategories: false,
         gotCategories: false,
         getCategoriesFailed: true,
         error: action.error
       });
-    case CATEGORY_UPDATE_INITIATED:
+    case CategoryActions.UpdatingCategory:
       return Object.assign({}, state, {
         isUpdating: true,
         hasUpdated: false,
         updateFailed: false,
         slug: action.slug
       });
-    case CATEGORY_UPDATE_FAILED:
+    case CategoryActions.UpdatingCategoryFailed:
       return Object.assign({}, state, {
         isUpdating: false,
         hasUpdated: false,
@@ -107,21 +84,21 @@ const postCategories = (state = initialState.postCategories, action) => {
         slug: action.slug,
         error: action.error
       });
-    case CATEGORY_UPDATED:
+    case CategoryActions.UpdatedCategory:
       return Object.assign({}, state, {
         isUpdating: false,
         hasUpdated: true,
         updateFailed: false,
         slug: action.slug
       });
-    case UPDATE_CATEGORY_POSTS_INITIATED:
+    case CategoryActions.UpdatingCategoryPosts:
       return Object.assign({}, state, {
         updatingCategoryPosts: true,
         updatedCategoryPosts: false,
         failedToUpdateCategoryPosts: false,
         slug: action.slug
       });
-    case UPDATE_CATEGORY_POSTS_FAILED:
+    case CategoryActions.UpdatingCategoryPostsFailed:
       return Object.assign({}, state, {
         updatingCategoryPosts: false,
         updatedCategoryPosts: false,
@@ -129,13 +106,13 @@ const postCategories = (state = initialState.postCategories, action) => {
         slug: action.slug,
         error: action.error
       });
-    case CATEGORY_POSTS_UPDATED:
+    case CategoryActions.UpdatedCategoryPosts:
       return Object.assign({}, state, {
         updatingCategoryPosts: false,
         updatedCategoryPosts: true,
         failedToUpdateCategoryPosts: false,
         slug: null,
-        uCategory: action.updatedCategory
+        uCategory: action.category
       });
     default:
       return state;

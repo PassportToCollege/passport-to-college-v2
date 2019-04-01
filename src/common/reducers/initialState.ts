@@ -17,7 +17,7 @@ const initialState : iAppState =  {
   features: {},
   post: {},
   posts: {},
-  postCategories: {},
+  PostCategory: {},
   comments: {},
 };
 
