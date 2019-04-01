@@ -6,6 +6,7 @@ import Application from "../models/Application";
 import Post from "../models/Post";
 import Comment from "../models/Comment";
 import Reply from "../models/Reply";
+import PostCategory from "../models/PostCategory";
 
 export default interface iAction 
 {
@@ -21,6 +22,8 @@ export default interface iAction
   reply? : Reply;
   replies? : Reply[];
   post? : Post;
+  category? : PostCategory;
+  categories? : PostCategory[];
   test? : iTest;
   data? : any; // data being passed to the reducer from this action
   id? : string; // id of document
@@ -32,6 +35,9 @@ export default interface iAction
   credentials? : firebase.auth.AuthCredential;
   nEmail? : string; // new email
   nComment? : Comment; // new comment
+  nCategory? : PostCategory; // new category
   isReply? : boolean; // flag to tell if a comment is a reply
   parent? : string; // parent comment of reply
+  categoryName? : string // name of categoy=ry being added
+  slug? : string; // category slug
 }
