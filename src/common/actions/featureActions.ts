@@ -1,68 +1,77 @@
-import { db } from "../utils/firebase";
+import iAction from "../imodels/iAction";
+import iError from "../imodels/iError";
+import iFeature from "../imodels/iFeature";
+import Feature from "../models/Feature";
+import ActionTypes from "./actionTypes";
+
 import { deletePostHero } from "../utils/firebase/functions";
-import * as types from "./actionTypes";
 import * as featuresActions from "./featuresActions";
+import { db } from "../utils/firebase";
 import { doCategoryPostsUpdate } from "./postCategoryActions";
 
+const FeatureActions = ActionTypes.Feature;
+
 // GET actions
-export const featureGetInitiated = feature => {
+export const featureGetInitiated = (id : string) : iAction => {
   return {
-    type: types.FEATURE_GET_INITIATED,
+    type: FeatureActions.GettingFeature,
+    id
+  };
+};
+
+export const featureGetFailed = (error : iError, id : string) : iAction => {
+  return {
+    type: FeatureActions.GettingFeatureFailed,
+    error, id
+  };
+};
+
+export const featureGetDone = (feature : Feature) : iAction => {
+  return {
+    type: FeatureActions.GotFeature,
     feature
   };
 };
 
-export const featureGetFailed = (error, feature) => {
-  return {
-    type: types.FEATURE_GET_FAILED,
-    error, feature
-  };
-};
-
-export const featureGetDone = feature => {
-  return {
-    type: types.FEATURE_GET_SUCCESS,
-    feature
-  };
-};
-
-export const doFeatureGet = feature => {
-  return dispatch => {
-    dispatch(featureGetInitiated(feature));
+export const doFeatureGet = (id : string) : any => {
+  return (dispatch : any) => {
+    dispatch(featureGetInitiated(id));
 
     db.collection("features")
-      .doc(feature)
+      .doc(id)
       .get()
-      .then(snapshot => {
+      .then((snapshot : firebase.firestore.QueryDocumentSnapshot) => {
         if (!snapshot.exists)
-          return dispatch(featureGetFailed({ message: "no feature found" }, feature));
+          return dispatch(featureGetFailed({ message: "no feature found" }, id));
         
-        dispatch(featureGetDone(snapshot.data()));
+        const snapshotData = <Feature>snapshot.data();
+        const feature = new Feature(snapshotData, snapshotData.Student, snapshotData.expiration, snapshotData.isActive);
+        dispatch(featureGetDone(feature));
       })
-      .catch(error => {
-        dispatch(featureGetFailed(error, feature));
+      .catch((error : iError) => {
+        dispatch(featureGetFailed(error, id));
       })
   }
 }
 
 // SET actions
-export const featureCreationInitiated = data => {
+export const featureCreationInitiated = (data : iFeature) : iAction => {
   return {
-    type: types.FEATURE_CREATION_INITIATED,
+    type: FeatureActions.Creatingfeature,
     data
   };
 };
 
-export const featureCreated = data => {
+export const featureCreated = (data : iFeature) : iAction => {
   return {
-    type: types.FEATURE_CREATED,
+    type: FeatureActions.CreatedFeature,
     data
   };
 };
 
-export const featureCreationFailed = (error, data) => {
+export const featureCreationFailed = (error : iError, data : iFeature) : iAction => {
   return {
-    type: types.FEATURE_CREATION_FAILED,
+    type: FeatureActions.CreatingfeatureFailed,
     error, data
   };
 };

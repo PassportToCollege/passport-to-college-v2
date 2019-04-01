@@ -7,6 +7,7 @@ import Post from "../models/Post";
 import Comment from "../models/Comment";
 import Reply from "../models/Reply";
 import PostCategory from "../models/PostCategory";
+import Feature from "../models/Feature";
 
 export default interface iAction 
 {
@@ -24,6 +25,7 @@ export default interface iAction
   post? : Post;
   category? : PostCategory;
   categories? : PostCategory[];
+  feature? : Feature;
   test? : iTest;
   data? : any; // data being passed to the reducer from this action
   id? : string; // id of document
