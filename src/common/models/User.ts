@@ -1,6 +1,8 @@
+import iError from "../imodels/iError";
 import iUser from "../imodels/iUser";
 
 import { isEmail } from "../utils";
+import { storage } from "../utils/firebase";
 
 export default class User implements iUser {
   uid: string;
@@ -139,5 +141,26 @@ export default class User implements iUser {
       phone,
       photo
     }
+  }
+
+  public getProfilePicture() : Promise<string> {
+    return new Promise((resolve : Function, reject : Function) => {
+      if (this.hasProfilePicture) 
+      {
+        if (this.photo)
+          return resolve(this.photo);
+
+        storage.ref("users/profile_images")
+          .child(`${this.uid}.png`)
+          .getDownloadURL()
+          .then((url : string) => {
+            this.photo = url;
+            resolve(url)
+          })
+          .catch((error : iError) => {
+            reject(error);
+          });
+      }
+    });
   }
 }

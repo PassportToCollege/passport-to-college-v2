@@ -4,7 +4,7 @@ import iAppState from "../imodels/iAppState";
 
 const ApplicationActions = ActionTypes.Application;
 
-const application = (state : iAppState = initialState.Application, action : any) : iAppState => {
+const application = (state: iAppState["Application"] = initialState.Application, action: any): iAppState["Application"] => {
   switch (action.type) {
     case ApplicationActions.GettingApplication:
       return Object.assign({}, state, {

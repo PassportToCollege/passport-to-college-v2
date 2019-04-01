@@ -34,6 +34,16 @@ interface ApplicationState
   sendingSubmissionEmailFailed? : boolean;
 }
 
+interface ApplicationsState
+{
+  page : number;
+  error? : iError;
+
+  isGetting? : boolean;
+  hasFailed? : boolean;
+  hasGotten? : boolean;
+}
+
 interface PostState
 {
   id? : string;
@@ -126,6 +136,7 @@ interface AuthState
 
 export default interface iAppState {
   Application : ApplicationState;
+  Applications : ApplicationsState;
   Post : PostState;
   Hamburger : HamburgerState;
   Menu : MenuState;

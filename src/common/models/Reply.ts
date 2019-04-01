@@ -7,6 +7,7 @@ import Post from "./Post";
 export default class Reply extends Comment implements iReply {
   isConversation : boolean;
   parent : Comment;
+  isReply : boolean;
 
   constructor(User : User, Post : Post, Comment : Comment, content : iContentEditable, meta : any = {})
   {
@@ -14,6 +15,7 @@ export default class Reply extends Comment implements iReply {
 
     this.isConversation = false;
     this.parent = Comment;
+    this.isReply = true;
   }
 
   public getData() {
@@ -24,7 +26,8 @@ export default class Reply extends Comment implements iReply {
       postedOn,
       parent,
       Post,
-      isDeleted
+      isDeleted,
+      isReply
     } = this;
 
     return {
@@ -34,7 +37,8 @@ export default class Reply extends Comment implements iReply {
       postedOn,
       parent,
       Post,
-      isDeleted
+      isDeleted,
+      isReply
     };
   }
 }

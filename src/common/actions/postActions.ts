@@ -81,7 +81,7 @@ export const doHeroUpload = (file : File, post : Post, refresh : boolean = false
         dispatch(heroUploaded());
 
         if (refresh)
-          return dispatch(doHeroGet(post));
+          return dispatch(doHeroGet(post.id));
       })
       .catch((error : iError) => {
         dispatch(uploadHeroFailed(error));

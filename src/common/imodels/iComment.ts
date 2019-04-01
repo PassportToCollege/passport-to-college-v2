@@ -3,6 +3,7 @@ import iContentEditable from "./iContentEditable";
 import iPost from "./iPost";
 
 export default interface iComment {
+  readonly id : string;
   User : iUser;
   message : {
     text : string,

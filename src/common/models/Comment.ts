@@ -1,3 +1,5 @@
+import { uid } from "rand-token";
+
 import iComment from "../imodels/iComment";
 import iContentEditable from "../imodels/iContentEditable";
 import User from "./User";
@@ -7,6 +9,7 @@ import BadWords from "../utils/badwords.en";
 import { convertBlocksToText } from "../utils";
 
 export default class Comment implements iComment {
+  readonly id : string;
   User : User;
   message : {
     text : string,
@@ -20,6 +23,7 @@ export default class Comment implements iComment {
   replies? : string[];
 
   constructor(user : User, post : Post, content : iContentEditable, meta : any = {}) {
+    this.id = meta.id || uid(20);
     this.User = user;
     this.Post = post;
     this.message = {
@@ -32,7 +36,6 @@ export default class Comment implements iComment {
     this.isDeleted = !!meta.isDeleted;
     this.hasReplies = !!meta.hasReplies;
     this.replies = meta.replies || [];
-
   }
 
   public censorContent(content : iContentEditable) : iContentEditable {
@@ -60,6 +63,15 @@ export default class Comment implements iComment {
     return text;
   }
 
+  public update(newData : iComment) : Comment
+  {
+    if (Object.keys(newData).length) {
+      Object.assign(this, newData);
+    }
+
+    return this;
+  }
+
   private heartify(length : number) : string {
     let r = "";
 
@@ -69,8 +81,9 @@ export default class Comment implements iComment {
     return r;
   }
 
-  public getData() : Object {
+  public getData() : iComment {
     const {
+      id,
       User,
       message,
       hasReplies,
@@ -82,6 +95,7 @@ export default class Comment implements iComment {
     } = this;
 
     return {
+      id,
       User,
       message,
       hasReplies,

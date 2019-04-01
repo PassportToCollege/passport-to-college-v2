@@ -1,9 +1,11 @@
 import initialState from "./initialState";
 import ActionTypes from "../actions/actionTypes";
+import iAppState from "../imodels/iAppState";
+import iAction from "../imodels/iAction";
 
 const { Auth } = ActionTypes;
 
-const auth = (state : any = initialState.auth, action : any) : any => {
+const auth = (state : iAppState["Auth"] = initialState.Auth, action : iAction) : iAppState["Auth"] => {
   switch(action.type) {
     case Auth.RemoveErrors :
       return Object.assign({}, state, {

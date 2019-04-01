@@ -5,7 +5,7 @@ import moment from "moment";
 import ActionTypes from "./actionTypes";
 import { isEmail } from "../utils";
 import { auth, db } from "../utils/firebase/index";
-import { SSID } from "../utils/utilityClasses";
+import SSID from "../models/SSID";
 import User from "../models/User";
 import Cookies from "universal-cookie";
 import { doUserUpdate } from "./userActions";
@@ -450,7 +450,7 @@ export const doSignUpWithSocial = (provider : string, options : any = {}) : any 
                     .then(() => {
                       dispatch(sendEmailConfirmationEmailSent(user.email));
 
-                      const userCookie = new SSID(userData);
+                      const userCookie = new SSID(new User(userData));
                       userCookie.create();
 
                       dispatch(signedUpWithSocial(provider));

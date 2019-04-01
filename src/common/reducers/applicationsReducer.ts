@@ -1,9 +1,11 @@
 import initialState from "./initialState";
 import ActionTypes from "../actions/actionTypes";
+import iAppState from "../imodels/iAppState";
+import iAction from "../imodels/iAction";
 
 const ApplicationActions = ActionTypes.Application;
 
-const applications = (state : any = initialState.applications, action : any) : any => {
+const applications = (state : iAppState["Applications"] = initialState.Applications, action : iAction) : iAppState["Applications"] => {
   switch (action.type) {
     case ApplicationActions.GettingApplications:
       return Object.assign({}, state, {
