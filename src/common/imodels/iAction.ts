@@ -31,6 +31,7 @@ export default interface iAction
   feature? : Feature;
   features? : Feature[];
   student? : Student;
+  students? : Student[];
   test? : iTest;
   stats? : iStats; // website/data stats
   data? : any; // data being passed to the reducer from this action
