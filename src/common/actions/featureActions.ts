@@ -8,6 +8,7 @@ import { deletePostHero } from "../utils/firebase/functions";
 import * as featuresActions from "./featuresActions";
 import { db } from "../utils/firebase";
 import { doCategoryPostsUpdate } from "./postCategoryActions";
+import { PostUpdateType } from "../imodels/iPost";
 
 const FeatureActions = ActionTypes.Feature;
 
@@ -76,11 +77,9 @@ export const featureCreationFailed = (error : iError, data : iFeature) : iAction
   };
 };
 
-export const doCreateFeature = (feature, options) => {
-  return dispatch => {
+export const doCreateFeature = (feature : iFeature, refresh : boolean = false) : any => {
+  return (dispatch : any) => {
     dispatch(featureCreationInitiated(feature));
-
-    options = options || {};
 
     db.collection("posts")
       .doc(feature.id)
@@ -88,10 +87,10 @@ export const doCreateFeature = (feature, options) => {
       .then(() => {
         dispatch(featureCreated(feature));
 
-        if (options.refresh)
-          return dispatch(featuresActions.doGetFeaturesByUser(feature.student));
+        if (refresh)
+          return dispatch(featuresActions.doGetFeaturesByUser(feature.Student));
       })
-      .catch(error => {
+      .catch((error : iError) => {
         dispatch(featureCreationFailed(error, feature));
       })
   }
@@ -99,75 +98,71 @@ export const doCreateFeature = (feature, options) => {
 
 
 // UPDATE actions
-export const featureUpdateInitiated = (feature, data) => {
+export const featureUpdateInitiated = (feature : Feature, data : any) : iAction => {
   return {
-    type: types.FEATURE_UPDATE_INITIATED,
+    type: FeatureActions.UpdatingFeature,
     feature, data
   };
 };
 
-export const featureUpdated = (feature, data) => {
+export const featureUpdated = (feature : Feature, data : any) : iAction => {
   return {
-    type: types.FEATURE_UPDATED,
+    type: FeatureActions.UpdatedFeature,
     feature, data
   };
 };
 
-export const featureUpdateFailed = (error, feature, data) => {
+export const featureUpdateFailed = (error : iError, feature : Feature, data : any) : iAction => {
   return {
-    type: types.FEATURE_UPDATE_INITIATED,
+    type: FeatureActions.UpdatingFeatureFailed,
     feature, data, error
   };
 };
 
-export const doFeatureUpdate = (feature, data, options) => {
-  return dispatch => {
+export const doFeatureUpdate = (feature : Feature, data : any, refresh : boolean = false) : any => {
+  return (dispatch : any) => {
     dispatch(featureUpdateInitiated(feature, data));
 
-    options = options || {};
-
     db.collection("posts")
-      .doc(feature)
-      .update(data)
+      .doc(feature.id)
+      .update(data, { merge: true })
       .then(() => {
         dispatch(featureUpdated(feature, data));
 
-        if (options.refresh && options.student)
-          return dispatch(featuresActions.doGetFeaturesByUser(options.student));
+        if (refresh)
+          return dispatch(featuresActions.doGetFeaturesByUser(feature.Student));
       })
-      .catch(error => {
+      .catch((error : iError) => {
         dispatch(featureUpdateFailed(error, feature, data));
       })
   }
 }
 
 // DELETE actions
-export const featureDeleteInitiated = feature => {
+export const featureDeleteInitiated = (feature : Feature) : iAction => {
   return {
-    type: types.FEATURE_DELETE_INITIATED,
+    type: FeatureActions.DeletingFeature,
     feature
   };
 };
 
-export const featureDeleted = feature => {
+export const featureDeleted = (feature : Feature) : iAction => {
   return {
-    type: types.FEATURE_DELETED,
+    type: FeatureActions.DeletedFeature,
     feature
   };
 };
 
-export const featureDeleteFailed = (error, feature) => {
+export const featureDeleteFailed = (error : iError, feature : Feature) : iAction => {
   return {
-    type: types.FEATURE_DELETE_FAILED,
+    type: FeatureActions.DeletingFeatureFailed,
     feature, error
   };
 };
 
-export const doFeatureDelete = (feature, options) => {
-  return dispatch => {
+export const doFeatureDelete = (feature : Feature, refresh : boolean = false) : any => {
+  return (dispatch : any) => {
     dispatch(featureDeleteInitiated(feature));
-
-    options = options || {};
 
     return db.collection("posts")
       .doc(feature.id)
@@ -176,13 +171,13 @@ export const doFeatureDelete = (feature, options) => {
         if (feature.hasHero)
           deletePostHero(feature.id);
 
-        dispatch(doCategoryPostsUpdate("student_features", "dec"));
+        dispatch(doCategoryPostsUpdate("student_features", PostUpdateType.Decrease));
         dispatch(featureDeleted(feature));
 
-        if (options.refresh)
-          return dispatch(featuresActions.doGetFeaturesByUser(feature.student));
+        if (refresh)
+          return dispatch(featuresActions.doGetFeaturesByUser(feature.Student));
       })
-      .catch(error => {
+      .catch((error : iError) => {
         dispatch(featureDeleteFailed(error, feature));
       });
   };
