@@ -24,6 +24,7 @@ export default interface iAction
   reply? : Reply;
   replies? : Reply[];
   post? : Post;
+  posts? : Post[];
   category? : PostCategory;
   categories? : PostCategory[];
   feature? : Feature;

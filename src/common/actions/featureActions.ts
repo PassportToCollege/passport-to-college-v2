@@ -2,6 +2,7 @@ import iAction from "../imodels/iAction";
 import iError from "../imodels/iError";
 import iFeature from "../imodels/iFeature";
 import Feature from "../models/Feature";
+import Student from "../models/Student";
 import ActionTypes from "./actionTypes";
 
 import { deletePostHero } from "../utils/firebase/functions";
@@ -88,7 +89,7 @@ export const doCreateFeature = (feature : iFeature, refresh : boolean = false) :
         dispatch(featureCreated(feature));
 
         if (refresh)
-          return dispatch(featuresActions.doGetFeaturesByUser(feature.Student));
+          return dispatch(featuresActions.doGetFeaturesByUser(<Student>feature.Student));
       })
       .catch((error : iError) => {
         dispatch(featureCreationFailed(error, feature));
