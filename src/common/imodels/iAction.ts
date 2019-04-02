@@ -1,5 +1,6 @@
 import iError from "./iError";
 import iTest from "./iTest";
+import iStats from "./iStats";
 import { PostUpdateType } from "./iPost";
 import User from "../models/User";
 import Application from "../models/Application";
@@ -31,6 +32,7 @@ export default interface iAction
   features? : Feature[];
   student? : Student;
   test? : iTest;
+  stats? : iStats; // website/data stats
   data? : any; // data being passed to the reducer from this action
   id? : string; // id of document
   hero? : string; // url of post hero image
