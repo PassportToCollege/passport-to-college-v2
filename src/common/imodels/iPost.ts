@@ -8,6 +8,14 @@ export enum PostUpdateType
   Increase = 1
 }
 
+export enum PostState 
+{
+  all = 0,
+  draft = 1,
+  published = 2,
+  archived = 3,
+}
+
 export interface iPostState 
 {
   draft : boolean;
