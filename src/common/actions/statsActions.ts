@@ -37,7 +37,7 @@ export const doStatsGet = () : any => {
       .get()
       .then((doc : firebase.firestore.QueryDocumentSnapshot) => {
         if (doc.exists)
-          return dispatch(getStatsDone(doc.data()));
+          return dispatch(getStatsDone(<iStats>doc.data()));
         
         dispatch(getStatsFailed({message: "no stats found"}));
       })
