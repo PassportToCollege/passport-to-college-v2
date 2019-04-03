@@ -1,31 +1,29 @@
-import initialState from "./initialState";
-import {
-  FEATURES_GET_BY_USER_INITIATED,
-  FEATURES_GET_BY_USER_FAILED,
-  FEATURES_GET_BY_USER_SUCCESS,
-  FEATURES_GET_ACTIVE_INITIATED,
-  FEATURES_GET_ACTIVE_SUCCESS,
-  FEATURES_GET_ACTIVE_FAILED
-} from "../actions/actionTypes";
+import iAppState from "../imodels/iAppState";
+import iAction from "../imodels/iAction";
 
-const features = (state = initialState.features, action) => {
+import initialState from "./initialState";
+import ActionTypes from "../actions/actionTypes";
+
+const FeaturesActions = ActionTypes.Features;
+
+const features = (state : iAppState["Features"] = initialState.Features, action : iAction) : iAppState["Features"] => {
   switch (action.type) {
-    case FEATURES_GET_BY_USER_INITIATED:
+    case FeaturesActions.GettingFeatures:
       return Object.assign({}, state, {
         isGetting: true,
         hasGotten: false,
         hasFailed: false,
         student: action.student
       });
-    case FEATURES_GET_BY_USER_SUCCESS:
+    case FeaturesActions.GotFeatures:
       return Object.assign({}, state, {
         isGetting: false,
         hasGotten: true,
         hasFailed: false,
-        userFeatures: action.features,
+        features: action.features,
         student: action.student
       });
-    case FEATURES_GET_BY_USER_FAILED:
+    case FeaturesActions.GettingFeaturesFailed:
       return Object.assign({}, state, {
         isGetting: false,
         hasFailed: true,
@@ -33,20 +31,20 @@ const features = (state = initialState.features, action) => {
         error: action.error,
         student: action.student
       });
-    case FEATURES_GET_ACTIVE_INITIATED:
+    case FeaturesActions.GettingActiveFeatures:
       return Object.assign({}, state, {
         gettingActive: true,
         gotActive: false,
         failedToGetActive: false
       });
-    case FEATURES_GET_ACTIVE_SUCCESS:
+    case FeaturesActions.GotActiveFeatures:
       return Object.assign({}, state, {
         gettingActive: false,
         gotActive: true,
         failedToGetActive: false,
-        activeFeatures: action.features
+        features: action.features
       });
-    case FEATURES_GET_ACTIVE_FAILED:
+    case FeaturesActions.GettingActiveFeaturesFailed:
       return Object.assign({}, state, {
         gettingActive: false,
         gotActive: false,

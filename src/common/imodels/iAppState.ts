@@ -109,7 +109,7 @@ interface PostState
   error? : iError;
   Post? : Post;
   data? : any;
-  lastDeletedPost : Post;
+  lastDeletedPost? : Post;
   conversations? : Comment[];
 
   isCreating? : boolean;
@@ -216,6 +216,20 @@ interface FeatureState
   isDeleting? : boolean;
   hasDeleted? : boolean;
   deleteFailed? : boolean;
+}
+
+interface FeaturesState
+{
+  student? : Student;
+  features? : Feature;
+
+  isGetting? : boolean;
+  hasGotten? : boolean;
+  hasFailed? : boolean;
+
+  gettingActive? : boolean;
+  gotActive? : boolean;
+  failedToGetActive? : boolean;
 }
 
 interface HamburgerState
@@ -357,6 +371,7 @@ export default interface iAppState {
   Comments : CommentsState;
   Auth : AuthState;
   Feature : FeatureState;
+  Features : FeaturesState;
   Hamburger : HamburgerState;
   Menu : MenuState;
   Post : PostState;
