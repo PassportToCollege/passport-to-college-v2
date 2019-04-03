@@ -1,6 +1,7 @@
 import iError from "./iError";
 import iUser from "./iUser";
 import iStats from "./iStats";
+import { iStringReplyListPair } from "./iObjectTypes";
 import Post from "../models/Post";
 import User from "../models/User";
 import Application from "../models/Application";
@@ -8,6 +9,7 @@ import PostCategory from "../models/PostCategory";
 import Feature from "../models/Feature";
 import Comment from "../models/Comment";
 import Student from "../models/Student";
+import Reply from "../models/Reply";
 
 interface ApplicationState
 {
@@ -47,6 +49,58 @@ interface ApplicationsState
   isGetting? : boolean;
   hasFailed? : boolean;
   hasGotten? : boolean;
+}
+
+interface CommentsState
+{
+  error? : iError;
+  comment? : Comment;
+  comments? : Comment[];
+  conversations? : Comment[];
+  replies? : iStringReplyListPair;
+  isReply? : boolean;
+  id? : string;
+  parent? : string;
+  changedComment? : Comment;
+  post? : string;
+
+  creatingComment? : boolean;
+  createdComment? : boolean;
+  failedToCreateComment? : boolean;
+
+  gettingComment? : boolean;
+  gotComment? : boolean;
+  failedToGetComment? : boolean;
+
+  gettingComments? : boolean;
+  gotComments? : boolean;
+  failedToGetComments? : boolean;
+
+  gettingReplies? : boolean;
+  gotReplies? : boolean;
+  failedToGetReplies? : boolean;
+
+  gettingReply? : boolean;
+  gotReply? : boolean;
+  failedToGetReply? : boolean;
+
+  updatingComment? : boolean;
+  updatedComment? : boolean;
+  failedToUpdateComment? : boolean;
+
+  updatedCommentLocal? : boolean;
+
+  deletingComment? : boolean;
+  deletedComment? : boolean;
+  failedToDeleteComment? : boolean;
+
+  safelyDeletingComment? : boolean;
+  safelyDeletedComment? : boolean;
+  failedToSafelyDeleteComment? : boolean;
+
+  gettingConversations? : boolean;
+  gotConversations? : boolean;
+  failedToGetConversations? : boolean;
 }
 
 interface PostState
@@ -232,6 +286,7 @@ interface StatsState
 export default interface iAppState {
   Application : ApplicationState;
   Applications : ApplicationsState;
+  Comments : CommentsState;
   Auth : AuthState;
   Feature : FeatureState;
   Hamburger : HamburgerState;

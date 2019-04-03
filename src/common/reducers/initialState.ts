@@ -18,7 +18,7 @@ const initialState : iAppState =  {
   post: {},
   Posts: {},
   PostCategory: {},
-  comments: {},
+  Comments: {},
 };
 
 export default initialState;

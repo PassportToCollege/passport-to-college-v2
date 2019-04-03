@@ -1,107 +1,84 @@
-import initialState from "./initialState";
-import {
-  CREATE_COMMENT_INITIATED,
-  CREATE_COMMENT_FAILED,
-  COMMENT_CREATED,
-  GET_COMMENTS_INITIATED,
-  GET_COMMENTS_FAILED,
-  GET_COMMENTS_DONE,
-  GET_COMMENT_INITIATED,
-  GET_COMMENT_FAILED,
-  COMMENT_GET_DONE,
-  GET_REPLIES_INITIATED,
-  GET_REPLIES_FAILED,
-  GET_REPLIES_DONE,
-  GET_REPLY_INITIATED,
-  GET_REPLY_FAILED,
-  GET_REPLY_DONE,
-  UPDATE_COMMENT_INITIATED,
-  UPDATE_COMMENT_FAILED,
-  COMMENT_UPDATED,
-  DELETE_COMMENT_INITIATED,
-  DELETE_COMMENT_FAILED,
-  COMMENT_DELETED,
-  UPDATE_COMMENT_LOCAL,
-  GET_CONVERSATIONS_INITIATED,
-  GET_CONVERSATIONS_FAILED,
-  GOT_CONVERSATIONS,
-  SAFE_DELETE_COMMENT_INITIATED,
-  SAFE_DELETE_COMMENT_FAILED,
-  SAFELY_DELETED_COMMENT
-} from "../actions/actionTypes";
+import iAppState from "../imodels/iAppState";
+import iAction from "../imodels/iAction";
+import { iStringReplyListPair } from "../imodels/iObjectTypes";
+import Comment from "../models/Comment";
 
-const comments = (state = initialState.comments, action) => {
+import initialState from "./initialState";
+import ActionTypes from "../actions/actionTypes";
+
+const CommentActions = ActionTypes.Comment;
+
+const comments = (state : iAppState["Comments"] = initialState.Comments, action : iAction) : iAppState["Comments"] => {
   switch (action.type) {
-    case CREATE_COMMENT_INITIATED:
+    case CommentActions.CreatingComment:
       return Object.assign({}, state, {
         creatingComment: true,
         createdComment: false,
         failedToCreateComment: false
       });
-    case CREATE_COMMENT_FAILED:
+    case CommentActions.CreatingCommentFailed:
       return Object.assign({}, state, {
         creatingComment: false,
         createdComment: false,
         failedToCreateComment: true,
         error: action.error
       });
-    case COMMENT_CREATED:
+    case CommentActions.CreatedComment:
       return Object.assign({}, state, {
         creatingComment: false,
         createdComment: true,
         failedToCreateComment: false,
-        newCommentId: action.newCommentId,
+        changedComment: <Comment>action.changedComment,
         isReply: action.isReply
       });
-    case GET_COMMENTS_INITIATED:
+    case CommentActions.GettingComments:
       return Object.assign({}, state, {
         gettingComments: true,
         gotComments: false,
         failedToGetComments: false
       });
-    case GET_COMMENTS_FAILED:
+    case CommentActions.GettingCommentsFailed:
       return Object.assign({}, state, {
         gettingComments: false,
         gotComments: false,
         failedToGetComments: true,
-        error: action.error,
-        comments: null
+        error: action.error
       });
-    case GET_COMMENTS_DONE:
+    case CommentActions.GotComments:
       return Object.assign({}, state, {
         gettingComments: false,
         gotComments: true,
         failedToGetComments: false,
-        comments: (action.page === 1) ? action.comments : state.comments.concat(action.comments)
+        comments: [...<Comment[]>state.comments, ...<Comment[]>action.comments]
       });
-    case GET_COMMENT_INITIATED:
+    case CommentActions.GettingComment:
       return Object.assign({}, state, {
         gettingComment: true,
         gotComment: false,
         failedToGetComment: false
       });
-    case GET_COMMENT_FAILED:
+    case CommentActions.GettingCommentFailed:
       return Object.assign({}, state, {
         gettingComment: false,
         gotComment: false,
         failedToGetComment: true,
         error: action.error
       });
-    case COMMENT_GET_DONE:
+    case CommentActions.GotComment:
       return Object.assign({}, state, {
         gettingComment: false,
         gotComment: true,
         failedToGetComment: false,
-        comment: action.comment
+        comment: <Comment>action.comment
       });
-    case GET_REPLIES_INITIATED:
+    case CommentActions.GettingReplies:
       return Object.assign({}, state, {
         gettingReplies: true,
         gotReplies: false,
         failedToGetReplies: false,
         parent: action.parent
       });
-    case GET_REPLIES_FAILED:
+    case CommentActions.GettingRepliesFailed:
       return Object.assign({}, state, {
         gettingReplies: false,
         gotReplies: false,
@@ -109,123 +86,121 @@ const comments = (state = initialState.comments, action) => {
         parent: action.parent,
         error: action.error
       });
-    case GET_REPLIES_DONE:
+    case CommentActions.GotReplies:
+      action.parent = <string>action.parent;
+
       return Object.assign({}, state, {
         gettingReplies: false,
         gotReplies: true,
         failedToGetReplies: false,
         parent: action.parent,
-        replies: (action.page === 1 || action.page === "all") ? 
+        replies: (action.page === 1 || action.page === -1) ? 
           Object.assign({}, state.replies, {
-            [action.parent]: action.replies
+            [`${action.parent}`]: action.replies
           }) : Object.assign({}, state.replies, {
-            [action.parent]: state.replies[action.parent].concat(action.replies)
+            [`${action.parent}`]: action.replies
           })
       });
-    case GET_REPLY_INITIATED:
+    case CommentActions.GettingReply:
       return Object.assign({}, state, {
         gettingReply: true,
         gotReply: false,
         failedToGetReply: false
       });
-    case GET_REPLY_FAILED:
+    case CommentActions.GettingReplyFailed:
       return Object.assign({}, state, {
         gettingReply: false,
         gotReply: false,
         failedToGetReply: true,
         error: action.error
       });
-    case GET_REPLY_DONE:
+    case CommentActions.GotReply:
       return Object.assign({}, state, {
         gettingReply: false,
         gotReply: true,
         failedToGetReply: false,
         reply: action.reply
       });
-    case UPDATE_COMMENT_INITIATED:
+    case CommentActions.UpdatingComment:
       return Object.assign({}, state, {
         updatingComment: true,
         updatedComment: false,
         failedToUpdateComment: false
       });
-    case UPDATE_COMMENT_FAILED:
+    case CommentActions.UpdatingCommentFailed:
       return Object.assign({}, state, {
         updatingComment: false,
         updatedComment: false,
         failedToUpdateComment: true,
         error: action.error
       });
-    case COMMENT_UPDATED:
+    case CommentActions.UpdatedComment:
       return Object.assign({}, state, {
         updatingComment: false,
         updatedComment: true,
         failedToUpdateComment: false
       });
-    case UPDATE_COMMENT_LOCAL:
+    case CommentActions.UpdateCommentLocal:
       return Object.assign({}, state, {
         updatedCommentLocal: true,
-        uComment: action.nComment
+        nComment: action.nComment
       });
-    case DELETE_COMMENT_INITIATED:
+    case CommentActions.DeletingComment:
       return Object.assign({}, state, {
         deletingComment: true,
         deletedComment: false,
         failedToDeleteComment: false,
-        dComment: action.comment
       });
-    case DELETE_COMMENT_FAILED:
+    case CommentActions.DeletingCommentFailed:
       return Object.assign({}, state, {
         deletingComment: false,
         deletedComment: false,
         failedToDeleteComment: true,
-        dComment: action.comment,
         error: action.error
       });
-    case SAFE_DELETE_COMMENT_INITIATED:
+    case CommentActions.SafelyDeletingComment:
       return Object.assign({}, state, {
         safelyDeletingComment: true,
         safelyDeletedComment: false,
-        failedToSafelyDeleteComment: false,
-        dComment: action.comment
+        failedToSafelyDeleteComment: false
       });
-    case SAFE_DELETE_COMMENT_FAILED:
+    case CommentActions.SafelyDeletingCommentFailed:
       return Object.assign({}, state, {
         safelyDeletingComment: false,
         safelyDeletedComment: true,
         failedToSafelyDeleteComment: false,
         error: action.error,
-        dComment: action.comment
       });
-    case SAFELY_DELETED_COMMENT:
+    case CommentActions.SafelyDeletedComment:
       return Object.assign({}, state, {
         safelyDeletingComment: false,
         safelyDeletedComment: true,
         failedToSafelyDeleteComment: false,
-        dComment: action.comment
+        changedComment: action.comment,
       });
-    case COMMENT_DELETED:
+    case CommentActions.DeletedComment:
       return Object.assign({}, state, {
         deletingComment: false,
         deletedComment: true,
         failedToDeleteComment: false,
-        dComment: action.comment
+        changedComment: action.comment
       });
-    case GET_CONVERSATIONS_INITIATED:
+    case CommentActions.GettingConversations:
       return Object.assign({}, state, {
         gettingConversations: true,
         gotConversations: false,
         failedToGetConversations: false,
-        parent: action.parent
+        post: action.parent
       });
-    case GET_CONVERSATIONS_FAILED:
+    case CommentActions.GettingConversationsFailed:
       return Object.assign({}, state, {
         gettingConversations: false,
         gotConversations: false,
         failedToGetConversations: true,
         error: action.error,
-        parent: action.parent
+        post: action.parent
       });
-    case GOT_CONVERSATIONS:
+    case CommentActions.GotConversations:
       return Object.assign({}, state, {
         gettingConversations: false,
         gotConversations: true,

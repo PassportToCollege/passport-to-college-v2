@@ -1,4 +1,5 @@
 import iTest from "./iTest";
+import Reply from "../models/Reply";
 
 export interface iStringBooleanPair
 {
@@ -8,4 +9,9 @@ export interface iStringBooleanPair
 export interface iStringTestPair
 {
   [key : string] : iTest
+}
+
+export interface iStringReplyListPair
+{
+  [Key : string] : Reply[]
 }
