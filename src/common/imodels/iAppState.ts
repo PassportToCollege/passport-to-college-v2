@@ -1,5 +1,6 @@
 import iError from "./iError";
 import iUser from "./iUser";
+import iStats from "./iStats";
 import Post from "../models/Post";
 import User from "../models/User";
 import Application from "../models/Application";
@@ -218,6 +219,16 @@ interface AuthState
   failedToChangeEmailAddress? : boolean;
 }
 
+interface StatsState
+{
+  error? : iError;
+  stats? : iStats;
+
+  isGetting? : boolean;
+  hasGotten? : boolean;
+  hasFailed? : boolean;
+}
+
 export default interface iAppState {
   Application : ApplicationState;
   Applications : ApplicationsState;
@@ -227,5 +238,6 @@ export default interface iAppState {
   Menu : MenuState;
   Post : PostState;
   PostCategory: PostCategoryState;
-  Posts : PostsState
+  Posts : PostsState;
+  Stats : StatsState;
 }

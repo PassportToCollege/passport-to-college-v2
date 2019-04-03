@@ -1,26 +1,27 @@
-import initialState from "./initialState";
-import {
-  STATS_GET_INITIATED,
-  STATS_GET_SUCCESS,
-  STATS_GET_FAILED
-} from "../actions/actionTypes";
+import iAppState from "../imodels/iAppState";
+import iAction from "../imodels/iAction";
 
-const stats = (state = initialState.stats, action) => {
+import initialState from "./initialState";
+import ActionTypes from "../actions/actionTypes";
+
+const StatsActions = ActionTypes.Stats;
+
+const stats = (state : iAppState["Stats"] = initialState.Stats, action : iAction) : iAppState["Stats"] => {
   switch (action.type) {
-    case STATS_GET_INITIATED:
+    case StatsActions.GettingStats:
       return Object.assign({}, state, {
         isGetting: true,
         hasGotten: false,
         hasFailed: false
       });
-    case STATS_GET_FAILED:
+    case StatsActions.GettingStatsFailed:
       return Object.assign({}, state, {
         isGetting: false,
         hasGotten: false,
         hasFailed: true,
         error: action.error
       });
-    case STATS_GET_SUCCESS:
+    case StatsActions.GotStats:
       return Object.assign({}, state, {
         isGetting: false,
         hasGotten: true,
