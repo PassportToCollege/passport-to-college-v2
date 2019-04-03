@@ -10,6 +10,8 @@ import Reply from "../models/Reply";
 import PostCategory from "../models/PostCategory";
 import Feature from "../models/Feature";
 import Student from "../models/Student";
+import { UserType } from "./iUser";
+import iContentEditable from "./iContentEditable";
 
 export default interface iAction 
 {
@@ -17,6 +19,9 @@ export default interface iAction
   date? : Date;
   error? : iError;
   user? : User;
+  users? : User[];
+  founder? : User;
+  staff?: User[];
   application? : Application;
   applications? : Application[];
   comment? : Comment;
@@ -33,9 +38,12 @@ export default interface iAction
   student? : Student;
   students? : Student[];
   test? : iTest;
+  userType? : UserType;
+  bio? : iContentEditable;
   stats? : iStats; // website/data stats
   data? : any; // data being passed to the reducer from this action
   id? : string; // id of document
+  ids? : string[];
   hero? : string; // url of post hero image
   updateType? : PostUpdateType; // post update type
   page? : number; // current page number for pagination

@@ -1,6 +1,7 @@
 import iError from "./iError";
-import iUser from "./iUser";
+import iUser, { UserType } from "./iUser";
 import iStats from "./iStats";
+import iContentEditable from "./iContentEditable";
 import { iStringReplyListPair } from "./iObjectTypes";
 import Post from "../models/Post";
 import User from "../models/User";
@@ -9,7 +10,6 @@ import PostCategory from "../models/PostCategory";
 import Feature from "../models/Feature";
 import Comment from "../models/Comment";
 import Student from "../models/Student";
-import Reply from "../models/Reply";
 
 interface ApplicationState
 {
@@ -300,6 +300,57 @@ interface UserState
   hasUpdated? : boolean;
 }
 
+interface UsersState
+{
+  page? : number;
+  userType? : UserType;
+  error? : iError;
+  data? : any;
+  users? : User[];
+  user? : User;
+  founder? : User;
+  staff? : User[];
+  email? : string;
+  id? : string;
+  bio? : iContentEditable;
+
+  isGettingUsers? : boolean;
+  failedToGetUsers? : boolean;
+  hasGottenUsers? : boolean;
+
+  isGettingUsersByUid? : boolean;
+  hasGottenUsersByUid? : boolean;
+  failedToGetUsersByUid? : boolean;
+  
+  isCreating? : boolean;
+  hasCreated? : boolean;
+  failedToCreateUser? : boolean;
+  
+  isSending? : boolean;
+  hasSent? : boolean;
+  failedToSend? : boolean;
+
+  isGettingUser? : boolean;
+  hasGottenUser? : boolean;
+  failedToGetByUserId? : boolean;
+
+  isUpdating? : boolean;
+  hasUpdated? : boolean;
+  updateFailed? : boolean;
+
+  addingBio? : boolean;
+  addedBio? : boolean;
+  failedToAddBio? : boolean;
+
+  gettingFounder? : boolean;
+  gotFounder? : boolean;
+  failedToGetFounder? : boolean;
+
+  gettingStaff? : boolean;
+  gotStaff? : boolean;
+  failedToGetStaff? : boolean;
+}
+
 export default interface iAppState {
   Application : ApplicationState;
   Applications : ApplicationsState;
@@ -313,4 +364,5 @@ export default interface iAppState {
   Posts : PostsState;
   Stats : StatsState;
   User : UserState;
+  Users : UsersState;
 }

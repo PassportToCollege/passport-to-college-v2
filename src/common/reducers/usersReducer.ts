@@ -1,192 +1,170 @@
-import initialState from "./initialState";
-import {
-  USERS_GET_INITIATED, 
-  USERS_GET_FAILED,
-  USERS_GET_SUCCESS,
-  USERS_CREATE_USER_INITIATED,
-  USERS_CREATE_USER_FAILED,
-  USERS_NEW_USER_CREATED,
-  USERS_SEND_SIGNUP_EMAIL_INITIATED,
-  USERS_SEND_SIGNUP_EMAIL_FAILED,
-  USERS_SIGNUP_EMAIL_SENT,
-  USER_GET_BY_ID_INITIATED,
-  USER_GET_BY_ID_FAILED,
-  USER_GET_BY_ID_SUCCESS,
-  USERS_UPDATE_INITIATED,
-  USERS_UPDATE_FAILED,
-  USERS_UPDATED,
-  USERS_GET_BY_ID_INITIATED,
-  USERS_GET_BY_ID_FAILED,
-  USERS_GET_BY_ID_SUCCESS,
-  USERS_ADD_BIO_INITIATED,
-  USERS_ADD_BIO_FAILED,
-  ADDED_BIO,
-  USERS_GET_FOUNDER_INITIATED,
-  USERS_GET_FOUNDER_FAILED,
-  GOT_FOUNDER,
-  USERS_GET_STAFF_INITIATED,
-  USERS_GET_STAFF_FAILED,
-  GOT_STAFF
-} from "../actions/actionTypes";
+import iAppState from "../imodels/iAppState";
+import iAction from "../imodels/iAction";
 
-const users = (state = initialState.users, action) => {
+import initialState from "./initialState";
+import ActionTypes from "../actions/actionTypes";
+
+const UsersActions = ActionTypes.Users;
+
+const users = (state : iAppState["Users"] = initialState.Users, action : iAction) : iAppState["Users"] => {
   switch (action.type) {
-    case USERS_GET_INITIATED:
+    case UsersActions.GettingUsers:
       return Object.assign({}, state, {
         isGettingUsers: true,
-        hasFailed: false,
+        failedToGetUsers: false,
         hasGottenUsers: false,
         page: action.page,
         userType: action.userType
       });
-    case USERS_GET_FAILED:
+    case UsersActions.GettingUsersFailed:
       return Object.assign({}, state, {
         isGettingUsers: false,
-        hasFailed: true,
+        failedToGetUsers: true,
         hasGottenUsers: false,
         page: action.page,
         userType: action.userType,
         error: action.error
       });
-    case USERS_GET_SUCCESS:
+    case UsersActions.GotUsers:
       return Object.assign({}, state, {
         isGettingUsers: false,
-        hasFailed: false,
+        failedToGetUsers: false,
         hasGottenUsers: true,
         page: action.page,
         userType: action.userType,
         users: action.users
       });
-    case USERS_CREATE_USER_INITIATED:
+    case UsersActions.CreatingUser:
       return Object.assign({}, state, {
         isCreating: true,
         hasCreated: false,
-        hasFailed: false,
+        failedToCreateUser: false,
         data: action.data
       });
-    case USERS_CREATE_USER_FAILED:
+    case UsersActions.CreatingUserFailed:
       return Object.assign({}, state, {
         isCreating: false,
         hasCreated: false,
-        hasFailed: true,
+        failedToCreateUser: true,
         data: action.data,
         error: action.error
       });
-    case USERS_NEW_USER_CREATED:
+    case UsersActions.CreatedUser:
       return Object.assign({}, state, {
         isCreating: false,
         hasCreated: true,
-        hasFailed: false,
+        failedToCreateUser: false,
         data: action.data
       });
-    case USERS_SEND_SIGNUP_EMAIL_INITIATED:
+    case UsersActions.SendingSignUpEmail:
       return Object.assign({}, state, {
         isSending: true,
         hasSent: false,
-        hasFailed: false,
+        failedToSend: false,
         email: action.email
       });
-    case USERS_SEND_SIGNUP_EMAIL_FAILED:
+    case UsersActions.SendingSignUpEmailFailed:
       return Object.assign({}, state, {
         isSending: false,
         hasSent: false,
-        hasFailed: true,
+        failedToSend: true,
         email: action.email,
         error: action.error
       });
-    case USERS_SIGNUP_EMAIL_SENT:
+    case UsersActions.SentSignUpEmail:
       return Object.assign({}, state, {
         isSending: false,
         hasSent: true,
-        hasFailed: false,
+        failedToSend: false,
         email: action.email
       });
-    case USER_GET_BY_ID_INITIATED:
+    case UsersActions.GettingUser:
       return Object.assign({}, state, {
         isGettingUser: true,
         hasGottenUser: false,
-        hasFailed: false,
-        user: action.user
+        failedToGetByUserId: false,
+        id: action.id
       });
-    case USER_GET_BY_ID_FAILED:
+    case UsersActions.GettingUserFailed:
       return Object.assign({}, state, {
         isGettingUser: false,
         hasGottenUser: false,
-        hasFailed: true,
-        user: action.user,
+        failedToGetByUserId: true,
+        id: action.id,
         error: action.error
       });
-    case USER_GET_BY_ID_SUCCESS:
+    case UsersActions.GotUser:
       return Object.assign({}, state, {
         isGettingUser: false,
         hasGottenUser: true,
-        hasFailed: false,
+        failedToGetByUserId: false,
         user: action.user
       });
-    case USERS_GET_BY_ID_INITIATED:
+    case UsersActions.GettingUsers_ByUid:
       return Object.assign({}, state, {
-        isGettingUsers: true,
+        isGettingUsersByUid: true,
         hasGottenUsersByUid: false,
-        hasFailed: false,
-        usersByUid: action.users
+        failedToGetUsersByUid: false,
+        ids: action.ids
       });
-    case USERS_GET_BY_ID_FAILED:
+    case UsersActions.GettingUsersFailed_ByUid:
       return Object.assign({}, state, {
-        isGettingUsers: false,
+        isGettingUsersByUid: false,
         hasGottenUsersByUid: false,
-        hasFailed: true,
-        users: action.users,
+        failedToGetUsersByUid: true,
+        ids: action.ids,
         error: action.error
       });
-    case USERS_GET_BY_ID_SUCCESS:
+    case UsersActions.GotUsers_ByUid:
       return Object.assign({}, state, {
-        isGettingUsers: false,
+        isGettingUsersByUid: false,
         hasGottenUsersByUid: true,
-        hasFailed: false,
-        usersByUid: action.users
+        failedToGetUsersByUid: false,
+        users: action.users
       });
-    case USERS_UPDATE_INITIATED:
+    case UsersActions.UpdatingUser:
       return Object.assign({}, state, {
         isUpdating: true,
         hasUpdated: false,
         updateFailed: false,
         data: action.data,
-        uid: action.user
+        id: action.id
       });
-    case USERS_UPDATE_FAILED:
+    case UsersActions.UpdatingUserFailed:
       return Object.assign({}, state, {
         isUpdating: false,
         hasUpdated: false,
         updateFailed: true,
         data: action.data,
-        uid: action.user,
+        id: action.id,
         error: action.error
       });
-    case USERS_UPDATED:
+    case UsersActions.UpdatedUser:
       return Object.assign({}, state, {
         isUpdating: false,
         hasUpdated: true,
         updateFailed: false,
         data: action.data,
-        uid: action.user
+        id: action.id
       });
-    case USERS_ADD_BIO_INITIATED:
+    case UsersActions.AddingBio:
       return Object.assign({}, state, {
         addingBio: true,
         addedBio: false,
         failedToAddBio: false,
-        uid: action.user
+        id: action.id,
+        bio: action.bio
       });
-    case USERS_ADD_BIO_FAILED:
+    case UsersActions.AddingBioFailed:
       return Object.assign({}, state, {
         addingBio: false,
         addedBio: false,
         failedToAddBio: true,
         error: action.error,
-        uid: action.user,
+        id: action.id,
         bio: action.bio
       });
-    case ADDED_BIO:
+    case UsersActions.AddedBio:
       return Object.assign({}, state, {
         addingBio: false,
         addedBio: true,
@@ -194,40 +172,40 @@ const users = (state = initialState.users, action) => {
         uid: action.user,
         bio: action.bio
       });
-    case USERS_GET_FOUNDER_INITIATED:
+    case UsersActions.GettingFounder:
       return Object.assign({}, state, {
         gettingFounder: true,
         gotFounder: false,
         failedToGetFounder: false
       });
-    case USERS_GET_FOUNDER_FAILED:
+    case UsersActions.GettingFounderFailed:
       return Object.assign({}, state, {
         gettingFounder: false,
         gotFounder: false,
         failedToGetFounder: true,
         error: action.error
       });
-    case GOT_FOUNDER:
+    case UsersActions.GotFounder:
       return Object.assign({}, state, {
         gettingFounder: false,
         gotFounder: true,
         failedToGetFounder: false,
         founder: action.founder
       });
-    case USERS_GET_STAFF_INITIATED:
+    case UsersActions.GettingStaff:
       return Object.assign({}, state, {
         gettingStaff: true,
         gotStaff: false,
         failedToGetStaff: false
       });
-    case USERS_GET_STAFF_FAILED:
+    case UsersActions.GettingStaffFailed:
       return Object.assign({}, state, {
         gettingStaff: false,
         gotStaff: false,
         failedToGetStaff: true,
         error: action.error
       });
-    case GOT_STAFF:
+    case UsersActions.GotStaff:
       return Object.assign({}, state, {
         gettingStaff: false,
         gotStaff: true,

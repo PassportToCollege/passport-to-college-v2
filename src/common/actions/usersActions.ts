@@ -3,6 +3,8 @@ import axios from "axios";
 import _ from "lodash";
 
 import ActionTypes from "./actionTypes";
+import iAction from "../imodels/iAction";
+import iError from "../imodels/iError";
 import iContentEditable from "../imodels/iContentEditable";
 import User from "../models/User";
 import Student from "../models/Student";
@@ -17,21 +19,21 @@ const EMAIL_API = process.env.REACT_APP_EMAIL_API;
 const Console = console;
 
 // GET actions
-export const usersGetInitiated = (page : number, userType : UserType) : any => {
+export const usersGetInitiated = (page : number, userType : UserType) : iAction => {
   return {
     type: UsersActions.GettingUsers,
     page, userType
   };
 }
 
-export const usersGetDone = (users : Array<User>, page : number, userType : UserType) : any => {
+export const usersGetDone = (users : User[], page : number, userType : UserType) : iAction => {
   return {
     type: UsersActions.GotUsers,
     page, userType, users
   };
 }
 
-export const usersGetFailed = (error : any, page : number, userType : UserType) => {
+export const usersGetFailed = (error : iError, page : number, userType : UserType) : iAction => {
   return {
     type: UsersActions.GettingUsersFailed,
     page, userType, error
@@ -39,7 +41,7 @@ export const usersGetFailed = (error : any, page : number, userType : UserType) 
 }
 
 export const doUsersGet = (page : number, userType : UserType) : any => {
-  return (dispatch : any) => {
+  return (dispatch : Function) => {
     dispatch(usersGetInitiated(page, userType));
 
     if (userType === UserType.Any) {
@@ -50,13 +52,13 @@ export const doUsersGet = (page : number, userType : UserType) : any => {
   }
 }
 
-const getUsersOfAnyType = (dispatch : any, page : number) : any => {
+const getUsersOfAnyType = (dispatch : Function, page : number) : any => {
   if (page === 1) {
     return db.collection("users")
       .orderBy("name.last")
       .limit(50)
       .get()
-      .then((snapshots: any) => {
+      .then((snapshots : firebase.firestore.QuerySnapshot) => {
         if (snapshots.empty)
           return dispatch(usersGetFailed({ message: "No users found." }, page, UserType.Any));
   
@@ -73,7 +75,7 @@ const getUsersOfAnyType = (dispatch : any, page : number) : any => {
     .orderBy("name.last")
     .limit((page - 1) * 50)
     .get()
-    .then((tempSnapshots : any) => {
+    .then((tempSnapshots : firebase.firestore.QuerySnapshot) => {
       const lastVisible = tempSnapshots.docs[tempSnapshots.docs.length - 1];
 
       return db.collection("users")
@@ -81,7 +83,7 @@ const getUsersOfAnyType = (dispatch : any, page : number) : any => {
         .startAfter(lastVisible)
         .limit(50)
         .get()
-        .then((snapshots : any) => {
+        .then((snapshots : firebase.firestore.QuerySnapshot) => {
           if (snapshots.empty)
             return dispatch(usersGetFailed({ message: "No users found." }, page, UserType.Any));
 
@@ -99,8 +101,8 @@ const getUsersOfAnyType = (dispatch : any, page : number) : any => {
     });
 }
 
-const getUsersByType = (dispatch : any, page : number, userType : UserType) => {
-  let type = "any";
+const getUsersByType = (dispatch : Function, page : number, userType : UserType) : any => {
+  let type : string;
 
   switch (userType) {
     case UserType.Admin:
@@ -126,7 +128,7 @@ const getUsersByType = (dispatch : any, page : number, userType : UserType) => {
       .orderBy("name.last")
       .limit(50)
       .get()
-      .then((snapshots : any) => {
+      .then((snapshots : firebase.firestore.QuerySnapshot) => {
         if (snapshots.empty)
           return dispatch(usersGetFailed({ message: "No users found." }, page, userType));
   
@@ -144,7 +146,7 @@ const getUsersByType = (dispatch : any, page : number, userType : UserType) => {
     .orderBy("name.last")
     .limit((page - 1) * 50)
     .get()
-    .then((tempSnapshots : any) => {
+    .then((tempSnapshots : firebase.firestore.QuerySnapshot) => {
       const lastVisible = tempSnapshots.docs[tempSnapshots.docs.length - 1];
 
       return db.collection("users")
@@ -171,8 +173,8 @@ const getUsersByType = (dispatch : any, page : number, userType : UserType) => {
     });
 }
 
-const getUsersFromSnapshot = (snapshots: any): Array<User> => {
-  let users: Array<User> = [];
+const getUsersFromSnapshot = (snapshots : firebase.firestore.QuerySnapshot): User[] => {
+  let users: User[] = [];
 
   snapshots.forEach((snapshot: any) => {
     const userData = snapshot.data();
@@ -182,35 +184,35 @@ const getUsersFromSnapshot = (snapshots: any): Array<User> => {
   return users;
 }
 
-export const userGetByIdInitiated = (user : string) : any => {
+export const userGetByIdInitiated = (id : string) : iAction => {
   return {
     type: UsersActions.GettingUser,
-    user
+    id
   };
 }
 
-export const userGetByIdDone = (user : User) : any => {
+export const userGetByIdDone = (user : User) : iAction => {
   return {
     type: UsersActions.GotUsers,
     user
   };
 }
 
-export const userGetByIdFailed = (error : any, user : string) : any => {
+export const userGetByIdFailed = (error : iError, id : string) : iAction => {
   return {
     type: UsersActions.GettingUserFailed,
-    user, error
+    id, error
   };
 }
 
 export const doGetUserByUid = (uid : string) : any => {
-  return (dispatch : any) => {
+  return (dispatch : Function) => {
     dispatch(userGetByIdInitiated(uid));
 
     db.collection("users")
       .doc(uid)
       .get()
-      .then((snapshot : any) => {
+      .then((snapshot : firebase.firestore.DocumentSnapshot) => {
         if (snapshot.exists) {
           const user = new User(snapshot.data());
           return dispatch(userGetByIdDone(user));
@@ -224,36 +226,37 @@ export const doGetUserByUid = (uid : string) : any => {
   }
 }
 
-export const usersGetByIdInitiated = (users : Array<string>) : any => {
+export const usersGetByIdInitiated = (userIds : string[]) : iAction => {
   return {
     type: UsersActions.GettingUsers_ByUid,
-    users
+    ids: userIds
   };
 }
 
-export const usersGetByIdDone = (users : Array<User>) : any => {
+export const usersGetByIdDone = (users : User[]) : iAction => {
   return {
     type: UsersActions.GotUsers_ByUid,
     users
   };
 }
 
-export const usersGetByIdFailed = (error : any, users : Array<string>) : any => {
+export const usersGetByIdFailed = (error: iError, userIds : string[]) : iAction => {
   return {
     type: UsersActions.GettingUsersFailed_ByUid,
-    users, error
+    ids: userIds, 
+    error
   };
 }
 
-export const doGetUsersByUid = (users : Array<string> = []) : any => {
-  return (dispatch : any) => {
-    if (users.length < 1)
+export const doGetUsersByUid = (userIds : string[] = []) : any => {
+  return (dispatch : Function) => {
+    if (userIds.length < 1)
       return dispatch(usersGetByIdFailed({ message: "no uids provided" }, []));
 
-    dispatch(usersGetByIdInitiated(users));
+    dispatch(usersGetByIdInitiated(userIds));
 
     let promises : any = [];
-    for (let user of users) {
+    for (let user of userIds) {
       promises.push(db.collection("users").doc(user).get());
     }
 
@@ -271,25 +274,25 @@ export const doGetUsersByUid = (users : Array<string> = []) : any => {
       })
       .catch((error : any) => {
         Console.log(error);
-        dispatch(usersGetByIdFailed(error, users));
+        dispatch(usersGetByIdFailed(error, userIds));
       })
   }
 }
 
-export const getFounderInitiated = () : any => {
+export const getFounderInitiated = () : iAction => {
   return {
     type: UsersActions.GettingFounder
   };
 };
 
-export const getFounderFailed = (error : any) : any =>  {
+export const getFounderFailed = (error : iError) : iAction =>  {
   return {
     type: UsersActions.GettingFounderFailed,
     error
   };
 };
 
-export const gotFounder = (founder : User) : any => {
+export const gotFounder = (founder : User) : iAction => {
   return {
     type: UsersActions.GotFounder,
     founder
@@ -297,14 +300,14 @@ export const gotFounder = (founder : User) : any => {
 };
 
 export const doGetFounder = () : any => {
-  return (dispatch : any) => {
+  return (dispatch : Function) => {
     dispatch(getFounderInitiated());
 
     db.collection("users")
       .where("isStaff", "==", true)
       .where("role", "==", "Founder")
       .get()
-      .then((snapshots : any) => {
+      .then((snapshots : firebase.firestore.QuerySnapshot) => {
         if (snapshots.empty)
           dispatch(getFounderFailed({ message: "Founder not found." }));
 
@@ -321,20 +324,20 @@ export const doGetFounder = () : any => {
   };
 };
 
-export const getStaffInitiated = () : any => {
+export const getStaffInitiated = () : iAction => {
   return {
     type: UsersActions.GettingStaff
   };
 };
 
-export const getStaffFailed = (error : any) => {
+export const getStaffFailed = (error : iError) : iAction => {
   return {
     type: UsersActions.GettingStaffFailed,
     error
   };
 };
 
-export const gotStaff = (staff : Array<User>) : any => {
+export const gotStaff = (staff : User[]) : iAction => {
   return {
     type: UsersActions.GotStaff,
     staff
@@ -342,53 +345,24 @@ export const gotStaff = (staff : Array<User>) : any => {
 };
 
 export const doGetStaff = () : any => {
-  return (dispatch : any) => {
+  return (dispatch : Function) => {
     dispatch(getStaffInitiated());
 
     db.collection("users")
       .where("isStaff", "==", true)
       .get()
-      .then((staffSnaps : any) => {
+      .then((staffSnaps : firebase.firestore.QuerySnapshot) => {
         if (staffSnaps.empty)
           return dispatch(getStaffFailed({ message: "no staff found" }));
 
-        let staff : Array<User> = [];
-        let studentStaff : Array<string> = [];
+        const staff : User[] = [];
 
         staffSnaps.forEach((snap : any) => {
-          let data = snap.data();
-
-          if (data.isStudent) {
-            studentStaff.push(data.uid);
-          } else if (!data.isStudent && data.role !== "Founder") {
-            staff.push(new User(data));
-          }
+          const data = snap.data();
+          staff.push(new User(data));
         });
 
-        if (studentStaff.length) {
-          let promises = [];
-          for (let student of studentStaff) {
-            promises.push(db.collection("students").doc(student).get());
-          }
-
-          Promise.all(promises)
-            .then(snapshots => {
-              if (!snapshots.length)
-                return dispatch(getStaffFailed({ message: "no student staff found" }));
-
-              for (let snapshot of snapshots) {
-                if (!snapshot.empty)
-                  staff.push(new User(snapshot.data()));
-              }
-
-              dispatch(gotStaff(staff));
-            })
-            .catch(error => {
-              dispatch(getStaffFailed(error));
-            })
-        } else {
-          dispatch(gotStaff(staff));
-        }
+        dispatch(gotStaff(staff));
       })
       .catch((error : any) => {
         dispatch(getStaffFailed(error));
@@ -397,14 +371,14 @@ export const doGetStaff = () : any => {
 };
 
 // CREATE actions
-export const createUserInitiated = (newData : any | User) : any => {
+export const createUserInitiated = (newData : any) : iAction => {
   return {
     type: UsersActions.CreatingUser,
     data: newData
   };
 };
 
-export const createUserFailed = (error : any, newData : any | User) : any => {
+export const createUserFailed = (error : iError, newData : any) : iAction => {
   return {
     type: UsersActions.CreatingUserFailed,
     error, 
@@ -412,28 +386,28 @@ export const createUserFailed = (error : any, newData : any | User) : any => {
   };
 };
 
-export const userCreated = (user : User) : any => {
+export const userCreated = (user : User) : iAction => {
   return {
     type: UsersActions.CreatedUser,
     data: user
   };
 };
 
-export const sendSignupEmailInitiated = (email : string) : any => {
+export const sendSignupEmailInitiated = (email : string) : iAction => {
   return {
     type: UsersActions.SendingSignUpEmail,
     email
   };
 };
 
-export const signupEmailSent = (email : string) : any => {
+export const signupEmailSent = (email : string) : iAction => {
   return {
     type: UsersActions.SentSignUpEmail,
     email
   };
 };
 
-export const sendSignupEmailFailed = (error : any, email : string) : any => {
+export const sendSignupEmailFailed = (error : iError, email : string) : iAction => {
   return {
     type: UsersActions.SendingSignUpEmailFailed,
     error, email
@@ -441,7 +415,7 @@ export const sendSignupEmailFailed = (error : any, email : string) : any => {
 };
 
 export const doCreateUser = (newData : any) : any => {
-  return (dispatch : any) => {
+  return (dispatch : Function) => {
     dispatch(createUserInitiated(newData));
 
     const { email } = newData;
@@ -453,7 +427,7 @@ export const doCreateUser = (newData : any) : any => {
     db.collection("users")
       .where("email", "==", email)
       .get()
-      .then((snapshot : any) => {
+      .then((snapshot : firebase.firestore.QuerySnapshot) => {
         if (snapshot.empty) {
           const tempUid : string = `temp_${uid(16)}`;
           let newUser = new User({uid: tempUid, ...newData});
@@ -485,14 +459,14 @@ export const doCreateUser = (newData : any) : any => {
 }
 
 export const doCreateFullUser = (user : User, student? : Student) : any => {
-  return (dispatch : any) => {
+  return (dispatch : Function) => {
     dispatch(createUserInitiated(user));
 
     const email = user.email;
     db.collection("users")
       .where("email", "==", email)
       .get()
-      .then((snapshot : any) => {
+      .then((snapshot : firebase.firestore.QuerySnapshot) => {
         if (!snapshot.empty)
           return dispatch(createUserFailed({ message: "user already exists" }, user));
 
@@ -516,36 +490,34 @@ export const doCreateFullUser = (user : User, student? : Student) : any => {
 };
 
 // UPDATE actions
-export const userUpdateInitiated = (uid : string, newData : any) : any => {
+export const userUpdateInitiated = (id : string, newData : any) : iAction => {
   return {
     type: UsersActions.UpdatingUser,
-    user: uid,
+    id,
     data: newData
   };
 };
 
-export const userUpdated = (uid : string, newData : any) : any => {
+export const userUpdated = (id : string, newData : any) : iAction => {
   return {
     type: UsersActions.UpdatedUser,
-    user: uid,
+    id,
     data: newData
   };  
 };
 
-export const userUpdateFailed = (error: any, uid : string, newData : any) : any => {
+export const userUpdateFailed = (error: iError, id : string, newData : any) : iAction => {
   return {
     type: UsersActions.UpdatingUserFailed,
-    user: uid,
+    id,
     data: newData, 
     error
   };  
 };
 
-export const doUserUpdate = (uid: string, newData : any, options : any = {}) => {
-  return (dispatch : any) => {
+export const doUserUpdate = (uid: string, newData : any, refresh : boolean = false) : any => {
+  return (dispatch : Function) => {
     dispatch(userUpdateInitiated(uid, newData));
-
-    let updatedUser = new User({uid, ...newData});
 
     db.collection("users")
       .doc(uid)
@@ -555,7 +527,7 @@ export const doUserUpdate = (uid: string, newData : any, options : any = {}) => 
 
         // dispatch user get to update props
         // with new user data
-        if (options.refresh)
+        if (refresh)
           return dispatch(doGetUserByUid(uid));
       })
       .catch((error : any) => {
@@ -564,7 +536,7 @@ export const doUserUpdate = (uid: string, newData : any, options : any = {}) => 
   }
 };
 
-export const addBioInitiated = (user : User, bio : iContentEditable) => {
+export const addBioInitiated = (user : User, bio : iContentEditable) : iAction => {
   return {
     type: UsersActions.AddingBio,
     user,
@@ -572,7 +544,7 @@ export const addBioInitiated = (user : User, bio : iContentEditable) => {
   };
 };
 
-export const addBioFailed = (error : any, user : User, bio : iContentEditable) => {
+export const addBioFailed = (error : any, user : User, bio : iContentEditable) : iAction => {
   return {
     type: UsersActions.AddingBioFailed,
     error,
@@ -581,18 +553,15 @@ export const addBioFailed = (error : any, user : User, bio : iContentEditable) =
   };
 };
 
-export const bioAdded = (user : User, bio : iContentEditable) => {
+export const bioAdded = (user : User, bio : iContentEditable) : iAction => {
   return {
     type: UsersActions.AddedBio,
     user, bio
   };
 };
 
-export const doAddBio = (user : User, bio : iContentEditable, options : any = {}) => {
-  return (dispatch : any) => {
-    if (_.isEmpty(bio.blocks))
-      return dispatch(addBioFailed({ message: "invalid/no bio provided" }, user, bio));
-
+export const doAddBio = (user : User, bio : iContentEditable, refresh : boolean = false) : any => {
+  return (dispatch : Function) => {
     dispatch(addBioInitiated(user, bio));
 
     db.collection("users")
@@ -603,7 +572,7 @@ export const doAddBio = (user : User, bio : iContentEditable, options : any = {}
 
         // dispatch user get to update props
         // with new user data
-        if (options.refresh)
+        if (refresh)
           return dispatch(doGetUserByUid(user.uid));
       })
       .catch((error : any) => {

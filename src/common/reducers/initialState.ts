@@ -6,7 +6,7 @@ const initialState : iAppState =  {
   Menu: { dash: "full" },
   Auth: { activeUser: false },
   User: {},
-  users: {},
+  Users: {},
   Application: {},
   Applications: { page: 1 },
   Stats: {},
