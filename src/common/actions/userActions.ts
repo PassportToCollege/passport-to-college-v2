@@ -8,27 +8,28 @@ import { isEmail } from "../utils/index";
 
 import ActionTypes from "./actionTypes";
 import User from "../models/User";
+import iAction from "../imodels/iAction";
+import iError from "../imodels/iError";
 
 const UserActions = ActionTypes.User;
 const Console = console;
 
 // USER GET actions
-export const userGetInitiated = (uid : string) : any => {
+export const userGetInitiated = (id : string) : iAction => {
   return {
     type: UserActions.GettingUser,
-    user: uid
+    id
   };
 };
 
-export const userGetFailed = (uid : string, error : any) : any => {
+export const userGetFailed = (id : string, error : iError) : iAction => {
   return {
     type: UserActions.GettingUserFailed,
-    user: uid,
-    error
+    id, error
   };
 };
 
-export const userGetSuccessful = (user : User) : any => {
+export const userGetSuccessful = (user : User) : iAction => {
   return {
     type: UserActions.GotUser,
     user
@@ -36,7 +37,7 @@ export const userGetSuccessful = (user : User) : any => {
 };
 
 export const doUserGet = () : any => {
-  return (dispatch : any) => {
+  return (dispatch : Function) => {
     auth.onAuthStateChanged((user : any) => {
       if (user) {
         let uid = auth.currentUser.uid;
@@ -45,7 +46,7 @@ export const doUserGet = () : any => {
         db.collection("users")
           .doc(uid)
           .get()
-          .then((doc : any) => {
+          .then((doc : firebase.firestore.QueryDocumentSnapshot) => {
               if(doc.exists) {
                 let user = new User(doc.data());
                 dispatch(userGetSuccessful(user));
@@ -62,71 +63,71 @@ export const doUserGet = () : any => {
 };
 
 // USER UPDATE actions
-export const userUpdateInitiated = (uid : string, newData : any) : any => {
+export const userUpdateInitiated = (uid : string, newData : any) : iAction => {
   return {
     type: UserActions.UpdatingUser,
-    user: uid,
+    id: uid,
     data: newData
   };
 };
 
-export const userUpdateFailed = (uid : string, newData : any, error : any) : any => {
+export const userUpdateFailed = (uid : string, newData : any, error : iError) : iAction => {
   return {
     type: UserActions.UpdatingUserFailed,
-    user: uid,
-    dat: newData,
+    id: uid,
+    data: newData,
     error
   };
 };
 
-export const userUpdated = (uid : string, newData : any) : any => {
+export const userUpdated = (uid : string, newData : any) : iAction => {
   return {
     type: UserActions.UpdatedUser,
-    user: uid,
+    id: uid,
     data: newData
   };
 };
 
-export const reauthenticationInitiated = (uid : string) : any => {
+export const reauthenticationInitiated = (uid : string) : iAction => {
   return {
     type: UserActions.ReauthenticatingUser,
-    user: uid
+    id: uid
   }
 }
 
-export const reauthenticationSuccess = (uid : string) : any => {
+export const reauthenticationSuccess = (uid : string) : iAction => {
   return {
     type: UserActions.ReauthenticatedUser,
-    user: uid
+    id: uid
   }
 }
 
-export const reauthenticationFailed = (uid : string, error : any) : any => {
+export const reauthenticationFailed = (uid : string, error : iError) : iAction => {
   return {
     type: UserActions.ReauthentcatingUserFailed,
-    user: uid,
+    id: uid,
     error
   }
 }
 
-export const authEmailUpdateInitiated = (uid : string) : any => {
+export const authEmailUpdateInitiated = (uid : string) : iAction => {
   return {
     type: UserActions.UpdatingUserEmail,
-    user: uid
+    id: uid
   };
 }
 
-export const authEmailUpdated = (uid : string) : any => {
+export const authEmailUpdated = (uid : string) : iAction => {
   return {
     type: UserActions.UpdatedUserEmail,
-    user: uid
+    id: uid
   };
 }
 
-export const authEmailUpdateFailed = (uid : string, error : any) : any => {
+export const authEmailUpdateFailed = (uid : string, error : iError) : iAction => {
   return {
     type: UserActions.UpdatingUserEmailFailed,
-    user: uid,
+    id: uid,
     error
   };
 }
@@ -135,7 +136,7 @@ export const doUserUpdate = (newData : any, uid : any, refresh : boolean = false
   let user = auth.currentUser;
   uid = uid || user.uid;
 
-  return (dispatch : any) => {
+  return (dispatch : Function) => {
     dispatch(userUpdateInitiated(uid, newData));
 
     db.collection("users")
@@ -159,7 +160,7 @@ export const doUserEmailUpdate = (email : string) : any => {
   let user = auth.currentUser;
   let uid = user.uid;
 
-  return (dispatch : any) => {
+  return (dispatch : Function) => {
     if (!isEmail(email))
       return dispatch(authEmailUpdateFailed(uid, { message: "Invalid email provided." }));
 
@@ -184,7 +185,7 @@ export const doUserEmailUpdateWithReauthentication = (email : string, password :
   let user = auth.currentUser;
   let uid = user.uid;
 
-  return (dispatch : any) => {
+  return (dispatch : Function) => {
     if (!isEmail(email))
       return dispatch(userUpdateFailed(uid, { email }, { message: "Invalid email provided." }));
 

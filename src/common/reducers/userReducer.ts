@@ -1,114 +1,107 @@
-import initialState from "./initialState";
-import {
-  USER_GET_FAILED,
-  USER_UPDATE_INITIATED,
-  USER_GET_INITIATED,
-  USER_GET_SUCCESS,
-  USER_UPDATE_FAILED,
-  USER_UPDATED,
-  USER_AUTH_EMAIL_UPDATE_FAILED,
-  USER_AUTH_EMAIL_UPDATE_INITIATED,
-  USER_AUTH_EMAIL_UPDATED,
-  USER_REAUTHENTICATED,
-  USER_REAUTHENTICATION_FAILED,
-  USER_REAUTHENTICATION_INITIATED
-} from "../actions/actionTypes";
+import iAppState from "../imodels/iAppState";
+import iAction from "../imodels/iAction";
+import User from "../models/User";
 
-const user = (state = initialState.user, action) => {
+import initialState from "./initialState";
+import ActionTypes from "../actions/actionTypes";
+
+const UserActions = ActionTypes.User;
+
+const user = (state : iAppState["User"] = initialState.User, action : iAction) : iAppState["User"] => {
   switch(action.type) {
-    case USER_GET_INITIATED:
+    case UserActions.GettingUser:
       return Object.assign({}, state, {
         isGetting: true,
         hasFailed: false,
         hasGotten: false,
-        user: action.user,
+        id: action.id,
       });
-    case USER_GET_FAILED:
+    case UserActions.GettingUserFailed:
       return Object.assign({}, state, {
         isGetting: false,
         hasFailed: true,
         hasGotten: false,
-        user: action.user,
+        id: action.id,
         error: action.error
       });
-    case USER_GET_SUCCESS:
+    case UserActions.GotUser:
       return Object.assign({}, state, {
         isGetting: false,
         hasFailed: false,
         hasGotten: true,
         user: action.user,
       });
-    case USER_REAUTHENTICATION_FAILED:
+    case UserActions.ReauthentcatingUserFailed:
       return Object.assign({}, state, {
         isUpdating: false,
         hasFailed: false,
         isReauthenticating: false,
-        uid: action.user,
+        id: action.id,
         error: action.error
       });
-    case USER_REAUTHENTICATED:
+    case UserActions.ReauthenticatedUser:
       return Object.assign({}, state, {
         isUpdating: true,
         hasFailed: false,
         isReauthenticating: false,
-        uid: action.user
+        id: action.id
       });
-    case USER_REAUTHENTICATION_INITIATED:
+    case UserActions.ReauthenticatingUser:
       return Object.assign({}, state, {
         isUpdating: true,
         hasFailed: false,
         isReauthenticating: true,
-        uid: action.user
+        id: action.id
       });
-    case USER_UPDATE_INITIATED:
+    case UserActions.UpdatingUser:
       return Object.assign({}, state, {
         isUpdating: true,
         hasFailed: false,
         hasUpdated: false,
         isReauthenticating: false,
-        uid: action.user,
+        id: action.id,
         data: action.data
       });
-    case USER_UPDATE_FAILED:
+    case UserActions.UpdatingUserFailed:
       return Object.assign({}, state, {
         isUpdating: false,
         hasFailed: true,
         hasUpdated: false,
         isReauthenticating: false,
-        uid: action.user,
+        id: action.id,
         data: action.data,
         error: action.error
       });
-    case USER_UPDATED:
+    case UserActions.UpdatedUser:
       return Object.assign({}, state, {
         isUpdating: false,
         hasFailed: false,
         hasUpdated: true,
         isReauthenticating: false,
-        uid: action.user,
+        id: action.id,
         data: action.data
       });
-    case USER_AUTH_EMAIL_UPDATE_INITIATED:
+    case UserActions.UpdatingUserEmail:
       return Object.assign({}, state, {
         isUpdating: true,
         hasFailed: false,
         isReauthenticating: false,
-        uid: action.user
+        id: action.id
       });
-    case USER_AUTH_EMAIL_UPDATE_FAILED:
+    case UserActions.UpdatingUserEmailFailed:
       return Object.assign({}, state, {
         isUpdating: true,
         hasFailed: true,
         isReauthenticating: false,
-        uid: action.user,
+        id: action.id,
         error: action.error
       });
-    case USER_AUTH_EMAIL_UPDATED:
+    case UserActions.UpdatedUser:
       return Object.assign({}, state, {
         isUpdating: true,
         hasFailed: false,
         isReauthenticating: false,
-        uid: action.user
+        id: action.id
       });
     default:
       return state;

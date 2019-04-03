@@ -283,6 +283,23 @@ interface StatsState
   hasFailed? : boolean;
 }
 
+interface UserState
+{
+  user? : User;
+  id? : string;
+  error? : iError;
+  data? : any;
+
+  isGetting? : boolean;
+  hasFailed? : boolean;
+  hasGotten? : boolean;
+
+  isUpdating? : boolean;
+  failedToUpdate? : boolean;
+  isReauthenticating? : boolean;
+  hasUpdated? : boolean;
+}
+
 export default interface iAppState {
   Application : ApplicationState;
   Applications : ApplicationsState;
@@ -295,4 +312,5 @@ export default interface iAppState {
   PostCategory: PostCategoryState;
   Posts : PostsState;
   Stats : StatsState;
+  User : UserState;
 }
