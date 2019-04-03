@@ -152,7 +152,7 @@ enum Student {
 enum Students {
   GettingStudents = 0,
   GettingStudentsFailed = 1,
-  GotSTudents = 2,
+  GotStudents = 2,
   GettingCurrentStudents = 3,
   GettingCurrentStudentsFailed = 4,
   GotCurrentStudents = 5,

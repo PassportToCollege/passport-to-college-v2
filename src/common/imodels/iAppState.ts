@@ -365,6 +365,50 @@ interface UsersState
   failedToGetStaff? : boolean;
 }
 
+interface StudentState
+{
+  student? : Student;
+  id? : string;
+  error? : iError;
+  data? : any;
+  slug? : string;
+
+  isGetting? : boolean;
+  hasGotten? : boolean;
+  failedToGetStudent? : boolean;
+
+  isUpdating? : boolean;
+  hasUpdated? : boolean;
+  failedToUpdateStudent? : boolean;
+
+  isDeleting? : boolean;
+  hasDeleted? : boolean;
+  failedToDeleteAccomplishment? : boolean;
+
+  creatingStudent? : boolean;
+  createdStudent? : boolean;
+  failedToCreateStudent? : boolean;
+}
+
+interface StudentsState {
+  students? : Student[];
+  current? : Student[];
+  past? : Student[];
+  error? : iError;
+
+  isGetting? : boolean;
+  hasGotten? : boolean;
+  failedToGetStudents? : boolean;
+
+  gettingCurrentStudents? : boolean;
+  gotCurrentStudents? : boolean;
+  failedToGetCurrentStudents? : boolean;
+
+  gettingPastStudents? : boolean;
+  gotPastStudents? : boolean;
+  failedToGetPastStudents? : boolean;
+}
+
 export default interface iAppState {
   Application : ApplicationState;
   Applications : ApplicationsState;
@@ -378,6 +422,8 @@ export default interface iAppState {
   PostCategory: PostCategoryState;
   Posts : PostsState;
   Stats : StatsState;
+  Student : StudentState;
+  Students : StudentsState;
   User : UserState;
   Users : UsersState;
 }

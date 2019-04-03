@@ -1,27 +1,30 @@
+import iStudent from "../imodels/iStudent";
+import iAction from "../imodels/iAction";
+import iError from "../imodels/iError";
+import Student from "../models/Student";
+
+import ActionTypes from "./actionTypes";
 import firebase from "firebase";
 import { db } from "../utils/firebase";
-import ActionTypes from "./actionTypes";
-import Student from "../models/Student";
 
 const StudentActions = ActionTypes.Student;
 
 // GET actions
-export const studentGetInitiated = (uid : string) : any => {
+export const studentGetInitiated = (id : string) : iAction => {
   return {
     type: StudentActions.GettingStudent,
-    student: uid
+    id
   };
 };
 
-export const studentGetFailed = (error : any, uid : string) : any => {
+export const studentGetFailed = (error : iError, id : string) : iAction => {
   return {
     type: StudentActions.GettingStudentFailed,
-    error,
-    student: uid
+    error, id
   };
 };
 
-export const studentGetSuccess = (student : Student) : any => {
+export const studentGetSuccess = (student : Student) : iAction => {
   return {
     type: StudentActions.GotStudent,
     student
@@ -29,112 +32,108 @@ export const studentGetSuccess = (student : Student) : any => {
 };
 
 export const doStudentGet = (uid : string) : any => {
-  return (dispatch : any) => {
+  return (dispatch : Function) => {
     dispatch(studentGetInitiated(uid));
 
     db.collection("students")
       .doc(uid)
       .get()
-      .then((snapshot : any) => {
+      .then((snapshot : firebase.firestore.QueryDocumentSnapshot) => {
         if (snapshot.exists) {
-          let data : any = snapshot.data;
-          let student = new Student(data, data.user);
+          const data : any = snapshot.data;
+          const student = new Student(data, data.user);
 
           return dispatch(studentGetSuccess(student));
         }
 
         return dispatch(studentGetFailed({ message: "no student found" }, uid));
       })
-      .catch((error : any) => {
+      .catch((error : iError) => {
         dispatch(studentGetFailed(error, uid));
       });
   }
 }
 
 // CREATE actions
-export const studentCreateInitiated = () : any => {
+export const studentCreateInitiated = () : iAction => {
   return {
     type: StudentActions.CreatingStudent
   };
 };
 
-export const studentCreateFailed = (error : any, student : Student) : any => {
+export const studentCreateFailed = (error : iError, data : iStudent) : iAction => {
   return {
     type: StudentActions.CreatingStudentFailed,
-    error, 
-    newStudent: student
+    error, data
   };
 };
 
-export const studentCreated = (student : Student) : any => {
+export const studentCreated = (data : iStudent) : iAction => {
   return {
     type: StudentActions.CreatedStudent,
-    newStudent: student
+    data
   };
 };
 
-export const doCreateStudent = (student : Student) : any => {
-  return (dispatch : any) => {
+export const doCreateStudent = (student : iStudent) : any => {
+  return (dispatch : Function) => {
     dispatch(studentCreateInitiated());
 
     return db.collection("students")
       .doc(student.uid)
-      .set(student.data)
+      .set(student)
       .then(() => {
         dispatch(studentCreated(student));
       })
-      .catch((error : any) => {
+      .catch((error : iError) => {
         dispatch(studentCreateFailed(error, student));
       });
   }
 }
 
 // UPDATE actions
-export const studentUpdateInitiated = (student : Student, newData : any) : any => {
+export const studentUpdateInitiated = (student : Student, data : any) : iAction => {
   return {
     type: StudentActions.UpdatingStudent,
-    student,
-    data : newData
+    student, data
   };
 };
 
-export const studentUpdateFailed = (error : any, student : Student, newData : any) : any => {
+export const studentUpdateFailed = (error : any, student : Student, data : any) : iAction => {
   return {
     type: StudentActions.UpdatingStudentFailed,
-    student, error,
-    data : newData
+    student, error, data
   };
 };
 
-export const studentUpdated = (student : Student, newData : any) : any => {
+export const studentUpdated = (student : Student, data : any) : iAction => {
   return {
     type: StudentActions.UpdatedStudent,
-    student, 
-    data : newData
+    student, data 
   };
 };
 
-export const doStudentUpdate = (student : Student, newData : any = {}) : any => {
-  return (dispatch : any) => {
-    dispatch(studentUpdateInitiated(student, newData));
+export const doStudentUpdate = (student : Student, data : any) : any => {
+  return (dispatch : Function) => {
+    dispatch(studentUpdateInitiated(student, data));
 
     db.collection("students")
       .doc(student.uid)
-      .update(newData)
+      .update(data)
       .then(() => {
-        dispatch(studentUpdated(student, newData));
+        dispatch(studentUpdated(student, data));
 
         // get student
         dispatch(doStudentGet(student.uid));
       })
-      .catch((error : any) => {
-        dispatch(studentUpdateFailed(error, student, newData));
+      .catch((error : iError) => {
+        dispatch(studentUpdateFailed(error, student, data));
       })
   }
 }
 
-export const doStudentUpdateWithoutGet = (student : Student, newData : any = {}) : any => {
-  return (dispatch : any) => {
+export const doStudentUpdateWithoutGet = (student : Student, newData : any) : any => {
+  return (dispatch : Function) => {
     dispatch(studentUpdateInitiated(student, newData));
 
     db.collection("students")
@@ -143,36 +142,36 @@ export const doStudentUpdateWithoutGet = (student : Student, newData : any = {})
       .then(() => {
         dispatch(studentUpdated(student, newData));
       })
-      .catch((error : any) => {
+      .catch((error : iError) => {
         dispatch(studentUpdateFailed(error, student, newData));
       })
   }
 }
 
 // DELETE actions
-export const accomplishmentDeleteInitiated = (student : Student, slug : string) : any => {
+export const accomplishmentDeleteInitiated = (student : Student, slug : string) : iAction => {
   return {
     type: StudentActions.DeletingStudentAccomplishment,
     student, slug
   };
 };
 
-export const accomplishmentDeleted = (student : Student, slug : string) : any => {
+export const accomplishmentDeleted = (student : Student, slug : string) : iAction => {
   return {
     type: StudentActions.DeletedStudentAccomplishment,
     student, slug
   };
 };
 
-export const accomplishmentDeleteFailed = (error : any, student : Student, slug : string) => {
+export const accomplishmentDeleteFailed = (error : iError, student : Student, slug : string) : iAction => {
   return {
     type: StudentActions.DeletingStudentAccomplishmentFailed,
     student, slug, error
   };
 };
 
-export const doAccomplishmentDelete = (student : Student, slug : string, options : any = {}) : any => {
-  return (dispatch : any) => {
+export const doAccomplishmentDelete = (student : Student, slug : string, refresh : boolean = false) : any => {
+  return (dispatch : Function) => {
     dispatch(accomplishmentDeleteInitiated(student, slug));
     
     db.collection("students")
@@ -183,10 +182,10 @@ export const doAccomplishmentDelete = (student : Student, slug : string, options
       .then(() => {
         dispatch(accomplishmentDeleted(student, slug));
 
-        if (options.refresh)
+        if (refresh)
           return dispatch(doStudentGet(student.uid));
       })
-      .catch((error : any) => {
+      .catch((error : iError) => {
         dispatch(accomplishmentDeleteFailed(error, student, slug));
       })
   }

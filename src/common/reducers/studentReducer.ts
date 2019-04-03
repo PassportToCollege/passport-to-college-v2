@@ -1,112 +1,97 @@
-import initialState from "./initialState";
-import {
-  STUDENT_GET_INITIATED,
-  STUDENT_GET_FAILED,
-  STUDENT_GET_SUCCESS,
-  STUDENT_UPDATE_INITIATED,
-  STUDENT_UPDATE_FAILED,
-  STUDENT_UPDATED,
-  STUDENT_ACCOMPLISHMENT_DELETE_INITIATED,
-  STUDENT_ACCOMPLISHMENT_DELETED,
-  STUDENT_ACCOMPLISHMENT_DELETE_FAILED,
-  CREATE_COMMENT_INITIATED,
-  CREATE_STUDENT_FAILED,
-  STUDENT_CREATED,
-  CREATE_STUDENT_INITIATED
-} from "../actions/actionTypes";
+import iAppState from "../imodels/iAppState";
+import iAction from "../imodels/iAction";
 
-const student = (state = initialState.student, action) => {
+import initialState from "./initialState";
+import ActionTypes from "../actions/actionTypes";
+
+const StudentActions = ActionTypes.Student;
+
+const student = (state : iAppState["Student"] = initialState.Student, action : iAction) : iAppState["Student"] => {
   switch (action.type) {
-    case STUDENT_GET_INITIATED:
+    case StudentActions.GettingStudent:
       return Object.assign({}, state, {
         isGetting: true,
         hasGotten: false,
         hasFailed: false,
-        student: action.student
+        id: action.id
       });
-    case STUDENT_GET_FAILED:
+    case StudentActions.GettingStudentFailed:
       return Object.assign({}, state, {
         isGetting: false,
         hasGotten: false,
         hasFailed: true,
-        student: action.student,
+        id: action.id,
         error: action.error
       });
-    case STUDENT_GET_SUCCESS:
+    case StudentActions.GotStudent:
       return Object.assign({}, state, {
         isGetting: false,
         hasGotten: true,
         hasFailed: false,
         student: action.student
       });
-    case STUDENT_UPDATE_INITIATED:
+    case StudentActions.UpdatingStudent:
       return Object.assign({}, state, {
         isUpdating: true,
         hasUpdated: false,
         hasFailed: false,
-        uid: action.student,
+        id: action.id,
         data: action.data
       });
-    case STUDENT_UPDATE_FAILED:
+    case StudentActions.UpdatingStudentFailed:
       return Object.assign({}, state, {
         isUpdating: false,
         hasUpdated: false,
         hasFailed: true,
-        uid: action.student,
+        id: action.id,
         data: action.data,
         error: action.error
       });
-    case STUDENT_UPDATED:
+    case StudentActions.UpdatedStudent:
       return Object.assign({}, state, {
         isUpdating: false,
         hasUpdated: true,
         hasFailed: false,
-        uid: action.student,
+        id: action.id,
         data: action.data
       });
-    case STUDENT_ACCOMPLISHMENT_DELETE_INITIATED:
+    case StudentActions.DeletedStudentAccomplishment:
       return Object.assign({}, state, {
         isDeleting: true,
         hasDeleted: false,
-        hasFailed: false,
+        failedToDeleteAccomplishment: false,
         slug: action.slug
       });
-    case STUDENT_ACCOMPLISHMENT_DELETED:
+    case StudentActions.DeletedStudentAccomplishment:
       return Object.assign({}, state, {
         isDeleting: false,
         hasDeleted: true,
-        hasFailed: false,
+        failedToDeleteAccomplishment: false,
         slug: action.slug
       });
-    case STUDENT_ACCOMPLISHMENT_DELETE_FAILED:
+    case StudentActions.DeletingStudentAccomplishmentFailed:
       return Object.assign({}, state, {
         isDeleting: false,
         hasDeleted: false,
-        hasFailed: true,
+        failedToDeleteAccomplishment: true,
         slug: action.slug,
         error: action.error
       });
-    case CREATE_COMMENT_INITIATED:
+    case StudentActions.CreatingStudent:
       return Object.assign({}, state, {
         creatingStudent: true,
         createdStudent: false,
         failedToCreateStudent: false
       });
-    case CREATE_STUDENT_INITIATED:
-      return Object.assign({}, state, {
-        creatingStudent: true,
-        createdStudent: false,
-        failedToCreateStudent: false
-      });
-    case CREATE_STUDENT_FAILED:
+    case StudentActions.CreatingStudentFailed:
       return Object.assign({}, state, {
         creatingStudent: false,
         createdStudent: false,
         failedToCreateStudent: true,
         error: action.error,
-        newStudent: action.student
+        data: action.data
       });
-    case STUDENT_CREATED:
+    case StudentActions.CreatedStudent:
       return Object.assign({}, state, {
         creatingStudent: false,
         createdStudent: true,

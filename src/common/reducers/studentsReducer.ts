@@ -1,77 +1,72 @@
-import initialState from "./initialState";
-import {
-  STUDENTS_GET_FAILED,
-  STUDENTS_GET_INITIATED,
-  STUDENTS_GET_SUCCESS,
-  STUDENTS_GET_CURRENT_INITIATED,
-  STUDENTS_GET_CURRENT_FAILED,
-  STUDENTS_GET_CURRENT_SUCCESS,
-  STUDENTS_GET_PAST_INITIATED,
-  STUDENTS_GET_PAST_FAILED,
-  STUDENTS_GET_PAST_SUCCESS
-} from "../actions/actionTypes";
+import iAppState from "../imodels/iAppState";
+import iAction from "../imodels/iAction";
 
-const students = (state = initialState.students, action) => {
+import initialState from "./initialState";
+import ActionTypes from "../actions/actionTypes";
+
+const StudentsActions = ActionTypes.Students;
+
+const students = (state : iAppState["Students"] = initialState.Students, action : iAction) : iAppState["Students"] => {
   switch (action.type) {
-    case STUDENTS_GET_INITIATED:
+    case StudentsActions.GettingStudents:
       return Object.assign({}, state, {
         isGetting: true,
-        hasFailed: false,
+        failedToGetStudents: false,
         hasGotten: false
       });
-    case STUDENTS_GET_SUCCESS:
+    case StudentsActions.GotStudents:
       return Object.assign({}, state, {
         isGetting: false,
         hasGotten: true,
-        hasFailed: false,
+        failedToGetStudents: false,
         students: action.students
       });
-    case STUDENTS_GET_FAILED:
+    case StudentsActions.GettingStudentsFailed:
       return Object.assign({}, state, {
         isGetting: false, 
         hasGotten: false,
-        hasFailed: true,
+        failedToGetStudents: true,
         error: action.error
       });
-    case STUDENTS_GET_CURRENT_INITIATED:
+    case StudentsActions.GettingCurrentStudents:
       return Object.assign({}, state, {
         gettingCurrentStudents: true,
         gotCurrentStudents: false,
         failedToGetCurrentStudents: false
       });
-    case STUDENTS_GET_CURRENT_FAILED:
+    case StudentsActions.GettingCurrentStudentsFailed:
       return Object.assign({}, state, {
         gettingCurrentStudents: false,
         gotCurrentStudents: false,
         failedToGetCurrentStudents: true,
         error: action.error
       });
-    case STUDENTS_GET_CURRENT_SUCCESS:
+    case StudentsActions.GotCurrentStudents:
       return Object.assign({}, state, {
         gettingCurrentStudents: false,
         gotCurrentStudents: true,
         failedToGetCurrentStudents: false,
-        students: action.students
+        current: action.current
       });
-    case STUDENTS_GET_PAST_INITIATED:
+    case StudentsActions.GettingPastStudents:
       return Object.assign({}, state, {
         gettingPastStudents: true,
         gotPastStudents: false,
         failedToGetPastStudents: false
       });
-    case STUDENTS_GET_PAST_FAILED:
+    case StudentsActions.GettingPastStudentsFailed:
       return Object.assign({}, state, {
         gettingPastStudents: false,
         gotPastStudents: false,
         failedToGetPastStudents: true,
         error: action.error
       });
-    case STUDENTS_GET_PAST_SUCCESS:
+    case StudentsActions.GotPastStudents:
       return Object.assign({}, state, {
         gettingPastStudents: false,
         gotPastStudents: true,
         failedToGetPastStudents: false,
-        pastStudents: action.students
+        past: action.past
       });
     default:
       return state;

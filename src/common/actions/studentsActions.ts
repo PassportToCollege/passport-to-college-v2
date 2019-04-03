@@ -28,7 +28,7 @@ export const getStudentsInitiated = () : iAction => {
 
 export const getStudentsSuccess = (students : Student[]) : iAction => {
   return {
-    type: StudentsActions.GotSTudents,
+    type: StudentsActions.GotStudents,
     students
   };
 };
@@ -73,10 +73,10 @@ export const getCurrentStudentsFailed = (error : iError) : iAction => {
   };
 };
 
-export const gotCurrentStudents = (students : Student[]) : iAction => {
+export const gotCurrentStudents = (current : Student[]) : iAction => {
   return {
     type: StudentsActions.GotCurrentStudents,
-    students
+    current
   };
 };
 
@@ -115,10 +115,10 @@ export const getPastStudentsFailed = (error : iError) : iAction => {
   };
 };
 
-export const gotPastStudents = (students : Student[]) : iAction => {
+export const gotPastStudents = (past : Student[]) : iAction => {
   return {
     type: StudentsActions.GotPastStudents,
-    students
+    past
   };
 };
 

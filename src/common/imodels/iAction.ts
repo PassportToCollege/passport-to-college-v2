@@ -37,6 +37,8 @@ export default interface iAction
   features? : Feature[];
   student? : Student;
   students? : Student[];
+  current? : Student[];
+  past? : Student[];
   test? : iTest;
   userType? : UserType;
   bio? : iContentEditable;
