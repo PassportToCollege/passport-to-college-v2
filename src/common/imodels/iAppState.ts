@@ -4,7 +4,9 @@ import Post from "../models/Post";
 import User from "../models/User";
 import Application from "../models/Application";
 import PostCategory from "../models/PostCategory";
-import Feature from "../components/Feature";
+import Feature from "../models/Feature";
+import Comment from "../models/Comment";
+import Student from "../models/Student";
 
 interface ApplicationState
 {
@@ -53,6 +55,7 @@ interface PostState
   Post? : Post;
   data? : any;
   lastDeletedPost : Post;
+  conversations? : Comment[];
 
   isCreating? : boolean;
   hasCreated? : boolean;
@@ -79,6 +82,35 @@ interface PostState
   deletingPost? : boolean;
   deletedPost? : boolean;
   failedToDeletePost? : boolean;
+}
+
+interface PostsState
+{
+  posts? : Post[];
+  error? : iError;
+  page? : number;
+  categories? : PostCategory[];
+  student? : Student;
+
+  isGetting? : boolean;
+  hasGotten? : boolean;
+  postsGetFailed? : boolean;
+
+  gettingMostRecent? : boolean;
+  gotMostRecent? : boolean;
+  mostRecentGetFailed? : boolean;
+
+  paginatingPosts? : boolean;
+  paginationDone? : boolean;
+  paginationFailed? : boolean;
+
+  gettingMostRecentByCategory? : boolean;
+  gotMostRecentByCategory? : boolean;
+  mostRecentGetByCategoryGetFailed? : boolean;
+
+  gettingAccomplishmentsByUser? : boolean;
+  gotAccomplishmentsByUser? : boolean;
+  failedToGetAccomplishmentsByUser? : boolean;
 }
 
 interface PostCategoryState
@@ -195,4 +227,5 @@ export default interface iAppState {
   Menu : MenuState;
   Post : PostState;
   PostCategory: PostCategoryState;
+  Posts : PostsState
 }

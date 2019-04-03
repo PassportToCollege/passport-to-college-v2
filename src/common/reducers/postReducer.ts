@@ -5,7 +5,7 @@ import iAppState from "../imodels/iAppState";
 
 const PostActions = ActionTypes.Post;
 
-const post = (state : iAppState = initialState.Post, action : iAction) : iAppState => {
+const post = (state : iAppState["Post"] = initialState.Post, action : iAction) : iAppState["Post"] => {
   switch (action.type) {
     case PostActions.CreatingPost:
       return Object.assign({}, state, {
@@ -75,9 +75,8 @@ const post = (state : iAppState = initialState.Post, action : iAction) : iAppSta
     case PostActions.UpdateLocalConversationsCount:
       return Object.assign({}, state, {
         updatedLocalConversationsCount: true,
-        post: Object.assign({}, state.post, {
-          conversations: action.updateType === "inc" ? state.post.conversations + 1 : state.post.conversations - 1
-        })
+        updateType: action.updateType,
+        changedComment: action.changedComment
       });
     case PostActions.UpdatingHero:
       return Object.assign({}, state, {

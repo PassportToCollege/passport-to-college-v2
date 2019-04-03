@@ -45,6 +45,7 @@ export default interface iAction
   nEmail? : string; // new email
   nComment? : Comment; // new comment
   nCategory? : PostCategory; // new category
+  changedComment? : Comment; // comment that was either added or removed
   isReply? : boolean; // flag to tell if a comment is a reply
   parent? : string; // parent comment of reply
   categoryName? : string // name of categoy=ry being added

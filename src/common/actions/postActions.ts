@@ -6,6 +6,7 @@ import iError from "../imodels/iError";
 import iAction from "../imodels/iAction";
 import iPost, { PostUpdateType } from "../imodels/iPost";
 import Post from "../models/Post";
+import Comment from "../models/Comment";
 import { doPostsGetMostRecent } from "./postsActions";
 import { doCategoryPostsUpdate } from "./postCategoryActions";
 import { deletePostHero } from "../utils/firebase/functions";
@@ -217,10 +218,11 @@ export const doPostUpdate = (id : string, data : any = {}, options : any = {}) :
   };
 };
 
-export const doUpdateConversationsCount = (updateType : PostUpdateType) : iAction => {
+export const doUpdateConversationsCount = (updateType : PostUpdateType, changedComment : Comment) : iAction => {
   return {
     type: PostActions.UpdateLocalConversationsCount,
-    updateType
+    updateType,
+    changedComment
   };
 };
 

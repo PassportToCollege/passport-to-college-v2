@@ -1,137 +1,122 @@
-import initialState from "./initialState";
-import {
-  POSTS_GET_INITIATED,
-  POSTS_GET_DONE,
-  POSTS_GET_FAILED,
-  POSTS_GET_MOST_RECENT_INITIATED,
-  POSTS_GET_MOST_RECENT_DONE,
-  POSTS_GET_MOST_RECENT_FAILED,
-  PAGINATE_POSTS_INITIATED,
-  PAGINATE_POSTS_DONE,
-  POSTS_GET_MOST_RECENT_BY_CATEGORY_INITIATED,
-  POSTS_GET_MOST_RECENT_BY_CATEGORY_DONE,
-  POSTS_GET_MOST_RECENT_BY_CATEGORY_FAILED,
-  PAGINATE_POSTS_FAILED,
-  GET_ACCOMPLISHMENTS_BY_USER_INITIATED,
-  GET_ACCOMPLISHMENTS_BY_USER_FAILED,
-  GOT_ACCOMPLISHMENTS_BY_USER
-} from "../actions/actionTypes";
+import iAppState from "../imodels/iAppState";
+import iAction from"../imodels/iAction";
+import Post from "../models/Post";
 
-const posts = (state = initialState.posts, action) => {
+import initialState from "./initialState";
+import ActionTypes from "../actions/actionTypes";
+
+const PostsActions = ActionTypes.Posts;
+
+const posts = (state : iAppState["Posts"] = initialState.Posts, action : iAction) : iAppState["Posts"] => {
   switch (action.type) {
-    case POSTS_GET_INITIATED:
+    case PostsActions.GettingPosts:
       return Object.assign({}, state, {
         isGetting: true,
         hasGotten: false,
         postsGetFailed: false
       });
-    case POSTS_GET_DONE:
+    case PostsActions.GotPosts:
       return Object.assign({}, state, {
         isGetting: false,
         hasGotten: true,
         postsGetFailed: false,
-        posts: action.posts
+        posts: <Post[]>action.posts
       });
-    case POSTS_GET_FAILED:
+    case PostsActions.GettingPostsFailed:
       return Object.assign({}, state, {
         isGetting: false,
         hasGotten: false,
         postsGetFailed: true,
-        error: action.error,
-        posts: null
+        error: action.error
       });
-    case POSTS_GET_MOST_RECENT_INITIATED:
+    case PostsActions.GettingMostRecentPosts:
       return Object.assign({}, state, {
         gettingMostRecent: true,
         gotMostRecent: false,
         mostRecentGetFailed: false
       });
-    case POSTS_GET_MOST_RECENT_DONE:
+    case PostsActions.GotMostRecentPosts:
       return Object.assign({}, state, {
         gettingMostRecent: false,
         gotMostRecent: true,
         mostRecentGetFailed: false,
-        mostRecent: action.mostRecent
+        posts: action.posts
       });
-    case POSTS_GET_MOST_RECENT_FAILED:
+    case PostsActions.GettingMostRecentPostsFailed:
       return Object.assign({}, state, {
         gettingMostRecent: false,
         gotMostRecent: false,
         mostRecentGetFailed: true,
-        error: action.error,
-        mostRecent: null
+        error: action.error
       });
-    case PAGINATE_POSTS_INITIATED:
+    case PostsActions.PaginatingPosts:
       return Object.assign({}, state, {
         paginatingPosts: true,
         paginationDone: false,
         paginationFailed: false,
         page: action.page
       });
-    case PAGINATE_POSTS_DONE:
+    case PostsActions.PaginatedPosts:
       return Object.assign({}, state, {
         paginatingPosts: false,
         paginationDone: true,
         paginationFailed: false,
         page: action.page,
-        paginatedPosts: action.posts
+        posts: [...<Post[]>state.posts, ...<Post[]>action.posts]
       });
-    case PAGINATE_POSTS_FAILED:
+    case PostsActions.PaginatingPostFailed:
       return Object.assign({}, state, {
         paginatingPosts: false,
         paginationDone: false,
         paginationFailed: true,
         page: action.page,
-        error: action.error,
-        paginatedPosts: null
+        error: action.error
       });
-    case POSTS_GET_MOST_RECENT_BY_CATEGORY_INITIATED:
+    case PostsActions.GettingMostRecentPosts_ByCategory:
       return Object.assign({}, state, {
         gettingMostRecentByCategory: true,
         gotMostRecentByCategory: false,
         mostRecentGetByCategoryGetFailed: false,
-        category: action.category
+        categories: action.categories
       });
-    case POSTS_GET_MOST_RECENT_BY_CATEGORY_DONE:
+    case PostsActions.GotMostRecentPosts_ByCategory:
       return Object.assign({}, state, {
         gettingMostRecentByCategory: false,
         gotMostRecentByCategory: true,
         mostRecentGetByCategoryGetFailed: false,
-        category: action.category,
-        moreByCategory: action.more
+        categories: action.categories,
+        posts: action.posts
       });
-    case POSTS_GET_MOST_RECENT_BY_CATEGORY_FAILED:
+    case PostsActions.GettingMostRecentPostsFailed_ByCategory:
       return Object.assign({}, state, {
         gettingMostRecentByCategory: false,
         gotMostRecentByCategory: false,
         mostRecentGetByCategoryGetFailed: true,
-        category: action.category,
-        error: action.error,
-        moreByCategory: null
+        categories: action.categories,
+        error: action.error
       });
-    case GET_ACCOMPLISHMENTS_BY_USER_INITIATED:
+    case PostsActions.GettingAccomplishments:
       return Object.assign({}, state, {
         gettingAccomplishmentsByUser: true,
         gotAccomplishmentsByUser: false,
         failedToGetAccomplishmentsByUser: false,
         student: action.student
       });
-    case GET_ACCOMPLISHMENTS_BY_USER_FAILED:
+    case PostsActions.GettingAccomplishmentsFailed:
       return Object.assign({}, state, {
         gettingAccomplishmentsByUser: false,
         gotAccomplishmentsByUser: false,
         failedToGetAccomplishmentsByUser: true,
         student: action.student,
-        error: action.error,
-        accomplishmentsByUser: null
+        error: action.error
       });
-    case GOT_ACCOMPLISHMENTS_BY_USER:
+    case PostsActions.GotAccomplishments:
       return Object.assign({}, state, {
         gettingAccomplishmentsByUser: false,
         gotAccomplishmentsByUser: true,
         failedToGetAccomplishmentsByUser: false,
         student: action.student,
-        accomplishmentsByUser: action.posts
+        posts: action.posts
       });
     default:
       return state;

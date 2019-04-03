@@ -64,7 +64,7 @@ export const doCommentCreate = (user : User, content : iContentEditable, post : 
         }
 
         if (comment.isConversation)
-          dispatch(doUpdateConversationsCount(PostUpdateType.Increase));
+          dispatch(doUpdateConversationsCount(PostUpdateType.Increase, <Comment>comment));
 
         dispatch(commentCreated(commentSnapshot.id, commentData.isReply || false));
       })
@@ -467,7 +467,7 @@ export const doDeleteComment = (comment : Comment & Reply, force : boolean = fal
             if (snapshots.empty) {
               if (force) {
                 return convoRef.delete().then(() => {
-                    dispatch(doUpdateConversationsCount(PostUpdateType.Decrease));
+                    dispatch(doUpdateConversationsCount(PostUpdateType.Decrease, comment));
                     dispatch(commentDeleted(comment));
                 }).catch((error : iError) => {
                   Console.log(error);
@@ -487,7 +487,7 @@ export const doDeleteComment = (comment : Comment & Reply, force : boolean = fal
             });
 
             batch.commit().then(() => {
-              dispatch(doUpdateConversationsCount(PostUpdateType.Decrease));
+              dispatch(doUpdateConversationsCount(PostUpdateType.Decrease, comment));
               dispatch(commentDeleted(comment));
             })
             .catch((error : iError) => {
@@ -502,7 +502,7 @@ export const doDeleteComment = (comment : Comment & Reply, force : boolean = fal
       }
 
       return convoRef.delete().then(() => {
-        dispatch(doUpdateConversationsCount(PostUpdateType.Decrease));
+        dispatch(doUpdateConversationsCount(PostUpdateType.Decrease, comment));
         dispatch(commentDeleted(comment));
       }).catch((error : iError) => {
         Console.log(error);
