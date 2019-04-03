@@ -13,7 +13,7 @@ const initialState : iAppState =  {
   stats: {},
   student: {},
   students: {},
-  feature: {},
+  Feature: {},
   features: {},
   post: {},
   posts: {},

@@ -163,4 +163,22 @@ export default class User implements iUser {
       }
     });
   }
+
+  public updateProfilePicture(image : File) : Promise<string>
+  {
+    return new Promise((resolve : Function, reject : Function) => {
+      const ref = storage.ref("users/profile_images").child(`${this.uid}.png`);
+
+      ref.put(image)
+        .then(() => {
+          this.getProfilePicture()
+            .then((url : string) => {
+              resolve(url)
+            })
+        })
+        .catch((error : iError) => {
+          reject(error)
+        })
+    });
+  }
 }
