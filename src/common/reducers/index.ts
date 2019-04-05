@@ -2,7 +2,6 @@ import { combineReducers } from "redux";
 
 import hamburgerState from "./hamburgerReducer";
 import auth from "./authReducer";
-import userProfilePicture from "./userProfilePictureReducer";
 import user from "./userReducer";
 import users from "./usersReducer";
 import application from "./applicationReducer";
@@ -22,7 +21,6 @@ const rootReducer = combineReducers({
   hamburgerState,
   menu,
   auth,
-  userProfilePicture,
   user,
   application,
   applications,
