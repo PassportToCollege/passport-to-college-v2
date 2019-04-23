@@ -117,10 +117,10 @@ class Home extends Component {
           <div className="home__section_inner">
             <StatItem label="years" stat={new Date().getFullYear() - 2012} />
             <StatItem label="students" stat={
-              this.props.stats.hasGotten && this.state.stats ? this.state.stats.users.students : 0
+              this.props.stats.hasGotten && this.state.stats ? `${this.state.stats.users.students}+` : 0
             } />
             {/* TODO: track university count from dashboard */}
-            <StatItem label="universities" stat="5" />
+            <StatItem label="universities" stat="10+" />
           </div>
         </section>
         <section className="home__section home__about">
