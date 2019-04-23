@@ -1,7 +1,7 @@
 import './App.css';
 
-import React from 'react';
-import { Route, Redirect, withRouter } from 'react-router-dom';
+import React, { PureComponent } from 'react';
+import { Route, Redirect, withRouter, RouteComponentProps } from 'react-router-dom';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
@@ -17,6 +17,9 @@ import {
   isStudent,
   isAdmin
 } from "../../utils";
+
+import InitialState from "../../reducers/initialState";
+import iAppState from "../../imodels/iAppState";
 
 import Hamburger from "../Hamburger";
 import Navigation from "../Navigation";
@@ -40,20 +43,18 @@ import StudentDashboard from "../StudentDashboard";
 import Apply from "../Apply";
 import ApplicationPortal from "../Apply/Portal";
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
+const AppInitialState = {
+  Hamburger : InitialState.Hamburger,
+  location : ""
+};
+type State = Readonly<typeof AppInitialState>;
+type Props = Partial<{
+  posts : iAppState["Posts"]
+  postsActions : any,
+}>
 
-    this.state = {
-      hamburgerState: "closed",
-      location: ""
-    };
-  }
-
-  static propTypes = {
-    posts: propTypes.object,
-    postsActions: propTypes.object
-  }
+class App extends PureComponent<Props, State> {
+  readonly state : State = AppInitialState;
 
   componentDidMount() {
     if (isBrowser) {
@@ -66,14 +67,15 @@ class App extends React.Component {
   }
 
   render() {
-    let mainBg = {};
-    let bodyStyles = {};
+    let mainBg : React.CSSProperties = {};
+    let bodyStyles: React.CSSProperties = {};
 
     if (this.state.location === "sign-in" ||
       this.state.location === "apply" ||
       this.state.location === "reset" ||
       this.state.location === "confirm-email" ||
-      this.state.location === "sign-up") {
+      this.state.location === "sign-up")
+    {
       mainBg.backgroundColor = "#FF6561";
     } else if (this.state.location.indexOf("dashboard") > -1 ||
       this.state.location === "application portal") {
@@ -88,7 +90,7 @@ class App extends React.Component {
     return (
       <div className="app">
         {this.renderHamburger()}
-        <div className="app__main" data-hamburger={this.state.hamburgerState} style={mainBg}>
+        <div className="app__main" data-hamburger={this.state.Hamburger.current} style={mainBg}>
           {this.selectNavigation()}
           <div className={`app__body app__body_${this.state.location.replace(" on-white", "")}`} style={bodyStyles}>
             <Route exact path={routes.LANDING.route} render={props => this.landingMiddleware(props)}></Route>
@@ -120,30 +122,32 @@ class App extends React.Component {
     );
   }
 
-  defaultRouteMiddleware(props, Component) {
-    return <Component {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }} />
+  defaultRouteMiddleware(props : RouteComponentProps, Component : any) : JSX.Element 
+  {
+    return <Component {...props} updateLocation={(newLocation : string) => { this.setState({ location: newLocation }) }} />
   }
 
-  authMiddleware(props, Component) {
+  authMiddleware(props: RouteComponentProps, Component: any): JSX.Element 
+  {
     if(isAuthorized())
       return <Redirect to="/"/>
 
-    return <Component {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }} />
+    return <Component {...props} updateLocation={(newLocation : string) => { this.setState({ location: newLocation }) }} />
   }
 
-  protectedMiddleware(props, Component) {
+  protectedMiddleware(props: RouteComponentProps, Component: any): JSX.Element {
     if (!isAuthorized())
       return <Redirect to="/auth/sign-in" />
 
-    return <Component {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }} />
+    return <Component {...props} updateLocation={(newLocation : string) => { this.setState({ location: newLocation }) }} />
   }
 
-  protectedAdminMiddleware(props, Component) {
+  protectedAdminMiddleware(props: RouteComponentProps, Component: any): JSX.Element {
      if (!isAuthorized())
       return <Redirect to="/auth/sign-in" />
 
     if (isAdmin())
-      return <Component {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }} />
+      return <Component {...props} updateLocation={(newLocation : string) => { this.setState({ location: newLocation }) }} />
 
     if (isStudent())
       return <Redirect to="/scholar/dashboard" />
@@ -152,7 +156,7 @@ class App extends React.Component {
     return <Redirect to="/" />
   }
 
-  protectedStudentMiddleware(props, Component) {
+  protectedStudentMiddleware(props: RouteComponentProps, Component: any): JSX.Element {
     if (!isAuthorized())
       return <Redirect to="/auth/sign-in" />
 
@@ -160,12 +164,12 @@ class App extends React.Component {
       return <Redirect to="/admin/dashboard" />
 
     if (isStudent())
-      return <Component {...props} updateLocation={newLocation => { this.setState({ location: newLocation }) }} />
+      return <Component {...props} updateLocation={(newLocation : string) => { this.setState({ location: newLocation }) }} />
 
     return <Redirect to="/" />
   }
 
-  applyLandingMiddleware(props) {
+  applyLandingMiddleware(props : RouteComponentProps) : JSX.Element {
     if (isAuthorized()) {
       if(isApplicant())
         return <Redirect to={`/apply/p/${activeUser()}`} />
@@ -173,36 +177,38 @@ class App extends React.Component {
       return <Redirect to="/" />
     }
 
-    return <Apply {...props} updateLocation={newLocation => { this.setState({ location: newLocation }); }} />
+    return <Apply {...props} updateLocation={(newLocation : string) => { this.setState({ location: newLocation }); }} />
   }
 
-  landingMiddleware(props) {
+  landingMiddleware(props : RouteComponentProps) : JSX.Element {
     return (
       <Home {...props} posts={this.props.posts}
-        updateLocation={newLocation => { this.setState({ location: newLocation }); }} />
+        updateLocation={(newLocation : string) => { this.setState({ location: newLocation }); }} />
     );
   }
 
-  renderHamburger() {
+  renderHamburger() : JSX.Element | void {
     if (this.state.location.indexOf("dashboard") === -1 &&
       this.state.location !== "application portal")
-      return <Hamburger updateHamburgerState={newState => this.setState({ hamburgerState: newState })} />
+      {
+        return <Hamburger updateHamburgerState={(newState : iAppState["Hamburger"]) => this.setState({ Hamburger : newState })} />
+      }
   }
 
-  selectNavigation() {
+  selectNavigation() : JSX.Element | null {
     if (this.state.location !== "application portal") {
       if(this.state.location.indexOf("dashboard") > -1)
         return null;
 
       return <Navigation 
         onWhite={this.state.location.indexOf("on-white") > -1}
-        updateHamburgerState={newState => this.setState({ hamburgerState: newState})}/>
+        updateHamburgerState={(newState: iAppState["Hamburger"]) => this.setState({ Hamburger: newState })} />
     }
 
     return null;
   }
 
-  renderFooter() {
+  renderFooter() : JSX.Element | null {
     if (this.state.location !== "application portal" &&
       this.state.location.indexOf("dashboard") > -1) {
         return <Footer posts={this.props.posts} />
@@ -211,13 +217,13 @@ class App extends React.Component {
     return null;
   }
 }
-const mapStateToProps = state => {
+const mapStateToProps = (state : iAppState) : any => {
   return {
-    posts: state.posts
+    Posts: state.Posts
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch : Function) : any => {
   return {
     postsActions: bindActionCreators(postsActions, dispatch)
   };

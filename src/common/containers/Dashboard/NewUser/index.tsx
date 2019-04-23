@@ -10,7 +10,6 @@ import propTypes from "prop-types";
 import * as usersActions from "../../../actions/usersActions";
 import * as studentActions from "../../../actions/studentActions";
 import { USERS } from "../../../constants/routes";
-import { DefaultUser, Student } from "../../../utils/utilityClasses";
 
 import ToTopContainer from "../../../components/ToTopContainer";
 import FlexContainer from "../../../components/FlexContainer";
@@ -32,7 +31,7 @@ class NewUser extends Component {
     super(props);
 
     this.state = {
-      user: new DefaultUser({ uid: `${uid(24)}_ac_less` }).data,
+      //user: new DefaultUser({ uid: `${uid(24)}_ac_less` }).data,
       notificationClosed: true,
       hasNotification: false,
       notification: "",
@@ -466,37 +465,37 @@ class NewUser extends Component {
   handleUserSave = e => {
     e.preventDefault();
     
-    const user = new DefaultUser(this.state.user);
-    const student = new Student(this.state.student, user.data);
+    // const user = new DefaultUser(this.state.user);
+    // const student = new Student(this.state.student, user.data);
 
-    if (user.isComplete) {
-      if (user.isStudent) {
-        if (student.isComplete)
-          return this.props.usersActions.doCreateFullUser(user.data, student.data);
+    // if (user.isComplete) {
+    //   if (user.isStudent) {
+    //     if (student.isComplete)
+    //       return this.props.usersActions.doCreateFullUser(user.data, student.data);
 
-        return this.setState({
-          notificationClosed: false,
-          hasNotification: true,
-          notification: "required student data field(s) left empty"
-        });
-      }
+    //     return this.setState({
+    //       notificationClosed: false,
+    //       hasNotification: true,
+    //       notification: "required student data field(s) left empty"
+    //     });
+    //   }
 
-      return this.props.usersActions.doCreateFullUser(user.data);
-    }
+    //   return this.props.usersActions.doCreateFullUser(user.data);
+    // }
 
-    this.setState({
-      notificationClosed: false,
-      hasNotification: true,
-      notification: `missing user property: ${user.missingProps[0]}`
-    });
+    // this.setState({
+    //   notificationClosed: false,
+    //   hasNotification: true,
+    //   notification: `missing user property: ${user.missingProps[0]}`
+    // });
   }
 
   refreshForm = () => {
     this.setState({
       userCreated: false,
       studentCreated: false,
-      user: new DefaultUser({ uid: `${uid(24)}_ac_less` }).data,
-      student: new Student().data,
+      // user: new DefaultUser({ uid: `${uid(24)}_ac_less` }).data,
+      // student: new Student().data,
       resetRadios: true,
       resetForm: true
     });

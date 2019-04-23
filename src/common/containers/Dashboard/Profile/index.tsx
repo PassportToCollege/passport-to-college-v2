@@ -8,7 +8,6 @@ import { connect } from "react-redux";
 import moment from "moment";
 import _ from "lodash";
 
-import * as userProfilePictureActions from "../../../actions/userProfilePictureActions";
 import * as userActions from "../../../actions/userActions";
 import * as studentActions from "../../../actions/studentActions";
 import { auth } from "../../../utils/firebase";
@@ -47,7 +46,7 @@ class Profile extends Component {
 
   componentDidMount() {
     if (!this.state.profilePicture)
-      this.props.userProfilePictureActions.doAvatarGet();
+      //this.props.userProfilePictureActions.doAvatarGet();
 
     if (!this.state.user)
       this.props.userActions.doUserGet();
@@ -554,7 +553,7 @@ class Profile extends Component {
   }
 
   handleProfilePictureChange = e => {
-    this.props.userProfilePictureActions.doAvatarUpload(e);
+    //this.props.userProfilePictureActions.doAvatarUpload(e);
   }
 
   handleProfileSave = e => {
@@ -719,7 +718,6 @@ Profile.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    profilePicture: state.userProfilePicture,
     user: state.user,
     student: state.student
   };
@@ -727,7 +725,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    userProfilePictureActions: bindActionCreators(userProfilePictureActions, dispatch),
     userActions: bindActionCreators(userActions, dispatch),
     studentActions: bindActionCreators(studentActions, dispatch)
   };

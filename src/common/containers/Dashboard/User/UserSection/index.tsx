@@ -10,7 +10,6 @@ import _ from "lodash";
 import { auth } from "../../../../utils/firebase";
 
 import * as studentActions from "../../../../actions/studentActions";
-import * as userProfilePictureActions from "../../../../actions/userProfilePictureActions";
 import * as featuresActions from "../../../../actions/featuresActions";
 import * as featureActions from "../../../../actions/featureActions";
 import * as usersActions from "../../../../actions/usersActions";
@@ -189,7 +188,7 @@ class UserSection extends Component {
     if (snapshot && snapshot.gotUser) {
       if (this.props.user.user.hasProfilePicture &&
       this.state.profilePicture.indexOf(this.props.userId) === -1)
-        this.props.uppActions.doAvatarGetByUid(this.props.userId);
+        //this.props.uppActions.doAvatarGetByUid(this.props.userId);
 
       if (this.props.user.user.isStudent) {
         this.props.studentActions.doStudentGet(this.props.userId);
@@ -885,7 +884,7 @@ class UserSection extends Component {
         
         // ensure image is squarish
         if (Math.abs(height - width) <= 100)
-          return this.props.uppActions.doAvatarUpload(newProfilePicture, { uid: this.state.uid });
+          //return this.props.uppActions.doAvatarUpload(newProfilePicture, { uid: this.state.uid });
         
         this.setState({ hasError: true, error: "Profile picture dimensions should be 1:1" });
       }
@@ -1028,7 +1027,6 @@ UserSection.propTypes = {
 const mapStateToProps = state => {
   return {
     student: state.student,
-    picture: state.userProfilePicture,
     feature: state.feature,
     features: state.features,
     post: state.post,
@@ -1039,7 +1037,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     studentActions: bindActionCreators(studentActions, dispatch),
-    uppActions: bindActionCreators(userProfilePictureActions, dispatch),
     featuresActions: bindActionCreators(featuresActions, dispatch),
     featureActions: bindActionCreators(featureActions, dispatch),
     usersActions: bindActionCreators(usersActions, dispatch),

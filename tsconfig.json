@@ -24,6 +24,9 @@
     "suppressImplicitAnyIndexErrors": true,
     "target": "es2016"
   },
+  "include": [
+    "./src/"
+  ],
   "exclude": [
     "node_modules",
     "build",
