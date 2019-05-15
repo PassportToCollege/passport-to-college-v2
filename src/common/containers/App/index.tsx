@@ -1,10 +1,9 @@
 import './App.css';
 
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import { Route, Redirect, withRouter, RouteComponentProps } from 'react-router-dom';
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import propTypes from "prop-types";
+import { bindActionCreators, AnyAction } from "redux";
 
 import * as routes from "../../constants/routes";
 import * as postsActions from "../../actions/postsActions";
@@ -47,13 +46,13 @@ const AppInitialState = {
   Hamburger : InitialState.Hamburger,
   location : ""
 };
-type State = Readonly<typeof AppInitialState>;
-type Props = Partial<{
-  posts : iAppState["Posts"]
+type State = typeof AppInitialState;
+type Props = {
+  Posts : iAppState["Posts"]
   postsActions : any,
-}>
+};
 
-class App extends PureComponent<Props, State> {
+class App extends React.PureComponent<Props, State> {
   readonly state : State = AppInitialState;
 
   componentDidMount() {
@@ -115,7 +114,7 @@ class App extends PureComponent<Props, State> {
             this.state.location !== "" &&
             this.state.location !== "application portal" &&
             this.state.location.indexOf("dashboard") === -1 ?
-              <Footer posts={this.props.posts} /> : null 
+              <Footer posts={this.props.Posts} /> : null 
           }
         </div>
       </div>
@@ -182,7 +181,7 @@ class App extends PureComponent<Props, State> {
 
   landingMiddleware(props : RouteComponentProps) : JSX.Element {
     return (
-      <Home {...props} posts={this.props.posts}
+      <Home {...props} posts={this.props.Posts}
         updateLocation={(newLocation : string) => { this.setState({ location: newLocation }); }} />
     );
   }
@@ -211,19 +210,20 @@ class App extends PureComponent<Props, State> {
   renderFooter() : JSX.Element | null {
     if (this.state.location !== "application portal" &&
       this.state.location.indexOf("dashboard") > -1) {
-        return <Footer posts={this.props.posts} />
+        return <Footer posts={this.props.Posts} />
       }
 
     return null;
   }
 }
+
 const mapStateToProps = (state : iAppState) : any => {
   return {
     Posts: state.Posts
   };
 };
 
-const mapDispatchToProps = (dispatch : Function) : any => {
+const mapDispatchToProps = (dispatch : any) : any => {
   return {
     postsActions: bindActionCreators(postsActions, dispatch)
   };
