@@ -1,29 +1,29 @@
-import { uid } from "rand-token";
+import { uid } from 'rand-token';
 
-import User from "../models/User";
-import iContentEditable from "../imodels/iContentEditable";
-import iPost, { iPostState } from "../imodels/iPost";
-import { iStringBooleanPair } from "../imodels/iObjectTypes";
+import User from '../models/User';
+import iContentEditable from '../imodels/iContentEditable';
+import iPost, { iPostState } from '../imodels/iPost';
+import { iStringBooleanPair } from '../imodels/iObjectTypes';
 
 export default class Post implements iPost {
-  readonly id : string;
-  author : string;
-  title : string;
-  excerpt : string;
-  full : iContentEditable;
-  hasHero : boolean;
-  createdAt : number | Date;
-  state : iPostState;
-  category? : iStringBooleanPair;
-  likes? : iStringBooleanPair;
-  conversations? : string[];
+  public readonly id: string;
+  public author: string;
+  public title: string;
+  public excerpt: string;
+  public full: iContentEditable;
+  public hasHero: boolean;
+  public createdAt: number | Date;
+  public state: iPostState;
+  public category?: iStringBooleanPair;
+  public likes?: iStringBooleanPair;
+  public conversations?: string[];
 
-  constructor(author : string, postData : iPost) {
+  constructor(author: string, postData: iPost) {
     this.author = author;
     this.id = postData.id || uid(20);
 
-    this.title = "";
-    this.excerpt = "";
+    this.title = '';
+    this.excerpt = '';
     this.full = {
       blocks: [],
       entityMap: {}
@@ -34,25 +34,26 @@ export default class Post implements iPost {
       archived: false,
       published: false,
       draft: true
-    }
+    };
 
     if (Object.keys(postData).length) {
       Object.assign(this, postData);
     }
   }
 
-  public getPostData(useCase : string = "display") : iPost {
-    const {
-      id, title, author, excerpt, full,
-      createdAt, category, state, conversations,
-      likes, hasHero
-    } = this;
-
+  public getPostData(useCase: string = 'display'): iPost {
     return {
-      id, title, author, excerpt, full,
-      createdAt: useCase === "save" ? (<Date>createdAt).getTime() : createdAt,
-      category, state, conversations,
-      likes, hasHero
+      id: this.id, 
+      title: this.title, 
+      author: this.author, 
+      excerpt: this.excerpt, 
+      full: this.full,
+      createdAt: useCase === 'save' ? (this.createdAt as Date).getTime() : this.createdAt,
+      category: this.category, 
+      state: this.state, 
+      conversations: this.conversations,
+      likes: this.likes, 
+      hasHero: this.hasHero
     };
   }
 }

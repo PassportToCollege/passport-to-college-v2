@@ -1,6 +1,6 @@
-import iUser from "./iUser";
-import iContentEditable from "./iContentEditable";
-import { iStringBooleanPair } from "./iObjectTypes";
+import iUser from './iUser';
+import iContentEditable from './iContentEditable';
+import { iStringBooleanPair } from './iObjectTypes';
 
 export enum PostUpdateType
 {
@@ -18,22 +18,22 @@ export enum PostState
 
 export interface iPostState 
 {
-  draft : boolean;
-  archived : boolean;
-  published : boolean;
+  draft: boolean;
+  archived: boolean;
+  published: boolean;
 }
 
 export default interface iPost 
 {
-  readonly id : string;
-  author : string;
-  title : string;
-  excerpt : string;
-  full : iContentEditable;
-  hasHero : boolean;
-  createdAt : number | Date;
-  state : iPostState;
-  conversations? : string[];
-  category? : iStringBooleanPair;
-  likes? : iStringBooleanPair
+  readonly id: string;
+  author: string;
+  title: string;
+  excerpt: string;
+  full: iContentEditable;
+  hasHero: boolean;
+  createdAt: number | Date;
+  state: iPostState;
+  conversations?: string[];
+  category?: iStringBooleanPair;
+  likes?: iStringBooleanPair;
 } 

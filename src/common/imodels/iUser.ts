@@ -11,12 +11,12 @@ export default interface User {
   readonly uid: string;
   email: string;
   name: {
-    first : string,
-    middle? : string,
+    first: string,
+    middle?: string,
     last: string
   };
   address: {
-    country : string
+    country: string
   };
   isAdmin?: boolean;
   isApplicant?: boolean;

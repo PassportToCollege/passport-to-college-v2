@@ -3,7 +3,7 @@
   "rules": {
     "align": [true, "parameters", "arguments", "statements"],
     "ban": false,
-    "class-name": true,
+    "class-name": false,
     "comment-format": [true, "check-space"],
     "curly": true,
     "eofline": false,
@@ -18,9 +18,14 @@
     "max-line-length": [true, 120],
     "member-ordering": [
       true,
-      "private-before-public",
-      "static-before-instance",
-      "variables-before-functions"
+      {
+        "order": [
+          "private-before-public",
+          "static-before-instance",
+          "variables-before-functions"
+        ],
+        "alphabetize": false
+      }
     ],
     "no-any": false,
     "no-arg": true,
@@ -36,9 +41,15 @@
     "no-string-literal": true,
     "no-submodule-imports": false,
     "no-switch-case-fall-through": true,
+    "no-this-assignment": [
+      true,
+      { "allow-destructuring": true }
+    ],
     "no-trailing-whitespace": false,
     "no-unused-expression": true,
     "no-use-before-declare": true,
+    "object-literal-sort-keys": false,
+    "ordered-imports": false,
     "one-line": [
       true,
       "check-catch",

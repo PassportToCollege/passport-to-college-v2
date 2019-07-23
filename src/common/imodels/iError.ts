@@ -1,4 +1,3 @@
-export default interface iError
-{
-  message : string
+export default interface iError {
+  message: string;
 }

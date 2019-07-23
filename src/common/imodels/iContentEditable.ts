@@ -1,6 +1,6 @@
-import iContentEditableBlock from "./iContentEditableBlock";
+import iContentEditableBlock from './iContentEditableBlock';
 
 export default interface iContentEditable {
   blocks: iContentEditableBlock[];
-  entityMap? : unknown;
+  entityMap?: unknown;
 }

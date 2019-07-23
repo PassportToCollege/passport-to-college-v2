@@ -1,34 +1,30 @@
-import iPostCategory from "../imodels/iPostCategory";
+import iPostCategory from '../imodels/iPostCategory';
 
-export default class PostCategory implements iPostCategory
-{
-  name : string;
-  slug : string;
-  posts : number;
+export default class PostCategory implements iPostCategory {
+  public name: string;
+  public slug: string;
+  public posts: number;
 
-  constructor(name : string, slug : string = "", posts : number = 0)
-  {
+  constructor(name: string, slug: string = '', posts: number = 0) {
     this.name = name;
     this.slug = slug ? slug : this.createSlugFromName(name);
     this.posts = posts;
   }
 
-  get data()
-  {
+  get data() {
     return {
       name: this.name,
       slug: this.slug,
       posts: this.posts
-    }
+    };
   }
 
-  public increasePosts(by : number = 1) { this.posts = this.posts + by }
+  public increasePosts(by: number = 1) { this.posts = this.posts + by; }
 
-  public decreasePost(by : number = 1) { this.posts = this.posts - by; }
+  public decreasePost(by: number = 1) { this.posts = this.posts - by; }
 
-  public createSlugFromName(name : string) : string
-  {
-    this.slug = name.toLowerCase().split(" ").join("-");
+  public createSlugFromName(name: string): string {
+    this.slug = name.toLowerCase().split(' ').join('-');
     return this.slug;
   }
 }

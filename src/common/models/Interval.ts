@@ -1,16 +1,16 @@
-import iInterval from "../imodels/iInterval";
+import iInterval from '../imodels/iInterval';
 
 export default class Interval implements iInterval {
-  functionToRun : Function;
-  interval : number;
-  running? : NodeJS.Timer;
+  public functionToRun: () => void;
+  public interval: number;
+  public running?: NodeJS.Timer;
 
-  constructor(functionToRun : Function, interval : number = 2000) {
+  constructor(functionToRun: () => void, interval: number = 2000) {
     this.functionToRun = functionToRun;
     this.interval = interval;
   }
 
-  public start() : NodeJS.Timer {
+  public start(): NodeJS.Timer {
     this.running = setInterval(() => {
       this.functionToRun();
     }, this.interval);
@@ -18,20 +18,22 @@ export default class Interval implements iInterval {
     return this.running;
   }
 
-  public stop() : Interval {
-    if (this.running)
+  public stop(): Interval {
+    if (this.running) {
       clearInterval(this.running);
+    }
     
     return this;
   }
 
-  public restart() : void {
+  public restart(): void {
     this.stop().start();
   }
 
-  public reset(newInterval : number) : void {
-    if (newInterval !== this.interval)
+  public reset(newInterval: number): void {
+    if (newInterval !== this.interval) {
       this.interval = newInterval;
+    }
 
     this.restart();
   }

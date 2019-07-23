@@ -1,13 +1,13 @@
-import "./NavigationDashboard.css"
+import './NavigationDashboard.css'
 
-import React, { Component } from "react";
-import { Link, NavLink } from "react-router-dom";
-import propTypes from "prop-types";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import Cookies from "universal-cookie";
-import { withRouter } from "react-router-dom";
-import FontAwesomeIcon from "@fortawesome/react-fontawesome";
+import React, { Component } from 'react';
+import { Link, NavLink } from 'react-router-dom';
+import propTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import Cookies from 'universal-cookie';
+import { withRouter } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faTachometerAlt, 
   faUsers, 
@@ -21,20 +21,20 @@ import {
   faCaretLeft,
   faCaretRight, 
   faBars
-} from "@fortawesome/fontawesome-free-solid";
-import { faWpforms } from "@fortawesome/fontawesome-free-brands";
+} from '@fortawesome/fontawesome-free-solid';
+import { faWpforms } from '@fortawesome/fontawesome-free-brands';
 
-import LoadingText from "../../components/LoadingText";
-import Loader from "../../components/Loader";
+import LoadingText from '../../components/LoadingText';
+import Loader from '../../components/Loader';
 
-import { isBrowser } from "../../utils";
-import * as userProfilePictureActions from "../../actions/userProfilePictureActions";
-import * as authActions from "../../actions/authActions";
-import * as userActions from "../../actions/userActions";
-import * as menuActions from "../../actions/menuActions";
-import * as routes from "../../constants/routes";
+import { isBrowser } from '../../utils';
+import * as userProfilePictureActions from '../../actions/userProfilePictureActions';
+import * as authActions from '../../actions/authActions';
+import * as userActions from '../../actions/userActions';
+import * as menuActions from '../../actions/menuActions';
+import * as routes from '../../constants/routes';
 
-import defAvatar from "../../assets/images/default-gravatar.png";
+import defAvatar from '../../assets/images/default-gravatar.png';
 
 const cookies = new Cookies();
 const icons = {
@@ -53,21 +53,21 @@ class NavigationDashboard extends Component {
     super(props);
 
     this.state = {
-      username: ""
+      username: ''
     }
   }
 
   componentDidMount() {
     this.props.userActions.doUserGet();
     
-    if (isBrowser && this.props.menu.dash !== "closed") {
+    if (isBrowser && this.props.menu.dash !== 'closed') {
       this.selectNavigationState();
-      window.addEventListener("resize", this.selectNavigationState);
+      window.addEventListener('resize', this.selectNavigationState);
     }
   }
 
   componentWillUnmount() {
-    window.removeEventListener("resize", this.selectNavigationState);
+    window.removeEventListener('resize', this.selectNavigationState);
   }
 
   static getDerivedStateFromProps(nextProps) {
@@ -114,40 +114,40 @@ class NavigationDashboard extends Component {
 
   render() {
     return (
-      <nav className="dashboard__navigation" data-state={this.props.menu.dash}>
-        <div className="dashboard__navigation__top">
-          <div className="dashboard__navigation_avatar_container">
+      <nav className='dashboard__navigation' data-state={this.props.menu.dash}>
+        <div className='dashboard__navigation__top'>
+          <div className='dashboard__navigation_avatar_container'>
             {
               this.props.profilePicture.hasGotten && this.state.profilePicture ?
-                !this.props.student && this.props.menu.dash === "compact" ?
+                !this.props.student && this.props.menu.dash === 'compact' ?
                 <Link to={routes.PROFILE.route}>
-                  <img src={this.state.profilePicture} alt="User Avatar" />
+                  <img src={this.state.profilePicture} alt='User Avatar' />
                 </Link> :
-                <img src={this.state.profilePicture} alt="User Avatar" />
+                <img src={this.state.profilePicture} alt='User Avatar' />
               :
               <Loader />
             }
           </div>
           {
-            this.state.username === "" ?
+            this.state.username === '' ?
               <LoadingText options={{
-                class: "dashboard__navigation_username_loader",
-                bg: "transparent",
-                height: "8px",
+                class: 'dashboard__navigation_username_loader',
+                bg: 'transparent',
+                height: '8px',
                 lines: [
-                  { width: "50%", color: "#fff" }
+                  { width: '50%', color: '#fff' }
                 ]
               }} />
             :
-              <h5 className="type__color_white type__center">{this.state.username}</h5>
+              <h5 className='type__color_white type__center'>{this.state.username}</h5>
           }
           {
-            !this.props.student && this.props.menu.dash === "full" ?
+            !this.props.student && this.props.menu.dash === 'full' ?
               <Link to={routes.PROFILE.route}>view profile</Link> :
               null
           }
         </div>
-        <div className="dashboard__navigation_container">
+        <div className='dashboard__navigation_container'>
           <ul>
             {this.selectMainNavElements()}
           </ul>
@@ -176,12 +176,12 @@ class NavigationDashboard extends Component {
             </li>
           </ul>
         </div>
-        <span className="dashboard__navigation_state_toggler"
+        <span className='dashboard__navigation_state_toggler'
           onClick={this.forceNavState}>
             {
-              this.props.menu.dash === "full" ?
+              this.props.menu.dash === 'full' ?
                 <FontAwesomeIcon icon={faCaretLeft} /> :
-                this.props.menu.dash === "compact" ?
+                this.props.menu.dash === 'compact' ?
                   <FontAwesomeIcon icon={faCaretRight} /> :
                   <FontAwesomeIcon icon={faBars} />
 
@@ -194,9 +194,9 @@ class NavigationDashboard extends Component {
   handleSignOutClick = (e) => {
     e.preventDefault();
 
-    const user = cookies.get("ssid");
+    const user = cookies.get('ssid');
     this.props.authActions.doSignOut(user);
-    this.props.history.push("/")
+    this.props.history.push('/')
   }
 
   selectMainNavElements = () => {
@@ -224,8 +224,8 @@ class NavigationDashboard extends Component {
     return routes.map(route => {
       return (
           <li key={route.route}>
-            <NavLink exact={(route.name === "Dashboard" || route.dashLabel === "profile")}
-              to={route.route} activeClassName="active">
+            <NavLink exact={(route.name === 'Dashboard' || route.dashLabel === 'profile')}
+              to={route.route} activeClassName='active'>
               <FontAwesomeIcon icon={icons[route.route]} />
               <span>{route.dashLabel || route.name}</span>
             </NavLink>
@@ -237,14 +237,14 @@ class NavigationDashboard extends Component {
   selectNavigationState = () => {
     const { innerWidth } = window;
 
-    if (innerWidth > 768 && this.props.menu.dash !== "full"
-    && this.state.forcedState !== "compact")
+    if (innerWidth > 768 && this.props.menu.dash !== 'full'
+    && this.state.forcedState !== 'compact')
       return this.props.menuActions.makeDashMenuFull();
 
-    if ((innerWidth > 384 && innerWidth <= 768) && this.props.menu.dash !== "compact")
+    if ((innerWidth > 384 && innerWidth <= 768) && this.props.menu.dash !== 'compact')
       return this.props.menuActions.makeDashMenuCompact();
 
-    if (innerWidth <= 384 && this.props.menu.dash.indexOf("closed") === -1)
+    if (innerWidth <= 384 && this.props.menu.dash.indexOf('closed') === -1)
       return this.props.menuActions.closeDashMenu();
 
     return null;
@@ -252,21 +252,21 @@ class NavigationDashboard extends Component {
 
   forceNavState = () => {
     const { dash } = this.props.menu;
-    let toState = "full";
+    let toState = 'full';
 
-    if (dash.indexOf("closed") > -1) {
-      toState = dash.split(" ")[0];
+    if (dash.indexOf('closed') > -1) {
+      toState = dash.split(' ')[0];
     }
 
-    if (dash === "full")
-      toState = "compact";
+    if (dash === 'full')
+      toState = 'compact';
 
-    if (dash === "compact")
-      toState = "full";
+    if (dash === 'compact')
+      toState = 'full';
 
     this.setState({ forcedState: toState });
     
-    if (toState === "full")
+    if (toState === 'full')
       return this.props.menuActions.makeDashMenuFull();
 
     this.props.menuActions.makeDashMenuCompact();

@@ -1,34 +1,33 @@
-import iError from "../imodels/iError";
-import iUser from "../imodels/iUser";
+import iError from '../imodels/iError';
+import iUser from '../imodels/iUser';
 
-import { isEmail } from "../utils";
-import { storage } from "../utils/firebase";
+import { isEmail } from '../utils';
+import { storage } from '../utils/firebase';
 
 export default class User implements iUser {
-  uid: string;
-  email: string;
-  name: {
-    first : string,
-    middle? : string,
-    last : string
+  public uid: string;
+  public email: string;
+  public name: {
+    first: string,
+    middle?: string,
+    last: string
   };
-  isAdmin: boolean;
-  isApplicant: boolean;
-  isStudent: boolean;
-  isStaff: boolean;
-  emailConfirmed: boolean;
-  hasProfilePicture: boolean;
-  address: {
-    country : string
+  public isAdmin: boolean;
+  public isApplicant: boolean;
+  public isStudent: boolean;
+  public isStaff: boolean;
+  public emailConfirmed: boolean;
+  public hasProfilePicture: boolean;
+  public address: {
+    country: string
   };
-  gender?: string;
-  role?: string;
-  dob?: number;
-  phone?: string;
-  photo?: string;
+  public gender?: string;
+  public role?: string;
+  public dob?: number;
+  public phone?: string;
+  public photo?: string;
 
-
-  constructor(user: any) {
+  constructor(user: User) {
     this.uid = user.uid;
     this.email = user.email;
     this.name = user.name;
@@ -39,19 +38,19 @@ export default class User implements iUser {
     this.isStaff = false;
     this.emailConfirmed = false;
     this.hasProfilePicture = false;
-    this.address = { country: "" };
-    this.gender = "";
-    this.role = "";
+    this.address = { country: '' };
+    this.gender = '';
+    this.role = '';
     this.dob = 0;
-    this.phone = "";
-    this.photo = "";
+    this.phone = '';
+    this.photo = '';
 
     if (Object.keys(user).length) {
       Object.assign(this, user);
     }
 
     if (this.email && !isEmail(this.email)) {
-      throw new Error("Invalid or no email provided.");
+      throw new Error('Invalid or no email provided.');
     }
   }
 
@@ -75,110 +74,75 @@ export default class User implements iUser {
   }
 
   get missingProps() {
-    let props = [];
+    const props = [];
 
-    if (!this.uid)
-      props.push("uid");
-
-    if (!this.email)
-      props.push("email");
-
-    if (!this.name.first)
-      props.push("name.first");
-
-    if (!this.name.last)
-      props.push("name.last");
-
-    if (!this.address.country)
-      props.push("country");
-
-    if (!this.gender)
-      props.push("gender");
-
-    if (!this.dob)
-      props.push("dob");
-
-    if (this.isStaff && !this.role)
-      props.push("role");
-
+    if (!this.uid) { props.push('uid'); }
+    if (!this.email) { props.push('email'); }
+    if (!this.name.first) { props.push('name.first'); }
+    if (!this.name.last) { props.push('name.last'); }
+    if (!this.address.country) { props.push('country'); }
+    if (!this.gender) { props.push('gender'); }
+    if (!this.dob) { props.push('dob'); }
+    if (this.isStaff && !this.role) { props.push('role'); }
 
     return props;
   }
 
-  private getData() {
-    const {
-      uid,
-      isAdmin,
-      isApplicant,
-      isStaff,
-      isStudent,
-      email,
-      emailConfirmed,
-      hasProfilePicture,
-      address,
-      name,
-      gender,
-      role,
-      dob,
-      phone,
-      photo
-    } = this;
-
+  private getData(): iUser {
     return {
-      uid,
-      isAdmin,
-      isApplicant,
-      isStaff,
-      isStudent,
-      email,
-      emailConfirmed,
-      hasProfilePicture,
-      address,
-      name,
-      gender,
-      role,
-      dob,
-      phone,
-      photo
-    }
+      uid: this.uid,
+      isAdmin: this.isAdmin,
+      isApplicant: this.isApplicant,
+      isStaff: this.isStaff,
+      isStudent: this.isStudent,
+      email: this.email,
+      emailConfirmed: this.emailConfirmed,
+      hasProfilePicture: this.hasProfilePicture,
+      address: this.address,
+      name: this.name,
+      gender: this.gender,
+      role: this.role,
+      dob: this.dob,
+      phone: this.phone,
+      photo: this.photo
+    };
   }
 
-  public getProfilePicture() : Promise<string> {
-    return new Promise((resolve : Function, reject : Function) => {
-      if (this.hasProfilePicture) 
-      {
-        if (this.photo)
+  public getProfilePicture(): Promise<string> {
+    return new Promise((resolve: (photo: string) => void, reject: (error: iError) => void) => {
+      if (this.hasProfilePicture) {
+        if (this.photo) {
           return resolve(this.photo);
+        }
 
-        storage.ref("users/profile_images")
+        storage.ref('users/profile_images')
           .child(`${this.uid}.png`)
           .getDownloadURL()
-          .then((url : string) => {
+          .then((url: string) => {
             this.photo = url;
-            resolve(url)
+            resolve(url);
           })
-          .catch((error : iError) => {
+          .catch((error: iError) => {
             reject(error);
           });
       }
     });
   }
 
-  public updateProfilePicture(image : File) : Promise<string>
-  {
-    return new Promise((resolve : Function, reject : Function) => {
-      const ref = storage.ref("users/profile_images").child(`${this.uid}.png`);
+  public updateProfilePicture(image: File): Promise<string> {
+    return new Promise((resolve: (url: string) => void, reject: (error: iError) => void) => {
+      const ref = storage.ref('users/profile_images').child(`${this.uid}.png`);
 
       ref.put(image)
         .then(() => {
           this.getProfilePicture()
-            .then((url : string) => {
-              resolve(url)
-            })
+            .then((url: string) => {
+              resolve(url);
+            });
         })
-        .catch((error : iError) => {
-          reject(error)
-        })
+        .catch((error: iError) => {
+          reject(error);
+        });
     });
   }
 }
