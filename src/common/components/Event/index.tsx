@@ -1,84 +1,57 @@
-import "./Event.css";
+// TODO: Update this when events are working
 
-import React, { Component } from "react";
-import propTypes from "prop-types";
+import './Event.css';
 
-import { makeRGB } from "../../utils";
+import React, { Component } from 'react';
+import propTypes from 'prop-types';
 
-import Button, { BackButton } from "../Button";
-import Modal from "../Modal";
-import FlexContainer from "../FlexContainer";
-import Gallery from "../Gallery";
+import { makeRGB } from '../../utils';
 
-class Event extends Component {
-  constructor(props) {
+import Button, { BackButton } from '../Button';
+import Modal from '../Modal';
+import FlexContainer from '../FlexContainer';
+import Gallery from '../Gallery';
+
+class Event extends Component<any, any> {
+  constructor(props: any) {
     super(props);
 
     this.state = {
-      layout: "card"
+      layout: 'card'
     };
   }
 
-  static propTypes = {
-    event: propTypes.object,
-    layout: propTypes.string
-  }
-
-  static getDerivedStateFromProps(nextProps, state) {
-    if (nextProps.layout !== state.layout)
-      return { layout: nextProps.layout };
-
-    return null;
-  }
-
-  render() {
+  private renderExpanded = (): React.ReactNode => {
     return (
-      <div className="event">
-        {
-          this.state.layout === "expanded" ?
-            this.renderExpanded() : null
-        }
-        {this.getEventHeader()}
-        <main>
-          <p>{this.props.event.excerpt}</p>
-          <Button solid text="more"
-            doClick={() => this.setState({ layout: "expanded" })}
-            styles={{
-              backgroundColor: makeRGB(this.props.event.accent),
-              borderColor: makeRGB(this.props.event.accent)
-            }} />
-          <span className="event__accent"
-            style={{
-              backgroundColor: makeRGB(this.props.event.accent, 0.75)
-            }}></span>
-        </main>
-      </div>
-    )
-  }
-
-  renderExpanded = () => {
-    return (
-      <Modal classes={["event__expanded"]}
-        doClose={() => this.setState({ layout: "card" })}>
-        <BackButton text="back"
-          doClick={() => this.setState({ layout: "card" })} />
+      <Modal 
+        classes={['event__expanded']}
+        doClose={() => this.setState({ layout: 'card' })}
+      >
+        <BackButton 
+          text="back"
+          doClick={() => this.setState({ layout: 'card' })} 
+        />
         {this.getEventHeader(false)}
         {this.getExpandedEventContent()}
       </Modal>
-    )
+    );
   }
 
-  getEventHeader = (content = true) => {
+  private getEventHeader = (content = true): React.ReactNode => {
     return (
-      <header style={{
-        backgroundColor: "#333",
-        backgroundImage: `url(${this.props.event.hero})`
-      }}>
+      <header 
+        style={{
+          backgroundColor: '#333',
+          backgroundImage: `url(${this.props.event.hero})`
+        }}
+      >
         {
           content ?
-            <div style={{
-              backgroundColor: makeRGB(this.props.event.accent, 0.85)
-            }}>
+            <div 
+              style={{
+                backgroundColor: makeRGB(this.props.event.accent, 0.85)
+              }}
+            >
               <h4>{this.props.event.title}</h4>
               <h5>@ {this.props.event.where}</h5>
               <p>{this.props.event.when}</p>
@@ -86,14 +59,14 @@ class Event extends Component {
             null
         }
       </header>
-    )
+    );
   }
 
-  getExpandedEventContent = () => {
+  private getExpandedEventContent = (): React.ReactNode => {
     return (
       <React.Fragment>
         <div className="event__expanded_content">
-          <FlexContainer classes={["event__expanded_content_header"]}>
+          <FlexContainer classes={['event__expanded_content_header']}>
             <h4>{this.props.event.title}</h4>
             <span>
               <h5>@ {this.props.event.where}</h5>
@@ -110,6 +83,46 @@ class Event extends Component {
           }
         </div>
       </React.Fragment>
+    );
+  }
+
+  public static getDerivedStateFromProps(nextProps: any, state: any) {
+    if (nextProps.layout !== state.layout) {
+      return { layout: nextProps.layout };
+    }
+
+    return null;
+  }
+
+  public render() {
+    return (
+      <div className="event">
+        {
+          this.state.layout === 'expanded' ?
+            this.renderExpanded() : null
+        }
+        {this.getEventHeader()}
+        <main>
+          <p>{this.props.event.excerpt}</p>
+          <Button
+            type="button" 
+            disabled={false}
+            solid={true} 
+            text="more"
+            doClick={() => this.setState({ layout: 'expanded' })}
+            styles={{
+              backgroundColor: makeRGB(this.props.event.accent),
+              borderColor: makeRGB(this.props.event.accent)
+            }} 
+          />
+          <span 
+            className="event__accent"
+            style={{
+              backgroundColor: makeRGB(this.props.event.accent, 0.75)
+            }}
+          />
+        </main>
+      </div>
     );
   }
 }

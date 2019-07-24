@@ -1,22 +1,23 @@
-import React from "react";
-import propTypes from "prop-types";
+import React from 'react';
 
-const ColoredStrip = ({ children, background }) => {
+interface ColoredStripProps  {
+  children: React.ReactNode;
+  background: string;
+}
+
+const ColoredStrip = (props: ColoredStripProps): React.ReactNode => {
   return (
-    <div className="colored_strip"
+    <div 
+      className="colored_strip"
       style={{
-        backgroundColor: background,
-        width: "100%",
-        padding: "3em"
-      }} >
-      {children}
+        backgroundColor: props.background,
+        width: '100%',
+        padding: '3em'
+      }} 
+    >
+      {props.children}
     </div>
   );
 };
-
-ColoredStrip.propTypes = {
-  children: propTypes.any,
-  background: propTypes.string
-}
 
 export default ColoredStrip;

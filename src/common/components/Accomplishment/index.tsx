@@ -1,68 +1,80 @@
-import "./Accomplishment.css";
+import './Accomplishment.css';
 
-import React from "react";
-import propTypes from "prop-types";
-import moment from "moment";
+import React from 'react';
+import moment from 'moment';
 
-import IconButton from "../IconButton";
+import IconButton from '../IconButton';
+import iAccomplishment from '../../imodels/iAccomplishment';
 
-const Accomplishment = ({ accomplishment, actions, doDelete, doEdit }) => {
+interface AccomplishmentProps {
+  accomplishment: iAccomplishment;
+  showActions: boolean;
+  doDelete: (accomplishment: iAccomplishment) => void;
+  doEdit: (accomplishment: iAccomplishment) => void;
+}
+
+const Accomplishment = (props: AccomplishmentProps) => {
+  const { accomplishment, showActions, doDelete, doEdit } = props;
   const handleDelete = () => {
-    if ("function" === typeof doDelete)
+    if ('function' === typeof doDelete) {
       doDelete(accomplishment);
-  }
+    }
+  };
+
   const handleEdit = () => {
-    if ("function" === typeof doEdit)
+    if ('function' === typeof doEdit) {
       doEdit(accomplishment);
-  }
+    }
+  };
 
   return (
     <div className="accomplishment">
       <section className="accomplishment__meta">
         {
           accomplishment.state.published ?
-            <p className="type__caption accomplishment__published">published</p>:
+            <p className="type__caption accomplishment__published">published</p> :
             null
         }
         {
           accomplishment.state.draft ?
-            <p className="type__caption accomplishment__draft">draft</p>:
+            <p className="type__caption accomplishment__draft">draft</p> :
             null
         }
         <h5>{accomplishment.title}</h5>
         <p className="type__caption">
-          {moment.utc(moment(accomplishment.createdAt)).format("MMM D, YYYY")}
+          {moment.utc(moment(accomplishment.createdAt)).format('MMM D, YYYY')}
         </p>
       </section>
       <section className="accomplishment__excerpt">
         <p>{accomplishment.excerpt}</p>
       </section>
       {
-        actions ?
+        showActions ?
           <section className="accomplishment__actions">
-            <IconButton solid icon="delete" 
+            <IconButton 
+              solid={true}
+              disabled={false}
+              icon="delete" 
               styles={{
-                backgroundColor: "rgba(128, 150, 162, 0.85)"
+                backgroundColor: 'rgba(128, 150, 162, 0.85)'
               }} 
-              doClick={handleDelete} />
-            <IconButton icon="edit"
+              doClick={handleDelete} 
+            />
+            <IconButton 
+              icon="edit"
+              solid={false}
+              disabled={false}
               styles={{
-                borderColor: "rgba(128, 150, 162, 0.85)",
-                color: "rgba(128, 150, 162, 0.85)"
+                borderColor: 'rgba(128, 150, 162, 0.85)',
+                color: 'rgba(128, 150, 162, 0.85)'
               }} 
-              doClick={handleEdit} />
+              doClick={handleEdit} 
+            />
           </section> :
           null
       }
     </div>
-  )
-}
-
-Accomplishment.propTypes = {
-  accomplishment: propTypes.object,
-  actions: propTypes.bool,
-  doDelete: propTypes.func,
-  doEdit: propTypes.func
+  );
 };
 
 export default Accomplishment;

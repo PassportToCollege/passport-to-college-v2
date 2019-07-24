@@ -13,7 +13,7 @@ export default interface User {
   name: {
     first: string,
     middle?: string,
-    last: string
+    last: string,
   };
   address: {
     country: string

@@ -1,31 +1,33 @@
-import React from "react";
-import propTypes from "prop-types";
+import React from 'react';
 
-const BorderTopContainer = ({ color, thickness, style, classes, children }) => {
+interface BorderTopContainerProps {
+  color: string;
+  thickness: string;
+  style: string;
+  classes: string;
+  children: React.ReactChild;
+}
+
+const BorderTopContainer = (props: BorderTopContainerProps) => {
+  let { color, thickness, style } = props;
+  const { classes, children } = props;
+
+  if (!color) { color = 'rgba(51,51,51,0.1)'; }
+  if (!thickness) { thickness = '1px'; }
+  if (!style) { style = 'solid'; }
+
   const containerStyles = {
     borderTop: `${thickness} ${style} ${color}`
   };
 
   return (
-    <div className={`border_top_container ${classes}`}
-      style={containerStyles}>
+    <div 
+      className={`border_top_container ${classes}`}
+      style={containerStyles}
+    >
       {children}
     </div>
-  )
-}
-
-BorderTopContainer.defaultProps = {
-  color: "rgba(51,51,51,0.1)",
-  thickness: "1px",
-  style: "solid"
-};
-
-BorderTopContainer.propTypes = {
-  color: propTypes.string,
-  thickness: propTypes.string,
-  style: propTypes.string,
-  classes: propTypes.string,
-  children: propTypes.node
+  );
 };
 
 export default BorderTopContainer;

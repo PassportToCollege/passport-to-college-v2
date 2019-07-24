@@ -1,7 +1,7 @@
 {
   "extends": ["tslint:latest", "tslint-react"],
   "rules": {
-    "align": [true, "parameters", "arguments", "statements"],
+    "align": [true, "parameters", "statements"],
     "ban": false,
     "class-name": false,
     "comment-format": [true, "check-space"],
@@ -12,7 +12,7 @@
     "interface-name": [true, "never-prefix"],
     "jsdoc-format": true,
     "jsx-no-lambda": false,
-    "jsx-no-multiline-js": true,
+    "jsx-no-multiline-js": false,
     "jsx-wrap-multiline": false,
     "label-position": true,
     "max-line-length": [true, 120],
@@ -37,6 +37,7 @@
     "no-duplicate-variable": true,
     "no-empty": true,
     "no-eval": true,
+    "no-implicit-dependencies": false,
     "no-shadowed-variable": true,
     "no-string-literal": true,
     "no-submodule-imports": false,

@@ -1,9 +1,19 @@
-import "./AnnotatedList.css";
+import './AnnotatedList.css';
 
-import React from "react";
-import propTypes from "prop-types";
+import React from 'react';
 
-const AnnotatedList = ({ data }) => {
+export interface AnnotatedListItem {
+  label: string;
+  text: string;
+}
+
+interface AnnotatedListProps {
+  data: AnnotatedListItem[];
+}
+
+const AnnotatedList = (props: AnnotatedListProps) => {
+  const{ data } = props;
+  
   return (
     <ul className="annotated_list">
       {
@@ -13,15 +23,11 @@ const AnnotatedList = ({ data }) => {
               <span className="annotated_list__label">{item.label}</span>
               <span className="annotated_list__text">{item.text}</span>
             </li>
-          )
+          );
         })
       }
     </ul>
   );
-}
-
-AnnotatedList.propTypes = {
-  data: propTypes.arrayOf(propTypes.object)
 };
 
-export default AnnotatedList
+export default AnnotatedList;

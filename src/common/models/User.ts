@@ -10,7 +10,8 @@ export default class User implements iUser {
   public name: {
     first: string,
     middle?: string,
-    last: string
+    last: string,
+    full: () => string,
   };
   public isAdmin: boolean;
   public isApplicant: boolean;
@@ -27,10 +28,15 @@ export default class User implements iUser {
   public phone?: string;
   public photo?: string;
 
-  constructor(user: User) {
+  constructor(user: iUser) {
     this.uid = user.uid;
     this.email = user.email;
-    this.name = user.name;
+    this.name = {
+      ...user.name,
+      full: (): string => {
+        return `${this.name.first} ${this.name.last}`; 
+      }
+    };
 
     this.isAdmin = false;
     this.isApplicant = false;
