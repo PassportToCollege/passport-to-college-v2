@@ -1,31 +1,37 @@
-import "./ImageWithColoredShadow.css";
+import './ImageWithColoredShadow.css';
 
-import React from "react";
-import propTypes from "prop-types";
+import React from 'react';
 
-const ImageWithColoredShadow = ({ image, shadowColor, width }) => {
+interface ImageWithColoredShadowProps {
+  image: string;
+  shadowColor: string;
+  width: string;
+}
+
+const ImageWithColoredShadow = (props: ImageWithColoredShadowProps): React.ReactNode => {
+  const { image, shadowColor, width } = props;
   return (
-    <div className="image_with_colored_shadow"
+    <div 
+      className="image_with_colored_shadow"
       style={{
-        width: width,
+        width,
         height: width
-      }} >
+      }} 
+    >
       <span
         style={{
           borderColor: shadowColor
-        }}></span>
-      <img src={image} alt=""
+        }}
+      />
+      <img 
+        src={image} 
+        alt=""
         style={{
           maxWidth: width
-        }} />
+        }} 
+      />
     </div>
-  )
-}
-
-ImageWithColoredShadow.propTypes = {
-  image: propTypes.string,
-  shadowColor: propTypes.string,
-  width: propTypes.string
-}
+  );
+};
 
 export default ImageWithColoredShadow;

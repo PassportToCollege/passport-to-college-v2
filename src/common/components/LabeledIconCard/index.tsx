@@ -1,8 +1,8 @@
-import "./LabeledIconCard.css";
+import './LabeledIconCard.css';
 
-import React from "react";
-import propTypes from "prop-types";
-import FontAwesomeIcon from "@fortawesome/react-fontawesome";
+import React from 'react';
+import propTypes from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faSchool,
   faBook,
@@ -11,9 +11,17 @@ import {
   faTrophy,
   faStar
 
-} from "@fortawesome/fontawesome-free-solid";
+} from '@fortawesome/fontawesome-free-solid';
 
-const LabeledIconCard = ({ icon, label, children, cardStyles }) => {
+interface LabeledIconCardProps {
+  icon: 'school' | 'book' | 'globe' | 'date' | 'feature' | 'accomplishment';
+  label: string;
+  children: React.ReactChildren;
+  cardStyles: React.CSSProperties;
+}
+
+const LabeledIconCard = (props: LabeledIconCardProps): React.ReactNode => {
+  const { icon, label, children, cardStyles } = props;
   const icons = {
     school: faSchool,
     book: faBook,
@@ -21,24 +29,20 @@ const LabeledIconCard = ({ icon, label, children, cardStyles }) => {
     date: faCalendar,
     feature: faStar,
     accomplishment: faTrophy
-  }
+  };
 
   return (
-    <span className="labeled_icon_card" style={cardStyles}>
+    <span 
+      className="labeled_icon_card" 
+      style={cardStyles}
+    >
       <span className="labeled_icon_card__icon">
         <FontAwesomeIcon icon={icons[icon]} />
       </span>
       {children}
       <p className="labeled_icon_card__label type__caption type__uppercase type__light">{label}</p>
     </span>
-  )
-}
-
-LabeledIconCard.propTypes = {
-  icon: propTypes.string,
-  label: propTypes.string,
-  children: propTypes.any,
-  cardStyles: propTypes.object
+  );
 };
 
 export default LabeledIconCard;

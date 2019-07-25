@@ -1,32 +1,33 @@
-import React from "react";
-import propTypes from "prop-types";
+import React from 'react';
 
-const Indicator = ({ color, width, solid, styles }) => {
-  const indicatorStyles = Object.assign({}, styles, {
-    display: "inline-block",
-    width,
-    height: width,
-    borderStyle: "solid",
-    borderWidth: "3px",
-    borderColor: color,
-    borderRadius: "50%",
-    backgroundColor: solid ? color : "#FFFFFF"
-  });
-
-  return <span style={indicatorStyles}></span>
+interface IndicatorProps {
+  color: string;
+  width: string;
+  solid: boolean;
+  styles: React.CSSProperties;
 }
 
-Indicator.defaultProps = {
-  color: "#53D1D7",
-  width: "16px",
-  styles: {}
+const Indicator = (props: IndicatorProps): React.ReactNode => {
+  const { color, width, solid, styles } = props;
+  const indicatorStyles = {
+    display: 'inline-block',
+    width,
+    height: width,
+    borderStyle: 'solid',
+    borderWidth: '3px',
+    borderColor: color,
+    borderRadius: '50%',
+    backgroundColor: solid ? color : '#FFFFFF',
+    ...styles
+  };
+
+  return <span style={indicatorStyles}/>;
 };
 
-Indicator.propTypes = {
-  color: propTypes.string,
-  width: propTypes.string,
-  styles: propTypes.object,
-  solid: propTypes.bool
+Indicator.defaultProps = {
+  color: '#53D1D7',
+  width: '16px',
+  styles: {}
 };
 
 export default Indicator;

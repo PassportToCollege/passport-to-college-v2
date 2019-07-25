@@ -1,34 +1,40 @@
-import "./HoverCard.css";
+import './HoverCard.css';
 
-import React from "react";
-import { Link } from "react-router-dom";
-import propTypes from "prop-types";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-const HoverCard = ({ children, background, overlay, target, cardStyles }) => {
-  const styles = Object.assign({}, {
-    backgroundImage: background ? `url(${background})` : null
-  }, cardStyles);
+interface HoverCardProps {
+  children: React.ReactChildren;
+  background: string;
+  overlay: string;
+  target: string;
+  cardStyles: React.CSSProperties;
+}
+
+const HoverCard = (props: HoverCardProps): React.ReactNode => {
+  const { children, background, overlay, target, cardStyles } = props;
+  const styles: React.CSSProperties = {
+    backgroundImage: background ? `url(${background})` : undefined, 
+    ...cardStyles
+  };
 
   return (
-    <Link to={target}
-      className="hover_card" style={styles}>
-      <span className="hover_card__overlay"
+    <Link 
+      to={target}
+      className="hover_card" 
+      style={styles}
+    >
+      <span 
+        className="hover_card__overlay"
         style={{
           backgroundColor: overlay
-        }} ></span>
+        }} 
+      />
       <span>
         {children}
       </span>
     </Link>
-  )
-}
-
-HoverCard.propTypes = {
-  children: propTypes.any,
-  background: propTypes.string,
-  overlay: propTypes.string,
-  cardStyles: propTypes.object,
-  target: propTypes.string
+  );
 };
 
 export default HoverCard;

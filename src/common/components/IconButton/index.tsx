@@ -1,7 +1,6 @@
 import './IconButton.css';
 
 import React, { Component } from 'react';
-import propTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faTrashAlt, 
@@ -29,7 +28,7 @@ class IconButton extends Component<IconButtonProps, any> {
     if ('function' === typeof this.props.doClick) {
       this.props.doClick(e);
     }
-  };
+  }
 
   public render() {
     const icons = {
@@ -72,10 +71,11 @@ class IconButton extends Component<IconButtonProps, any> {
         onClick={this.handleClick}
         style={buttonStyles}
         disabled={this.props.disabled}
-        title={this.props.buttonTitle}>
+        title={this.props.buttonTitle}
+      >
         <FontAwesomeIcon icon={icons[this.props.icon]} />
       </button>
-    )
+    );
   }
 }
 

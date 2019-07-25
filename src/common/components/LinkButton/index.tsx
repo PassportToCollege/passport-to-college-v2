@@ -1,21 +1,31 @@
-import "./LinkButton.css";
+import './LinkButton.css';
 
-import React from "react";
-import propTypes from "prop-types";
-import { Link } from "react-router-dom";
-import FontAwesomeIcon from "@fortawesome/react-fontawesome";
-import { faHome } from "@fortawesome/fontawesome-free-solid";
+import React from 'react';
+import propTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome } from '@fortawesome/fontawesome-free-solid';
 
-const LinkButton = props => {
+export interface LinkButtonProps {
+  target: string;
+  default?: boolean;
+  text?: string;
+  icon?: string;
+  classes?: string;
+}
+
+const LinkButton = (props: LinkButtonProps) => {
   props = props || {};
   let icon;
-  let classes = `link__button ${props.classes || ""}`;
+  let classes = `link__button ${props.classes || ''}`;
 
-  if (props.default)
-    classes += " link__button_default";
+  if (props.default) {
+    classes += ' link__button_default';
+  }
 
-  if (props.icon === "faHome")
+  if (props.icon === 'faHome') {
     icon = faHome;
+  }
 
   return (
     <Link to={props.target} className={classes}>
@@ -29,19 +39,7 @@ const LinkButton = props => {
           null
       }
     </Link>
-  )
-}
-
-LinkButton.propTypes = {
-  target: propTypes.string,
-  text: propTypes.string,
-  classes: propTypes.string,
-  icon: propTypes.string,
-  default: propTypes.bool
+  );
 };
-
-LinkButton.defaultProps = {
-  default: false
-}
 
 export default LinkButton;

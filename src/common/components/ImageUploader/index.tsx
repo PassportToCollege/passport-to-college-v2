@@ -1,28 +1,36 @@
-import "./ImageUploader.css";
+import './ImageUploader.css';
 
-import React, { Component } from "react";
-import propTypes from "prop-types";
+import React, { Component } from 'react';
+import propTypes from 'prop-types';
 
-import { verifyImageDimensions } from "../../utils";
+import { verifyImageDimensions } from '../../utils';
 
-class ImageUploader extends Component {
-  constructor(props) {
+interface ImageUploaderProps {
+  styles: React.CSSProperties;
+  default: string;
+  onUpload: (image: any) => void;
+  onCancel: () => void;
+}
+
+interface ImageUploaderState {
+  default: string;
+  uploading: boolean;
+  newImage?: any;
+}
+
+class ImageUploader extends Component<ImageUploaderProps, ImageUploaderState> {
+  constructor(props: ImageUploaderProps) {
     super(props);
 
     this.state = {
       default: props.default,
       uploading: false
-    }
+    };
   }
 
-  static propTypes = {
-    styles: propTypes.object,
-    default: propTypes.string,
-    onUpload: propTypes.func,
-    onCancel: propTypes.func
-  }
+  private imageInput: HTMLInputElement | null = null;
 
-  static getDerivedStateFromProps(props, state) {
+  public static getDerivedStateFromProps(props: ImageUploaderProps, state: ImageUploaderState) {
     if (props.default && state.default !== props.default) {
       return {
         default: props.default
@@ -32,9 +40,13 @@ class ImageUploader extends Component {
     return null;
   }
 
-  render() {
+  public render() {
     return (
-      <div className="image_uploader" style={this.props.styles} data-uploading={this.state.uploading}>
+      <div 
+        className="image_uploader" 
+        style={this.props.styles} 
+        data-uploading={this.state.uploading}
+      >
         <div className="image_uploader__controls_overlay">
           {
             this.state.uploading ?
@@ -49,18 +61,24 @@ class ImageUploader extends Component {
           this.state.default ?
             <img src={this.state.default} alt="" /> : null
         }
-        <input type="file" name="image" accept="image/*"
-            ref={input => this.imageInput = input}
-            onChange={this.handleImageChange} />
+        <input 
+          type="file" 
+          name="image" 
+          accept="image/*"
+          ref={(input) => this.imageInput = input}
+          onChange={this.handleImageChange} 
+        />
       </div>
-    )
+    );
   }
 
-  openImageSelector = () => {
-    this.imageInput.click();
+  private openImageSelector = () => {
+    if (this.imageInput) {
+      this.imageInput.click();
+    }
   }
 
-  handleImageChange = () => {
+  private handleImageChange = () => {
     verifyImageDimensions(this.imageInput, 100)
       .then(({ image, url }) => {
         this.setState({
@@ -69,12 +87,12 @@ class ImageUploader extends Component {
           uploading: true
         });
       })
-      .catch(error => {
-        console.log(error)
-      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
-  handleUploadCancel = () => {
+  public handleUploadCancel = () => {
     this.setState({
       uploading: false,
       default: this.props.default,
@@ -82,13 +100,16 @@ class ImageUploader extends Component {
     });
   }
 
-  handleUpload = () => {
+  public handleUpload = () => {
     this.setState({
       uploading: false
     });
 
-    if ("function" === typeof this.props.onUpload)
-      this.props.onUpload(this.state.newImage);
+    if ('function' === typeof this.props.onUpload) {
+      if (this.state.newImage) {
+        this.props.onUpload(this.state.newImage);
+      }
+    }
   }
 }
 

@@ -1,109 +1,131 @@
-import "./InfoCard.css";
+import './InfoCard.css';
 
-import React, { Component } from "react";
-import propTypes from "prop-types";
-import { Link } from "react-router-dom";
-import { getPostHero, getProfilePicture } from "../../utils/firebase/functions";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { getPostHero, getProfilePicture } from '../../utils/firebase/functions';
 
-import LinkButton from "../LinkButton";
+import LinkButton, { LinkButtonProps } from '../LinkButton';
+import Feature from '../../models/Feature';
 
-class InfoCard extends Component {
-  constructor(props) {
+export interface Background {
+  color?: string;
+  image?: string;
+  overlay?: string;
+}
+
+interface InfoCardProps {
+  background: Background;
+  title: string;
+  content: string;
+  blank: boolean;
+  linkButton: LinkButtonProps;
+  uid?: string;
+  isFeature?: boolean;
+  isFounder?: boolean;
+  university?: string;
+  featureData?: Feature;
+}
+
+interface InfoCardState {
+  backgroundImage: string;
+}
+
+class InfoCard extends Component<InfoCardProps, InfoCardState> {
+  constructor(props: InfoCardProps) {
     super(props);
 
     this.state = {
-      bgImage: props.bgImage || ""
+      backgroundImage: props.background.image || ''
     };
   }
 
-  static propTypes = {
-    bgImage: propTypes.string,
-    bgColor: propTypes.string,
-    title: propTypes.string,
-    content: propTypes.string,
-    blank: propTypes.bool,
-    bgOverlay: propTypes.string,
-    linkButton: propTypes.object,
-    feature: propTypes.bool,
-    university: propTypes.string,
-    target: propTypes.string,
-    featureData: propTypes.object,
-    founder: propTypes.bool,
-    uid: propTypes.string
-  }
-
-  static defaultProps = {
-    feature: false,
-    founder: false
-  }
-
-  componentDidMount() {
-    if (this.props.feature && !this.props.bgImage &&
+  public componentDidMount() {
+    if (this.props.isFeature && 
+      !this.props.background.image &&
       this.props.featureData) {
         getPostHero(this.props.featureData.id)
-          .then(url => {
-            this.setState({ bgImage: url });
+          .then((url) => {
+            this.setState({ backgroundImage: url });
           })
-          .catch(error => {
+          .catch((error) => {
             console.log(error);
-          })
+          });
     }
 
-    if (this.props.founder && !this.props.bgImage) {
+    if (this.props.isFounder && 
+      !this.props.background.image) {
       getProfilePicture(this.props.uid)
-        .then(url => {
+        .then((url) => {
             this.setState({
-              bgImage: url
+              backgroundImage: url
             });
           })
-          .catch(error => {
+          .catch((error) => {
             console.log(error);
-          })
+          });
     }
   }
 
-  render() {
+  public render() {
     if (this.props.blank) {
       return (
-        <div className="info_card info_card__blank" style={{
-          backgroundColor: this.props.bgColor
-        }}>
-        </div>
-      )
+        <div 
+          className="info_card info_card__blank" 
+          style={{
+            backgroundColor: this.props.background.color
+          }}
+        />
+      );
     }
 
     return (
-      < div className = {
-        `info_card${this.props.feature ? " info_card__feature" : ""} ${this.props.founder ? "info_card__founder" : ""}`
-      }
+      < div 
+        className={
+          `info_card${this.props.isFeature 
+            ? ' info_card__feature' 
+            : ''} ${this.props.isFounder 
+              ? 'info_card__founder' 
+              : ''
+            }`
+        }
         style={{
-          backgroundColor: this.props.bgColor,
-          backgroundImage: `url("${this.props.bgImage || this.state.bgImage}")`
-        }}>
+          backgroundColor: this.props.background.color,
+          backgroundImage: `url("${this.props.background.image || this.state.backgroundImage}")`
+        }}
+      >
         {
-          this.props.bgOverlay ?
-          <div className="info_card__overlay" style={{ backgroundColor: this.props.bgOverlay }}>
-          </div> : null
+          this.props.background.overlay 
+            ? <div 
+              className="info_card__overlay" 
+              style={{ backgroundColor: this.props.background.overlay }}
+            /> 
+            : null
         }
         {
-          !this.props.feature ?
+          !this.props.isFeature ?
             <span className="info_card__content">
               <h3>{this.props.title}</h3>
               <p>{this.props.content}</p>
             </span> :
-            <Link to={this.props.target || "/"} className="info_card__feature_content">
+            <Link 
+              to={this.props.linkButton.target || '/'} 
+              className="info_card__feature_content"
+            >
               <p>{this.props.university}</p>
               <h3>{this.props.title}</h3>
             </Link>
         }
         {
-          this.props.linkButton ?
-            <LinkButton target={this.props.linkButton.to}
+          this.props.linkButton 
+            ? <LinkButton 
+              target={this.props.linkButton.target}
               text={this.props.linkButton.text} 
-              classes={this.props.linkButton.classes} /> : null
+              classes={this.props.linkButton.classes} 
+            /> 
+            : null
         }
       </div>
-    )
+    );
   }
 }
 

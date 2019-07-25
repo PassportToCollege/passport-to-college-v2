@@ -1,23 +1,26 @@
-import "./InitialsAvatar.css";
+import './InitialsAvatar.css';
 
-import React from "react";
-import propTypes from "prop-types";
+import React from 'react';
 
-const InitialsAvatar = ({ initials, styles }) => {
-  return (
-    <span className="initials_avatar" style={styles}>
-      <span>{initials}</span>
-    </span>
-  )
+interface InitialsAvatarProps {
+  initials: string;
+  styles?: React.CSSProperties;
 }
 
-InitialsAvatar.defaultProps = {
-  styles: {}
-};
+const InitialsAvatar = (props: InitialsAvatarProps): React.ReactNode => {
+  const { initials } = props;
+  let { styles } = props;
 
-InitialsAvatar.propTypes = {
-  initials: propTypes.string,
-  styles: propTypes.object
+  styles = styles || {};
+  
+  return (
+    <span 
+      className="initials_avatar" 
+      style={styles}
+    >
+      <span>{initials}</span>
+    </span>
+  );
 };
 
 export default InitialsAvatar;

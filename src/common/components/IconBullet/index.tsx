@@ -1,8 +1,7 @@
-import "./IconBullet.css";
+import './IconBullet.css';
 
-import React from "react";
-import propTypes from "prop-types";
-import FontAwesomeIcon from "@fortawesome/react-fontawesome";
+import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faPencilAlt,
   faGlobe,
@@ -10,9 +9,17 @@ import {
   faSchool,
   faBriefcase,
   faUserGraduate
-} from "@fortawesome/fontawesome-free-solid";
+} from '@fortawesome/fontawesome-free-solid';
 
-const IconBullet = ({ styles, icon, heading, children }) => {
+interface IconBulletProps {
+  styles: React.CSSProperties;
+  icon: string;
+  heading: string;
+  children: React.ReactChildren;
+}
+
+const IconBullet = (props: IconBulletProps): React.ReactNode => {
+  const { styles, icon, heading, children } = props;
   const icons = {
     pen: faPencilAlt,
     globe: faGlobe,
@@ -29,13 +36,6 @@ const IconBullet = ({ styles, icon, heading, children }) => {
       {children}
     </div>
   );
-}
-
-IconBullet.propTypes = {
-  styles: propTypes.object,
-  icon: propTypes.string,
-  heading: propTypes.string,
-  children: propTypes.any
-}
+};
 
 export default IconBullet;

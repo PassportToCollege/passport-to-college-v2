@@ -1,26 +1,31 @@
-import "./Header.css";
+import './Header.css';
 
-import React, { Component } from "react";
-import propTypes from "prop-types";
+import React, { Component } from 'react';
 
-import downArrow from "../../assets/images/downArrow.png";
+const downArrow = require('../../assets/images/downArrow.png');
 
-class Header extends Component {
-  static propTypes = {
-    background: propTypes.string,
-    scrollEl: propTypes.string
-  }
+interface HeaderProps {
+  background: string;
+  scrollElement: string;
+}
 
-  render() {
+class Header extends Component<HeaderProps> {
+  public render() {
     return (
-      <header className="header header__default" style={{
-        backgroundImage: `url(${this.props.background})`
-      }}>
-        <i className="header__scroll_icon" data-scroll-to={this.props.scrollEl}>
+      <header 
+        className="header header__default" 
+        style={{
+          backgroundImage: `url(${this.props.background})`
+        }}
+      >
+        <i 
+          className="header__scroll_icon" 
+          data-scroll-to={this.props.scrollElement}
+        >
           <img src={downArrow} alt=""/>
         </i>
       </header>
-    )
+    );
   }
 }
 
