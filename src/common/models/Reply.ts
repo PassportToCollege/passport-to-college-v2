@@ -1,44 +1,34 @@
-import iReply from "../imodels/iReply";
-import iContentEditable from "../imodels/iContentEditable";
-import Comment from "./Comment";
-import User from "./User";
-import Post from "./Post";
+import iReply from '../imodels/iReply';
+import iContentEditable from '../imodels/iContentEditable';
+import Comment from './Comment';
+import User from './User';
+import Post from './Post';
 
 export default class Reply extends Comment implements iReply {
-  isConversation : boolean;
-  parent : Comment;
-  isReply : boolean;
+  public isConversation: boolean;
+  public parent: Comment;
+  public isReply: boolean;
 
-  constructor(User : User, Post : Post, Comment : Comment, content : iContentEditable, meta : any = {})
-  {
-    super(User, Post, content, meta);
+  constructor(user: User, post: Post, comment: Comment, content: iContentEditable, meta: any = {}) {
+    super(user, post, content, meta);
 
     this.isConversation = false;
-    this.parent = Comment;
+    this.parent = comment;
     this.isReply = true;
   }
 
-  public getData() {
-    const {
-      User,
-      message,
-      hasReplies,
-      postedOn,
-      parent,
-      Post,
-      isDeleted,
-      isReply
-    } = this;
-
+  public getData(): iReply {
     return {
-      User,
-      message,
-      hasReplies,
-      postedOn,
-      parent,
-      Post,
-      isDeleted,
-      isReply
+      id: this.id,
+      isConversation: this.isConversation,
+      User: this.User,
+      message: this.message,
+      hasReplies: this.hasReplies,
+      postedOn: this.postedOn,
+      parent: this.parent,
+      Post: this.Post,
+      isDeleted: this.isDeleted,
+      isReply: this.isReply,
     };
   }
 }

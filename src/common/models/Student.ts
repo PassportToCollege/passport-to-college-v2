@@ -1,31 +1,31 @@
-import iStudent from "../imodels/iStudent";
-import User from "./User"
+import iStudent from '../imodels/iStudent';
+import User from './User';
 
 export default class Student implements iStudent {
-  User: User;
-  uid: string;
-  bio: any;
-  enrollmentYear: number;
-  graduationYear: number;
-  university: string;
-  highSchool: string;
-  major: string;
-  minor: string;
-  isFeatured: boolean;
-  showOnSite: boolean;
-  hasGraduated: boolean;
+  public User: User;
+  public uid: string;
+  public bio: any;
+  public enrollmentYear: number;
+  public graduationYear: number;
+  public university: string;
+  public highSchool: string;
+  public major: string;
+  public minor: string;
+  public isFeatured: boolean;
+  public showOnSite: boolean;
+  public hasGraduated: boolean;
 
-  constructor(student : any, user : User) {
+  constructor(student: any, user: User) {
     this.User = user;
     this.uid = student.uid;
 
     this.bio = {};
     this.enrollmentYear = 0;
     this.graduationYear = 0;
-    this.university = "";
-    this.highSchool = "";
-    this.major = "";
-    this.minor = "";
+    this.university = '';
+    this.highSchool = '';
+    this.major = '';
+    this.minor = '';
     this.isFeatured = false;
     this.showOnSite = false;
     this.hasGraduated = false;
@@ -35,11 +35,11 @@ export default class Student implements iStudent {
     }
   }
 
-  get data() : any {
+  get data(): any {
     return this.getData();
   }
 
-  get isComplete() : boolean {
+  get isComplete(): boolean {
     return !!(
       this.uid &&
       Object.keys(this.bio).length &&
@@ -51,7 +51,7 @@ export default class Student implements iStudent {
     );
   }
 
-  get isFreshman() : boolean {
+  get isFreshman(): boolean {
     const date = new Date();
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
@@ -63,7 +63,7 @@ export default class Student implements iStudent {
     );
   }
 
-  get isSophomore() : boolean {
+  get isSophomore(): boolean {
     const date = new Date();
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
@@ -75,7 +75,7 @@ export default class Student implements iStudent {
     );
   }
 
-  get isJunior() : boolean {
+  get isJunior(): boolean {
     const date = new Date();
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
@@ -87,7 +87,7 @@ export default class Student implements iStudent {
     );
   }
 
-  get isSenior() : boolean {
+  get isSenior(): boolean {
     const date = new Date();
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
@@ -99,48 +99,30 @@ export default class Student implements iStudent {
     );
   }
 
-  get classification() : string {
-    if (this.isFreshman)
-      return "freshman";
+  get classification(): string {
+    if (this.isFreshman) { return 'freshman'; }
 
-    if (this.isSophomore)
-      return "sophomore";
+    if (this.isSophomore) { return 'sophomore'; }
 
-    if (this.isJunior)
-      return "junior";
+    if (this.isJunior) { return 'junior'; }
 
-    return "senior";
+    return 'senior';
   }
 
-  getData() {
-    const {
-      uid,
-      User,
-      bio,
-      enrollmentYear,
-      graduationYear,
-      university,
-      highSchool,
-      major,
-      minor,
-      isFeatured,
-      showOnSite,
-      hasGraduated
-    } = this;
-
+  private getData(): iStudent {
     return {
-      uid,
-      User,
-      bio,
-      enrollmentYear,
-      graduationYear,
-      university,
-      highSchool,
-      major,
-      minor,
-      isFeatured,
-      showOnSite,
-      hasGraduated
+      uid: this.uid,
+      User: this.User,
+      bio: this.bio,
+      enrollmentYear: this.enrollmentYear,
+      graduationYear: this.graduationYear,
+      university: this.university,
+      highSchool: this.highSchool,
+      major: this.major,
+      minor: this.minor,
+      isFeatured: this.isFeatured,
+      showOnSite: this.showOnSite,
+      hasGraduated: this.hasGraduated
     };
   }
 }

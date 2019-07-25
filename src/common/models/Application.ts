@@ -5,38 +5,39 @@ import iApplication, {
   WorkEthic,
   USTest,
   iApplicationState
-} from "../imodels/iApplication";
-import iContentEditable from "../imodels/iContentEditable";
-import User from "./User";
+} from '../imodels/iApplication';
+import iContentEditable from '../imodels/iContentEditable';
+import User from './User';
+import { iStringTestPair } from '../imodels/iObjectTypes';
 
 export default class Application implements iApplication {
-  User : User;
-  uid : string;
-  state : iApplicationState;
-  essay?: iContentEditable;
-  educationLevel?: EducationLevel;
-  gpa?: number;
-  income?: IncomeLevel;
-  interest?: Interest;
-  score?: number;
-  startedOn?: Date;
-  usTest?: USTest;
-  tests?: Object;
-  workEthic?: WorkEthic;
-  lastSchool?: string;
+  public User: User;
+  public uid: string;
+  public state: iApplicationState;
+  public essay?: iContentEditable;
+  public educationLevel?: EducationLevel;
+  public gpa?: number;
+  public income?: IncomeLevel;
+  public interest?: Interest;
+  public score?: number;
+  public startedOn?: Date;
+  public usTest?: USTest;
+  public tests?: iStringTestPair;
+  public workEthic?: WorkEthic;
+  public lastSchool?: string;
 
-  constructor(user : User, applicationData : any) {
+  constructor(user: User, applicationData: any) {
     this.User = user;
     this.uid = user._uid;
 
     this.state = {
-      draft : true,
-      accepted : false,
-      rejected : false,
-      pending : false
+      draft: true,
+      accepted: false,
+      rejected: false,
+      pending: false
     };
     this.essay = {
-      blocks : [],
+      blocks: [],
       entityMap: {}
     };
     this.educationLevel = EducationLevel.NoHighSchool;
@@ -48,46 +49,29 @@ export default class Application implements iApplication {
     this.usTest = USTest.None;
     this.tests = {};
     this.workEthic = WorkEthic.Average;
-    this.lastSchool = "";
+    this.lastSchool = '';
 
     if (Object.keys(applicationData).length) {
       Object.assign(this, applicationData);
     }
   }
 
-  public getApplicationData(useCase : string = "display") : any {
-    const {
-      User,
-      uid,
-      state,
-      essay,
-      educationLevel,
-      gpa,
-      income,
-      interest,
-      score,
-      startedOn,
-      usTest,
-      tests,
-      workEthic,
-      lastSchool
-    } = this;
-
+  public getApplicationData(useCase: string = 'display'): iApplication {
     return {
-      User,
-      uid,
-      state,
-      essay,
-      educationLevel,
-      gpa,
-      income,
-      interest,
-      score,
-      startedOn : (useCase == "save" && startedOn) ? startedOn.getTime() : startedOn,
-      usTest,
-      tests,
-      workEthic,
-      lastSchool
+      User: this.User,
+      uid: this.uid,
+      state: this.state,
+      essay: this.essay,
+      educationLevel: this.educationLevel,
+      gpa: this.gpa,
+      income: this.income,
+      interest: this.interest,
+      score: this.score,
+      startedOn: (useCase === 'save' && this.startedOn) ? this.startedOn.getTime() : this.startedOn,
+      usTest: this.usTest,
+      tests: this.tests,
+      workEthic: this.workEthic,
+      lastSchool: this.lastSchool
     };
   }
 }

@@ -1,56 +1,67 @@
-import "./CardNavigation.css";
+import './CardNavigation.css';
 
-import React, { Component } from "react";
-import { NavLink, withRouter } from "react-router-dom";
-import FontAwesomeIcon from "@fortawesome/react-fontawesome";
+import React, { Component } from 'react';
+import { NavLink, withRouter, RouteComponentProps } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faUsers,
   faUserGraduate,
   faBriefcase,
   faUserTie,
   faLock
-} from "@fortawesome/fontawesome-free-solid";
-import propTypes from "prop-types";
+} from '@fortawesome/fontawesome-free-solid';
 
-class CardNavigation extends Component {
-  static propTypes = {
-    locations: propTypes.arrayOf(propTypes.object),
-    styles: propTypes.object
-  }
+export interface CardNavigationLocation {
+  icon: string;
+  label: string; 
+  pathname: string;
+}
 
-  icons = {
+interface CardNavigationProps extends RouteComponentProps {
+  locations?: CardNavigationLocation[];
+  styles?: React.CSSProperties;
+}
+
+class CardNavigation extends Component<CardNavigationProps, any> {
+  private icons = {
     users: faUsers,
     students: faUserGraduate,
     staff: faBriefcase,
     applicants: faUserTie,
     admins: faLock
-  }
+  };
 
-  getIcon = (icon) => {
+  private getIcon = (icon: any) => {
     return this.icons[icon];
   }
 
-  render() {
+  public render() {
     return (
-      <nav className="card_navigation" style={this.props.styles}>
+      <nav 
+        className="card_navigation" 
+        style={this.props.styles}
+      >
         { 
-          this.props.locations.length ?
-            this.props.locations.map(location => {
+          this.props.locations && this.props.locations.length ?
+            this.props.locations.map((location: CardNavigationLocation) => {
               return (
-                <NavLink exact key={location.pathname} 
+                <NavLink 
+                  exact={true} 
+                  key={location.pathname} 
                   to={location.pathname}
                   activeClassName="active" 
-                  className="card_navigation__item">
+                  className="card_navigation__item"
+                >
                   <span className="card_navigation__icon">
                     <FontAwesomeIcon icon={this.getIcon(location.icon)} />
                   </span>
                   <span className="card_navigation__label">{location.label}</span>
                 </NavLink>
-              )
+              );
             }) : null
           }
       </nav>
-    )
+    );
   }
 }
 

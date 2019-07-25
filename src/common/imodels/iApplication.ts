@@ -1,14 +1,14 @@
-import iUser from "./iUser";
-import iContentEditable from "./iContentEditable";
-import { iStringTestPair } from "./iObjectTypes";
+import iUser from './iUser';
+import iContentEditable from './iContentEditable';
+import { iStringTestPair } from './iObjectTypes';
 
 export enum EducationLevel {
-  NoHighSchool = "no high school",
-  HighSchool = "high school",
-  SomeCollege = "college no degree",
-  Associate = "associate",
-  Bachelor = "bachelor",
-  Graduate = "graduate",
+  NoHighSchool = 'no high school',
+  HighSchool = 'high school',
+  SomeCollege = 'college no degree',
+  Associate = 'associate',
+  Bachelor = 'bachelor',
+  Graduate = 'graduate',
 }
 
 export enum IncomeLevel {
@@ -41,25 +41,25 @@ export enum USTest {
 }
 
 export interface iApplicationState {
-  pending : boolean,
-  draft : boolean,
-  accepted : boolean,
-  rejected : boolean
+  pending: boolean;
+  draft: boolean;
+  accepted: boolean;
+  rejected: boolean;
 }
 
 export default interface iApplication {
-  User : iUser;
-  readonly uid : string;
-  state : iApplicationState;
-  essay? : iContentEditable;
-  educationLevel? : EducationLevel;
-  gpa? : number;
-  income? : IncomeLevel;
-  interest? : Interest;
-  score? : number;
-  startedOn? : Date;
-  usTest? : USTest;
-  tests? : iStringTestPair;
-  workEthic? : WorkEthic;
-  lastSchool? : string;
+  User: iUser;
+  readonly uid: string;
+  state: iApplicationState;
+  essay?: iContentEditable;
+  educationLevel?: EducationLevel;
+  gpa?: number;
+  income?: IncomeLevel;
+  interest?: Interest;
+  score?: number;
+  startedOn?: Date | number;
+  usTest?: USTest;
+  tests?: iStringTestPair;
+  workEthic?: WorkEthic;
+  lastSchool?: string;
 }

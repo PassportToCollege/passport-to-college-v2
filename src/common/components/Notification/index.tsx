@@ -1,48 +1,42 @@
-import "./Notification.css";
+import './Notification.css';
 
-import React, { Component } from "react";
-import propTypes from "prop-types";
-import FontAwesomeIcon from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/fontawesome-free-solid";
+import React, { Component } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/fontawesome-free-solid';
 
-export default class Notification extends Component {
-  static propTypes = {
-    text: propTypes.string,
-    doClose: propTypes.func
-  }
+interface NotificationProps {
+  text: string;
+  doClose: () => void;
+};
 
-  componentDidMount() {
+export default class Notification extends Component<NotificationProps, any> {
+  public notification: any;
+
+  public componentDidMount() {
     setTimeout(() => {
-      if (this.notification)
+      if (this.notification) {
         this.closeNotification();
+      }
     }, 10000);
   }
 
-  render() {
+  public render() {
     return (
-      <div className="notification" ref={div => this.notification = div}>
+      <div 
+        className="notification" 
+        ref={div => this.notification = div}
+      >
         <p>{this.props.text}</p>
         <span onClick={this.closeNotification}><FontAwesomeIcon icon={faTimes} /></span>
       </div>
     )
   }
 
-  closeNotification = () => {
-    this.notification.classList.add("close");
+  public closeNotification = () => {
+    this.notification.classList.add('close');
 
-    if (this.props.doClose && "function" === typeof this.props.doClose)
+    if (this.props.doClose && 'function' === typeof this.props.doClose) {
       this.props.doClose();
+    }
   }
 }
-
-export class InlineNotification extends Notification {
-  render() {
-    return (
-      <div className="notification__inline" ref={div => this.notification = div}>
-        <p>{this.props.text}</p>
-        <span onClick={this.closeNotification}><FontAwesomeIcon icon={faTimes} /></span>
-      </div>
-    )
-  }
-}
-

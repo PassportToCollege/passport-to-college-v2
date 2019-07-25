@@ -1,7 +1,7 @@
-import iComment from "./iComment";
+import iComment from './iComment';
 
 export default interface iReply extends iComment {
-  isConversation : boolean;
-  parent : iComment;
-  isReply : boolean;
+  isConversation: boolean;
+  parent: iComment;
+  isReply: boolean;
 }

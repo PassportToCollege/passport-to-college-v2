@@ -1,18 +1,18 @@
-import iUser from "../imodels/iUser";
-import iContentEditable from "./iContentEditable";
-import iPost from "./iPost";
+import User from '../models/User';
+import iContentEditable from './iContentEditable';
+import iPost from './iPost';
 
 export default interface iComment {
-  readonly id : string;
-  User : iUser;
-  message : {
-    text : string,
-    html : iContentEditable
+  readonly id: string;
+  User: User;
+  message: {
+    text: string,
+    html: iContentEditable
   };
-  Post : iPost;
-  postedOn? : Date;
-  isConversation? : boolean;
-  isDeleted? : boolean;
-  hasReplies? : boolean;
-  replies? : string[];
+  Post: iPost;
+  postedOn?: Date;
+  isConversation?: boolean;
+  isDeleted?: boolean;
+  hasReplies?: boolean;
+  replies?: string[];
 }

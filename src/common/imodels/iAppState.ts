@@ -1,429 +1,429 @@
-import iError from "./iError";
-import iUser, { UserType } from "./iUser";
-import iStats from "./iStats";
-import iContentEditable from "./iContentEditable";
-import { iStringReplyListPair } from "./iObjectTypes";
-import Post from "../models/Post";
-import User from "../models/User";
-import Application from "../models/Application";
-import PostCategory from "../models/PostCategory";
-import Feature from "../models/Feature";
-import Comment from "../models/Comment";
-import Student from "../models/Student";
+import iError from './iError';
+import iUser, { UserType } from './iUser';
+import iStats from './iStats';
+import iContentEditable from './iContentEditable';
+import { iStringReplyListPair } from './iObjectTypes';
+import Post from '../models/Post';
+import User from '../models/User';
+import Application from '../models/Application';
+import PostCategory from '../models/PostCategory';
+import Feature from '../models/Feature';
+import Comment from '../models/Comment';
+import Student from '../models/Student';
 
 interface ApplicationState
 {
-  userId? : string;
-  User? : User;
-  Application? : Application;
-  error? : iError;
-  data? : any;
-  date? : Date;
+  userId?: string;
+  User?: User;
+  Application?: Application;
+  error?: iError;
+  data?: any;
+  date?: Date;
 
-  isGetting? : boolean;
-  hasGotten? : boolean;
-  failedToGetApplication? : boolean;
+  isGetting?: boolean;
+  hasGotten?: boolean;
+  failedToGetApplication?: boolean;
 
-  isUpdating? : boolean;
-  hasUpdated? : boolean;
-  failedToUpdateApplication? : boolean;
+  isUpdating?: boolean;
+  hasUpdated?: boolean;
+  failedToUpdateApplication?: boolean;
 
-  deletingTest? : boolean;
-  deletedTest? : boolean;
-  failedToDeleteTest? : boolean;
+  deletingTest?: boolean;
+  deletedTest?: boolean;
+  failedToDeleteTest?: boolean;
 
-  isSubmitting? : boolean;
-  hasSubmitted? : boolean;
-  failedToSubmit? : boolean;
+  isSubmitting?: boolean;
+  hasSubmitted?: boolean;
+  failedToSubmit?: boolean;
 
-  sendingSubmissionEmail? : boolean;
-  sentSubmissionEmail? : boolean;
-  sendingSubmissionEmailFailed? : boolean;
+  sendingSubmissionEmail?: boolean;
+  sentSubmissionEmail?: boolean;
+  sendingSubmissionEmailFailed?: boolean;
 }
 
 interface ApplicationsState
 {
-  page : number;
-  error? : iError;
+  page: number;
+  error?: iError;
 
-  isGetting? : boolean;
-  hasFailed? : boolean;
-  hasGotten? : boolean;
+  isGetting?: boolean;
+  hasFailed?: boolean;
+  hasGotten?: boolean;
 }
 
 interface CommentsState
 {
-  error? : iError;
-  comment? : Comment;
-  comments? : Comment[];
-  conversations? : Comment[];
-  replies? : iStringReplyListPair;
-  isReply? : boolean;
-  id? : string;
-  parent? : string;
-  changedComment? : Comment;
-  post? : string;
+  error?: iError;
+  comment?: Comment;
+  comments?: Comment[];
+  conversations?: Comment[];
+  replies?: iStringReplyListPair;
+  isReply?: boolean;
+  id?: string;
+  parent?: string;
+  changedComment?: Comment;
+  post?: string;
 
-  creatingComment? : boolean;
-  createdComment? : boolean;
-  failedToCreateComment? : boolean;
+  creatingComment?: boolean;
+  createdComment?: boolean;
+  failedToCreateComment?: boolean;
 
-  gettingComment? : boolean;
-  gotComment? : boolean;
-  failedToGetComment? : boolean;
+  gettingComment?: boolean;
+  gotComment?: boolean;
+  failedToGetComment?: boolean;
 
-  gettingComments? : boolean;
-  gotComments? : boolean;
-  failedToGetComments? : boolean;
+  gettingComments?: boolean;
+  gotComments?: boolean;
+  failedToGetComments?: boolean;
 
-  gettingReplies? : boolean;
-  gotReplies? : boolean;
-  failedToGetReplies? : boolean;
+  gettingReplies?: boolean;
+  gotReplies?: boolean;
+  failedToGetReplies?: boolean;
 
-  gettingReply? : boolean;
-  gotReply? : boolean;
-  failedToGetReply? : boolean;
+  gettingReply?: boolean;
+  gotReply?: boolean;
+  failedToGetReply?: boolean;
 
-  updatingComment? : boolean;
-  updatedComment? : boolean;
-  failedToUpdateComment? : boolean;
+  updatingComment?: boolean;
+  updatedComment?: boolean;
+  failedToUpdateComment?: boolean;
 
-  updatedCommentLocal? : boolean;
+  updatedCommentLocal?: boolean;
 
-  deletingComment? : boolean;
-  deletedComment? : boolean;
-  failedToDeleteComment? : boolean;
+  deletingComment?: boolean;
+  deletedComment?: boolean;
+  failedToDeleteComment?: boolean;
 
-  safelyDeletingComment? : boolean;
-  safelyDeletedComment? : boolean;
-  failedToSafelyDeleteComment? : boolean;
+  safelyDeletingComment?: boolean;
+  safelyDeletedComment?: boolean;
+  failedToSafelyDeleteComment?: boolean;
 
-  gettingConversations? : boolean;
-  gotConversations? : boolean;
-  failedToGetConversations? : boolean;
+  gettingConversations?: boolean;
+  gotConversations?: boolean;
+  failedToGetConversations?: boolean;
 }
 
 interface PostState
 {
-  id? : string;
-  error? : iError;
-  Post? : Post;
-  data? : any;
-  lastDeletedPost? : Post;
-  conversations? : Comment[];
+  id?: string;
+  error?: iError;
+  Post?: Post;
+  data?: any;
+  lastDeletedPost?: Post;
+  conversations?: Comment[];
 
-  isCreating? : boolean;
-  hasCreated? : boolean;
-  postCreationFailed? : boolean;
+  isCreating?: boolean;
+  hasCreated?: boolean;
+  postCreationFailed?: boolean;
 
-  isGetting? : boolean;
-  hasGotten? : boolean;
-  postGetFailed? : boolean;
+  isGetting?: boolean;
+  hasGotten?: boolean;
+  postGetFailed?: boolean;
 
-  isUpdating? : boolean;
-  hasUpdated? : boolean;
-  postUpdateFailed? : boolean;
+  isUpdating?: boolean;
+  hasUpdated?: boolean;
+  postUpdateFailed?: boolean;
 
-  updatedLocalConversationsCount? : boolean;
+  updatedLocalConversationsCount?: boolean;
 
-  isUploading? : boolean;
-  hasUploaded? : boolean;
-  heroUploadFailed? : boolean;
+  isUploading?: boolean;
+  hasUploaded?: boolean;
+  heroUploadFailed?: boolean;
 
-  gettingHero? : boolean;
-  gotHero? : boolean;
-  heroGetFailed? : boolean;
+  gettingHero?: boolean;
+  gotHero?: boolean;
+  heroGetFailed?: boolean;
 
-  deletingPost? : boolean;
-  deletedPost? : boolean;
-  failedToDeletePost? : boolean;
+  deletingPost?: boolean;
+  deletedPost?: boolean;
+  failedToDeletePost?: boolean;
 }
 
 interface PostsState
 {
-  posts? : Post[];
-  error? : iError;
-  page? : number;
-  categories? : PostCategory[];
-  student? : Student;
+  posts?: Post[];
+  error?: iError;
+  page?: number;
+  categories?: PostCategory[];
+  student?: Student;
 
-  isGetting? : boolean;
-  hasGotten? : boolean;
-  postsGetFailed? : boolean;
+  isGetting?: boolean;
+  hasGotten?: boolean;
+  postsGetFailed?: boolean;
 
-  gettingMostRecent? : boolean;
-  gotMostRecent? : boolean;
-  mostRecentGetFailed? : boolean;
+  gettingMostRecent?: boolean;
+  gotMostRecent?: boolean;
+  mostRecentGetFailed?: boolean;
 
-  paginatingPosts? : boolean;
-  paginationDone? : boolean;
-  paginationFailed? : boolean;
+  paginatingPosts?: boolean;
+  paginationDone?: boolean;
+  paginationFailed?: boolean;
 
-  gettingMostRecentByCategory? : boolean;
-  gotMostRecentByCategory? : boolean;
-  mostRecentGetByCategoryGetFailed? : boolean;
+  gettingMostRecentByCategory?: boolean;
+  gotMostRecentByCategory?: boolean;
+  mostRecentGetByCategoryGetFailed?: boolean;
 
-  gettingAccomplishmentsByUser? : boolean;
-  gotAccomplishmentsByUser? : boolean;
-  failedToGetAccomplishmentsByUser? : boolean;
+  gettingAccomplishmentsByUser?: boolean;
+  gotAccomplishmentsByUser?: boolean;
+  failedToGetAccomplishmentsByUser?: boolean;
 }
 
 interface PostCategoryState
 {
-  slug? : string;
-  error? : iError;
-  uCategory? : PostCategory;
+  slug?: string;
+  error?: iError;
+  uCategory?: PostCategory;
 
-  gettingCategory? : boolean;
-  gotCategory? : boolean;
-  getCategoryFailed? : boolean;
+  gettingCategory?: boolean;
+  gotCategory?: boolean;
+  getCategoryFailed?: boolean;
 
-  isAdding? : boolean;
-  hasAdded? : boolean;
-  categoryAddFailed? : boolean;
+  isAdding?: boolean;
+  hasAdded?: boolean;
+  categoryAddFailed?: boolean;
 
-  isUpdating? : boolean;
-  hasUpdated? : boolean;
-  updateFailed? : boolean;
+  isUpdating?: boolean;
+  hasUpdated?: boolean;
+  updateFailed?: boolean;
 
-  gettingCategories? : boolean;
-  gotCategories? : boolean;
-  getCategoriesFailed? : boolean;
+  gettingCategories?: boolean;
+  gotCategories?: boolean;
+  getCategoriesFailed?: boolean;
 
-  updatingCategoryPosts? : boolean;
-  updatedCategoryPosts? : boolean;
-  failedToUpdatedCategoryPosts? : boolean;
+  updatingCategoryPosts?: boolean;
+  updatedCategoryPosts?: boolean;
+  failedToUpdatedCategoryPosts?: boolean;
 }
 
 interface FeatureState
 {
-  feature? : Feature;
-  error? : iError;
-  data? : any;
+  feature?: Feature;
+  error?: iError;
+  data?: any;
 
-  isGetting? : boolean;
-  hasGotten? : boolean;
-  failedToGetFeature? : boolean;
+  isGetting?: boolean;
+  hasGotten?: boolean;
+  failedToGetFeature?: boolean;
 
-  isCreating? : boolean;
-  hasCreated? : boolean;
-  creationFailed? : boolean;
+  isCreating?: boolean;
+  hasCreated?: boolean;
+  creationFailed?: boolean;
 
-  isUpdating? : boolean;
-  hasUpdated? : boolean;
-  failedToUpdate? : boolean;
+  isUpdating?: boolean;
+  hasUpdated?: boolean;
+  failedToUpdate?: boolean;
 
-  isDeleting? : boolean;
-  hasDeleted? : boolean;
-  deleteFailed? : boolean;
+  isDeleting?: boolean;
+  hasDeleted?: boolean;
+  deleteFailed?: boolean;
 }
 
 interface FeaturesState
 {
-  student? : Student;
-  features? : Feature;
+  student?: Student;
+  features?: Feature;
 
-  isGetting? : boolean;
-  hasGotten? : boolean;
-  hasFailed? : boolean;
+  isGetting?: boolean;
+  hasGotten?: boolean;
+  hasFailed?: boolean;
 
-  gettingActive? : boolean;
-  gotActive? : boolean;
-  failedToGetActive? : boolean;
+  gettingActive?: boolean;
+  gotActive?: boolean;
+  failedToGetActive?: boolean;
 }
 
 interface HamburgerState
 {
-  current : number;
-  previous? : number;
+  current: number;
+  previous?: number;
 }
 
 interface MenuState
 {
-  dash : string;
+  dash: string;
 }
 
 interface AuthState
 {
-  activeUser? : iUser | boolean;
-  error? : iError;
-  provider? : string;
-  email? : string;
+  activeUser?: iUser | boolean;
+  error?: iError;
+  provider?: string;
+  email?: string;
 
-  isAuthorizing? : boolean;
-  failedToAuthorize? : boolean;
-  hasAuthorized? : boolean;
+  isAuthorizing?: boolean;
+  failedToAuthorize?: boolean;
+  hasAuthorized?: boolean;
 
-  signingInWithSocial? : boolean;
-  hasSignedInWithSocial? : boolean;
-  failedToSignInWithSocial? : boolean;
+  signingInWithSocial?: boolean;
+  hasSignedInWithSocial?: boolean;
+  failedToSignInWithSocial?: boolean;
 
-  signingUpWithSocial? : boolean;
-  hasSignedUpWithSocial? : boolean;
-  failedToSignUpWithSocial? : boolean;
+  signingUpWithSocial?: boolean;
+  hasSignedUpWithSocial?: boolean;
+  failedToSignUpWithSocial?: boolean;
 
-  isCreating? : boolean;
-  hasCreated? : boolean;
-  hasFailed? : boolean;
+  isCreating?: boolean;
+  hasCreated?: boolean;
+  hasFailed?: boolean;
 
-  isSending? : boolean; 
-  hasSent? : boolean; 
-  failedToSendEmail? : boolean;
+  isSending?: boolean; 
+  hasSent?: boolean; 
+  failedToSendEmail?: boolean;
 
-  linkingSocialAccount? : boolean;
-  linkedSocialAccount? : boolean;
-  failedToLinkSocialAccount? : boolean;
+  linkingSocialAccount?: boolean;
+  linkedSocialAccount?: boolean;
+  failedToLinkSocialAccount?: boolean;
 
-  unlinkingSocialAccount? : boolean;
-  unlinkedSocialAccount? : boolean;
-  failedToUnlinkSocialAccount? : boolean;
+  unlinkingSocialAccount?: boolean;
+  unlinkedSocialAccount?: boolean;
+  failedToUnlinkSocialAccount?: boolean;
 
-  addingPasswordProvider? : boolean;
-  addedPasswordProvider? : boolean;
-  failedToAddPasswordProvider? : boolean;
+  addingPasswordProvider?: boolean;
+  addedPasswordProvider?: boolean;
+  failedToAddPasswordProvider?: boolean;
 
-  changingEmailAddress? : boolean;
-  changedEmailAddress? : boolean;
-  failedToChangeEmailAddress? : boolean;
+  changingEmailAddress?: boolean;
+  changedEmailAddress?: boolean;
+  failedToChangeEmailAddress?: boolean;
 }
 
 interface StatsState
 {
-  error? : iError;
-  stats? : iStats;
+  error?: iError;
+  stats?: iStats;
 
-  isGetting? : boolean;
-  hasGotten? : boolean;
-  hasFailed? : boolean;
+  isGetting?: boolean;
+  hasGotten?: boolean;
+  hasFailed?: boolean;
 }
 
 interface UserState
 {
-  user? : User;
-  id? : string;
-  error? : iError;
-  data? : any;
+  user?: User;
+  id?: string;
+  error?: iError;
+  data?: any;
 
-  isGetting? : boolean;
-  hasFailed? : boolean;
-  hasGotten? : boolean;
+  isGetting?: boolean;
+  hasFailed?: boolean;
+  hasGotten?: boolean;
 
-  isUpdating? : boolean;
-  failedToUpdate? : boolean;
-  isReauthenticating? : boolean;
-  hasUpdated? : boolean;
+  isUpdating?: boolean;
+  failedToUpdate?: boolean;
+  isReauthenticating?: boolean;
+  hasUpdated?: boolean;
 }
 
 interface UsersState
 {
-  page? : number;
-  userType? : UserType;
-  error? : iError;
-  data? : any;
-  users? : User[];
-  user? : User;
-  founder? : User;
-  staff? : User[];
-  email? : string;
-  id? : string;
-  bio? : iContentEditable;
+  page?: number;
+  userType?: UserType;
+  error?: iError;
+  data?: any;
+  users?: User[];
+  user?: User;
+  founder?: User;
+  staff?: User[];
+  email?: string;
+  id?: string;
+  bio?: iContentEditable;
 
-  isGettingUsers? : boolean;
-  failedToGetUsers? : boolean;
-  hasGottenUsers? : boolean;
+  isGettingUsers?: boolean;
+  failedToGetUsers?: boolean;
+  hasGottenUsers?: boolean;
 
-  isGettingUsersByUid? : boolean;
-  hasGottenUsersByUid? : boolean;
-  failedToGetUsersByUid? : boolean;
+  isGettingUsersByUid?: boolean;
+  hasGottenUsersByUid?: boolean;
+  failedToGetUsersByUid?: boolean;
   
-  isCreating? : boolean;
-  hasCreated? : boolean;
-  failedToCreateUser? : boolean;
+  isCreating?: boolean;
+  hasCreated?: boolean;
+  failedToCreateUser?: boolean;
   
-  isSending? : boolean;
-  hasSent? : boolean;
-  failedToSend? : boolean;
+  isSending?: boolean;
+  hasSent?: boolean;
+  failedToSend?: boolean;
 
-  isGettingUser? : boolean;
-  hasGottenUser? : boolean;
-  failedToGetByUserId? : boolean;
+  isGettingUser?: boolean;
+  hasGottenUser?: boolean;
+  failedToGetByUserId?: boolean;
 
-  isUpdating? : boolean;
-  hasUpdated? : boolean;
-  updateFailed? : boolean;
+  isUpdating?: boolean;
+  hasUpdated?: boolean;
+  updateFailed?: boolean;
 
-  addingBio? : boolean;
-  addedBio? : boolean;
-  failedToAddBio? : boolean;
+  addingBio?: boolean;
+  addedBio?: boolean;
+  failedToAddBio?: boolean;
 
-  gettingFounder? : boolean;
-  gotFounder? : boolean;
-  failedToGetFounder? : boolean;
+  gettingFounder?: boolean;
+  gotFounder?: boolean;
+  failedToGetFounder?: boolean;
 
-  gettingStaff? : boolean;
-  gotStaff? : boolean;
-  failedToGetStaff? : boolean;
+  gettingStaff?: boolean;
+  gotStaff?: boolean;
+  failedToGetStaff?: boolean;
 }
 
 interface StudentState
 {
-  student? : Student;
-  id? : string;
-  error? : iError;
-  data? : any;
-  slug? : string;
+  student?: Student;
+  id?: string;
+  error?: iError;
+  data?: any;
+  slug?: string;
 
-  isGetting? : boolean;
-  hasGotten? : boolean;
-  failedToGetStudent? : boolean;
+  isGetting?: boolean;
+  hasGotten?: boolean;
+  failedToGetStudent?: boolean;
 
-  isUpdating? : boolean;
-  hasUpdated? : boolean;
-  failedToUpdateStudent? : boolean;
+  isUpdating?: boolean;
+  hasUpdated?: boolean;
+  failedToUpdateStudent?: boolean;
 
-  isDeleting? : boolean;
-  hasDeleted? : boolean;
-  failedToDeleteAccomplishment? : boolean;
+  isDeleting?: boolean;
+  hasDeleted?: boolean;
+  failedToDeleteAccomplishment?: boolean;
 
-  creatingStudent? : boolean;
-  createdStudent? : boolean;
-  failedToCreateStudent? : boolean;
+  creatingStudent?: boolean;
+  createdStudent?: boolean;
+  failedToCreateStudent?: boolean;
 }
 
 interface StudentsState {
-  students? : Student[];
-  current? : Student[];
-  past? : Student[];
-  error? : iError;
+  students?: Student[];
+  current?: Student[];
+  past?: Student[];
+  error?: iError;
 
-  isGetting? : boolean;
-  hasGotten? : boolean;
-  failedToGetStudents? : boolean;
+  isGetting?: boolean;
+  hasGotten?: boolean;
+  failedToGetStudents?: boolean;
 
-  gettingCurrentStudents? : boolean;
-  gotCurrentStudents? : boolean;
-  failedToGetCurrentStudents? : boolean;
+  gettingCurrentStudents?: boolean;
+  gotCurrentStudents?: boolean;
+  failedToGetCurrentStudents?: boolean;
 
-  gettingPastStudents? : boolean;
-  gotPastStudents? : boolean;
-  failedToGetPastStudents? : boolean;
+  gettingPastStudents?: boolean;
+  gotPastStudents?: boolean;
+  failedToGetPastStudents?: boolean;
 }
 
 export default interface iAppState {
-  Application : ApplicationState;
-  Applications : ApplicationsState;
-  Comments : CommentsState;
-  Auth : AuthState;
-  Feature : FeatureState;
-  Features : FeaturesState;
-  Hamburger : HamburgerState;
-  Menu : MenuState;
-  Post : PostState;
+  Application: ApplicationState;
+  Applications: ApplicationsState;
+  Comments: CommentsState;
+  Auth: AuthState;
+  Feature: FeatureState;
+  Features: FeaturesState;
+  Hamburger: HamburgerState;
+  Menu: MenuState;
+  Post: PostState;
   PostCategory: PostCategoryState;
-  Posts : PostsState;
-  Stats : StatsState;
-  Student : StudentState;
-  Students : StudentsState;
-  User : UserState;
-  Users : UsersState;
+  Posts: PostsState;
+  Stats: StatsState;
+  Student: StudentState;
+  Students: StudentsState;
+  User: UserState;
+  Users: UsersState;
 }
