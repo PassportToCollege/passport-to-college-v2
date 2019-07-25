@@ -21,7 +21,7 @@ interface ConnectionsStripProps {
   whenConnectionClicked: (connection: ValidConnection) => void;
 }
 
-type ValidConnection = 'google' | 'facebook' | 'twitter' | 'github' | 'linkedin' | string | null;
+export type ValidConnection = 'google' | 'facebook' | 'twitter' | 'github' | 'linkedin' | string | null;
 
 const ConnectionsStrip = (props: ConnectionsStripProps): React.ReactNode => {
   const handleConnectionClick = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {

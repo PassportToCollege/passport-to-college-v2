@@ -1,33 +1,25 @@
-import React from "react";
-import propTypes from "prop-types";
+import React from 'react';
+import { makeClassString } from '../../utils';
 
-import { makeClassString } from "../../utils";
+interface FlexContainerProps {
+  children: React.ReactChildren;
+  direction: string;
+  styles: React.CSSProperties;
+  classes: string[];
+}
 
-const FlexContainer = ({ children, direction, styles, classes }) => {
-
-  const containerStyles = Object.assign({}, {
-    display: "flex",
+const FlexContainer = (props: FlexContainerProps): React.ReactNode => {
+  const { children, direction = 'row', styles, classes = [] } = props;
+  const containerStyles = {
+    display: 'flex',
     flexFlow: `${direction} wrap`,
-    justifyContent: "space-evenly"
-  }, styles);
+    justifyContent: 'space-evenly', ...styles};
 
   return (
-    <div className={makeClassString(["flex_container", ...classes])} style={containerStyles}>
+    <div className={makeClassString(['flex_container', ...classes])} style={containerStyles}>
       {children}
     </div>
-  )
-};
-
-FlexContainer.defaultProps = {
-  direction: "row",
-  classes: []
-};
-
-FlexContainer.propTypes = {
-  children: propTypes.any,
-  direction: propTypes.string,
-  styles: propTypes.object,
-  classes: propTypes.arrayOf(propTypes.string)
+  );
 };
 
 export default FlexContainer;

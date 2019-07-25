@@ -1,17 +1,29 @@
-import React, { Component } from "react";
-import propTypes from "prop-types";
+import React, { Component } from 'react';
+import propTypes from 'prop-types';
 
-import { makeClassString } from "../../utils";
+import { makeClassString } from '../../utils';
 
-class Form extends Component {
-  static propTypes = {
-    children: propTypes.any,
-    doSubmit: propTypes.func,
-    classes: propTypes.arrayOf(propTypes.string),
-    reset: propTypes.bool
+interface FormProps {
+  children: React.ReactChildren;
+  doSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  classes: string[];
+  reset: boolean;
+}
+
+interface FormSnapshot {
+  resetForm: boolean;
+}
+
+export default class Form extends Component<FormProps> {
+  private formRef: HTMLFormElement | null = null;
+
+  private handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    if ('function' === typeof this.props.doSubmit) {
+      this.props.doSubmit(e);
+    }
   }
 
-  getSnapshotBeforeUpdate(props) {
+  public getSnapshotBeforeUpdate(props: FormProps): FormSnapshot | null {
     if (!props.reset && this.props.reset) {
       return { resetForm: true };
     }
@@ -19,26 +31,23 @@ class Form extends Component {
     return null;
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  public componentDidUpdate(prevProps: FormProps, prevState: never, snapshot: FormSnapshot) {
     if (snapshot && snapshot.resetForm) {
-      this.formRef.reset();
+      if (this.formRef) {
+        this.formRef.reset();
+      }
     }
   }
 
-  render() {
+  public render() {
     return (
-      <form className={makeClassString(this.props.classes)}
+      <form 
+        className={makeClassString(this.props.classes)}
         onSubmit={this.handleSubmit}
-        ref={form => this.formRef = form}>
+        ref={(form) => this.formRef = form}
+      >
         {this.props.children}
       </form>
     );
   }
-
-  handleSubmit = e => {
-    if ("function" === typeof this.props.doSubmit)
-      this.props.doSubmit(e);
-  }
 }
-
-export default Form;

@@ -1,33 +1,38 @@
-import "./FeatureList.css";
+import './FeatureList.css';
 
-import React from "react";
-import propTypes from "prop-types";
+import React from 'react';
+import propTypes from 'prop-types';
 
-import Feature from "../Feature";
+import _Feature from '../../models/Feature';
+import Feature from '../Feature';
 
-const FeatureList = ({ features, actions, doDelete, doEdit }) => {
+interface FeatureListProps {
+  features: _Feature[];
+  showActions: boolean;
+  doDelete: (feature: _Feature) => void;
+  doEdit: (feature: _Feature) => void;
+}
+
+const FeatureList = (props: FeatureListProps): React.ReactNode => {
+  const { features, showActions, doDelete, doEdit } = props;
+
   return (
     <div className="feature_list">
       {
         features.map((feature, i) => {
-          return <Feature key={i} actions={actions} feature={feature} 
-            doDelete={doDelete} 
-            doEdit={doEdit} />
+          return (
+            <Feature 
+              key={i} 
+              showActions={showActions}
+              feature={feature} 
+              doDelete={doDelete} 
+              doEdit={doEdit} 
+            />
+          );
         })
       }
     </div>
-  )
-}
-
-FeatureList.defaultProps = {
-  actions: false
-}
-
-FeatureList.propTypes = {
-  features: propTypes.array,
-  actions: propTypes.bool,
-  doDelete: propTypes.func,
-  doEdit: propTypes.func
+  );
 };
 
 export default FeatureList;
