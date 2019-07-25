@@ -7,7 +7,7 @@ import { faTimes } from '@fortawesome/fontawesome-free-solid';
 interface NotificationProps {
   text: string;
   doClose: () => void;
-};
+}
 
 export default class Notification extends Component<NotificationProps, any> {
   public notification: any;
@@ -24,12 +24,12 @@ export default class Notification extends Component<NotificationProps, any> {
     return (
       <div 
         className="notification" 
-        ref={div => this.notification = div}
+        ref={(div) => this.notification = div}
       >
         <p>{this.props.text}</p>
         <span onClick={this.closeNotification}><FontAwesomeIcon icon={faTimes} /></span>
       </div>
-    )
+    );
   }
 
   public closeNotification = () => {

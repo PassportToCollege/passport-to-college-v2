@@ -1,46 +1,45 @@
-import "./LoadingText.css";
+import './LoadingText.css';
 
-import React from "react";
-import propTypes from "prop-types";
+import React, { Component } from 'react';
 
-/*
-  Accepted Options
-  - class === className of container
-  - bg === background-color
-  - height === height of lines
-  - lines === array of line objects
-    - line === line object
-      - color === color of lines
-      - width === line width
-*/ 
-
-const LoadingText = props => {
-  let { options } = props;
-
-  return (
-    <div 
-      className={`loading_text__container ${options.class || ""}`}
-      style={{backgroundColor: options.bg || "#fff"}}>
-      {
-        options.lines.map((line, i) => {
-          return (
-          <span key={i} 
-                style={{
-                  width: line.width, 
-                  height: options.height, 
-                  backgroundColor: line.color
-                }}>
-          </span>
-          )
-        })
-      }
-    </div>
-  )
+interface LoadingTextLine {
+  color: string;
+  width: string;
 }
 
-LoadingText.propTypes = {
-  options: propTypes.object
-};
+interface LoadingTextProps {
+  backgroundColor: string;
+  classes: string;
+  height: string;
+  lines: LoadingTextLine[];
+}
+
+class LoadingText extends Component<LoadingTextProps> {
+  public render() {
+    const { backgroundColor, classes, height, lines } = this.props;
+
+    return (
+      <div 
+        className={`loading_text__container ${classes || ''}`}
+        style={{backgroundColor: backgroundColor || '#fff'}}
+      >
+        {
+          lines.map((line, i) => {
+            return (
+              <span 
+                key={i} 
+                style={{
+                  width: line.width, 
+                  height, 
+                  backgroundColor: line.color
+                }}
+              />
+            );
+          })
+        }
+      </div>
+    );
+  }
+}
 
 export default LoadingText;
-

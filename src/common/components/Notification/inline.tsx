@@ -11,11 +11,11 @@ export class InlineNotification extends Notification {
     return (
       <div 
         className="notification__inline" 
-        ref={div => this.notification = div}
+        ref={(div) => this.notification = div}
       >
         <p>{this.props.text}</p>
         <span onClick={this.closeNotification}><FontAwesomeIcon icon={faTimes} /></span>
       </div>
-    )
+    );
   }
 }

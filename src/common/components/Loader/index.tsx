@@ -1,28 +1,22 @@
-import "./Loader.css";
+import './Loader.css';
 
-import React from "react";
-import propTypes from "prop-types";
+import React from 'react';
 
-const Loader = ({ color, width, styles }) => {
-  styles = styles || {};
-  const loaderStyles = Object.assign({}, styles, {
-    width,
-    height: width,
-    borderTopColor: color
-  });
-
-  return <div className="loader" style={loaderStyles}></div>
+interface LoaderProps {
+  color?: string;
+  width?: string;
+  styles?: React.CSSProperties;
 }
 
-Loader.defaultProps = {
-  color: "#FF6561",
-  width: "64px"
-};
+const Loader = (props: LoaderProps): React.ReactNode => {
+  const { color = '#ff6561', width = '64px', styles = {}} = props;
+  const loaderStyles = {
+    ...styles, 
+    width,
+    height: width,
+    borderTopColor: color};
 
-Loader.propTypes = {
-  color: propTypes.string,
-  width: propTypes.string,
-  styles: propTypes.object
+  return <div className="loader" style={loaderStyles}/>;
 };
 
 export default Loader;

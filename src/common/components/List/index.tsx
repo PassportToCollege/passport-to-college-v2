@@ -1,26 +1,24 @@
-import "./List.css";
+import './List.css';
 
-import React from "react";
-import propTypes from "prop-types";
+import React from 'react';
 
-const List = ({ width, children }) => {
+interface ListProps {
+  width: string;
+  children: React.ReactChildren;
+}
+
+const List = (props: ListProps): React.ReactNode => {
+  const { width = '100%', children } = props;
   return (
-    <ul className="list"
+    <ul 
+      className="list"
       style={{
         maxWidth: width
-      }}>
+      }}
+    >
       {children}
     </ul>
-  )
-}
-
-List.defaultProps = {
-  width: "100%"
-}
-
-List.propTypes = {
-  children: propTypes.any,
-  width: propTypes.string
-}
+  );
+};
 
 export default List;

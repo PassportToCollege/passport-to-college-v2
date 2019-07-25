@@ -1,24 +1,21 @@
-import "./ListItem.css";
+import './ListItem.css';
 
-import React from "react";
-import propTypes from "prop-types";
+import React from 'react';
 
-const ListItem = ({ text, bullet, children }) => {
+interface ListItemProps {
+  text: string;
+  bullet: boolean;
+  children: React.ReactChildren;
+}
+
+const ListItem = (props: ListItemProps): React.ReactNode => {
+  const { text, bullet = true, children } = props;
+
   return (
     <li className="list_item" data-bullet={bullet}>
       {children || text}
     </li>
-  )
-}
-
-ListItem.defaultProps = {
-  bullet: true
-}
-
-ListItem.propTypes = {
-  children: propTypes.any,
-  text: propTypes.string,
-  bullet: propTypes.bool
-}
+  );
+};
 
 export default ListItem;

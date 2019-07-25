@@ -1,10 +1,18 @@
-import React from "react";
-import { Helmet } from "react-helmet";
-import propTypes from "prop-types";
+import React from 'react';
+import { Helmet } from 'react-helmet';
+import propTypes from 'prop-types';
 
-import * as routes from "../../constants/routes";
+import * as routes from '../../constants/routes';
 
-const PageMeta = ({ route, more, children }) => {
+interface PageMetaProps {
+  route: string;
+  more: React.ReactChild;
+  children: React.ReactChildren;
+}
+
+const PageMeta = (props: PageMetaProps): React.ReactNode => {
+  const { route, more, children } = props;
+
   return (
     <Helmet>
       {
@@ -14,13 +22,7 @@ const PageMeta = ({ route, more, children }) => {
       {more}
       {children}
     </Helmet>
-  )
-}
-
-PageMeta.propTypes = {
-  route: propTypes.string,
-  more: propTypes.node,
-  children: propTypes.node
+  );
 };
 
 export default PageMeta;

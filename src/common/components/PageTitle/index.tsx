@@ -1,19 +1,20 @@
-import "./PageTitle.css";
+import './PageTitle.css';
 
-import React from "react";
-import propTypes from "prop-types";
+import React from 'react';
 
-const PageTitle = ({ titleStyles, children }) => {
+interface PageTitleProps {
+  titleStyles: React.CSSProperties;
+  children: React.ReactNode;
+}
+
+const PageTitle = (props: PageTitleProps): React.ReactNode => {
+  const { titleStyles, children } = props;
+
   return (
     <h1 className="page_title" style={titleStyles}>
       {children}
     </h1>
-  )
-}
-
-PageTitle.propTypes = {
-  titleStyles: propTypes.object,
-  children: propTypes.node
-}
+  );
+};
 
 export default PageTitle;
