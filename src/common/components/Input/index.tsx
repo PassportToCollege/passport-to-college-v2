@@ -8,8 +8,8 @@ interface InputProps {
   inputDisabled: boolean;
   inputDefault: string;
   inputPlaceholder: string;
-  whenChange: (input: HTMLInputElement) => void;
-  whenBlur: (input: HTMLInputElement) => void;
+  whenChange?: (input: HTMLInputElement) => void;
+  whenBlur?: (input: HTMLInputElement) => void;
 }
 
 class Input extends Component<InputProps> {

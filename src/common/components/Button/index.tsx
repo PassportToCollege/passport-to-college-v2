@@ -1,12 +1,11 @@
 import './Button.css';
 
 import React, { Component } from 'react';
-import propTypes from 'prop-types';
 
 interface ButtonProps {
   styles?: React.CSSProperties;
   type: 'button' | 'reset' | 'submit' | undefined;
-  doClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  doClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   text: string;
   solid: boolean;
   disabled: boolean;

@@ -23,7 +23,7 @@ interface SignInFormState {
   tries: number;
 }
 
-export class SignInForm extends Component<SignInFormProps, SignInFormState> {
+export  default class SignInForm extends Component<SignInFormProps, SignInFormState> {
   constructor(props: SignInFormProps) {
     super(props);
 
