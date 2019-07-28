@@ -1,6 +1,13 @@
 import iStudent from '../imodels/iStudent';
 import User from './User';
 
+export type StudentProps = 'uid' | 'bio' | 'enrollmentYear' | 'graduationYear' | 'university' |
+  'highSchool' | 'major' | 'minor' | 'isFeatured' | 'showOnSite' | 'hasGraduated' | 'User' |
+  'User.uid' | 'User.email' | 'User.name' | 'User.name.first' | 'User.name.last' | 'User.isAdmin' |
+  'User.isApplicant' | 'User.isStudent' | 'User.isStaff' | 'User.emailConfirmed' | 'User.hasProfilePicture' |
+  'User.address' | 'User.address.country' | 'User.gender' | 'User.role' | 'User.dob' |
+  'User.phone' | 'User.photo';
+
 export default class Student implements iStudent {
   public User: User;
   public uid: string;
@@ -35,7 +42,7 @@ export default class Student implements iStudent {
     }
   }
 
-  get data(): any {
+  get data(): iStudent {
     return this.getData();
   }
 
@@ -124,5 +131,13 @@ export default class Student implements iStudent {
       showOnSite: this.showOnSite,
       hasGraduated: this.hasGraduated
     };
+  }
+
+  public updatePropAndReturnUser(prop: StudentProps, newValue: any): Student {
+    if (typeof this[prop] === typeof newValue) {
+      this[prop] = newValue;
+    }
+
+    return this;
   }
 }
