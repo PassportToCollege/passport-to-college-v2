@@ -1,44 +1,39 @@
-import "./TextedIconButton.css";
+import './TextedIconButton.css';
 
-import React from "react";
-import propTypes from "prop-types";
+import React, { PureComponent } from 'react';
 
-import FontAwesomeIcon from "@fortawesome/react-fontawesome";
-import { faGoogle, faFacebook } from "@fortawesome/fontawesome-free-brands";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGoogle, faFacebook } from '@fortawesome/fontawesome-free-brands';
 
-const TextedIconButton = ({ doClick, type, icon, text, buttonStyles }) => {
-  const icons = {
-    google: faGoogle,
-    facebook: faFacebook
-  }
-
-  const handleClick = () => {
-    if ("function" === typeof doClick)
-      return doClick();
-  }
-
-  return (
-    <button className="texted_icon_button" type={type}
-      onClick={handleClick}
-      style={buttonStyles}>
-      <span className={`texted_icon_button__icon ${icon}`}>
-        <FontAwesomeIcon icon={icons[icon]} />
-      </span>
-      <span className="texted_icon_button__text">{text}</span>
-    </button>
-  )
+interface TextedIconButtonProps {
+  doClick: () => void;
+  type?: 'button' | 'submit' | 'reset';
+  icon: string;
+  text: string;
+  buttonStyles: React.CSSProperties;
 }
 
-TextedIconButton.defaultProps = {
-  type: "button"
-};
+export default class TextedIconButton extends PureComponent<TextedIconButtonProps> {
+  private icons = {
+    google: faGoogle,
+    facebook: faFacebook
+  };
 
-TextedIconButton.propTypes = {
-  doClick: propTypes.func,
-  type: propTypes.string,
-  icon: propTypes.string,
-  text: propTypes.string,
-  buttonStyles: propTypes.object
-};
+  public render() {
+    const { doClick, type, icon, text, buttonStyles } = this.props;
 
-export default TextedIconButton;
+    return (
+      <button 
+        className="texted_icon_button" 
+        type={type}
+        onClick={doClick}
+        style={buttonStyles}
+      >
+        <span className={`texted_icon_button__icon ${icon}`}>
+          <FontAwesomeIcon icon={this.icons[icon]} />
+        </span>
+        <span className="texted_icon_button__text">{text}</span>
+      </button>
+    );
+  }
+}

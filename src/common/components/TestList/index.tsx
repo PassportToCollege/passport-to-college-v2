@@ -1,42 +1,41 @@
-import "./TestList.css";
+import './TestList.css';
 
-import React from "react";
-import propTypes from "prop-types";
+import React, { PureComponent } from 'react';
 
-import { getTestKey } from "../../utils";
+import { iStringTestPair } from '../../imodels/iObjectTypes';
+import { getTestKey } from '../../utils';
 
-import Test from "../Test";
+import Test from '../Test';
 
-const TestList = ({ tests, handleDelete, disabled }) => {
+interface TestListProps {
+  tests: iStringTestPair;
+  handleDelete: (testKey: string) => void;
+  disabled: boolean;
+}
 
-  const deleteTest = test => {
-    if ("function" === typeof handleDelete)
-      handleDelete(test);
+export default class TestList extends PureComponent<TestListProps> {
+  private deleteTest = (testKey: string) => {
+      this.props.handleDelete(testKey);
   }
 
-  const renderTests = () => {
-    return Object.keys(tests).map(test => {
+  private renderTests = () => {
+    return Object.keys(this.props.tests).map((testId: string) => {
       return (
         <Test 
-          key={getTestKey(tests[test])} 
-          test={tests[test]}
-          handleDelete={deleteTest}
-          disabled={disabled} />
-      )
+          key={getTestKey(this.props.tests[testId])} 
+          test={this.props.tests[testId]}
+          handleDelete={this.deleteTest}
+          disabled={this.props.disabled} 
+        />
+      );
     });
   }
 
-  return (
-    <div className="test_list">
-      { renderTests() }
-    </div>
-  )
+  public render() {
+    return (
+      <div className="test_list">
+        {this.renderTests()}
+      </div>
+    );
+  }
 }
-
-TestList.propTypes = {
-  tests: propTypes.object,
-  handleDelete: propTypes.func,
-  disabled: propTypes.bool
-};
-
-export default TestList;

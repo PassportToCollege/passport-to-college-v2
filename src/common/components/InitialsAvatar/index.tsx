@@ -1,26 +1,26 @@
 import './InitialsAvatar.css';
 
-import React from 'react';
+import React, { PureComponent } from 'react';
 
 interface InitialsAvatarProps {
   initials: string;
   styles?: React.CSSProperties;
 }
 
-const InitialsAvatar = (props: InitialsAvatarProps): React.ReactNode => {
-  const { initials } = props;
-  let { styles } = props;
-
-  styles = styles || {};
+export default class InitialsAvatar extends PureComponent<InitialsAvatarProps> {
+  public render() {
+    const { initials } = this.props;
+    let { styles } = this.props;
   
-  return (
-    <span 
-      className="initials_avatar" 
-      style={styles}
-    >
-      <span>{initials}</span>
-    </span>
-  );
-};
-
-export default InitialsAvatar;
+    styles = styles || {};
+    
+    return (
+      <span 
+        className="initials_avatar" 
+        style={styles}
+      >
+        <span>{initials}</span>
+      </span>
+    );
+  }
+}

@@ -1,30 +1,33 @@
-import React, { Component } from "react";
-import propTypes from "prop-types";
+import React, { PureComponent } from 'react';
 
-class ToTopContainer extends Component {
-  static propTypes = {
-    children: propTypes.node,
-    classes: propTypes.string
+interface ToTopContainerProps {
+  children: React.ReactNode;
+  classes?: string;
+}
+
+export default class ToTopContainer extends PureComponent<ToTopContainerProps> {
+  private isIE() {
+    const ua = window.navigator.userAgent;
+    const msie = ua.indexOf('MSIE ');
+
+    return msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./);
   }
 
-  static defaultProps = {
-    classes: ""
-  }
-
-  componentDidMount() {
-    if ("function" === typeof document.scrollingElement.scrollTo) {
-      document.scrollingElement.scrollTo(0, 0);
-    } else {
-      document.scrollingElement.scrollTop = 0;
+  public componentDidMount() {
+    if (!this.isIE()) {
+      if ('function' === typeof document.scrollingElement!.scrollTo) {
+        document.scrollingElement!.scrollTo(0, 0);
+      } else {
+        document.scrollingElement!.scrollTop = 0;
+      }
     }
   }
 
-  render() {
+  public render() {
     return (
       <div className={`to_top_container ${this.props.classes}`}>
         {this.props.children}
       </div>
-    )
+    );
   }
 }
-export default ToTopContainer;
