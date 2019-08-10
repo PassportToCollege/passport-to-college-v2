@@ -1,28 +1,32 @@
-import React from "react";
-import propTypes from "prop-types";
+import React, { PureComponent } from 'react';
+import { makeClassString } from '../../utils';
 
-import { makeClassString } from "../../utils";
+interface TitleProps {
+  classes: string[];
+  styles: React.CSSProperties;
+  children: React.ReactChildren;
+}
 
-const Title = ({ children, classes, styles }) => {
-  const titleStyles = Object.assign({}, {
-    fontWeight: "bold",
-    textTransform: "uppercase",
-    letterSpacing: "5px",
-    fontSize: "42px"
-  }, styles);
+export default class Title extends PureComponent<TitleProps> {
+  public render() {
+    const { children, classes, styles } = this.props;
 
-  return (
-    <h3 className={makeClassString(classes)}
-      style={titleStyles}>
-      {children}
-    </h3>
-  )
-};
-
-Title.propTypes = {
-  children: propTypes.any,
-  styles: propTypes.object,
-  classes: propTypes.arrayOf(propTypes.string)
-};
-
-export default Title;
+    const titleStyles: React.CSSProperties = {...{
+        fontWeight: 'bold',
+        textTransform: 'uppercase',
+        letterSpacing: '5px',
+        fontSize: '42px'
+      }, 
+      ... styles
+    };
+  
+    return (
+      <h3 
+        className={makeClassString(classes)}
+        style={titleStyles}
+      >
+        {children}
+      </h3>
+    );
+  }
+}

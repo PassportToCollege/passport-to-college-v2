@@ -1,42 +1,35 @@
-import "./Toggler.css";
+import './Toggler.css';
 
-import React from "react";
-import propTypes from "prop-types";
+import React, { PureComponent } from 'react';
 
-const Toggler = ({ state, doClick, disabled, options }) => {
-  const handleClick = () => {
-    if (disabled)
+interface TogglerProps {
+  state: 'yes' | 'no';
+  disabled: boolean;
+  doClick: (state: 'yes' | 'no', clickArgument: string) => void;
+  clickArgument: string;
+  title?: string;
+}
+
+export default class Toggler extends PureComponent<TogglerProps> {
+  private handleClick = () => {
+    if (this.props.disabled) {
       return;
-
-    if ("function" === typeof doClick) {
-      if (options.clickArg)
-        return doClick(options.clickArg, state);
-      
-      return doClick(state);
     }
+
+    this.props.doClick(this.props.state, this.props.clickArgument);
   }
 
-  return (
-    <span className={`toggler toggler__${state}`}
-      onClick={handleClick}
-      data-disabled={disabled ? "disabled" : "enabled"}
-      title={options.title}>
-      <span className="toggler__ball"></span>
-    </span>
-  )
+  public render() {
+    const { state = 'no', disabled, title = '' } = this.props;
+    return (
+      <span 
+        className={`toggler toggler__${state}`}
+        onClick={this.handleClick}
+        data-disabled={disabled ? 'disabled' : 'enabled'}
+        title={title}
+      >
+        <span className="toggler__ball"/>
+      </span>
+    );
+  }
 }
-
-Toggler.defaultProps = {
-  state: "no",
-  options: {},
-  disabled: false
-};
-
-Toggler.propTypes = {
-  state: propTypes.string,
-  doClick: propTypes.func,
-  options: propTypes.object,
-  disabled: propTypes.bool
-}
-
-export default Toggler;

@@ -37,15 +37,15 @@ interface WYSIWYGEditorProps {
   save?: EditorSaveButton;
   cancel?: EditorCancelButton;
   content: RawDraftContentState | string;
-  limit: number;
-  readonly: boolean;
-  focus: boolean;
-  wordCounter: boolean;
-  communityGuidlines: boolean;
-  editorStyles: React.CSSProperties;
-  controlStyles: React.CSSProperties;
-  captureBlur: (content: RawDraftContentState) => void;
-  getContent: () => void;
+  limit?: number;
+  readonly?: boolean;
+  focus?: boolean;
+  wordCounter?: boolean;
+  communityGuidlines?: boolean;
+  editorStyles?: React.CSSProperties;
+  controlStyles?: React.CSSProperties;
+  captureBlur?: (content: RawDraftContentState) => void;
+  getContent?: () => void;
 }
 
 interface WYSIWYGEditorState {
@@ -54,7 +54,7 @@ interface WYSIWYGEditorState {
   isUnderline: boolean;
   isItalic: boolean;
   words: number;
-  focus: boolean;
+  focus?: boolean;
 }
 
 class WYSIWYGEditor extends Component<WYSIWYGEditorProps, WYSIWYGEditorState> {

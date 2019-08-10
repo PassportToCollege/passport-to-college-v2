@@ -1,24 +1,25 @@
-import "./TopicSection.css";
+import './TopicSection.css';
 
-import React from "react";
-import propTypes from "prop-types";
+import React, { PureComponent } from 'react';
 
-const TopicSection = ({ heading, content, sectionStyles }) => {
-  return (
-    <section className="topic_section" style={sectionStyles}>
-      {
-        heading ?
-          <h5>{heading}</h5> : null
-      }
-      {content}
-    </section>
-  )
+interface TopicSectionProps {
+  heading: string;
+  content: string;
+  sectionStyles: React.CSSProperties;
 }
 
-TopicSection.propTypes = {
-  heading: propTypes.string,
-  content: propTypes.element,
-  sectionStyles: propTypes.object
-};
+export default class TopicSection extends PureComponent<TopicSectionProps>  {
+  public render() {
+    const { heading, content, sectionStyles } = this.props;
 
-export default TopicSection;
+    return (
+      <section className="topic_section" style={sectionStyles}>
+        {
+          heading ?
+            <h5>{heading}</h5> : null
+        }
+        {content}
+      </section>
+    );
+  }
+}

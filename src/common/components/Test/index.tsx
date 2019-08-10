@@ -1,45 +1,46 @@
-import "./Test.css";
+import './Test.css';
 
-import React from "react";
-import propTypes from "prop-types";
-import FontAwesomeIcon from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/fontawesome-free-solid";
+import React, { PureComponent } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/fontawesome-free-solid';
 
-import { getTestKey } from "../../utils";
+import { getTestKey } from '../../utils';
+import iTest from '../../imodels/iTest';
 
-const Test = ({ test, handleDelete, disabled }) => {
-  const deleteTest = () => {
-    if ("function" === typeof handleDelete)
-      handleDelete(getTestKey(test));
-  }
-
-  return (
-    <div className="test">
-      <div className="test__board_exam">
-        <span className="test__board">{test.board}</span>
-        <span className="test__exam">{test.examination}</span>
-      </div>
-      <h3 className="test__subject">{test.subject} ({test.grade})</h3>
-      <div className="test__country_year">
-        <span className="test__country">{test.country}</span>
-        <span className="test__year">{test.year}</span>
-      </div>
-      {
-        !disabled ?
-          <div className="test__delete" onClick={deleteTest}>
-            <FontAwesomeIcon icon={faTrash} />
-          </div>
-        :
-          null
-      }
-    </div>
-  )
+interface TestProps {
+  test: iTest;
+  handleDelete: (testKey: string) => void;
+  disabled: boolean;
 }
 
-Test.propTypes = {
-  test: propTypes.object,
-  handleDelete: propTypes.func,
-  disabled: propTypes.bool
-};
+export default class Test extends PureComponent<TestProps> {
+  private deleteTest = () => {
+    this.props.handleDelete(getTestKey(this.props.test));
+  }
 
-export default Test;
+  public render() {
+    const { test } = this.props;
+
+    return (
+      <div className="test">
+        <div className="test__board_exam">
+          <span className="test__board">{test.board}</span>
+          <span className="test__exam">{test.examination}</span>
+        </div>
+        <h3 className="test__subject">{test.subject} ({test.grade})</h3>
+        <div className="test__country_year">
+          <span className="test__country">{test.country}</span>
+          <span className="test__year">{test.year}</span>
+        </div>
+        {
+          !this.props.disabled ?
+            <div className="test__delete" onClick={this.deleteTest}>
+              <FontAwesomeIcon icon={faTrash} />
+            </div>
+          :
+            null
+        }
+      </div>
+    );
+  }
+}
