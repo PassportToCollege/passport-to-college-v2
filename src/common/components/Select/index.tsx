@@ -1,38 +1,36 @@
-import "./Select.css";
+import './Select.css';
 
-import React, { Component } from "react";
-import propTypes from "prop-types";
+import React, { Component } from 'react';
 
-class Select extends Component {
-  render() {
+interface SelectProps {
+  selectName: string;
+  selectDisabled: boolean;
+  selectDefault: string;
+  whenChange: (e: HTMLSelectElement | null) => void;
+  children: React.ReactNode;
+}
+
+export default class Select extends Component<SelectProps> {
+  private select: HTMLSelectElement | null = null;
+
+  public render() {
     return (
-      <select className="select"
-        ref={select => this.select = select}
+      <select 
+        className="select"
+        ref={(select) => this.select = select}
         defaultValue={this.props.selectDefault}
         disabled={this.props.selectDisabled}
         name={this.props.selectName}
-        onChange={this.onSelectChange}>
+        onChange={this.onSelectChange}
+      >
         {this.props.children}
       </select>
-    )
+    );
   }
 
-  onSelectChange = () => {
-    if ("function" === typeof this.props.whenChange)
-      this.props.whenChange(this.select)
+  private onSelectChange = () => {
+    if ('function' === typeof this.props.whenChange) {
+      this.props.whenChange(this.select);
+    }
   }
 }
-
-Select.defaultProps = {
-  selectDisabled: false
-};
-
-Select.propTypes = {
-  selectName: propTypes.string,
-  selectDisabled: propTypes.bool,
-  selectDefault: propTypes.string,
-  whenChange: propTypes.func,
-  children: propTypes.any
-}
-
-export default Select;

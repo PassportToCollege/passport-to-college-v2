@@ -39,7 +39,7 @@ interface SocialShareState {
   loading: boolean;
 }
 
-class SocialShare extends Component<SocialShareProps, SocialShareState> {
+export default class SocialShare extends Component<SocialShareProps, SocialShareState> {
   private shareFacebook = () => {
     window.FB.ui({
       method: 'share',
@@ -55,7 +55,13 @@ class SocialShare extends Component<SocialShareProps, SocialShareState> {
   }
 
   private handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ [e.name]: e.value });
+    const { name, value } = e.target;
+
+    if (name === 'name') {
+      this.setState({ name: value });
+    } else if (name === 'emails') {
+      this.setState({ emails: value });
+    }
   }
 
   public shareEmail = () => {
@@ -74,7 +80,7 @@ class SocialShare extends Component<SocialShareProps, SocialShareState> {
       });
     }
 
-    axios.post(`${EMAIL_API}/s/share-story/${this.props.mail.post.id}`, {
+    axios.post(`${EMAIL_API}/s/share-story/${this.props.mail.post!.id}`, {
       sharedBy: this.state.name,
       emails: this.state.emails
     })
@@ -223,5 +229,3 @@ class SocialShare extends Component<SocialShareProps, SocialShareState> {
     );
   }
 }
-
-export default SocialShare;

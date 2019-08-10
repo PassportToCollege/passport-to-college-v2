@@ -1,59 +1,71 @@
-import "./RadioList.css";
+import './RadioList.css';
 
-import React, { Component } from "react";
-import propTypes from "prop-types";
+import React, { PureComponent } from 'react';
+import Radio from '../Radio';
 
-import Radio from "../Radio";
+export interface RadioData {
+  label: string;
+  value: string;
+}
 
-export default class RadioList extends Component {
-  state = {
-    active: this.props.checked || "none"
-  }
+interface RadioListProps {
+  radios: RadioData[];
+  checked: string;
+  onRadioChange: (active: string) => void;
+  reset: boolean;
+}
 
-  static propTypes = {
-    radios: propTypes.arrayOf(propTypes.object),
-    onRadioChange: propTypes.func,
-    reset: propTypes.bool,
-    checked: propTypes.string
-  }
+interface RadioListState {
+  active: string;
+}
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.reset && prevState.active !== "none") {
+export default class RadioList extends PureComponent<RadioListProps, RadioListState> {
+  public state = {
+    active: this.props.checked || 'none'
+  };
+
+  public static getDerivedStateFromProps(nextProps: RadioListProps, prevState: RadioListState) {
+    if (nextProps.reset && prevState.active !== 'none') {
       return {
-        active: "none"
+        active: 'none'
       };
     }
 
     return null;
   }
 
-  getSnapshotBeforeUpdate(prevProps, prevState) {
-    if (prevState.active !== this.state.active)
+  public getSnapshotBeforeUpdate(prevProps: RadioListProps, prevState: RadioListState) {
+    if (prevState.active !== this.state.active) {
       return { changed: true };
+    }
 
     return null;
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (snapshot && "function" === typeof this.props.onRadioChange)
+  public componentDidUpdate(prevProps: RadioListProps, prevState: RadioListState, snapshot: any) {
+    if (snapshot && 'function' === typeof this.props.onRadioChange) {
       this.props.onRadioChange(this.state.active);
+    }
   }
 
-  render() {
+  public render() {
     return (
       <ul className="radio_list" role="tablist">
         {
-          this.props.radios.map(radio => {
+          this.props.radios.map((radio) => {
             return (
-              <li key={radio.value} role="tab"
-                onClick={() => this.setState({ active: radio.value })}>
+              <li 
+                key={radio.value} 
+                role="tab"
+                onClick={() => this.setState({ active: radio.value })}
+              >
                 <Radio active={this.state.active === radio.value} />
                 <span>{radio.label}</span>
               </li>
-            )
+            );
           })
         }
       </ul>
-    )
+    );
   }
 }
