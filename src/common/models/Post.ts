@@ -7,7 +7,7 @@ import { iStringBooleanPair } from '../imodels/iObjectTypes';
 
 export default class Post implements iPost {
   public readonly id: string;
-  public author: string;
+  public author: string | User;
   public title: string;
   public excerpt: string;
   public full: iContentEditable;

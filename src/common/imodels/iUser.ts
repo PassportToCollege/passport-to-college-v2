@@ -29,4 +29,7 @@ export default interface User {
   dob?: number;
   phone?: string;
   photo?: string;
+  socials?: {
+    linkedin: string;
+  };
 }

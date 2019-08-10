@@ -27,6 +27,9 @@ export default class User implements iUser {
   public dob?: number;
   public phone?: string;
   public photo?: string;
+  public socials?: {
+    linkedin: string;
+  };
 
   constructor(user: iUser) {
     this.uid = user.uid;
@@ -50,6 +53,9 @@ export default class User implements iUser {
     this.dob = 0;
     this.phone = '';
     this.photo = '';
+    this.socials = {
+      linkedin: ''
+    };
 
     if (Object.keys(user).length) {
       Object.assign(this, user);
@@ -90,6 +96,9 @@ export default class User implements iUser {
     if (!this.gender) { props.push('gender'); }
     if (!this.dob) { props.push('dob'); }
     if (this.isStaff && !this.role) { props.push('role'); }
+    if (this.socials && this.socials.linkedin === '') {
+      props.push('socials.linkedin');
+    }
 
     return props;
   }
@@ -110,7 +119,8 @@ export default class User implements iUser {
       role: this.role,
       dob: this.dob,
       phone: this.phone,
-      photo: this.photo
+      photo: this.photo,
+      socials: this.socials,
     };
   }
 

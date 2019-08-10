@@ -18,7 +18,7 @@ import { makeClassString } from '../../utils';
 interface ModalProps {
   children: React.ReactNode;
   doClose: () => void;
-  classes: string[];
+  classes?: string[];
 }
 
 export default class Modal extends Component<ModalProps> {

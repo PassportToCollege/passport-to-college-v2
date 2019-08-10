@@ -1,6 +1,7 @@
 import iUser from './iUser';
 import iContentEditable from './iContentEditable';
 import { iStringBooleanPair } from './iObjectTypes';
+import User from '../models/User';
 
 export enum PostUpdateType
 {
@@ -26,7 +27,7 @@ export interface iPostState
 export default interface iPost 
 {
   readonly id: string;
-  author: string;
+  author: string | User;
   title: string;
   excerpt: string;
   full: iContentEditable;
