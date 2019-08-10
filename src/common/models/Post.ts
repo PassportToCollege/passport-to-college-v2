@@ -12,7 +12,10 @@ export default class Post implements iPost {
   public excerpt: string;
   public full: iContentEditable;
   public hasHero: boolean;
+  public hero?: string;
   public createdAt: number | Date;
+  public publishedOn: number | Date;
+  public archivedOn: number | Date;
   public state: iPostState;
   public category?: iStringBooleanPair;
   public likes?: iStringBooleanPair;
@@ -30,6 +33,8 @@ export default class Post implements iPost {
     };
     this.hasHero = false;
     this.createdAt = new Date();
+    this.publishedOn = 0;
+    this.archivedOn = 0;
     this.state = {
       archived: false,
       published: false,
@@ -49,11 +54,14 @@ export default class Post implements iPost {
       excerpt: this.excerpt, 
       full: this.full,
       createdAt: useCase === 'save' ? (this.createdAt as Date).getTime() : this.createdAt,
+      publishedOn: this.publishedOn,
+      archivedOn: this.archivedOn,
       category: this.category, 
       state: this.state, 
       conversations: this.conversations,
       likes: this.likes, 
-      hasHero: this.hasHero
+      hasHero: this.hasHero,
+      hero: this.hero
     };
   }
 }

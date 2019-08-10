@@ -16,7 +16,7 @@ import _SignInModal from './SignInModal';
 import { makeClassString } from '../../utils'; 
 
 interface ModalProps {
-  children: React.ReactChildren;
+  children: React.ReactNode;
   doClose: () => void;
   classes: string[];
 }

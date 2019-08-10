@@ -31,7 +31,10 @@ export default interface iPost
   excerpt: string;
   full: iContentEditable;
   hasHero: boolean;
+  hero?: string;
   createdAt: number | Date;
+  publishedOn: number | Date;
+  archivedOn: number | Date;
   state: iPostState;
   conversations?: string[];
   category?: iStringBooleanPair;

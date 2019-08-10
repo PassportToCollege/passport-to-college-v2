@@ -1,70 +1,142 @@
-import "./ParallaxHeader.css";
+import './ParallaxHeader.css';
 
-import React, { Component } from "react";
-import propTypes from "prop-types";
-import { Link } from "react-router-dom";
-import FontAwesomeIcon from "@fortawesome/react-fontawesome";
-import { faCaretLeft, faCaretRight } from "@fortawesome/fontawesome-free-solid";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCaretLeft, faCaretRight } from '@fortawesome/fontawesome-free-solid';
 
-import LinkButton from "../LinkButton";
-import ScrollIndicator from "../ScrollIndicator";
+import LinkButton, { LinkButtonProps } from '../LinkButton';
+import ScrollIndicator from '../ScrollIndicator';
 
-class ParallaxHeader extends Component {
-  constructor(props) {
+export interface BackgroundImage {
+  image: string;
+  color: string;
+}
+
+interface ParallaxHeaderProps {
+  height: string;
+  overlayColor: string;
+  bigText: string;
+  linkButton: LinkButtonProps;
+  showScrollStrip: boolean;
+  flipStrip: boolean;
+  backgroundImages: BackgroundImage[];
+  setInterval: (interval: NodeJS.Timeout) => void;
+}
+
+interface ParallaxHeaderState {
+  currentBackground: string;
+  currentBackgroundColor: string;
+  backgroundCount: number;
+}
+
+class ParallaxHeader extends Component<ParallaxHeaderProps, ParallaxHeaderState> {
+  constructor(props: ParallaxHeaderProps) {
     super(props);
 
     this.state = {
-      currBg: props.bgImages[0].img,
-      currBgColor: props.bgImages[0].color,
-      bgCount: 0,
-      bgImages: props.bgImages
+      currentBackground: props.backgroundImages[0].image,
+      currentBackgroundColor: props.backgroundImages[0].color,
+      backgroundCount: 0
     };
   }
 
-  componentDidMount() {
-    const interval = setInterval(() => { this.nextBg() }, 7000);
+  private previousBg = () => {
+    const { backgroundCount } = this.state;
+    const { backgroundImages } = this.props;
+
+    if (backgroundCount === 0) {
+      this.setState({
+        currentBackground: backgroundImages[backgroundImages.length - 1].image,
+        currentBackgroundColor: backgroundImages[backgroundImages.length - 1].color,
+        backgroundCount: backgroundImages.length - 1
+      });
+    } else {
+      this.setState({
+        currentBackground: backgroundImages[backgroundCount - 1].image,
+        currentBackgroundColor: backgroundImages[backgroundCount - 1].color,
+        backgroundCount: backgroundCount - 1
+      });
+    }
+  }
+
+  private nextBg = () => {
+    const { backgroundCount } = this.state;
+    const { backgroundImages } = this.props;
+
+    if (backgroundCount === backgroundImages.length - 1) {
+      this.setState({
+        currentBackground: backgroundImages[0].image,
+        currentBackgroundColor: backgroundImages[0].color,
+        backgroundCount: 0
+      });
+    } else {
+      this.setState({
+        currentBackground: backgroundImages[backgroundCount + 1].image,
+        currentBackgroundColor: backgroundImages[backgroundCount + 1].color,
+        backgroundCount: backgroundCount + 1
+      });
+    }
+  }
+
+  public componentDidMount() {
+    const interval = setInterval(() => { this.nextBg(); }, 7000);
     this.props.setInterval(interval);
   }
 
-  render() {
+  public render() {
     return (
-      <div className="parallax_header" style={{
-        height: this.state.height || "100vh",
-        backgroundImage: `url("${this.state.currBg}")`
-      }}>
-        <div className="parallax_header__overlay" style={{
-          backgroundColor: this.state.currBgColor
-        }}></div>
+      <div 
+        className="parallax_header" 
+        style={{
+          height: this.props.height || '100vh',
+          backgroundImage: `url("${this.state.currentBackground}")`
+        }}
+      >
+        <div 
+          className="parallax_header__overlay" 
+          style={{
+            backgroundColor: this.state.currentBackgroundColor
+          }}
+        />
         <div className="parallax_header__content">
           <div className="parallax_header__big_text">
             <h1>{this.props.bigText}</h1>
           </div>
           {
-            this.props.showLinkButton ?
-            <LinkButton 
+            this.props.linkButton
+            ? <LinkButton 
               target={this.props.linkButton.target} 
               text={this.props.linkButton.text} 
-              classes="parallax_header__link_button" /> :
-            ""
+              classes="parallax_header__link_button" 
+            /> 
+            : ''
           }
         </div>
         {
-          this.props.showScrollStrip ?
-            <div className="parallax_header__scroll_strip" data-flip={this.props.flipStrip ? "active" : "inactive"}>
+          this.props.showScrollStrip
+            ? <div 
+              className="parallax_header__scroll_strip" 
+              data-flip={this.props.flipStrip ? 'active' : 'inactive'}
+            >
               <div className="scroll_strip__toggle_bg">
-                <span className="toggle_bg__prev"
-                  onClick={this.previousBg}>
+                <span 
+                  className="toggle_bg__prev"
+                  onClick={this.previousBg}
+                >
                   <FontAwesomeIcon icon={faCaretLeft} />
                 </span>
-                <span className="toggle_bg__divider"></span>
-                <span className="toggle_bg__next"
-                  onClick={this.nextBg}>
+                <span className="toggle_bg__divider"/>
+                <span 
+                  className="toggle_bg__next"
+                  onClick={this.nextBg}
+                >
                   <FontAwesomeIcon icon={faCaretRight} />
                 </span>
                 <div className="toggle_bg__counts">
-                  <span className="toggle_bg__curr_bg">{this.state.bgCount + 1}</span>
+                  <span className="toggle_bg__curr_bg">{this.state.backgroundCount + 1}</span>
                   <span>-</span>
-                  <span className="toggle_bg__count">{this.state.bgImages.length}</span>
+                  <span className="toggle_bg__count">{this.props.backgroundImages.length}</span>
                 </div>
               </div>
               <ScrollIndicator />
@@ -72,61 +144,12 @@ class ParallaxHeader extends Component {
                   
                 <Link to="/apply">apply</Link>
               </span>
-            </div> :
-            null
+            </div> 
+            : null
         }
       </div>
-    )
+    );
   }
-
-  previousBg = () => {
-    const { bgImages, bgCount } = this.state;
-
-    if (bgCount === 0) {
-      this.setState({ 
-        currBg: bgImages[bgImages.length - 1].img,
-        currBgColor: bgImages[bgImages.length - 1].color,
-        bgCount: bgImages.length - 1
-      });
-    } else {
-      this.setState({
-        currBg: bgImages[bgCount - 1].img,
-        currBgColor: bgImages[bgCount - 1].color,
-        bgCount: bgCount - 1
-      })
-    }
-  }
-
-  nextBg = () => {
-    const { bgImages, bgCount } = this.state;
-
-    if (bgCount === bgImages.length - 1) {
-      this.setState({
-        currBg: bgImages[0].img,
-        currBgColor: bgImages[0].color,
-        bgCount: 0
-      });
-    } else {
-      this.setState({
-        currBg: bgImages[bgCount + 1].img,
-        currBgColor: bgImages[bgCount + 1].color,
-        bgCount: bgCount + 1
-      })
-    }
-  }
-}
-
-ParallaxHeader.propTypes = {
-  height: propTypes.string,
-  bgImages: propTypes.array,
-  overlayColor: propTypes.string,
-  bigText: propTypes.string,
-  showLinkButton:  propTypes.bool,
-  linkButton: propTypes.object,
-  showScrollStrip: propTypes.bool,
-  flipStrip: propTypes.bool,
-  setInterval: propTypes.func
 }
 
 export default ParallaxHeader;
-

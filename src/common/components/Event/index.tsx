@@ -3,7 +3,6 @@
 import './Event.css';
 
 import React, { Component } from 'react';
-import propTypes from 'prop-types';
 
 import { makeRGB } from '../../utils';
 
