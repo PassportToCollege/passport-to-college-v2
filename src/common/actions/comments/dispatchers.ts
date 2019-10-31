@@ -1,15 +1,3 @@
-'use strict';
-
-const Do = (anything: Anything): 
-  Something => {
-    return anything as Something;
-};
-
-Do('anything');
-
-type Anything = string;
-type Something = Anything;
-
 import { Action } from '..';
 import { Comment as _ } from '../actionTypes';
 import { CommentsState } from '../../imodels/iAppState';
@@ -17,8 +5,7 @@ import { Dispatch } from 'react';
 import Comment from '../../models/Comment';
 import Reply from '../../models/Reply';
 import Post from '../../models/Post';
-import User from '../../models/User';
-import { db, storage } from '../../utils/firebase';
+import { db } from '../../utils/firebase';
 import { doUpdateConversationsCount } from '../postActions';
 import { PostUpdateType } from '../../imodels/iPost';
 import { 
@@ -39,8 +26,19 @@ import {
   gotReplies,
   gettingReply,
   gotReply,
-  gettingReplyFailed, 
-} from './dispatchers';
+  gettingReplyFailed,
+  updatingComment,
+  updatedComment,
+  updatingCommentFailed,
+  deletingComment,
+  deletedComment,
+  deletingCommentFailed,
+  updatedCommentLocal,
+  safelyDeletingComment,
+  safelyDeletedComment,
+  safelyDeletingCommentFailed, 
+} from './actions';
+import iComment from '../../imodels/iComment';
 
 const getCommentsFromSnapshot = (snapshots: firebase.firestore.QuerySnapshot): Comment[] => {
   const comments: Comment[] = [];
@@ -77,7 +75,7 @@ const getRepliesFromSnapshot = (snapshots: firebase.firestore.QuerySnapshot): Re
   return replies;
 };
 
-export const doCommentCreate = (
+export const doCreateComment = (
   dispatch: Dispatch<Action<_, CommentsState>>,
   comment: Comment
   ) => {
@@ -275,126 +273,135 @@ export const doGetReply = (
       });
 };
 
-export const doUpdateComment = (comment: Comment, newData: iComment) => {
-  return (dispatch: any) => {
-    dispatch(updateCommentInitiated(comment, newData));
+export const doUpdateComment = (
+  dispatch: Dispatch<Action<_, CommentsState>>,
+  comment: Comment, 
+  newData: Comment) => {
+    dispatch(updatingComment());
 
-    return db.collection('comments')
+    db.collection('comments')
       .doc(comment.id)
-      .update(newData, { merge: true })
+      .update(newData)
       .then(() => {
-        dispatch(commentUpdated(newData));
+        dispatch(updatedComment());
       })
-      .catch((error: iError) => {
-        dispatch(updateCommentFailed(error, comment, newData));
-      })
-  };
+      .catch((error: Error) => {
+        dispatch(updatingCommentFailed(error));
+      });
 };
 
-export const doDeleteComment = (comment: Comment & Reply, force: boolean = false): any => {
-  return (dispatch: any) => {
-    dispatch(deleteCommentInitiated(comment));
+const deleteComment = (
+  dispatch: Dispatch<Action<_, CommentsState>>,
+  conversationRef: firebase.firestore.DocumentReference,
+  comment: Comment,
+  force: boolean = false) => {
+  db.collection('comments')
+    .where('parent', '==', comment.id)
+    .get()
+    .then((snapshots: firebase.firestore.QuerySnapshot) => {
+      if (snapshots.empty) {
+        if (force) {
+          conversationRef.delete().then(() => {
+            dispatch(doUpdateConversationsCount(PostUpdateType.Decrease, comment));
+            dispatch(deletedComment());
+          }).catch((error: Error) => {
+            dispatch(deletingCommentFailed(error));
+          });
+        } else {
+          return dispatch(deletingCommentFailed(new Error('no children found')));
+        }
+      } else {
+        const batch = db.batch();
+        batch.delete(conversationRef);
 
-    if (comment.isConversation) {
-      const convoRef = db.collection('comments').doc(comment.id);
+        snapshots.forEach((snapshot: firebase.firestore.QueryDocumentSnapshot) => {
+          const ref = db.collection('comments').doc(snapshot.id);
+          batch.delete(ref);
+        });
 
-      if (comment.hasReplies) {
-        return db.collection('comments')
-          .where('parent', '==', comment.id)
-          .get()
-          .then((snapshots: firebase.firestore.QuerySnapshot) => {
-            if (snapshots.empty) {
-              if (force) {
-                return convoRef.delete().then(() => {
-                  dispatch(doUpdateConversationsCount(PostUpdateType.Decrease, comment));
-                  dispatch(commentDeleted(comment));
-                }).catch((error: iError) => {
-                  Console.log(error);
-                  dispatch(deleteCommentFailed(error, comment));
-                });
-              }
-
-              return dispatch(deleteCommentFailed({ message: 'no children found' }, comment));
-            }
-
-            let batch = db.batch();
-            batch.delete(convoRef);
-
-            snapshots.forEach(snapshot => {
-              let ref = db.collection('comments').doc(snapshot.id);
-              batch.delete(ref);
-            });
-
-            batch.commit().then(() => {
-              dispatch(doUpdateConversationsCount(PostUpdateType.Decrease, comment));
-              dispatch(commentDeleted(comment));
-            })
-              .catch((error: iError) => {
-                Console.log(error);
-                dispatch(deleteCommentFailed(error, comment));
-              });
+        batch
+          .commit().then(() => {
+            dispatch(doUpdateConversationsCount(PostUpdateType.Decrease, comment));
+            dispatch(deletedComment());
           })
-          .catch((error: iError) => {
-            Console.log(error);
-            dispatch(deleteCommentFailed(error, comment));
-          })
+          .catch((error: Error) => {
+            dispatch(deletingCommentFailed(error));
+          });
       }
+    })
+    .catch((error: Error) => {
+      dispatch(deletingCommentFailed(error));
+    });
+};
 
-      return convoRef.delete().then(() => {
-        dispatch(doUpdateConversationsCount(PostUpdateType.Decrease, comment));
-        dispatch(commentDeleted(comment));
-      }).catch((error: iError) => {
-        Console.log(error);
-        dispatch(deleteCommentFailed(error, comment));
-      });
-    }
+const deleteReply = (
+  dispatch: Dispatch<Action<_, CommentsState>>,
+  commentRef: firebase.firestore.DocumentReference,
+  comment: Reply) => {
+  db.collection('comments')
+    .doc((comment as Reply).parent.id)
+    .get()
+    .then((snapshot: firebase.firestore.DocumentSnapshot) => {
+      if (snapshot.exists) {
+        const parentData = snapshot.data() as iComment;
+        const parent = new Comment(parentData.User, parentData.Post as Post, parentData.message.html, parentData);
 
-    const commentRef = db.collection('comments').doc(comment.id);
-    db.collection('comments')
-      .doc(comment.parent)
-      .get()
-      .then((snapshot: firebase.firestore.QueryDocumentSnapshot) => {
-        let parentData = snapshot.data();
-        const parent = new Comment(parentData.User, parentData.Post, parentData.message.html, parentData);
-
-        let { replies, hasReplies } = parent;
-        replies = <Array<string>>replies;
+        const { replies } = parent;
 
         commentRef.delete().then(() => {
-          if (replies && replies.length - 1 === 0)
-            hasReplies = false;
+          if (replies && replies.length - 1 === 0) {
+            parent.hasReplies = false;
+          }
 
-          dispatch(doUpdateCommentLocal(parent, {
-            hasReplies, replies, ...comment.getData()
-          }));
+          dispatch(updatedCommentLocal(parent));
 
-          dispatch(commentDeleted(comment));
-        }).catch((error: iError) => {
-          Console.log(error);
-          dispatch(deleteCommentFailed(error, comment));
+          dispatch(deletedComment());
+        }).catch((error: Error) => {
+          dispatch(deletingCommentFailed(error));
         });
-      })
-      .catch((error: iError) => {
-        Console.log(error);
-      })
-  }
-}
+      }
+    });
+};
 
-export const doDeleteCommentSafe = (comment: Comment & Reply, undelete: boolean = false): any => {
-  return (dispatch: any) => {
-    dispatch(safeDeleteInitiated(comment));
-    const isDeleted = !!undelete;
+export const doDeleteComment = (
+  dispatch: Dispatch<Action<_, CommentsState>>,
+  comment: Comment | Reply, 
+  force: boolean = false) => {
+    dispatch(deletingComment());
+
+    if (comment.isConversation) {
+      const conversationRef = db.collection('comments').doc(comment.id);
+
+      if (comment.hasReplies) {
+        deleteComment(dispatch, conversationRef, comment, force);
+      } else {
+        conversationRef.delete().then(() => {
+          dispatch(doUpdateConversationsCount(PostUpdateType.Decrease, comment));
+          dispatch(deletedComment());
+        }).catch((error: Error) => {
+          dispatch(deletingCommentFailed(error));
+        });
+      }
+    } else {
+      const commentRef = db.collection('comments').doc(comment.id);
+      deleteReply(dispatch, commentRef, comment as Reply);
+    }
+};
+
+export const doDeleteCommentSafe = (
+  dispatch: Dispatch<Action<_, CommentsState>>,
+  comment: Comment | Reply, 
+  isDeleted: boolean = false) => {
+    dispatch(safelyDeletingComment());
 
     return db.collection('comments')
       .doc(comment.id)
       .update({ isDeleted })
       .then(() => {
         comment.isDeleted = isDeleted;
-        dispatch(safelyDeleted(comment));
+        dispatch(safelyDeletedComment());
       })
-      .catch((error: iError) => {
-        Console.log(error);
-        dispatch(safeDeleteFailed(error, comment));
+      .catch((error: Error) => {
+        dispatch(safelyDeletingCommentFailed(error));
       });
-  };
 };
