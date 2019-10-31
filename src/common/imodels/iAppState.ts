@@ -1,8 +1,6 @@
 import iError from './iError';
 import iUser, { UserType } from './iUser';
 import iStats from './iStats';
-import iContentEditable from './iContentEditable';
-import { iStringReplyListPair } from './iObjectTypes';
 import Post from '../models/Post';
 import User from '../models/User';
 import Application from '../models/Application';
@@ -10,9 +8,10 @@ import PostCategory from '../models/PostCategory';
 import Feature from '../models/Feature';
 import Comment from '../models/Comment';
 import Student from '../models/Student';
+import Reply from '../models/Reply';
+import { iStringReplyListPair } from './iObjectTypes';
 
-interface ApplicationState
-{
+export interface ApplicationState {
   userId?: string;
   User?: User;
   Application?: Application;
@@ -41,9 +40,9 @@ interface ApplicationState
   sendingSubmissionEmailFailed?: boolean;
 }
 
-interface ApplicationsState
-{
-  page: number;
+export interface ApplicationsState {
+  page?: number;
+  Applications?: Application[];
   error?: iError;
 
   isGetting?: boolean;
@@ -51,18 +50,19 @@ interface ApplicationsState
   hasGotten?: boolean;
 }
 
-interface CommentsState
-{
+export interface CommentsState {
   error?: iError;
   comment?: Comment;
   comments?: Comment[];
   conversations?: Comment[];
+  reply?: Reply;
   replies?: iStringReplyListPair;
   isReply?: boolean;
   id?: string;
   parent?: string;
   changedComment?: Comment;
   post?: string;
+  page?:  number;
 
   creatingComment?: boolean;
   createdComment?: boolean;
@@ -103,8 +103,7 @@ interface CommentsState
   failedToGetConversations?: boolean;
 }
 
-interface PostState
-{
+export interface PostState {
   id?: string;
   error?: iError;
   Post?: Post;
@@ -139,8 +138,7 @@ interface PostState
   failedToDeletePost?: boolean;
 }
 
-interface PostsState
-{
+export interface PostsState {
   posts?: Post[];
   error?: iError;
   page?: number;
@@ -168,8 +166,7 @@ interface PostsState
   failedToGetAccomplishmentsByUser?: boolean;
 }
 
-interface PostCategoryState
-{
+export interface PostCategoryState {
   slug?: string;
   error?: iError;
   uCategory?: PostCategory;
@@ -195,8 +192,7 @@ interface PostCategoryState
   failedToUpdatedCategoryPosts?: boolean;
 }
 
-interface FeatureState
-{
+export interface FeatureState {
   feature?: Feature;
   error?: iError;
   data?: any;
@@ -218,8 +214,7 @@ interface FeatureState
   deleteFailed?: boolean;
 }
 
-interface FeaturesState
-{
+export interface FeaturesState {
   student?: Student;
   features?: Feature;
 
@@ -232,19 +227,16 @@ interface FeaturesState
   failedToGetActive?: boolean;
 }
 
-interface HamburgerState
-{
+export interface HamburgerState {
   current: number;
   previous?: number;
 }
 
-interface MenuState
-{
+export interface MenuState {
   dash: string;
 }
 
-interface AuthState
-{
+export interface AuthState {
   activeUser?: iUser | boolean;
   error?: iError;
   provider?: string;
@@ -287,8 +279,7 @@ interface AuthState
   failedToChangeEmailAddress?: boolean;
 }
 
-interface StatsState
-{
+export interface StatsState {
   error?: iError;
   stats?: iStats;
 
@@ -297,8 +288,7 @@ interface StatsState
   hasFailed?: boolean;
 }
 
-interface UserState
-{
+export interface UserState {
   user?: User;
   id?: string;
   error?: iError;
@@ -314,8 +304,7 @@ interface UserState
   hasUpdated?: boolean;
 }
 
-interface UsersState
-{
+export interface UsersState {
   page?: number;
   userType?: UserType;
   error?: iError;
@@ -365,8 +354,7 @@ interface UsersState
   failedToGetStaff?: boolean;
 }
 
-interface StudentState
-{
+export interface StudentState {
   student?: Student;
   id?: string;
   error?: iError;
@@ -390,7 +378,7 @@ interface StudentState
   failedToCreateStudent?: boolean;
 }
 
-interface StudentsState {
+export interface StudentsState {
   students?: Student[];
   current?: Student[];
   past?: Student[];

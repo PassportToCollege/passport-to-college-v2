@@ -1,15 +1,14 @@
 import iReply from '../imodels/iReply';
-import iContentEditable from '../imodels/iContentEditable';
 import Comment from './Comment';
 import User from './User';
 import Post from './Post';
+import { RawDraftContentState } from 'draft-js';
 
 export default class Reply extends Comment implements iReply {
   public isConversation: boolean;
   public parent: Comment;
-  public isReply: boolean;
 
-  constructor(user: User, post: Post, comment: Comment, content: iContentEditable, meta: any = {}) {
+  constructor(user: User, post: Post, comment: Comment, content: RawDraftContentState, meta: any = {}) {
     super(user, post, content, meta);
 
     this.isConversation = false;

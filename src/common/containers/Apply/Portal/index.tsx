@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
 
-import * as applicationActions from "../../../actions/applicationActions";
+import * as applicationActions from "../../../actions/application/actions";
 import * as userActions from "../../../actions/userActions";
 import * as authActions from "../../../actions/authActions";
 import * as routes from "../../../constants/routes";

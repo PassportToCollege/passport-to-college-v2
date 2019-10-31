@@ -12,6 +12,7 @@ export default interface iComment {
   Post: iPost;
   postedOn?: Date;
   isConversation?: boolean;
+  isReply?: boolean;
   isDeleted?: boolean;
   hasReplies?: boolean;
   replies?: string[];

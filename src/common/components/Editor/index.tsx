@@ -2,7 +2,6 @@ import './Editor.css';
 
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import propTypes from 'prop-types';
 import { 
   Editor, 
   EditorState, 

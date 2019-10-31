@@ -1,9 +1,9 @@
-import "firebase/firestore";
-import firebase from "firebase";
+import 'firebase/firestore';
+import firebase from 'firebase';
 
-import { isBrowser } from "../index";
+import { isBrowser } from '../index';
 
-global.XMLHttpRequest = require("xhr2");
+global.XMLHttpRequest = require('xhr2');
 
 if (!firebase.apps.length) {
   firebase.initializeApp({
@@ -15,15 +15,16 @@ if (!firebase.apps.length) {
   });
 }
 
-export const  db : any = firebase.firestore()!;
+export const  db: firebase.firestore.Firestore = firebase.firestore()!;
 const settings = {
   timestampsInSnapshots: true
 };
 
 db.settings(settings);
 
-export const auth : any = firebase.auth()!;
-export let storage : any = null;
+export const auth: firebase.auth.Auth = firebase.auth()!;
+export let storage: firebase.storage.Storage | null = null;
 
-if (isBrowser)
-  storage = firebase.storage()!;
+if (isBrowser) {
+  storage = firebase.storage();
+}

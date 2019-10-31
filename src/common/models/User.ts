@@ -1,25 +1,19 @@
 import iError from '../imodels/iError';
-import iUser from '../imodels/iUser';
-
+import iUser, { Fullname } from '../imodels/iUser';
 import { isEmail } from '../utils';
 import { storage } from '../utils/firebase';
 
 export default class User implements iUser {
   public uid: string;
   public email: string;
-  public name: {
-    first: string,
-    middle?: string,
-    last: string,
-    full: () => string,
-  };
-  public isAdmin: boolean;
-  public isApplicant: boolean;
-  public isStudent: boolean;
-  public isStaff: boolean;
-  public emailConfirmed: boolean;
-  public hasProfilePicture: boolean;
-  public address: {
+  public name: Fullname | string;
+  public isAdmin?: boolean;
+  public isApplicant?: boolean;
+  public isStudent?: boolean;
+  public isStaff?: boolean;
+  public emailConfirmed?: boolean;
+  public hasProfilePicture?: boolean;
+  public address?: {
     country: string
   };
   public gender?: string;
@@ -34,12 +28,14 @@ export default class User implements iUser {
   constructor(user: iUser) {
     this.uid = user.uid;
     this.email = user.email;
-    this.name = {
-      ...user.name,
-      full: (): string => {
-        return `${this.name.first} ${this.name.last}`; 
+    this.name = typeof user.name !== 'string'  
+      ? {
+        ...user.name,
+        full: (): string => {
+          return `${(this.name as Fullname).first} ${(this.name as Fullname).last}`; 
+        }
       }
-    };
+      : User.createNameObject(user.name);
 
     this.isAdmin = false;
     this.isApplicant = false;
@@ -160,5 +156,17 @@ export default class User implements iUser {
           reject(error);
         });
     });
+  }
+
+  public static createNameObject(name: string): Fullname {
+    const splitName = name.split(' ');
+    const first = splitName[0];
+    const last = splitName[splitName.length - 1];
+
+    return {
+      first,
+      last,
+      full: () => `${first} ${last}`
+    };
   }
 }

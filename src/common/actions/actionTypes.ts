@@ -1,15 +1,15 @@
-enum Hamburger {
+export enum Hamburger {
   Open = 0,
   Close = 1,
-};
+}
 
-enum Menu {
+export enum Menu {
   Full = 0,
   Compact = 1,
   Closed = 2,
-};
+}
 
-enum Auth {
+export enum Auth {
   RemoveErrors = 0,
   SignInAuthorizing = 1,
   SignInAuthorizing_Social = 2,
@@ -50,7 +50,7 @@ enum Auth {
   ChangingEmailAddressFailed = 37,
 }
 
-enum ProfilePicture {
+export enum ProfilePicture {
   GettingProfilePicture = 0,
   GettingProfilePictureFailed = 1,
   GotProfilePicture = 2,
@@ -62,7 +62,7 @@ enum ProfilePicture {
   UploadedProfilePicture = 8,
 }
 
-enum User {
+export enum User {
   GettingUser = 0,
   GettingUserFailed = 1,
   GotUser = 2,
@@ -75,9 +75,9 @@ enum User {
   ReauthenticatingUser = 9,
   ReauthentcatingUserFailed = 10,
   ReauthenticatedUser = 11,
-};
+}
 
-enum Users {
+export enum Users {
   GettingUsers = 0,
   GettingUsersFailed = 1,
   GotUsers = 2,
@@ -107,7 +107,7 @@ enum Users {
   GotStaff = 26,
 }
 
-enum Application {
+export enum Application {
   GettingApplication = 0,
   GettingApplicationFailed = 1,
   GotApplication = 2,
@@ -128,13 +128,13 @@ enum Application {
   SentSubmissionEmail = 17,
 }
 
-enum Stats {
+export enum Stats {
   GettingStats = 0,
   GettingStatsFailed = 1,
   GotStats = 2
 }
 
-enum Student {
+export enum Student {
   GettingStudent = 0,
   GettingStudentFailed = 1,
   GotStudent = 2,
@@ -149,7 +149,7 @@ enum Student {
   CreatedStudent = 11,
 }
 
-enum Students {
+export enum Students {
   GettingStudents = 0,
   GettingStudentsFailed = 1,
   GotStudents = 2,
@@ -161,7 +161,7 @@ enum Students {
   GotPastStudents = 8,
 }
 
-enum Features {
+export enum Features {
   GettingFeatures = 0,
   GettingFeaturesFailed = 1,
   GotFeatures = 2,
@@ -170,7 +170,7 @@ enum Features {
   GotActiveFeatures = 5,
 }
 
-enum Feature {
+export enum Feature {
   GettingFeature = 0,
   GettingFeatureFailed = 1,
   GotFeature = 2,
@@ -185,7 +185,7 @@ enum Feature {
   DeletedFeature = 11
 }
 
-enum Post {
+export enum Post {
   CreatingPost = 0,
   CreatingPostFailed = 1,
   CreatedPost = 2,
@@ -207,7 +207,7 @@ enum Post {
   DeletedPost = 18,
 }
 
-enum Posts {
+export enum Posts {
   GettingPosts = 0,
   GettingPostsFailed = 1,
   GotPosts = 2,
@@ -225,7 +225,7 @@ enum Posts {
   GotAccomplishments = 14,
 }
 
-enum Category {
+export enum Category {
   GettingCategory = 0,
   GettingCategoryFailed = 1,
   GotCategory = 2,
@@ -243,7 +243,7 @@ enum Category {
   UpdatedCategoryPosts = 14,
 }
 
-enum Comment {
+export enum Comment {
   CreatingComment = 0,
   CreatingCommentFailed = 1,
   CreatedComment = 2,
@@ -274,7 +274,7 @@ enum Comment {
   GotConversations = 27,
 }
 
-enum Event {
+export enum Event {
   CreatingEvent = 0,
   CreatingEventFailed = 1,
   CreatedEvent = 2
@@ -298,4 +298,4 @@ export default {
   Students,
   User,
   Users,
-}
+};

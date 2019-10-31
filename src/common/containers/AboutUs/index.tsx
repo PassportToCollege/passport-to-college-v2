@@ -1,27 +1,26 @@
-import "./AboutUs.css";
+import './AboutUs.css';
 
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux"
-import propTypes from "prop-types";
-import _ from "lodash";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import propTypes from 'prop-types';
+import _ from 'lodash';
 
-import * as usersActions from "../../actions/usersActions";
-import { about } from "../../constants/pages";
-import { STORIES as storiesRoute } from "../../constants/routes";
+import * as usersActions from '../../actions/usersActions';
+import { about } from '../../constants/pages';
+import { STORIES as storiesRoute } from '../../constants/routes';
 
-import Header from "../../components/Header";
-import TopicSection from "../../components/TopicSection";
-import ToTopContainer from "../../components/ToTopContainer";
-import IconBullet from "../../components/IconBullet";
-import PageMeta from "../../components/PageMeta";
-import FlexContainer from "../../components/FlexContainer";
-import RoleCard from "../../components/RoleCard";
-import LinkButton from "../../components/LinkButton";
-import InfoCard from "../../components/InfoCard";
-import WYSIWYGEditor from "../../components/Editor";
+import Header from '../../components/Header';
+import TopicSection from '../../components/TopicSection';
+import ToTopContainer from '../../components/ToTopContainer';
+import IconBullet from '../../components/IconBullet';
+import PageMeta from '../../components/PageMeta';
+import FlexContainer from '../../components/FlexContainer';
+import LinkButton from '../../components/LinkButton';
+import InfoCard from '../../components/InfoCard';
+import WYSIWYGEditor from '../../components/Editor';
 
-import headerImage from "../../assets/images/about_us__header.jpg";
+const headerImage = require('../../assets/images/about_us__header.jpg');
 
 class AboutUs extends Component {
   constructor(props) {
@@ -29,26 +28,28 @@ class AboutUs extends Component {
     this.state = {
       founder: props.users.founder,
       staff: props.users.staff
-    }
+    };
   }
 
-  static propTypes = {
+  public static propTypes = {
     users: propTypes.object,
     usersActions: propTypes.object,
     updateLocation: propTypes.func
-  }
+  };
 
-  componentDidMount() {
-    this.props.updateLocation("about");
+  public componentDidMount() {
+    this.props.updateLocation('about');
 
-    if (!this.state.founder)
+    if (!this.state.founder) {
       this.props.usersActions.doGetFounder();
+    }
 
-    if (!this.state.staff)
+    if (!this.state.staff) {
       this.props.usersActions.doGetStaff();
+    }
   }
 
-  static getDerivedStateFromProps(nextProps, state) {
+  public static getDerivedStateFromProps(nextProps, state) {
     if (nextProps.users.gotFounder && !_.isEqual(state.founder, nextProps.users.founder)) {
       return { founder: nextProps.users.founder };
     }
@@ -60,7 +61,7 @@ class AboutUs extends Component {
     return null;
   }
 
-  render() {
+  public render() {
     return (
       <React.Fragment>
         <PageMeta route="ABOUT_US" />
@@ -71,10 +72,10 @@ class AboutUs extends Component {
           {this.renderMain()}
         </ToTopContainer>
       </React.Fragment>
-    )
+    );
   }
 
-  renderMain = () => {
+  public renderMain = () => {
     return (
       <main id="about_main">
         <TopicSection heading="about us"
@@ -82,9 +83,9 @@ class AboutUs extends Component {
           <p>{about.intro}</p>
         } 
         sectionStyles={{
-          width: "1140px",
-          maxWidth: "100%",
-          margin: "0 auto"
+          width: '1140px',
+          maxWidth: '100%',
+          margin: '0 auto'
         }} />
         <section className="about__wwd">
           <FlexContainer>
@@ -96,33 +97,33 @@ class AboutUs extends Component {
                     icon={item.icon}>
                     <p>{item.info}</p>  
                   </IconBullet>
-                )
+                );
               })
             }
           </FlexContainer>
         </section>
         <section className="about__staff">
-          <FlexContainer classes={["about__staff_header"]}>
+          <FlexContainer classes={['about__staff_header']}>
             <h4>
               The people behind <br/>
               Passport to College
             </h4>
             <p>{about.staffIntro}</p>
           </FlexContainer>
-          <FlexContainer classes={["about__staff_staff"]}>
+          <FlexContainer classes={['about__staff_staff']}>
             {
               this.state.founder ?
                 <React.Fragment>
-                  <InfoCard founder
+                  <InfoCard founder={true}
                     bgOverlay="rgba(58,58,58,0.65)"
                     uid={this.state.founder.uid} 
                     title={this.state.founder.name.full}
                     content="Founder" />
-                  <WYSIWYGEditor readonly
+                  <WYSIWYGEditor readonly={true}
                     content={this.state.founder.bio} 
                     editorStyles={{
-                      border: "none",
-                      minHeight: "auto"
+                      border: 'none',
+                      minHeight: 'auto'
                     }} />
                 </React.Fragment>
                 : null
@@ -145,41 +146,41 @@ class AboutUs extends Component {
         </section> */}
         {this.renderStoriesCTA()}
       </main>
-    )
+    );
   }
 
-  renderStoriesCTA = () => {
+  public renderStoriesCTA = () => {
     if (about.showStoriesCTA) {
       return (
         <section className="about__staff_stories_cta">
           <div className="stories_cta__bg"
             style={{
               backgroundImage: `url(${about.storiesCTABg})`
-            }}></div>
+            }}/>
           <div className="stories_cta__content">
             <div>
               <span>
-                <h3>more<br></br> about us</h3>
-                <LinkButton default text="stories" 
+                <h3>more<br/> about us</h3>
+                <LinkButton default={true} text="stories" 
                   target={storiesRoute.route}/>
               </span>
             </div>
           </div>
         </section>
-      )
+      );
     }
 
     return null;
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     users: state.users
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     usersActions: bindActionCreators(usersActions, dispatch)
   };

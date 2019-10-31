@@ -7,7 +7,7 @@ import { bindActionCreators } from "redux";
 import propTypes from "prop-types";
 
 import { VIEW_APPLICATION_SECTIONS } from "../../../constants/routes";
-import * as applicationActions from "../../../actions/applicationActions";
+import * as applicationActions from "../../../actions/application/actions";
 
 import PageMeta from "../../../components/PageMeta";
 import ApplicationSection from "./ApplicationSection";

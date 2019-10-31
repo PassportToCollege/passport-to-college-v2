@@ -7,15 +7,18 @@ export enum UserType {
   Staff = 4,
 }
 
-export default interface User {
+export interface Fullname {
+  first: string;
+  middle?: string;
+  last: string;
+  full?: () => string;
+}
+
+export default interface iUser {
   readonly uid: string;
   email: string;
-  name: {
-    first: string,
-    middle?: string,
-    last: string,
-  };
-  address: {
+  name: Fullname | string;
+  address?: {
     country: string
   };
   isAdmin?: boolean;

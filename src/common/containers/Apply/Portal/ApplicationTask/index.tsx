@@ -6,7 +6,7 @@ import { bindActionCreators } from "redux";
 import propTypes from 'prop-types';
 import _ from "lodash";
 
-import * as applicationActions from "../../../../actions/applicationActions";
+import * as applicationActions from "../../../../actions/application/actions";
 import * as userActions from "../../../../actions/userActions";
 
 import { getTestKey } from "../../../../utils";

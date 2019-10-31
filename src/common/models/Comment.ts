@@ -1,7 +1,6 @@
 import { uid } from 'rand-token';
 
 import iComment from '../imodels/iComment';
-import iContentEditable from '../imodels/iContentEditable';
 import User from './User';
 import Post from './Post';
 
@@ -18,6 +17,7 @@ export default class Comment implements iComment {
   public Post: Post;
   public postedOn?: Date;
   public isConversation?: boolean;
+  public isReply?: boolean;
   public isDeleted?: boolean;
   public hasReplies?: boolean;
   public replies?: string[];
@@ -33,6 +33,7 @@ export default class Comment implements iComment {
 
     this.postedOn = meta.postedOn || new Date();
     this.isConversation = !!meta.isConversation;
+    this.isReply = false;
     this.isDeleted = !!meta.isDeleted;
     this.hasReplies = !!meta.hasReplies;
     this.replies = meta.replies || [];
