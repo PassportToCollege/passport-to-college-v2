@@ -229,12 +229,11 @@ export interface FeaturesState {
 }
 
 export interface HamburgerState {
-  current: number;
-  previous?: number;
+  state: 'open' | 'closed';
 }
 
 export interface MenuState {
-  dash: string;
+  state: 'full' | 'compact' | 'closed';
 }
 
 export interface AuthState {
