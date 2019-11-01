@@ -18,7 +18,7 @@ import {
   deletingFeatureFailed
 } from './actions';
 import { db } from '../../utils/firebase';
-import { doGetFeaturesByUser } from '../featuresActions';
+import { doGetFeaturesByUser } from '../features/dispatchers';
 import iFeature from '../../imodels/iFeature';
 import { deletePostHero } from '../../utils/firebase/functions';
 import { doCategoryPostsUpdate } from '../postCategoryActions';
@@ -65,7 +65,7 @@ export const doCreateFeature = (
         dispatch(createdFeature());
 
         if (refresh) {
-          return dispatch(doGetFeaturesByUser(feature.Student));
+          doGetFeaturesByUser(dispatch as Dispatch<Action<any, any>>, feature.Student);
         }
       })
       .catch((error: Error) => {
@@ -88,7 +88,7 @@ export const doUpdateFeature = (
       dispatch(updatedFeature());
 
       if (refresh) {
-        dispatch(doGetFeaturesByUser(feature.Student));
+        doGetFeaturesByUser(dispatch as Dispatch<Action<any, any>>, feature.Student);
       }
     })
     .catch((error: Error) => {
@@ -115,7 +115,7 @@ export const doDeleteFeature = (
       dispatch(deletedFeature());
 
       if (refresh) {
-        dispatch(doGetFeaturesByUser(feature.Student));
+        doGetFeaturesByUser(dispatch as Dispatch<Action<any, any>>, feature.Student);
       }
     })
     .catch((error: Error) => {

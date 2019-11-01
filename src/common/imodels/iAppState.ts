@@ -216,7 +216,8 @@ export interface FeatureState {
 
 export interface FeaturesState {
   student?: Student;
-  features?: Feature;
+  features?: Feature[];
+  error?: Error;
 
   isGetting?: boolean;
   hasGotten?: boolean;
