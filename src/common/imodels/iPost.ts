@@ -3,29 +3,30 @@ import iContentEditable from './iContentEditable';
 import { iStringBooleanPair } from './iObjectTypes';
 import User from '../models/User';
 
-export enum PostUpdateType
-{
+export enum PostUpdateType {
   Decrease = -1,
   Increase = 1
 }
 
-export enum PostState 
-{
+export enum PostState {
   all = 0,
   draft = 1,
   published = 2,
   archived = 3,
 }
 
-export interface iPostState 
-{
+export interface PostOptions {
+  publishing?: boolean;
+  refresh?: boolean;
+}
+
+export interface iPostState {
   draft: boolean;
   archived: boolean;
   published: boolean;
 }
 
-export default interface iPost 
-{
+export default interface iPost {
   readonly id: string;
   author: string | User;
   title: string;

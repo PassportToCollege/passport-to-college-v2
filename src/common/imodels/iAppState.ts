@@ -10,6 +10,7 @@ import Comment from '../models/Comment';
 import Student from '../models/Student';
 import Reply from '../models/Reply';
 import { iStringReplyListPair } from './iObjectTypes';
+import { PostUpdateType } from './iPost';
 
 export interface ApplicationState {
   userId?: string;
@@ -106,7 +107,8 @@ export interface CommentsState {
 export interface PostState {
   id?: string;
   error?: iError;
-  Post?: Post;
+  post?: Post;
+  hero?: string;
   data?: any;
   lastDeletedPost?: Post;
   conversations?: Comment[];
@@ -124,6 +126,8 @@ export interface PostState {
   postUpdateFailed?: boolean;
 
   updatedLocalConversationsCount?: boolean;
+  postUpdateType?: PostUpdateType;
+  changedComment?: Comment;
 
   isUploading?: boolean;
   hasUploaded?: boolean;
