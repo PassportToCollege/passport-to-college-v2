@@ -1,4 +1,4 @@
-import { ActionCreator, Action } from '..';
+import { ActionCreator } from '..';
 import { Post as _ } from '../actionTypes';
 import { PostState } from '../../imodels/iAppState';
 import Post from '../../models/Post';
