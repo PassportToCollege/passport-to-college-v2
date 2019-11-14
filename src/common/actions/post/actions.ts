@@ -19,7 +19,7 @@ export const updatingHero = () =>
 
 export const updatingHeroFailed = (error: Error) =>
   ActionCreator<_, PostState>(_.UpdatingHeroFailed, { error });
-
+ 
 export const updatedHero = () =>
   ActionCreator<_>(_.UpdatedHero);
 
