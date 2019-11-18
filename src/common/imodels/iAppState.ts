@@ -173,6 +173,8 @@ export interface PostsState {
 export interface PostCategoryState {
   slug?: string;
   error?: iError;
+  category?: PostCategory;
+  categories?: PostCategory[];
   uCategory?: PostCategory;
 
   gettingCategory?: boolean;
