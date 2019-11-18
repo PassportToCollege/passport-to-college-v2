@@ -139,7 +139,7 @@ export const doUpdateCategoryPosts = (
   dispatch(updatingCategoryPosts());
 
   const categoryRef: firebase.firestore.DocumentReference = db.collection('post-categories').doc(slug);
-  let updatedCategory: PostCategory;
+  let uCategory: PostCategory;
 
   db.runTransaction((transaction: firebase.firestore.Transaction) => {
     return transaction.get(categoryRef)
@@ -153,12 +153,12 @@ export const doUpdateCategoryPosts = (
           category.decreasePost();
         }
 
-        updatedCategory = category;
+        uCategory = category;
         transaction.update(categoryRef, { posts: category.posts });
       });
   })
     .then(() => {
-      dispatch(updatedCategoryPosts(updatedCategory));
+      dispatch(updatedCategoryPosts(uCategory));
     })
     .catch((error: Error) => {
       dispatch(updatingCategoryPostsFailed(error));

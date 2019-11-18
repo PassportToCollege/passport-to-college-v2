@@ -144,6 +144,7 @@ export interface PostState {
 
 export interface PostsState {
   posts?: Post[];
+  accomplishments?: Post[];
   error?: iError;
   page?: number;
   categories?: PostCategory[];
