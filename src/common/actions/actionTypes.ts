@@ -151,14 +151,10 @@ export enum Student {
 
 export enum Students {
   GettingStudents = 0,
-  GettingStudentsFailed = 1,
-  GotStudents = 2,
-  GettingCurrentStudents = 3,
-  GettingCurrentStudentsFailed = 4,
-  GotCurrentStudents = 5,
-  GettingPastStudents = 6,
-  GettingPastStudentsFailed = 7,
-  GotPastStudents = 8,
+  GettingStudentsFailed,
+  GotStudents,
+  GotCurrentStudents,
+  GotPastStudents,
 }
 
 export enum Features {

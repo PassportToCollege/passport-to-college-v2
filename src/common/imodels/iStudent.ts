@@ -1,6 +1,12 @@
 import iUser from './iUser'
 import iContentEditable from './iContentEditable';
 
+export enum StudentType {
+  All = 0,
+  Current,
+  Graduated
+}
+
 export default interface iStudent {
   User: iUser;
   readonly uid: string;
