@@ -21,7 +21,7 @@ import { db } from '../../utils/firebase';
 import { doGetFeaturesByUser } from '../features/dispatchers';
 import iFeature from '../../imodels/iFeature';
 import { deletePostHero } from '../../utils/firebase/functions';
-import { doCategoryPostsUpdate } from '../postCategoryActions';
+import { doUpdateCategoryPosts } from '../postCategory/dispatchers';
 import { PostUpdateType } from '../../imodels/iPost';
 
 export const doGetFeature = (
