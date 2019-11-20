@@ -4,9 +4,14 @@ import Student from '../../models/Student';
 import { Students } from '../actionTypes';
 import { StudentsState } from '../../imodels/iAppState';
 import { StudentType } from '../../imodels/iStudent';
-import { gettingStudents, gettingStudentsFailed, gotStudents } from './actions';
+import { 
+  gettingStudents, 
+  gettingStudentsFailed, 
+  gotStudents, 
+  gotCurrentStudents, 
+  gotPastStudents 
+} from './actions';
 import { db } from '../../utils/firebase';
-import { gotCurrentStudents, gotPastStudents } from '../studentsActions';
 
 const getStudentsFromSnapshots = (snapshots: firebase.firestore.QuerySnapshot): Student[] => {
   try {
