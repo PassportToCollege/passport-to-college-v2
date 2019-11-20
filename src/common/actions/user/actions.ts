@@ -30,11 +30,11 @@ export const updatingUserEmailFailed = (error: Error) =>
 export const updatedUserEmail = () =>
   ActionCreator<_>(_.UpdatedUserEmail);
 
-export const reauthenticatingUser = () =>
+export const reAuthenticatingUser = () =>
   ActionCreator<_>(_.ReauthenticatingUser);
 
-export const reauthenticatingUserFailed = (error: Error) =>
+export const reAuthenticatingUserFailed = (error: Error) =>
   ActionCreator<_, UserState>(_.ReauthentcatingUserFailed, { error });
 
-export const reauthenticatedUser = () =>
+export const reAuthenticatedUser = () =>
   ActionCreator<_>(_.ReauthenticatedUser);
