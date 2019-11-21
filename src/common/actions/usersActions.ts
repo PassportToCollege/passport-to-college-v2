@@ -18,28 +18,6 @@ const UsersActions = ActionTypes.Users;
 const EMAIL_API = process.env.REACT_APP_EMAIL_API;
 const Console = console;
 
-// GET actions
-export const usersGetInitiated = (page : number, userType : UserType) : iAction => {
-  return {
-    type: UsersActions.GettingUsers,
-    page, userType
-  };
-}
-
-export const usersGetDone = (users : User[], page : number, userType : UserType) : iAction => {
-  return {
-    type: UsersActions.GotUsers,
-    page, userType, users
-  };
-}
-
-export const usersGetFailed = (error : iError, page : number, userType : UserType) : iAction => {
-  return {
-    type: UsersActions.GettingUsersFailed,
-    page, userType, error
-  };
-}
-
 export const doUsersGet = (page : number, userType : UserType) : any => {
   return (dispatch : Function) => {
     dispatch(usersGetInitiated(page, userType));
@@ -104,22 +82,7 @@ const getUsersOfAnyType = (dispatch : Function, page : number) : any => {
 const getUsersByType = (dispatch : Function, page : number, userType : UserType) : any => {
   let type : string;
 
-  switch (userType) {
-    case UserType.Admin:
-      type = "isAdmin";
-      break;
-    case UserType.Student:
-      type = "isStudent";
-      break;
-    case UserType.Applicant:
-      type = "isApplicant";
-      break;
-    case UserType.Staff:
-      type = "isStaff";
-      break;
-    case UserType.Any:
-    default:
-      type = "any";
+  
   }
 
   if (page === 1) {
@@ -184,45 +147,11 @@ const getUsersFromSnapshot = (snapshots : firebase.firestore.QuerySnapshot): Use
   return users;
 }
 
-export const userGetByIdInitiated = (id : string) : iAction => {
-  return {
-    type: UsersActions.GettingUser,
-    id
-  };
-}
-
-export const userGetByIdDone = (user : User) : iAction => {
-  return {
-    type: UsersActions.GotUsers,
-    user
-  };
-}
-
-export const userGetByIdFailed = (error : iError, id : string) : iAction => {
-  return {
-    type: UsersActions.GettingUserFailed,
-    id, error
-  };
-}
-
 export const doGetUserByUid = (uid : string) : any => {
   return (dispatch : Function) => {
     dispatch(userGetByIdInitiated(uid));
 
-    db.collection("users")
-      .doc(uid)
-      .get()
-      .then((snapshot : firebase.firestore.DocumentSnapshot) => {
-        if (snapshot.exists) {
-          const user = new User(snapshot.data());
-          return dispatch(userGetByIdDone(user));
-        }
-
-        dispatch(userGetByIdFailed({message: "no user found"}, uid));
-      })
-      .catch((error : any) => {
-        dispatch(userGetByIdFailed(error, uid));
-      })
+    
   }
 }
 
@@ -265,8 +194,7 @@ export const doGetUsersByUid = (userIds : string[] = []) : any => {
         let users : Array<User> = [];
         for (let snapshot of snapshots) {
           if (!snapshot.empty) {
-            let user = new User(snapshot.data());
-            users.push(user);
+            
           }
         }
 
@@ -279,68 +207,9 @@ export const doGetUsersByUid = (userIds : string[] = []) : any => {
   }
 }
 
-export const getFounderInitiated = () : iAction => {
-  return {
-    type: UsersActions.GettingFounder
-  };
-};
-
-export const getFounderFailed = (error : iError) : iAction =>  {
-  return {
-    type: UsersActions.GettingFounderFailed,
-    error
-  };
-};
-
-export const gotFounder = (founder : User) : iAction => {
-  return {
-    type: UsersActions.GotFounder,
-    founder
-  };
-};
-
 export const doGetFounder = () : any => {
   return (dispatch : Function) => {
-    dispatch(getFounderInitiated());
-
-    db.collection("users")
-      .where("isStaff", "==", true)
-      .where("role", "==", "Founder")
-      .get()
-      .then((snapshots : firebase.firestore.QuerySnapshot) => {
-        if (snapshots.empty)
-          dispatch(getFounderFailed({ message: "Founder not found." }));
-
-        let founder : any;
-        snapshots.forEach((snapshot : any) => {
-          founder = new User(snapshot.data());
-        });
-
-        dispatch(gotFounder(<User>founder));
-      })
-      .catch((error : any) => {
-        dispatch(getFounderFailed(error));
-      })
-  };
-};
-
-export const getStaffInitiated = () : iAction => {
-  return {
-    type: UsersActions.GettingStaff
-  };
-};
-
-export const getStaffFailed = (error : iError) : iAction => {
-  return {
-    type: UsersActions.GettingStaffFailed,
-    error
-  };
-};
-
-export const gotStaff = (staff : User[]) : iAction => {
-  return {
-    type: UsersActions.GotStaff,
-    staff
+    
   };
 };
 
@@ -367,50 +236,6 @@ export const doGetStaff = () : any => {
       .catch((error : any) => {
         dispatch(getStaffFailed(error));
       })
-  };
-};
-
-// CREATE actions
-export const createUserInitiated = (newData : any) : iAction => {
-  return {
-    type: UsersActions.CreatingUser,
-    data: newData
-  };
-};
-
-export const createUserFailed = (error : iError, newData : any) : iAction => {
-  return {
-    type: UsersActions.CreatingUserFailed,
-    error, 
-    data: newData
-  };
-};
-
-export const userCreated = (user : User) : iAction => {
-  return {
-    type: UsersActions.CreatedUser,
-    data: user
-  };
-};
-
-export const sendSignupEmailInitiated = (email : string) : iAction => {
-  return {
-    type: UsersActions.SendingSignUpEmail,
-    email
-  };
-};
-
-export const signupEmailSent = (email : string) : iAction => {
-  return {
-    type: UsersActions.SentSignUpEmail,
-    email
-  };
-};
-
-export const sendSignupEmailFailed = (error : iError, email : string) : iAction => {
-  return {
-    type: UsersActions.SendingSignUpEmailFailed,
-    error, email
   };
 };
 
