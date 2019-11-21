@@ -8,9 +8,27 @@ import { Users } from '../actionTypes';
 import User from '../../models/User';
 import iUser, { UserType } from '../../imodels/iUser';
 import { 
-  gettingUsers, gettingUsersFailed, gotUsers, gettingUser, gotUser, gettingUserFailed, gotStaff, gotFounder,
+  gettingUsers, 
+  gettingUsersFailed, 
+  gotUsers, 
+  gettingUser, 
+  gotUser, 
+  gettingUserFailed, 
+  gotStaff, 
+  gotFounder, 
+  creatingUser, 
+  creatingUserFailed, 
+  sendingSignUpEmail,
+  sentSignUpEmail,
+  sendingSignUpEmailFailed,
+  createdUser,
+  updatingUserFailed,
+  updatingUser,
+  updatedUser,
 } from './actions';
 import { db } from '../../utils/firebase';
+import { isEmail } from '../../utils';
+import { Endpoints } from '../../constants/values';
 
 type UsersDispatch = Dispatch<Action<Users, UsersState>>;
 const usersPerPage = 50;
@@ -203,3 +221,117 @@ export const doGetFounder = (dispatch: UsersDispatch) => {
       dispatch(gettingUserFailed(error));
     });
 };
+
+const doesUserExist = (email: string): Promise<boolean> => {
+  return new Promise((resolve) => {
+    db.collection('users')
+      .where('email', '==', email)
+      .get()
+      .then((snapshot: firebase.firestore.QuerySnapshot) => {
+        resolve(!snapshot.empty);
+      });
+  });
+};
+
+const writeUserToDB = (user: User): Promise<boolean> => {
+  return new Promise((resolve, reject) => {
+    db.collection('users')
+      .doc(user.uid)
+      .set(user.data)
+      .then(() => {
+        resolve(true);
+      })
+      .catch((error: Error) => {
+        reject(error);
+      });
+  });
+};
+
+const sendSignUpEmail = (
+  dispatch: UsersDispatch,
+  id: string
+): Promise<boolean> => {
+  return new Promise((resolve, reject) => {
+    dispatch(sendingSignUpEmail());
+
+    axios.get(`${Endpoints.mail.prod}/s/signup/${id}`)
+      .then(() => {
+        dispatch(sentSignUpEmail());
+        resolve(true);
+      })
+      .catch((error: Error) => {
+        dispatch(sendingSignUpEmailFailed(error));
+        reject(error);
+      });
+  });
+};
+
+export const doCreateUser = (
+  dispatch: UsersDispatch,
+  user: iUser,
+  isFullUser: boolean = false
+) => {
+  dispatch(creatingUser());
+
+  if (!isEmail(user.email)) {
+    const error = new Error('invalid email provided');
+    dispatch(creatingUserFailed(error));
+
+    return;
+  }
+
+  doesUserExist(user.email)
+    .then((userExists: boolean) => {
+      if (userExists) {
+        const error = new Error('user already exists');
+        dispatch(creatingUserFailed(error));
+
+        return;
+      }
+
+      const tempId: string = isFullUser ? `${uid(24)}_ac_less` : `temp_${uid(16)}`;
+      const newUser: User = new User({ uid: tempId, ...user });
+
+      writeUserToDB(newUser)
+        .then(() => {
+          sendSignUpEmail(dispatch, tempId)
+            .catch((error: Error) => {
+              // TODO: log error
+            })
+            .finally(() => {
+              dispatch(createdUser());
+            });
+        })
+        .catch((error: Error) => {
+          dispatch(creatingUserFailed(error));
+        });
+    });
+};
+
+export const doUpdateUser = (
+  dispatch: UsersDispatch,
+  id: string,
+  data: iUser,
+  refresh: boolean = false
+) => {
+  dispatch(updatingUser());
+
+  db.collection('users')
+    .doc(id)
+    .update(data)
+    .then(() => {
+      dispatch(updatedUser());
+
+      if (refresh) {
+        doGetUserByUid(dispatch, id);
+      }
+    })
+    .catch((error: Error) => {
+      dispatch(updatingUserFailed(error));
+    });
+};
+
+export const doAddBio = (
+  dispatch: UsersDispatch,
+  bio: iContentEditable
+)
