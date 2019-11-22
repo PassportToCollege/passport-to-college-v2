@@ -29,6 +29,7 @@ import {
 import { db } from '../../utils/firebase';
 import { isEmail } from '../../utils';
 import { Endpoints } from '../../constants/values';
+import { RawDraftContentState } from 'draft-js';
 
 type UsersDispatch = Dispatch<Action<Users, UsersState>>;
 const usersPerPage = 50;
@@ -330,8 +331,3 @@ export const doUpdateUser = (
       dispatch(updatingUserFailed(error));
     });
 };
-
-export const doAddBio = (
-  dispatch: UsersDispatch,
-  bio: iContentEditable
-)
