@@ -1,4 +1,3 @@
-import iError from './iError';
 import iTest from './iTest';
 import iStats from './iStats';
 import { PostUpdateType } from './iPost';
@@ -13,11 +12,10 @@ import Student from '../models/Student';
 import { UserType } from './iUser';
 import iContentEditable from './iContentEditable';
 
-export default interface iAction 
-{
+export default interface iAction {
   type: number;
   date?: Date;
-  error?: iError;
+  error?: Error;
   user?: User;
   users?: User[];
   founder?: User;
@@ -58,6 +56,6 @@ export default interface iAction
   changedComment?: Comment; // comment that was either added or removed
   isReply?: boolean; // flag to tell if a comment is a reply
   parent?: string; // parent comment of reply
-  categoryName?: string // name of categoy=ry being added
+  categoryName?: string; // name of categoy=ry being added
   slug?: string; // category slug
 }

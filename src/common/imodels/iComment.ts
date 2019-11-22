@@ -1,14 +1,11 @@
 import User from '../models/User';
 import iPost from './iPost';
-import { RawDraftContentState } from 'draft-js';
+import iContentEditable from './iContentEditable';
 
 export default interface iComment {
   readonly id: string;
   User: User;
-  message: {
-    text: string,
-    html: RawDraftContentState
-  };
+  message: iContentEditable;
   Post: iPost;
   postedOn?: Date;
   isConversation?: boolean;

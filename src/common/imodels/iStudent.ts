@@ -1,4 +1,4 @@
-import iUser from './iUser'
+import iUser from './iUser';
 import iContentEditable from './iContentEditable';
 
 export enum StudentType {

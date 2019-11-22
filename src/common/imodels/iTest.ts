@@ -4,7 +4,7 @@ export default interface iTest {
   country: string;
   examination: string;
   grade: number;
-  hastaken: boolean;
+  hasTaken: boolean;
   subject: string;
   year: number;
 }

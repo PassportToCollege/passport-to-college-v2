@@ -7,7 +7,7 @@ export enum UserType {
   Staff = 4,
 }
 
-export interface Fullname {
+export interface FullName {
   first: string;
   middle?: string;
   last: string;
@@ -17,7 +17,7 @@ export interface Fullname {
 export default interface iUser {
   readonly uid: string;
   email: string;
-  name: Fullname | string;
+  name: FullName | string;
   address?: {
     country: string
   };

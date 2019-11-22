@@ -1,5 +1,4 @@
-export default interface iPostCategory
-{
+export default interface iPostCategory {
   name: string;
   slug: string;
   posts: number;

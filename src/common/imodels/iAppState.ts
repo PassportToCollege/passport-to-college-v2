@@ -1,4 +1,3 @@
-import iError from './iError';
 import iUser, { UserType } from './iUser';
 import iStats from './iStats';
 import Post from '../models/Post';
@@ -11,12 +10,13 @@ import Student from '../models/Student';
 import Reply from '../models/Reply';
 import { iStringReplyListPair } from './iObjectTypes';
 import { PostUpdateType } from './iPost';
+import iContentEditable from './iContentEditable';
 
 export interface ApplicationState {
   userId?: string;
   User?: User;
   Application?: Application;
-  error?: iError;
+  error?: Error;
   data?: any;
   date?: Date;
 
@@ -44,7 +44,7 @@ export interface ApplicationState {
 export interface ApplicationsState {
   page?: number;
   Applications?: Application[];
-  error?: iError;
+  error?: Error;
 
   isGetting?: boolean;
   hasFailed?: boolean;
@@ -52,7 +52,7 @@ export interface ApplicationsState {
 }
 
 export interface CommentsState {
-  error?: iError;
+  error?: Error;
   comment?: Comment;
   comments?: Comment[];
   conversations?: Comment[];
@@ -106,7 +106,7 @@ export interface CommentsState {
 
 export interface PostState {
   id?: string;
-  error?: iError;
+  error?: Error;
   post?: Post;
   hero?: string;
   data?: any;
@@ -145,7 +145,7 @@ export interface PostState {
 export interface PostsState {
   posts?: Post[];
   accomplishments?: Post[];
-  error?: iError;
+  error?: Error;
   page?: number;
   categories?: PostCategory[];
   student?: Student;
@@ -173,7 +173,7 @@ export interface PostsState {
 
 export interface PostCategoryState {
   slug?: string;
-  error?: iError;
+  error?: Error;
   category?: PostCategory;
   categories?: PostCategory[];
   uCategory?: PostCategory;
@@ -201,7 +201,7 @@ export interface PostCategoryState {
 
 export interface FeatureState {
   feature?: Feature;
-  error?: iError;
+  error?: Error;
   data?: any;
 
   isGetting?: boolean;
@@ -245,7 +245,7 @@ export interface MenuState {
 
 export interface AuthState {
   activeUser?: iUser | boolean;
-  error?: iError;
+  error?: Error;
   provider?: string;
   email?: string;
 
@@ -287,7 +287,7 @@ export interface AuthState {
 }
 
 export interface StatsState {
-  error?: iError;
+  error?: Error;
   stats?: iStats;
 
   isGetting?: boolean;
@@ -298,7 +298,7 @@ export interface StatsState {
 export interface UserState {
   user?: User;
   id?: string;
-  error?: iError;
+  error?: Error;
   data?: any;
 
   isGetting?: boolean;
@@ -307,14 +307,14 @@ export interface UserState {
 
   isUpdating?: boolean;
   failedToUpdate?: boolean;
-  isReauthenticating?: boolean;
+  isReAuthenticating?: boolean;
   hasUpdated?: boolean;
 }
 
 export interface UsersState {
   page?: number;
   userType?: UserType;
-  error?: iError;
+  error?: Error;
   data?: any;
   users?: User[];
   user?: User;
@@ -364,7 +364,7 @@ export interface UsersState {
 export interface StudentState {
   student?: Student;
   id?: string;
-  error?: iError;
+  error?: Error;
   data?: any;
   slug?: string;
 
@@ -389,7 +389,7 @@ export interface StudentsState {
   students?: Student[];
   current?: Student[];
   past?: Student[];
-  error?: iError;
+  error?: Error;
 
   isGetting?: boolean;
   hasGotten?: boolean;
