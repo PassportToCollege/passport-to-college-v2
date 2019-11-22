@@ -2,11 +2,14 @@ import './AboutUs.css';
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import propTypes from 'prop-types';
 import _ from 'lodash';
 
-import * as usersActions from '../../actions/usersActions';
+import { 
+  AboutUsProps, 
+  AboutUsState,
+  mapStateToProps, 
+  mapDispatchToProps 
+} from './props';
 import { about } from '../../constants/pages';
 import { STORIES as storiesRoute } from '../../constants/routes';
 
@@ -22,40 +25,34 @@ import WYSIWYGEditor from '../../components/Editor';
 
 const headerImage = require('../../assets/images/about_us__header.jpg');
 
-class AboutUs extends Component {
-  constructor(props) {
+class AboutUs extends Component<AboutUsProps, AboutUsState> {
+  constructor(props: AboutUsProps) {
     super(props);
     this.state = {
-      founder: props.users.founder,
-      staff: props.users.staff
+      founder: props.founder,
+      staff: props.staff
     };
   }
-
-  public static propTypes = {
-    users: propTypes.object,
-    usersActions: propTypes.object,
-    updateLocation: propTypes.func
-  };
 
   public componentDidMount() {
     this.props.updateLocation('about');
 
     if (!this.state.founder) {
-      this.props.usersActions.doGetFounder();
+      this.props.doGetFounder();
     }
 
     if (!this.state.staff) {
-      this.props.usersActions.doGetStaff();
+      this.props.doGetStaff();
     }
   }
 
-  public static getDerivedStateFromProps(nextProps, state) {
-    if (nextProps.users.gotFounder && !_.isEqual(state.founder, nextProps.users.founder)) {
-      return { founder: nextProps.users.founder };
+  public static getDerivedStateFromProps(nextProps: AboutUsProps, state: AboutUsState) {
+    if (nextProps.gotFounder && !_.isEqual(state.founder, nextProps.founder)) {
+      return { founder: nextProps.founder };
     }
 
-    if (nextProps.users.gotStaff && !_.isEqual(state.staff, nextProps.users.staff)) {
-      return { staff: nextProps.users.staff };
+    if (nextProps.gotStaff && !_.isEqual(state.staff, nextProps.staff)) {
+      return { staff: nextProps.staff };
     }
 
     return null;
@@ -67,8 +64,9 @@ class AboutUs extends Component {
         <PageMeta route="ABOUT_US" />
         <ToTopContainer>
           <Header 
-            scrollEl="about_main"
-            background={headerImage} />
+            scrollElement="about_main"
+            background={headerImage} 
+          />
           {this.renderMain()}
         </ToTopContainer>
       </React.Fragment>
@@ -78,23 +76,27 @@ class AboutUs extends Component {
   public renderMain = () => {
     return (
       <main id="about_main">
-        <TopicSection heading="about us"
-        content={
-          <p>{about.intro}</p>
-        } 
-        sectionStyles={{
-          width: '1140px',
-          maxWidth: '100%',
-          margin: '0 auto'
-        }} />
+        <TopicSection 
+          heading="about us"
+          content={
+            <p>{about.intro}</p>
+          } 
+          sectionStyles={{
+            width: '1140px',
+            maxWidth: '100%',
+            margin: '0 auto'
+          }} 
+        />
         <section className="about__wwd">
           <FlexContainer>
             {
               about.wwd.map((item, i) => {
                 return (
-                  <IconBullet key={`${item.icon}_${i}`}
+                  <IconBullet 
+                    key={`${item.icon}_${i}`}
                     heading={item.heading}
-                    icon={item.icon}>
+                    icon={item.icon}
+                  >
                     <p>{item.info}</p>  
                   </IconBullet>
                 );
@@ -114,12 +116,17 @@ class AboutUs extends Component {
             {
               this.state.founder ?
                 <React.Fragment>
-                  <InfoCard founder={true}
-                    bgOverlay="rgba(58,58,58,0.65)"
+                  <InfoCard 
+                    isFounder={true}
+                    background={{
+                      color: 'rgba(58,58,58,0.65)'
+                    }}
                     uid={this.state.founder.uid} 
                     title={this.state.founder.name.full}
-                    content="Founder" />
-                  <WYSIWYGEditor readonly={true}
+                    content="Founder" 
+                  />
+                  <WYSIWYGEditor 
+                    readonly={true}
                     content={this.state.founder.bio} 
                     editorStyles={{
                       border: 'none',
@@ -153,16 +160,21 @@ class AboutUs extends Component {
     if (about.showStoriesCTA) {
       return (
         <section className="about__staff_stories_cta">
-          <div className="stories_cta__bg"
+          <div 
+            className="stories_cta__bg"
             style={{
               backgroundImage: `url(${about.storiesCTABg})`
-            }}/>
+            }}
+          />
           <div className="stories_cta__content">
             <div>
               <span>
                 <h3>more<br/> about us</h3>
-                <LinkButton default={true} text="stories" 
-                  target={storiesRoute.route}/>
+                <LinkButton 
+                  default={true} 
+                  text="stories" 
+                  target={storiesRoute.route}
+                />
               </span>
             </div>
           </div>
@@ -173,18 +185,6 @@ class AboutUs extends Component {
     return null;
   }
 }
-
-const mapStateToProps = (state) => {
-  return {
-    users: state.users
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    usersActions: bindActionCreators(usersActions, dispatch)
-  };
-};
 
 export default connect(
   mapStateToProps,

@@ -1,3 +1,4 @@
+import iContentEditable from "./iContentEditable";
 
 export enum UserType {
   Any = 0,
@@ -35,4 +36,5 @@ export default interface iUser {
   socials?: {
     linkedin: string;
   };
+  bio?: iContentEditable;
 }

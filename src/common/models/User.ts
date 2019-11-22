@@ -1,12 +1,12 @@
-import iError from '../imodels/iError';
-import iUser, { Fullname } from '../imodels/iUser';
+import iUser, { FullName } from '../imodels/iUser';
 import { isEmail } from '../utils';
 import { storage } from '../utils/firebase';
+import iContentEditable from '../imodels/iContentEditable';
 
 export default class User implements iUser {
   public uid: string;
   public email: string;
-  public name: Fullname | string;
+  public name: FullName | string;
   public isAdmin?: boolean;
   public isApplicant?: boolean;
   public isStudent?: boolean;
@@ -24,6 +24,7 @@ export default class User implements iUser {
   public socials?: {
     linkedin: string;
   };
+  public bio?: iContentEditable;
 
   constructor(user: iUser) {
     this.uid = user.uid;
@@ -32,7 +33,7 @@ export default class User implements iUser {
       ? {
         ...user.name,
         full: (): string => {
-          return `${(this.name as Fullname).first} ${(this.name as Fullname).last}`; 
+          return `${(this.name as FullName).first} ${(this.name as FullName).last}`; 
         }
       }
       : User.createNameObject(user.name);

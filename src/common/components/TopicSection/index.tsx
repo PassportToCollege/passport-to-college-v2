@@ -4,7 +4,7 @@ import React, { PureComponent } from 'react';
 
 interface TopicSectionProps {
   heading: string;
-  content: string;
+  content: string | JSX.Element;
   sectionStyles: React.CSSProperties;
 }
 

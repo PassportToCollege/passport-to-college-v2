@@ -17,8 +17,8 @@ interface InfoCardProps {
   background: Background;
   title: string;
   content: string;
-  blank: boolean;
-  linkButton: LinkButtonProps;
+  blank?: boolean;
+  linkButton?: LinkButtonProps;
   uid?: string;
   isFeature?: boolean;
   isFounder?: boolean;
