@@ -47,7 +47,7 @@ export default interface iAction {
   hero?: string; // url of post hero image
   updateType?: PostUpdateType; // post update type
   page?: number; // current page number for pagination
-  provider?: string; // proveder used to link/unlink social accounts
+  provider?: string; // provider used to link/unlink social accounts
   email?: string;
   credentials?: firebase.auth.AuthCredential;
   nEmail?: string; // new email
@@ -56,6 +56,6 @@ export default interface iAction {
   changedComment?: Comment; // comment that was either added or removed
   isReply?: boolean; // flag to tell if a comment is a reply
   parent?: string; // parent comment of reply
-  categoryName?: string; // name of categoy=ry being added
+  categoryName?: string; // name of category being added
   slug?: string; // category slug
 }

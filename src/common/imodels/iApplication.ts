@@ -1,6 +1,7 @@
 import iUser from './iUser';
 import iContentEditable from './iContentEditable';
 import { iStringTestPair } from './iObjectTypes';
+import User from '../models/User';
 
 export enum EducationLevel {
   NoHighSchool = 'no high school',
@@ -48,8 +49,8 @@ export interface iApplicationState {
 }
 
 export default interface iApplication {
-  User: iUser;
   readonly uid: string;
+  User: User;
   state: iApplicationState;
   essay?: iContentEditable;
   educationLevel?: EducationLevel;

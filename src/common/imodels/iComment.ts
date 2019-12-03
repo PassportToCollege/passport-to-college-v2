@@ -1,12 +1,12 @@
 import User from '../models/User';
-import iPost from './iPost';
 import iContentEditable from './iContentEditable';
+import Post from '../models/Post';
 
 export default interface iComment {
   readonly id: string;
   User: User;
   message: iContentEditable;
-  Post: iPost;
+  Post: Post;
   postedOn?: Date;
   isConversation?: boolean;
   isReply?: boolean;
