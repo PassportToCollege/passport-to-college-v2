@@ -9,8 +9,7 @@ export default class Post implements iPost {
   public readonly id: string;
   public author: string | User;
   public title: string;
-  public excerpt: string;
-  public full: iContentEditable;
+  public content: iContentEditable;
   public hasHero: boolean;
   public hero?: string;
   public createdAt: number | Date;
@@ -21,15 +20,17 @@ export default class Post implements iPost {
   public likes?: iStringBooleanPair;
   public conversations?: string[];
 
-  constructor(author: string, postData: iPost) {
+  constructor(author: string | User, postData: iPost) {
     this.author = author;
     this.id = postData.id || uid(20);
 
     this.title = '';
-    this.excerpt = '';
-    this.full = {
-      blocks: [],
-      entityMap: {}
+    this.content = {
+      text: '',
+      editable: {
+        blocks: [],
+        entityMap: {}
+      }
     };
     this.hasHero = false;
     this.createdAt = new Date();
@@ -50,9 +51,8 @@ export default class Post implements iPost {
     return {
       id: this.id, 
       title: this.title, 
-      author: this.author, 
-      excerpt: this.excerpt, 
-      full: this.full,
+      author: this.author,
+      content: this.content,
       createdAt: useCase === 'save' ? (this.createdAt as Date).getTime() : this.createdAt,
       publishedOn: this.publishedOn,
       archivedOn: this.archivedOn,

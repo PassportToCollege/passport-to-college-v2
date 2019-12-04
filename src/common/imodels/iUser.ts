@@ -1,4 +1,4 @@
-import iContentEditable from "./iContentEditable";
+import iContentEditable from './iContentEditable';
 
 export enum UserType {
   Any = 0,

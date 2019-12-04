@@ -72,10 +72,14 @@ export default class User implements iUser {
   }
 
   get isComplete() {
+    const hasName = this.name && typeof this.name === 'string' 
+      ? true
+      : (this.name as FullName).first && (this.name as FullName).last;
+
     return !!(
       this.uid &&
       (this.address && this.address.country) &&
-      (this.name && this.name.first && this.name.last) &&
+      hasName &&
       this.gender &&
       this.dob &&
       this.email
@@ -87,9 +91,10 @@ export default class User implements iUser {
 
     if (!this.uid) { props.push('uid'); }
     if (!this.email) { props.push('email'); }
-    if (!this.name.first) { props.push('name.first'); }
-    if (!this.name.last) { props.push('name.last'); }
-    if (!this.address.country) { props.push('country'); }
+    if (!this.name) { props.push('name'); }
+    if (!(this.name as FullName).first) { props.push('name.first'); }
+    if (!(this.name as FullName).last) { props.push('name.last'); }
+    if (!this.address || !this.address.country) { props.push('country'); }
     if (!this.gender) { props.push('gender'); }
     if (!this.dob) { props.push('dob'); }
     if (this.isStaff && !this.role) { props.push('role'); }
@@ -122,8 +127,8 @@ export default class User implements iUser {
   }
 
   public getProfilePicture(): Promise<string> {
-    return new Promise((resolve: (photo: string) => void, reject: (error: iError) => void) => {
-      if (this.hasProfilePicture) {
+    return new Promise((resolve: (photo: string) => void, reject: (error: Error) => void) => {
+      if (this.hasProfilePicture && storage) {
         if (this.photo) {
           return resolve(this.photo);
         }
@@ -135,7 +140,7 @@ export default class User implements iUser {
             this.photo = url;
             resolve(url);
           })
-          .catch((error: iError) => {
+          .catch((error: Error) => {
             reject(error);
           });
       }
@@ -143,8 +148,8 @@ export default class User implements iUser {
   }
 
   public updateProfilePicture(image: File): Promise<string> {
-    return new Promise((resolve: (url: string) => void, reject: (error: iError) => void) => {
-      const ref = storage.ref('users/profile_images').child(`${this.uid}.png`);
+    return new Promise((resolve: (url: string) => void, reject: (error: Error) => void) => {
+      const ref = storage!.ref('users/profile_images').child(`${this.uid}.png`);
 
       ref.put(image)
         .then(() => {
@@ -153,13 +158,13 @@ export default class User implements iUser {
               resolve(url);
             });
         })
-        .catch((error: iError) => {
+        .catch((error: Error) => {
           reject(error);
         });
     });
   }
 
-  public static createNameObject(name: string): Fullname {
+  public static createNameObject(name: string): FullName {
     const splitName = name.split(' ');
     const first = splitName[0];
     const last = splitName[splitName.length - 1];

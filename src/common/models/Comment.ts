@@ -6,14 +6,12 @@ import Post from './Post';
 
 import BadWords from '../utils/badwords.en';
 import { convertBlocksToText } from '../utils';
+import iContentEditable from '../imodels/iContentEditable';
 
 export default class Comment implements iComment {
   public readonly id: string;
   public User: User;
-  public message: {
-    text: string,
-    html: iContentEditable
-  };
+  public message: iContentEditable;
   public Post: Post;
   public postedOn?: Date;
   public isConversation?: boolean;
@@ -26,10 +24,7 @@ export default class Comment implements iComment {
     this.id = meta.id || uid(20);
     this.User = user;
     this.Post = post;
-    this.message = {
-      text: convertBlocksToText(content.blocks),
-      html: content
-    };
+    this.message = content;
 
     this.postedOn = meta.postedOn || new Date();
     this.isConversation = !!meta.isConversation;
@@ -40,13 +35,13 @@ export default class Comment implements iComment {
   }
 
   public censorContent(content: iContentEditable): iContentEditable {
-    const { blocks } = content;
+    const { blocks } = content.editable;
     
     for (const block of blocks) {
       block.text = this.censorText(block.text);
     }
 
-    return { blocks, entityMap: content.entityMap };
+    return { ...content, editable: { blocks, ...content.editable } };
   }
 
   public censorText(text: string): string {

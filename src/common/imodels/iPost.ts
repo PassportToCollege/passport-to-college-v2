@@ -30,8 +30,7 @@ export default interface iPost {
   readonly id: string;
   author: string | User;
   title: string;
-  excerpt: string;
-  full: iContentEditable;
+  content: iContentEditable;
   hasHero: boolean;
   hero?: string;
   createdAt: number | Date;

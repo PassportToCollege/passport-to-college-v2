@@ -14,13 +14,12 @@ export default class Accomplishment extends Post implements iAccomplishment {
     this.isAccomplishment = true;
   }
 
-  public getAccomplishmentData(useCase: string = 'display'): iPost | iAccomplishment {
+  public getAccomplishmentData(useCase: string = 'display'): iAccomplishment {
     return {
       id: this.id, 
       title: this.title, 
       author: this.author, 
-      excerpt: this.excerpt, 
-      full: this.full,
+      content: this.content,
       createdAt: useCase === 'save' ? (this.createdAt as Date).getTime() : this.createdAt, 
       category: this.category, 
       state: this.state, 
@@ -28,7 +27,9 @@ export default class Accomplishment extends Post implements iAccomplishment {
       likes: this.likes,
       isAccomplishment: this.isAccomplishment, 
       student: this.student, 
-      hasHero: this.hasHero
+      hasHero: this.hasHero,
+      publishedOn: this.publishedOn,
+      archivedOn: this.archivedOn
     };
   }
 }
