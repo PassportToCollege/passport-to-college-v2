@@ -1,17 +1,18 @@
 import './AboutUs.css';
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import { RawDraftContentState } from 'draft-js';
 
 import { 
-  AboutUsProps, 
-  AboutUsState,
+  AboutUsProps,
   mapStateToProps, 
   mapDispatchToProps 
 } from './props';
 import { about } from '../../constants/pages';
 import { STORIES as storiesRoute } from '../../constants/routes';
+import Strings from '../../constants/strings';
 
 import Header from '../../components/Header';
 import TopicSection from '../../components/TopicSection';
@@ -25,37 +26,119 @@ import WYSIWYGEditor from '../../components/Editor';
 
 const headerImage = require('../../assets/images/about_us__header.jpg');
 
-class AboutUs extends Component<AboutUsProps, AboutUsState> {
-  constructor(props: AboutUsProps) {
-    super(props);
-    this.state = {
-      founder: props.founder,
-      staff: props.staff
-    };
+class AboutUs extends PureComponent<AboutUsProps> {
+ private renderWhatWeDoSection(): React.ReactNode {
+    return (
+      <section className="about__wwd">
+        <FlexContainer>
+          {
+            about.wwd.map((item, i) => {
+              return (
+                <IconBullet
+                  key={`${item.icon}_${i}`}
+                  heading={item.heading}
+                  icon={item.icon}
+                >
+                  <p>{item.info}</p>
+                </IconBullet>
+              );
+            })
+          }
+        </FlexContainer>
+      </section>
+    );
+  }
+
+  private renderStaffSection(): React.ReactNode {
+    let title = '';
+    let content: string | RawDraftContentState = '';
+    if (this.props.founder) {
+      if ('string' === typeof this.props.founder.name) {
+          title = this.props.founder.name;
+      } else if (this.props.founder.name.full) {
+        title = this.props.founder.name.full();
+      }
+
+      if (this.props.founder.bio) {
+        content = 'string' === typeof this.props.founder.bio ?
+          this.props.founder.bio : this.props.founder.bio.editable;
+      }
+    }
+
+    return (
+      <section className="about__staff">
+        <FlexContainer classes={['about__staff_header']}>
+          <h4>{Strings.AboutUs_Intro}</h4>
+          <p>{about.staffIntro}</p>
+        </FlexContainer>
+        <FlexContainer classes={['about__staff_staff']}>
+          {
+            this.props.founder ?
+              <React.Fragment>
+                <InfoCard
+                  isFounder={true}
+                  background={{
+                    color: 'rgba(58,58,58,0.65)'
+                  }}
+                  uid={this.props.founder.uid}
+                  title={title}
+                  content="Founder"
+                />
+                <WYSIWYGEditor
+                  readonly={true}
+                  content={content}
+                  editorStyles={{
+                    border: 'none',
+                    minHeight: 'auto'
+                  }} 
+                />
+              </React.Fragment>
+              : null
+          }
+        </FlexContainer>
+      </section>
+    );
+  }
+
+  private renderStoriesCTA = () => {
+    if (about.showStoriesCTA) {
+      return (
+        <section className="about__staff_stories_cta">
+          <div
+            className="stories_cta__bg"
+            style={{
+              backgroundImage: `url(${about.storiesCTABg})`
+            }}
+          />
+          <div className="stories_cta__content">
+            <div>
+              <span>
+                <h3>{Strings.AboutUs_StoriesCTA}</h3>
+                <LinkButton
+                  default={true}
+                  text="stories"
+                  target={storiesRoute.route}
+                />
+              </span>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    return null;
   }
 
   public componentDidMount() {
     this.props.updateLocation('about');
 
-    if (!this.state.founder) {
+    if (!this.props.founder) {
       this.props.doGetFounder();
     }
 
-    if (!this.state.staff) {
+    if (!this.props.staff) {
       this.props.doGetStaff();
     }
-  }
-
-  public static getDerivedStateFromProps(nextProps: AboutUsProps, state: AboutUsState) {
-    if (nextProps.gotFounder && !_.isEqual(state.founder, nextProps.founder)) {
-      return { founder: nextProps.founder };
-    }
-
-    if (nextProps.gotStaff && !_.isEqual(state.staff, nextProps.staff)) {
-      return { staff: nextProps.staff };
-    }
-
-    return null;
   }
 
   public render() {
@@ -87,61 +170,13 @@ class AboutUs extends Component<AboutUsProps, AboutUsState> {
             margin: '0 auto'
           }} 
         />
-        <section className="about__wwd">
-          <FlexContainer>
-            {
-              about.wwd.map((item, i) => {
-                return (
-                  <IconBullet 
-                    key={`${item.icon}_${i}`}
-                    heading={item.heading}
-                    icon={item.icon}
-                  >
-                    <p>{item.info}</p>  
-                  </IconBullet>
-                );
-              })
-            }
-          </FlexContainer>
-        </section>
-        <section className="about__staff">
-          <FlexContainer classes={['about__staff_header']}>
-            <h4>
-              The people behind <br/>
-              Passport to College
-            </h4>
-            <p>{about.staffIntro}</p>
-          </FlexContainer>
-          <FlexContainer classes={['about__staff_staff']}>
-            {
-              this.state.founder ?
-                <React.Fragment>
-                  <InfoCard 
-                    isFounder={true}
-                    background={{
-                      color: 'rgba(58,58,58,0.65)'
-                    }}
-                    uid={this.state.founder.uid} 
-                    title={this.state.founder.name.full}
-                    content="Founder" 
-                  />
-                  <WYSIWYGEditor 
-                    readonly={true}
-                    content={this.state.founder.bio} 
-                    editorStyles={{
-                      border: 'none',
-                      minHeight: 'auto'
-                    }} />
-                </React.Fragment>
-                : null
-            }
-          </FlexContainer>
-        </section>
+        {this.renderWhatWeDoSection()}
+        {this.renderStaffSection()}
         {/* <section>
           <FlexContainer>
             {
-              this.state.staff ?
-                this.state.staff.map(member => {
+              this.props.staff ?
+                this.props.staff.map(member => {
                   if (member.user) {
                     return <RoleCard key={member.user.uid} staff={member} />
                   }
@@ -154,35 +189,6 @@ class AboutUs extends Component<AboutUsProps, AboutUsState> {
         {this.renderStoriesCTA()}
       </main>
     );
-  }
-
-  public renderStoriesCTA = () => {
-    if (about.showStoriesCTA) {
-      return (
-        <section className="about__staff_stories_cta">
-          <div 
-            className="stories_cta__bg"
-            style={{
-              backgroundImage: `url(${about.storiesCTABg})`
-            }}
-          />
-          <div className="stories_cta__content">
-            <div>
-              <span>
-                <h3>more<br/> about us</h3>
-                <LinkButton 
-                  default={true} 
-                  text="stories" 
-                  target={storiesRoute.route}
-                />
-              </span>
-            </div>
-          </div>
-        </section>
-      );
-    }
-
-    return null;
   }
 }
 

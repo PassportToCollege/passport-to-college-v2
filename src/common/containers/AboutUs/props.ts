@@ -6,10 +6,10 @@ import { doGetUsers, doGetFounder } from '../../actions/users/dispatchers';
 import { UserType } from '../../imodels/iUser';
 
 export interface AboutUsProps {
-  founder: User;
-  staff: User[];
-  gotFounder: boolean;
-  gotStaff: boolean;
+  founder?: User;
+  staff?: User[];
+  gotFounder?: boolean;
+  gotStaff?: boolean;
   doGetStaff: () => void;
   doGetFounder: () => void;
   updateLocation: (location: string) => void;
