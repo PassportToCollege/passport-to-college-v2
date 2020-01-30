@@ -10,6 +10,7 @@ import { auth } from '../../utils/firebase';
 import Accomplishment from '../../models/Accomplishment';
 import Post from '../../models/Post';
 import User from '../../models/User';
+import NotificationsManager from '../../models/NotificationsManager';
 import { 
   AddAccomplishmentProps as Props, 
   AddAccomplishmentState as State
@@ -21,6 +22,7 @@ import DropUploader from '../../components/DropUploader';
 import { InlineNotification } from '../../components/Notification';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
+import { NotificationType } from 'src/common/imodels/iNotification';
 
 class AddAccomplishment extends PureComponent<Props, State> {
   private readonly dropUploaderStyles: React.CSSProperties = {
@@ -45,7 +47,8 @@ class AddAccomplishment extends PureComponent<Props, State> {
 
     this.state = {
       student: props.student,
-      accomplishment: new Accomplishment(newPost, props.student)
+      accomplishment: new Accomplishment(newPost, props.student),
+      notificationsManager: new NotificationsManager()
     };
   }
 
@@ -60,7 +63,7 @@ class AddAccomplishment extends PureComponent<Props, State> {
         <label>{Strings.AddAccomplishment_Label_UID}</label>
         <Input
           inputType="text"
-          inputDisabled={true}
+          inputDisabled={false}
           inputDefault={this.state.student.uid}
           inputName=""
           inputPlaceholder=""
@@ -68,7 +71,7 @@ class AddAccomplishment extends PureComponent<Props, State> {
         <label>{Strings.AddAccomplishment_Label_Fullname}</label>
         <Input
           inputType="text"
-          inputDisabled={true}
+          inputDisabled={false}
           inputDefault={
             'string' === typeof this.state.student.User.name ?
               this.state.student.User.name :
@@ -84,7 +87,54 @@ class AddAccomplishment extends PureComponent<Props, State> {
 
   private renderHeroSection() {
     return (
+      <section className="feature_student__section">
+        <h5 className="section_heading">
+          {this.getSectionHeading(2, Strings.AddAccomplishment_SectionHeading_HeroImage)}
+        </h5>
+        <label>{Strings.AddAccomplishment_Info_HeroImage}</label>
+        <DropUploader
+          overlay={true}
+          label={<span><b>Choose a hero image</b> or drag it here</span>}
+          uploaderStyles={this.dropUploaderStyles}
+          handleImageChange={this.handleHeroImageChange}
+          dropAreaStyles={this.dropAreaStyles}
+          labelStyles={{
+            color: '#FFF'
+          }}
+        />
+        {
+          this.state.notificationsManager.hasNotificationOfType(NotificationType.Hero) ?
+            <InlineNotification
+              text={this.state.notificationsManager.getMessageOfNotificationOfType(NotificationType.Hero)}
+              doClose={this.closeHeroNotification}
+            /> : null
+        }
+      </section>
+    );
+  }
 
+  private renderTitleSection() {
+    return (
+      <section className="add_accomplishment__section">
+        <h5 className="section_heading">
+          {this.getSectionHeading(3, Strings.AddAccomplishment_SectionHeading_AccomplishmentTitle)}
+        </h5>
+        <Input
+          inputType="text"
+          inputName="title"
+          inputPlaceholder="Insert awesome title here"
+          whenBlur={this.handleInputChange}
+          inputDefault=""
+          inputDisabled={false}
+        />
+        {
+          this.state.notificationsManager.hasOpenNotificationOfType(NotificationType.Title) ?
+            <InlineNotification
+              text={this.state.notificationsManager.getMessageOfNotificationOfType(NotificationType.Title)}
+              doClose={this.closeTitleNotification}
+            /> : null
+        }
+      </section>
     );
   }
 
@@ -100,38 +150,8 @@ class AddAccomplishment extends PureComponent<Props, State> {
             <p>{Strings.AddAccomplishment_Info}</p>
           </section>
           {this.renderStudentSection()}
-          <section className="feature_student__section">
-            <h5 className="section_heading">
-              {this.getSectionHeading(2, Strings.AddAccomplishment_SectionHeading_HeroImage)}
-            </h5>
-            <label>{Strings.AddAccomplishment_Info_HeroImage}</label>
-            <DropUploader
-              overlay={true}
-              label={<span><b>Choose a hero image</b> or drag it here</span>}
-              uploaderStyles={this.dropUploaderStyles}
-              handleImageChange={this.handleHeroImageChange} 
-              dropAreaStyles={this.dropAreaStyles}
-              labelStyles={{
-                color: '#FFF'
-              }} 
-            />
-            {
-              this.state.hasHeroNotification && !this.state.heroNotificationClosed ?
-                <InlineNotification text={this.state.heroNotification}
-                  doClose={this.closeHeroNotification} /> : null
-            }
-          </section>
-          <section className="add_accomplishment__section">
-            <h5 className="section_heading">3. Accomplishment Title</h5>
-            <Input inputType="text" inputName="title"
-              inputPlaceholder="Insert awesome title here"
-              whenBlur={this.handleInputChange} />
-            {
-              this.state.hasTitleNotification && !this.state.titleNotificationClosed ?
-                <InlineNotification text={this.state.titleNotification}
-                  doClose={this.closeTitleNotification} /> : null
-            }
-          </section>
+          {this.renderHeroSection()}
+          {this.renderTitleSection()}
           <section className="add_accomplishment__section">
             <h5 className="section_heading">4. Excerpt</h5>
             <label>Provide an excerpt of the accomplishment&apos;s full details. It is usually the first paragragh of the full details, or the first couple sentences. This is what readers will see as a preview on the <i>Stories</i> page. Try to keep your excerpt under 100 words.</label>

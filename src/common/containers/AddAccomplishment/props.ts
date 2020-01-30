@@ -1,6 +1,7 @@
 import Post from '../../models/Post';
 import Student from '../../models/Student';
 import Accomplishment from '../../models/Accomplishment';
+import NotificationsManager from '../../models/NotificationsManager';
 import iAppState from '../../imodels';
 import { Dispatch } from 'react';
 import { Action } from '../../actions';
@@ -18,4 +19,5 @@ export interface AddAccomplishmentProps {
 export interface AddAccomplishmentState {
   student: Student;
   accomplishment: Accomplishment;
+  notificationsManager: NotificationsManager;
 }

@@ -1,4 +1,3 @@
-import iPost from '../imodels/iPost';
 import iAccomplishment from '../imodels/iAccomplishment';
 import Post from '../models/Post';
 import Student from '../models/Student';

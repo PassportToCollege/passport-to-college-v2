@@ -1,5 +1,6 @@
 import iTest from './iTest';
 import Reply from '../models/Reply';
+import iNotification from '../imodels/iNotification';
 
 export interface iStringBooleanPair {
   [key: string]: boolean;
@@ -10,5 +11,9 @@ export interface iStringTestPair {
 }
 
 export interface iStringReplyListPair {
-  [Key: string]: Reply[];
+  [key: string]: Reply[];
+}
+
+export interface iStringNotificationPair {
+  [key: string]: iNotification;
 }
