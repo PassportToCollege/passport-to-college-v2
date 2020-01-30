@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpload } from '@fortawesome/fontawesome-free-solid';
 
 interface DropUploaderProps {
-  disabled: boolean;
+  disabled?: boolean;
   uploaderStyles: React.CSSProperties;
   dropAreaStyles: React.CSSProperties;
   labelStyles: React.CSSProperties;

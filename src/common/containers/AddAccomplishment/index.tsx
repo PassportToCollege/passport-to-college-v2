@@ -1,77 +1,120 @@
-import "./AddAccomplishment.css";
+import './AddAccomplishment.css';
 
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import propTypes from "prop-types";
+import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import propTypes from 'prop-types';
 
-import { verifyImageDimensions } from "../../utils";
-import { auth } from "../../utils/firebase";
-import { Accomplishment } from "../../utils/utilityClasses";
-import * as postActions from "../../actions/postActions";
-import * as postCategoryActions from "../../actions/postCategoryActions";
+import { verifyImageDimensions } from '../../utils';
+import { auth } from '../../utils/firebase';
+import Accomplishment from '../../models/Accomplishment';
+import Post from '../../models/Post';
+import User from '../../models/User';
+import { 
+  AddAccomplishmentProps as Props, 
+  AddAccomplishmentState as State
+} from './props';
+import Strings from '../../constants/strings';
+import Modal from '../../components/Modal';
+import WYSIWYGEditor from '../../components/Editor';
+import DropUploader from '../../components/DropUploader';
+import { InlineNotification } from '../../components/Notification';
+import Input from '../../components/Input';
+import Button from '../../components/Button';
 
-import Modal from "../../components/Modal";
-import WYSIWYGEditor from "../../components/Editor";
-import DropUploader from "../../components/DropUploader";
-import { InlineNotification } from "../../components/Notification";
-import Input from "../../components/Input";
-import Button from "../../components/Button";
+class AddAccomplishment extends PureComponent<Props, State> {
+  private readonly dropUploaderStyles: React.CSSProperties = {
+    backgroundColor: 'white',
+    backgroundImage: `url(${this.state.hero})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    padding: '4em'
+  };
 
-class AddAccomplishment extends Component {
-  constructor(props) {
+  private readonly dropAreaStyles: React.CSSProperties = {
+    background: 'none',
+    color: '#FFF',
+    borderColor: '#FFF'
+  };
+
+  constructor(props: Props) {
     super(props);
+
+    const newPost: Post = Post.getPostStub(props.student.uid);
 
     this.state = {
       student: props.student,
-      newAccomplishment: {
-        student: props.student.uid,
-        title: "",
-        excerpt: "",
-        full: "",
-        createdAt: new Date().getTime()
-      }
-    }
+      accomplishment: new Accomplishment(newPost, props.student)
+    };
   }
 
-  render() {
+  private getSectionHeading = (count: number, heading: string) => `${count}. ${heading}`;
+
+  private renderStudentSection() {
     return (
-      <Modal classes={["modal__add_accomplishment"]}
-        doClose={this.props.doClose}>
+      <section className="add_accomplishment__section">
+        <h5 className="section_heading">
+          {this.getSectionHeading(1, Strings.AddAccomplishment_SectionHeading_Student)}
+        </h5>
+        <label>{Strings.AddAccomplishment_Label_UID}</label>
+        <Input
+          inputType="text"
+          inputDisabled={true}
+          inputDefault={this.state.student.uid}
+          inputName=""
+          inputPlaceholder=""
+        />
+        <label>{Strings.AddAccomplishment_Label_Fullname}</label>
+        <Input
+          inputType="text"
+          inputDisabled={true}
+          inputDefault={
+            'string' === typeof this.state.student.User.name ?
+              this.state.student.User.name :
+              'function' === typeof this.state.student.User.name.full ?
+                this.state.student.User.name.full() : ''
+          }
+          inputName=""
+          inputPlaceholder=""
+        />
+      </section>
+    );
+  }
+
+  private renderHeroSection() {
+    return (
+
+    );
+  }
+
+  public render() {
+    return (
+      <Modal 
+        classes={['modal__add_accomplishment']}
+        doClose={this.props.doClose}
+      >
         <main className="add_accomplishment">
           <section className="add_accomplishment__section">
-            <h6>Note:</h6>
-            <p>A student acomplishment is a special type of post/story. It will always be available for reading in the blog and will appear on the student&apos;s profile page. Unlike student features, accomplishments do not have expirations.</p>
+            <h6>{Strings.AddAccomplishment_Note}</h6>
+            <p>{Strings.AddAccomplishment_Info}</p>
           </section>
-          <section className="add_accomplishment__section">
-            <h5 className="section_heading">1. Student</h5>
-            <label>UID</label>
-            <Input inputType="text" inputDisabled inputDefault={this.state.student.uid} />
-            <label>Full name</label>
-            <Input inputType="text" inputDisabled inputDefault={this.state.student.user.name.full} />
-          </section>
+          {this.renderStudentSection()}
           <section className="feature_student__section">
-            <h5 className="section_heading">2. Hero Image</h5>
-            <label>This is an optional hero image for the accomplishment. It will appear after the accomplishment title when a user opens the accomplishment.</label>
-            <DropUploader overlay
+            <h5 className="section_heading">
+              {this.getSectionHeading(2, Strings.AddAccomplishment_SectionHeading_HeroImage)}
+            </h5>
+            <label>{Strings.AddAccomplishment_Info_HeroImage}</label>
+            <DropUploader
+              overlay={true}
               label={<span><b>Choose a hero image</b> or drag it here</span>}
-              uploaderStyles={{
-                backgroundColor: "white",
-                backgroundImage: `url(${this.state.hero})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-                padding: "4em"
-              }}
-              handleAvatarChange={this.handleHeroImageChange} 
-              dropAreaStyles={{
-                background: "none",
-                color: "#FFF",
-                borderColor: "#FFF"
-              }}
+              uploaderStyles={this.dropUploaderStyles}
+              handleImageChange={this.handleHeroImageChange} 
+              dropAreaStyles={this.dropAreaStyles}
               labelStyles={{
-                color: "#FFF"
-              }} />
+                color: '#FFF'
+              }} 
+            />
             {
               this.state.hasHeroNotification && !this.state.heroNotificationClosed ?
                 <InlineNotification text={this.state.heroNotification}
@@ -107,10 +150,10 @@ class AddAccomplishment extends Component {
             <WYSIWYGEditor
               captureBlur={this.handleDetailsBlur}
               editorStyles={{
-                maxWidth: "100%"
+                maxWidth: '100%'
               }}
               controlStyles={{
-                maxWidth: "100%"
+                maxWidth: '100%'
               }} />
             {
               this.state.hasDetailsNotification && !this.state.detailsNotificationClosed ?
@@ -134,63 +177,63 @@ class AddAccomplishment extends Component {
                 <InlineNotification text={this.state.detailsNotification}
                   doClose={this.closeDetailsNotification} /> : null
             }
-            <Button type="button" solid
+            <Button type="button" solid={true}
               text="cancel" 
               doClick={this.props.doClose} 
               styles={{
-                backgroundColor: "rgb(128, 150, 162)",
-                marginRight: "1em"
+                backgroundColor: 'rgb(128, 150, 162)',
+                marginRight: '1em'
               }} />
-            <Button type="button" solid 
+            <Button type="button" solid={true} 
               text="save accomplishment" 
               doClick={this.handleAccomplishmentSave} />
           </section>
         </main>
       </Modal>
-    )
+    );
   }
 
-  handleDetailsBlur = content => {
-    this.setState({ newAccomplishment: Object.assign({}, this.state.newAccomplishment, {
-        full: content
-      }) 
+  public handleDetailsBlur = (content) => {
+    this.setState({ newAccomplishment: {...this.state.newAccomplishment, 
+        full: content} 
     });
   }
 
-  handleInputChange = e => {
+  public handleInputChange = (e) => {
     this.setState({
-      newAccomplishment: Object.assign({}, this.state.newAccomplishment, {
-        [e.target ? e.target.name : e.name]: e.target ? e.target.value : e.value
-      })
+      newAccomplishment: {...this.state.newAccomplishment, 
+        [e.target ? e.target.name : e.name]: e.target ? e.target.value : e.value}
     });
   }
 
-  handleHeroImageChange = e => {
+  public handleHeroImageChange = (e) => {
     verifyImageDimensions(e)
       .then(({ image, url }) => {
         this.setState({ 
           hero: url,
-          newAccomplishment: Object.assign({}, this.state.newAccomplishment, {
-            hero: image
-          }) 
+          newAccomplishment: {...this.state.newAccomplishment, 
+            hero: image} 
         });
       })
-      .catch(error => {
+      .catch((error) => {
         this.setHeroNotification(error.message);
       });
   }
 
-  handleAccomplishmentSave = () => {
+  public handleAccomplishmentSave = () => {
     const { newAccomplishment } = this.state;
 
-    if (!newAccomplishment.title.length)
+    if (!newAccomplishment.title.length) {
       return this.setTitleNotification("title is required");
+    }
 
-    if (!newAccomplishment.excerpt.length)
+    if (!newAccomplishment.excerpt.length) {
       return this.setExcerptNotification("excerpt required");
+    }
 
-    if(!Object.keys(newAccomplishment.full).length)
+    if (!Object.keys(newAccomplishment.full).length) {
       return this.setDetailsErrorNotification("full details required");
+    }
 
     const accomplishment = new Accomplishment({
       title: newAccomplishment.title,
@@ -208,12 +251,12 @@ class AddAccomplishment extends Component {
       );
     }
 
-    this.props.postCategoryActions.doCategoryPostsUpdate("student_accomplishments");
+    this.props.postCategoryActions.doCategoryPostsUpdate('student_accomplishments');
     
     this.props.postActions.doPostCreate(accomplishment.data);
   }
 
-  setHeroNotification = (notification = "") => {
+  public setHeroNotification = (notification = '') => {
     this.setState({
       hasHeroNotification: true,
       heroNotificationClosed: false,
@@ -221,15 +264,15 @@ class AddAccomplishment extends Component {
     });
   }
 
-  closeHeroNotification = () => {
+  public closeHeroNotification = () => {
     this.setState({
       hasHeroNotification: false,
       heroNotificationClosed: true,
-      heroNotification: ""
+      heroNotification: ''
     });
   }
 
-  setTitleNotification = (notification = "") => {
+  public setTitleNotification = (notification = '') => {
     this.setState({
       hasTitleNotification: true,
       titleNotificationClosed: false,
@@ -237,15 +280,15 @@ class AddAccomplishment extends Component {
     });
   }
 
-  closeTitleNotification = () => {
+  public closeTitleNotification = () => {
     this.setState({
       hasTitleNotification: false,
       titleNotificationClosed: true,
-      titleNotification: ""
+      titleNotification: ''
     });
   }
   
-  setExcerptNotification = (notification = "") => {
+  public setExcerptNotification = (notification = '') => {
     this.setState({
       hasExcerptNotification: true,
       excerptNotificationClosed: false,
@@ -253,15 +296,15 @@ class AddAccomplishment extends Component {
     });
   }
 
-  closeExcerptNotification = () => {
+  public closeExcerptNotification = () => {
     this.setState({
       hasExcerptNotification: false,
       excerptNotificationClosed: true,
-      excerptNotification: ""
+      excerptNotification: ''
     });
   }
 
-  setDetailsErrorNotification = (notification = "") => {
+  public setDetailsErrorNotification = (notification = '') => {
     this.setState({
       hasDetailsNotification: true,
       detailsNotificationClosed: false,
@@ -269,7 +312,7 @@ class AddAccomplishment extends Component {
     });
   }
 
-  closeDetailsNotification = () => {
+  public closeDetailsNotification = () => {
     this.setState({
       hasDetailsNotification: false,
       detailsNotificationClosed: true,
@@ -291,14 +334,14 @@ AddAccomplishment.propTypes = {
   student: propTypes.object
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     post: state.post,
     postCategories: state.postCategories
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     postActions: bindActionCreators(postActions, dispatch),
     postCategoryActions: bindActionCreators(postCategoryActions, dispatch)

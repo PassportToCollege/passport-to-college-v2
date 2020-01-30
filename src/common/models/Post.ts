@@ -64,4 +64,14 @@ export default class Post implements iPost {
       hero: this.hero
     };
   }
+
+  public static getPostStub(id: string): Post {
+    return new Post(id, {
+      id,
+      author: id,
+      title: '',
+      hasHero: false,
+      createdAt: new Date()
+    });
+  }
 }

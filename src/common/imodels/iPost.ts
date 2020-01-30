@@ -30,13 +30,13 @@ export default interface iPost {
   readonly id: string;
   author: string | User;
   title: string;
-  content: iContentEditable;
+  content?: iContentEditable;
   hasHero: boolean;
   hero?: string;
   createdAt: number | Date;
-  publishedOn: number | Date;
-  archivedOn: number | Date;
-  state: iPostState;
+  publishedOn?: number | Date;
+  archivedOn?: number | Date;
+  state?: iPostState;
   conversations?: string[];
   category?: iStringBooleanPair;
   likes?: iStringBooleanPair;
