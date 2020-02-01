@@ -10,19 +10,19 @@ import {
   mapStateToProps, 
   mapDispatchToProps 
 } from './props';
-import { about } from '../../constants/pages';
-import { STORIES as storiesRoute } from '../../constants/routes';
-import Strings from '../../constants/strings';
+import { about } from '../../../constants/pages';
+import { STORIES as storiesRoute } from '../../../constants/routes';
+import Strings from '../../../constants/strings';
 
-import Header from '../../components/Header';
-import TopicSection from '../../components/TopicSection';
-import ToTopContainer from '../../components/ToTopContainer';
-import IconBullet from '../../components/IconBullet';
-import PageMeta from '../../components/PageMeta';
-import FlexContainer from '../../components/FlexContainer';
-import LinkButton from '../../components/LinkButton';
-import InfoCard from '../../components/InfoCard';
-import WYSIWYGEditor from '../../components/Editor';
+import Header from '../../../components/Header';
+import TopicSection from '../../../components/TopicSection';
+import ToTopContainer from '../../../components/ToTopContainer';
+import IconBullet from '../../../components/IconBullet';
+import PageMeta from '../../../components/PageMeta';
+import FlexContainer from '../../../components/FlexContainer';
+import LinkButton from '../../../components/LinkButton';
+import InfoCard from '../../../components/InfoCard';
+import WYSIWYGEditor from '../../../components/Editor';
 
 const headerImage = require('../../assets/images/about_us__header.jpg');
 

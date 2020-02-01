@@ -1,9 +1,9 @@
-import User from '../../models/User';
-import iAppState from '../../imodels/iAppState';
+import User from '../../../models/User';
+import iAppState from '../../../imodels/iAppState';
 import { Dispatch } from 'react';
-import { Action } from '../../actions';
-import { doGetUsers, doGetFounder } from '../../actions/users/dispatchers';
-import { UserType } from '../../imodels/iUser';
+import { Action } from '../../../actions';
+import { doGetUsers, doGetFounder } from '../../../actions/users/dispatchers';
+import { UserType } from '../../../imodels/iUser';
 
 export interface AboutUsProps {
   founder?: User;

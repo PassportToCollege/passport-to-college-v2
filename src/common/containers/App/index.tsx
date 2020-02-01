@@ -25,7 +25,7 @@ import Navigation from "../Navigation";
 import Footer from "../Footer";
 
 import Home from '../Home';
-import About from "../AboutUs";
+import About from "../../routes/Apply/AboutUs";
 import ContactUs from "../ContactUs";
 import Events from "../Events";
 import Stories from "../Stories";

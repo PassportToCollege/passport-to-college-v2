@@ -1,48 +1,48 @@
-import "./Apply.css";
+import './Apply.css';
 
-import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import propTypes from "prop-types";
+import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import propTypes from 'prop-types';
 
-import * as authActions from "../../actions/authActions";
+import * as authActions from '../../actions/authActions';
 
-import { SignInForm, StartApplication } from "../../components/Forms";
-import Notification from "../../components/Notification";
-import PageMeta from "../../components/PageMeta";
+import { SignInForm, StartApplication } from '../../components/Forms';
+import Notification from '../../components/Notification';
+import PageMeta from '../../components/PageMeta';
 
 class Apply extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
       hasError: false,
-      error: "",
+      error: '',
       notificationClosed: false,
       hasSent: false,
       loggingIn: false,
       creatingAccount: false
-    }
+    };
   }
 
-  componentDidMount() {
-    this.props.updateLocation("apply");
+  public componentDidMount() {
+    this.props.updateLocation('apply');
   }
 
-  componentWillUnmount() {
+  public componentWillUnmount() {
     this.props.authActions.removeAuthErrors();
     this.setState({ 
       hasSent: false, 
       notificationClosed: true,
-      email: "",
-      password: "" 
+      email: '',
+      password: '' 
     });
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
+  public static getDerivedStateFromProps(nextProps, prevState) {
     let newState = null;
 
     if (nextProps.auth.hasFailed) {
@@ -63,11 +63,13 @@ class Apply extends Component {
         loggingIn: false
       };
 
-      if (nextProps.auth.error.message === "user type mismatch")
+      if (nextProps.auth.error.message === 'user type mismatch') {
         newState.error = "The account you used to sign in is not an applicant account. You must use an applicant account to access the application portal.";
+      }
       
-      if (nextProps.auth.error.message === "user already exists")
+      if (nextProps.auth.error.message === 'user already exists') {
         newState.error = "A user was found linked to the account you provided. Try signing in instead.";
+      }
     }
 
     if (nextProps.auth.hasSent) {
@@ -107,7 +109,7 @@ class Apply extends Component {
     return newState;
   }
 
-  render() {
+  public render() {
     return (
       <div className="apply__container">
         <PageMeta route="APPLY" />
@@ -133,7 +135,7 @@ class Apply extends Component {
           isWorking={this.state.creatingAccount} />
 
         {
-          this.state.hasError && !this.state.notificationClosed?
+          this.state.hasError && !this.state.notificationClosed ?
           <Notification doClose={this.handleNotificationClose} text={this.state.error} /> :
           null
         }
@@ -145,37 +147,37 @@ class Apply extends Component {
             null
         }
       </div>
-    )
+    );
   }
 
-  updateEmail = (e) => this.setState({ email: e.target.value });
-  updatePassword = (e) => this.setState({ password: e.target.value });
-  updateName = (e) => this.setState({ name: e.target.value });
+  public updateEmail = (e) => this.setState({ email: e.target.value });
+  public updatePassword = (e) => this.setState({ password: e.target.value });
+  public updateName = (e) => this.setState({ name: e.target.value });
 
-  handleSignIn = (e) => {
+  public handleSignIn = (e) => {
     e.preventDefault();
 
     const { email, password } = this.state;
 
     this.props.authActions.doSignIn(email, password, {
-      strict: "isApplicant"
+      strict: 'isApplicant'
     });
   }
 
-  handleSocialSignIn = provider => {
+  public handleSocialSignIn = (provider) => {
     this.props.authActions.doSignInWithSocial(provider, {
-      strict: "isApplicant"
+      strict: 'isApplicant'
     });
   }
 
-  handleSocialSignUp = provider => {
+  public handleSocialSignUp = (provider) => {
     this.props.authActions.doSignUpWithSocial(provider, {
       applicant: true,
       emailConfirmed: true
     });
   }
 
-  handleAccountCreation = (e) => {
+  public handleAccountCreation = (e) => {
     e.preventDefault();
 
     const data = {
@@ -191,7 +193,7 @@ class Apply extends Component {
     e.target.reset();
   }
 
-  handleNotificationClose = () => {
+  public handleNotificationClose = () => {
     this.setState({ notificationClosed: true, hasError: false, hasSent: false });
   }
 }
@@ -203,14 +205,14 @@ Apply.propTypes = {
   history: propTypes.object
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     activeUser: state.activeUser,
     auth: state.auth
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     authActions: bindActionCreators(authActions, dispatch)
   };
