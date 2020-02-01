@@ -6,21 +6,21 @@ import { bindActionCreators } from "redux";
 import propTypes from 'prop-types';
 import _ from "lodash";
 
-import * as applicationActions from "../../../../actions/application/actions";
+import * as applicationActions from "../../../../../actions/application/actions";
 import * as userActions from "../../../../actions/userActions";
 
-import { getTestKey } from "../../../../utils";
+import { getTestKey } from "../../../../../utils";
 
-import { PersonalInformation, EducationInformation, USTest, Miscellaneous } from '../../../../components/Forms/index';
-import { ReauthenticateModal } from "../../../../components/Modal";
-import Button from "../../../../components/Button";
-import { AddNationalTest } from "../../../../components/Modal";
-import TestList from "../../../../components/TestList";
-import WYSIWYGEditor from "../../../../components/Editor";
-import ReviewBlock from "../../../../components/ReviewBlock";
-import LoadingText from "../../../../components/LoadingText";
-import Notification from "../../../../components/Notification";
-import PageMeta from "../../../../components/PageMeta";
+import { PersonalInformation, EducationInformation, USTest, Miscellaneous } from '../../../../../components/Forms/index';
+import { ReauthenticateModal } from "../../../../../components/Modal";
+import Button from "../../../../../components/Button";
+import { AddNationalTest } from "../../../../../components/Modal";
+import TestList from "../../../../../components/TestList";
+import WYSIWYGEditor from "../../../../../components/Editor";
+import ReviewBlock from "../../../../../components/ReviewBlock";
+import LoadingText from "../../../../../components/LoadingText";
+import Notification from "../../../../../components/Notification";
+import PageMeta from "../../../../../components/PageMeta";
 
 class ApplicationTask extends Component {
   constructor(props) {
