@@ -14,8 +14,12 @@ export default class NotificationsManager {
     this.activeNotifications[notification.type] = notification;
   }
 
-  public close(notification: iNotification) {
-    this.activeNotifications[notification.type].isClosed = true;
+  public close() {
+    for (const notification of Object.keys(this.activeNotifications)) {
+      if (!this.activeNotifications[notification].isClosed) {
+        this.activeNotifications[notification].isClosed = true;
+      }
+    }
   }
 
   public cleanUp() {

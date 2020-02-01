@@ -6,7 +6,7 @@ import { faTimes } from '@fortawesome/fontawesome-free-solid';
 
 import Notification from './index';
 
-export class InlineNotification extends Notification {
+export default class InlineNotification extends Notification {
   public render() {
     return (
       <div 

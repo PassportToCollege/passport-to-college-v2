@@ -4,6 +4,8 @@ import User from '../models/User';
 import iContentEditable from '../imodels/iContentEditable';
 import iPost, { iPostState } from '../imodels/iPost';
 import { iStringBooleanPair } from '../imodels/iObjectTypes';
+import { RawDraftContentState } from 'draft-js';
+import { convertBlocksToText } from '../utils';
 
 export default class Post implements iPost {
   public readonly id: string;
@@ -63,6 +65,24 @@ export default class Post implements iPost {
       hasHero: this.hasHero,
       hero: this.hero
     };
+  }
+
+  public updateContent(content: RawDraftContentState) {
+    this.content.editable = content;
+    this.content.text = convertBlocksToText(content.blocks);
+
+    return this;
+  }
+
+  public updateValue(key: string, value: any) {
+    if (
+      Object.keys(this).includes(key) &&
+      typeof this[key] === typeof value
+    ) {
+      this[key] = value;
+    }
+
+    return this;
   }
 
   public static getPostStub(id: string): Post {

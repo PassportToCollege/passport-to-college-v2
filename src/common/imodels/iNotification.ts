@@ -1,8 +1,10 @@
 export enum NotificationType {
   Unknown = 'Unknown',
-  Hero = 'Hero',
-  Title = 'Title',
-  Excerpt = 'Excerpt'
+  HeroError = 'HeroError',
+  HeroUploadError = 'HeroUploadError',
+  TitleError = 'TitleError',
+  ExcerptError = 'ExcerptError',
+  AccomplishmentDetailsError = 'AccomplishmentDetailsError',
 }
 
 export default interface iNotification {
