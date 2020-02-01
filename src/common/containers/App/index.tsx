@@ -39,8 +39,8 @@ import ConfirmEmail from "../Auth/ConfirmEmail";
 
 import Dashboard from "../Dashboard";
 import StudentDashboard from "../StudentDashboard";
-import Apply from "../Apply";
-import ApplicationPortal from "../Apply/Portal";
+import Apply from "../../routes/Apply";
+import ApplicationPortal from "../../routes/Apply/Portal";
 
 const AppInitialState = {
   Hamburger : InitialState.Hamburger,

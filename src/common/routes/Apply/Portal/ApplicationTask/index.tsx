@@ -11,7 +11,7 @@ import * as userActions from "../../../../actions/userActions";
 
 import { getTestKey } from "../../../../utils";
 
-import { PersonalInformation, EducationInformation, USTest, Miscellaneous } from './../../../../components/Forms/index';
+import { PersonalInformation, EducationInformation, USTest, Miscellaneous } from '../../../../components/Forms/index';
 import { ReauthenticateModal } from "../../../../components/Modal";
 import Button from "../../../../components/Button";
 import { AddNationalTest } from "../../../../components/Modal";
