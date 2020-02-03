@@ -1,30 +1,30 @@
 import './Apply.css';
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import propTypes from 'prop-types';
-
-import * as authActions from '../../actions/authActions';
-
+import {
+  ApplyProps as Props,
+  ApplyState as State,
+  mapStateToProps,
+  mapDispatchToProps
+} from './props';
+import NotificationsManager from '../../models/NotificationsManager';
+import iNotification, { NotificationType } from '../../imodels/iNotification';
+import Strings from '../../constants/strings';
+import iUser from '../../imodels/iUser';
 import { SignInForm, StartApplication } from '../../../components/Forms';
 import Notification from '../../../components/Notification';
 import PageMeta from '../../../components/PageMeta';
 
-class Apply extends Component {
-  constructor(props) {
+class Apply extends PureComponent<Props, State> {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
       email: '',
       password: '',
-      hasError: false,
-      error: '',
-      notificationClosed: false,
-      hasSent: false,
-      loggingIn: false,
-      creatingAccount: false
+      notificationsManager: new NotificationsManager()
     };
   }
 
@@ -33,80 +33,63 @@ class Apply extends Component {
   }
 
   public componentWillUnmount() {
-    this.props.authActions.removeAuthErrors();
-    this.setState({ 
-      hasSent: false, 
-      notificationClosed: true,
-      email: '',
-      password: '' 
-    });
+    this.state.notificationsManager.cleanUp();
   }
 
-  public static getDerivedStateFromProps(nextProps, prevState) {
-    let newState = null;
+  public componentDidUpdate(prevProps: Props, prevState: State) {
+    const { auth } = this.props;
 
-    if (nextProps.auth.hasFailed) {
-      newState = {
-        hasError: true,
-        error: nextProps.auth.error.message,
-        notificationClosed: false,
-        loggingIn: false,
-        creatingAccount: false
+    if (auth.failedToCreateAccount && prevProps.auth.isCreatingAccount) {
+      const notification: iNotification = {
+        type: NotificationType.AuthAccountCreationError,
+        message: auth.error!.message,
+        isClosed: false
       };
+
+      this.state.notificationsManager.add(notification);
     }
 
-    if (nextProps.auth.failedToSignInWithSocial || nextProps.auth.failedToSignUpWithSocial) {
-      newState = {
-        hasError: true,
-        error: nextProps.auth.error.message,
-        notificationClosed: false,
-        loggingIn: false
+    if (
+      (auth.failedToSignInWithSocial && prevProps.auth.signingInWithSocial) ||
+      (auth.failedToSignUpWithSocial && prevProps.auth.signingUpWithSocial)
+    ) {
+      const notification: iNotification = {
+        type: NotificationType.AuthAccountCreationError,
+        message: Strings.AuthError_Generic,
+        isClosed: false
       };
 
-      if (nextProps.auth.error.message === 'user type mismatch') {
-        newState.error = "The account you used to sign in is not an applicant account. You must use an applicant account to access the application portal.";
+      // tslint:disable-next-line:switch-default
+      switch (auth.error!.message) {
+        case 'user type mismatch':
+          notification.message = Strings.AuthError_UserTypeMismatch;
+          break;
+        case 'user already exists':
+          notification.message = Strings.AuthError_UserAlreadyExists;
+          break;
       }
+
+      this.state.notificationsManager.add(notification);
+    }
+
+    if (auth.hasSent && prevProps.auth.isSending) {
+      const notification: iNotification = {
+        type: NotificationType.AuthAccountCreated,
+        message: Strings.AuthSuccess_AccountCreated,
+        isClosed: false
+      };
+
+      this.state.notificationsManager.add(notification);
+    }
+
+    if ((auth.hasAuthorized || auth.hasSignedInWithSocial) && prevProps.auth.isAuthorizing) {
+      let { activeUser } = auth;
       
-      if (nextProps.auth.error.message === 'user already exists') {
-        newState.error = "A user was found linked to the account you provided. Try signing in instead.";
+      if (typeof activeUser !== 'boolean' && activeUser) {
+        activeUser = activeUser as iUser;
+        this.props.history.push(`/apply/p/${activeUser.uid}`);
       }
     }
-
-    if (nextProps.auth.hasSent) {
-      newState = {
-        hasSent: true,
-        notificationClosed: false
-      };
-    }
-
-    if (nextProps.auth.isCreating) {
-      newState = {
-        creatingAccount: true
-      };
-    }
-
-    if (nextProps.auth.hasCreated) {
-      newState = newState || {};
-      newState.creatingAccount = false;
-    }
-
-    if (nextProps.auth.isAuthorizing || nextProps.auth.signingInWithSocial) {
-      newState = {
-        loggingIn: true
-      };
-    }
-
-    if ((nextProps.auth.hasAuthorized || nextProps.auth.hasSignedInWithSocial) &&
-      prevState.loggingIn) {
-      newState = {
-        loggingIn: false
-      };
-
-      const { activeUser } = nextProps.auth;
-      nextProps.history.push(`/apply/p/${activeUser.uid}`);
-    }
-
-    return newState;
   }
 
   public render() {
@@ -197,26 +180,6 @@ class Apply extends Component {
     this.setState({ notificationClosed: true, hasError: false, hasSent: false });
   }
 }
-
-Apply.propTypes = {
-  authActions: propTypes.object,
-  updateLocation: propTypes.func,
-  auth: propTypes.oneOfType([propTypes.bool, propTypes.object]),
-  history: propTypes.object
-};
-
-const mapStateToProps = (state) => {
-  return {
-    activeUser: state.activeUser,
-    auth: state.auth
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    authActions: bindActionCreators(authActions, dispatch)
-  };
-};
 
 export default withRouter(
   connect(

@@ -54,7 +54,7 @@ import {
 const cookies: any = new Cookies();
 const EMAIL_API: string = process.env.REACT_APP_EMAIL_API || '';
 
-type ValidProvider = 'google' | 'facebook' | 'github' | 'twitter';
+export type ValidProvider = 'google' | 'facebook' | 'github' | 'twitter';
 
 export interface AuthOptions {
   strict?: 'isAdmin' | 'isStudent' | 'isStaff' | 'isApplicant';

@@ -252,6 +252,7 @@ export interface AuthState {
   isAuthorizing?: boolean;
   failedToAuthorize?: boolean;
   hasAuthorized?: boolean;
+  hasSignedOut?: boolean;
 
   signingInWithSocial?: boolean;
   hasSignedInWithSocial?: boolean;
@@ -261,9 +262,9 @@ export interface AuthState {
   hasSignedUpWithSocial?: boolean;
   failedToSignUpWithSocial?: boolean;
 
-  isCreating?: boolean;
-  hasCreated?: boolean;
-  hasFailed?: boolean;
+  isCreatingAccount?: boolean;
+  hasCreatedAccount?: boolean;
+  failedToCreateAccount?: boolean;
 
   isSending?: boolean; 
   hasSent?: boolean; 
