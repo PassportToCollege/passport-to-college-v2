@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 
 import TextedIconButton from '../TextedIconButton';
 import Loader from '../Loader';
+import { ValidProvider } from '../../actions/auth/dispatchers';
 
 interface StartApplicationFormProps {
   title?: string;
@@ -13,7 +14,7 @@ interface StartApplicationFormProps {
   updatePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
   updateName: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleAccountCreation: (e: React.FormEvent<HTMLFormElement>) => void;
-  handleSocialSignUp?: (provider: string) => void;
+  handleSocialSignUp?: (provider: ValidProvider) => void;
 }
 
 export default class StartApplicationForm extends Component<StartApplicationFormProps> {

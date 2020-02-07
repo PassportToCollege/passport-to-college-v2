@@ -30,6 +30,37 @@ export default class NotificationsManager {
     return !!this.activeNotifications[type];
   }
 
+  public hasOpenNotifications(): iNotification | null {
+    const keys = Object.keys(this.activeNotifications);
+
+    if (keys.length) {
+      for (const key of keys) {
+        const notification = this.activeNotifications[key];
+        if (!notification.isClosed) {
+          return notification;
+        }
+      }
+    }
+
+    return null;
+  }
+
+  public hasOpenErrorNotifications(): iNotification | null {
+    const keys = Object.keys(this.activeNotifications);
+
+    if (keys.length) {
+      for (const key of keys) {
+        const notification = this.activeNotifications[key];
+
+        if (notification.isError && !notification.isClosed) {
+          return notification;
+        }
+      }
+    }
+
+    return null;
+  }
+
   public hasOpenNotificationOfType(type: NotificationType) {
     return this.hasNotificationOfType(type) && !this.activeNotifications[type].isClosed;
   }

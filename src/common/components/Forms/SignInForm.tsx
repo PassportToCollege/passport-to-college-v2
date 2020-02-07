@@ -3,9 +3,9 @@ import './Forms.css';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import { ValidConnection } from '../ConnectionsStrip';
 import TextedIconButton from '../TextedIconButton';
 import Loader from '../Loader';
+import { ValidProvider } from '../../actions/auth/dispatchers';
 
 interface SignInFormProps {
   title: string;
@@ -13,10 +13,10 @@ interface SignInFormProps {
   submitText: string;
   authError: boolean;
   isWorking: boolean;
-  handleSubmit: () => void;
-  updateEmail: () => void;
-  updatePassword: () => void;
-  handleSocialSignIn: (connection: ValidConnection) => void;
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  updateEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  updatePassword: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleSocialSignIn: (provider: ValidProvider) => void;
 }
 
 interface SignInFormState {

@@ -13,9 +13,13 @@ import NotificationsManager from '../../models/NotificationsManager';
 import iNotification, { NotificationType } from '../../imodels/iNotification';
 import Strings from '../../constants/strings';
 import iUser from '../../imodels/iUser';
-import { SignInForm, StartApplication } from '../../../components/Forms';
-import Notification from '../../../components/Notification';
-import PageMeta from '../../../components/PageMeta';
+import SignInForm from '../../components/Forms/SignInForm';
+import StartApplication from '../../components/Forms/StartApplicationForm';
+import Notification from '../../components/Notification';
+import PageMeta from '../../components/PageMeta';
+import { ValidProvider } from '../../actions/auth/dispatchers';
+import User from '../../models/User';
+import { uid } from 'rand-token';
 
 class Apply extends PureComponent<Props, State> {
   constructor(props: Props) {
@@ -24,9 +28,43 @@ class Apply extends PureComponent<Props, State> {
     this.state = {
       email: '',
       password: '',
+      name: '',
       notificationsManager: new NotificationsManager()
     };
   }
+
+  private updateEmail = (e: React.ChangeEvent<HTMLInputElement>) => this.setState({ email: e.target.value });
+  private updatePassword = (e: React.ChangeEvent<HTMLInputElement>) => this.setState({ password: e.target.value });
+  private updateName = (e: React.ChangeEvent<HTMLInputElement>) => this.setState({ name: e.target.value });
+
+  private handleSignIn = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const { email, password } = this.state;
+    this.props.signIn(email, password);
+  }
+
+  private handleSocialSignIn = (provider: ValidProvider) => this.props.signInWithSocial(provider);
+  private handleSocialSignUp = (provider: ValidProvider) => this.props.signUpWithSocial(provider);
+
+  private handleAccountCreation = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const { email, password } = this.state;
+    const newUser = new User({
+      uid: uid(20),
+      isApplicant: true,
+      email,
+      name,
+    });
+
+    this.props.createAccount(email, password, newUser);
+
+    // reset form
+    e.currentTarget.reset();
+  }
+
+  private handleNotificationClose = () => this.state.notificationsManager.close();
 
   public componentDidMount() {
     this.props.updateLocation('apply');
@@ -36,14 +74,15 @@ class Apply extends PureComponent<Props, State> {
     this.state.notificationsManager.cleanUp();
   }
 
-  public componentDidUpdate(prevProps: Props, prevState: State) {
+  public componentDidUpdate(prevProps: Props) {
     const { auth } = this.props;
 
     if (auth.failedToCreateAccount && prevProps.auth.isCreatingAccount) {
       const notification: iNotification = {
         type: NotificationType.AuthAccountCreationError,
         message: auth.error!.message,
-        isClosed: false
+        isClosed: false,
+        isError: true
       };
 
       this.state.notificationsManager.add(notification);
@@ -56,7 +95,8 @@ class Apply extends PureComponent<Props, State> {
       const notification: iNotification = {
         type: NotificationType.AuthAccountCreationError,
         message: Strings.AuthError_Generic,
-        isClosed: false
+        isClosed: false,
+        isError: true
       };
 
       // tslint:disable-next-line:switch-default
@@ -76,7 +116,8 @@ class Apply extends PureComponent<Props, State> {
       const notification: iNotification = {
         type: NotificationType.AuthAccountCreated,
         message: Strings.AuthSuccess_AccountCreated,
-        isClosed: false
+        isClosed: false,
+        isError: false
       };
 
       this.state.notificationsManager.add(notification);
@@ -93,6 +134,8 @@ class Apply extends PureComponent<Props, State> {
   }
 
   public render() {
+    const notification = this.state.notificationsManager.hasOpenNotifications();
+
     return (
       <div className="apply__container">
         <PageMeta route="APPLY" />
@@ -104,8 +147,9 @@ class Apply extends PureComponent<Props, State> {
           handleSocialSignIn={this.handleSocialSignIn}
           updateEmail={this.updateEmail}
           updatePassword={this.updatePassword} 
-          authError={this.state.hasError}
-          isWorking={this.state.loggingIn} />
+          authError={!!this.state.notificationsManager.hasOpenErrorNotifications()}
+          isWorking={!!this.props.auth.isAuthorizing} 
+        />
 
         <StartApplication
           title="Start New Application"
@@ -115,69 +159,16 @@ class Apply extends PureComponent<Props, State> {
           updateName={this.updateName}
           updateEmail={this.updateEmail}
           updatePassword={this.updatePassword}
-          isWorking={this.state.creatingAccount} />
+          isWorking={!!this.props.auth.isCreatingAccount} 
+        />
 
         {
-          this.state.hasError && !this.state.notificationClosed ?
-          <Notification doClose={this.handleNotificationClose} text={this.state.error} /> :
+          notification !== null ?
+          <Notification doClose={this.handleNotificationClose} text={notification.message} /> :
           null
-        }
-        {
-          this.state.hasSent && !this.state.notificationClosed ?
-            <Notification doClose={this.handleNotificationClose}
-              text="Account created! You may now sign in using the continue application form." />
-            :
-            null
         }
       </div>
     );
-  }
-
-  public updateEmail = (e) => this.setState({ email: e.target.value });
-  public updatePassword = (e) => this.setState({ password: e.target.value });
-  public updateName = (e) => this.setState({ name: e.target.value });
-
-  public handleSignIn = (e) => {
-    e.preventDefault();
-
-    const { email, password } = this.state;
-
-    this.props.authActions.doSignIn(email, password, {
-      strict: 'isApplicant'
-    });
-  }
-
-  public handleSocialSignIn = (provider) => {
-    this.props.authActions.doSignInWithSocial(provider, {
-      strict: 'isApplicant'
-    });
-  }
-
-  public handleSocialSignUp = (provider) => {
-    this.props.authActions.doSignUpWithSocial(provider, {
-      applicant: true,
-      emailConfirmed: true
-    });
-  }
-
-  public handleAccountCreation = (e) => {
-    e.preventDefault();
-
-    const data = {
-      isApplicant: true,
-      email: this.state.email,
-      name: this.state.name,
-      password: this.state.password
-    };
-
-    this.props.authActions.doAccountCreate(data);
-
-    // reset form
-    e.target.reset();
-  }
-
-  public handleNotificationClose = () => {
-    this.setState({ notificationClosed: true, hasError: false, hasSent: false });
   }
 }
 

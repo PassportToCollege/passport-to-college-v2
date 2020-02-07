@@ -11,8 +11,9 @@ import {
   doSignInWithSocial,
   doSignIn,
 } from '../../actions/auth/dispatchers';
+import { RouteComponentProps } from 'react-router-dom';
 
-export interface ApplyProps {
+export interface ApplyProps extends RouteComponentProps {
   auth: AuthState;
   history: History<LocationState>;
   updateLocation: (location: string) => void;
@@ -23,8 +24,9 @@ export interface ApplyProps {
 }
 
 export interface ApplyState {
-  email?: string;
-  password?: string;
+  email: string;
+  password: string;
+  name: string;
   notificationsManager: NotificationsManager;
 }
 

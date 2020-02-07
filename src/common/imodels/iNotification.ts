@@ -12,6 +12,7 @@ export enum NotificationType {
 
 export default interface iNotification {
   type: NotificationType;
+  isError: boolean;
   isClosed: boolean;
   message: string;
 }
