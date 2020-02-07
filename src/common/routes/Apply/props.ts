@@ -3,7 +3,7 @@ import { Dispatch } from 'react';
 import { Action } from '../../actions';
 import { History, LocationState } from 'history';
 import User from '../../models/User';
-import NotificationsManager from '../../models/NotificationsManager'
+import NotificationsManager from '../../models/NotificationsManager';
 import { 
   doAccountCreate,
   doSignUpWithSocial, 
