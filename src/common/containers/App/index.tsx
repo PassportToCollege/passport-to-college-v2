@@ -108,7 +108,7 @@ class App extends React.PureComponent<Props, State> {
             <Route path={routes.DASHBOARD.route} render={props => this.protectedAdminMiddleware(props, Dashboard)}></Route>
             <Route path={routes.STUDENT_DASHBOARD.route} render={props => this.protectedStudentMiddleware(props, StudentDashboard)}></Route>
             <Route path={routes.APPLY.route} render={props => this.defaultRouteMiddleware(props, ApplicationPortal)}></Route>
-            {/* <Route path={routes.APPLY_PORTAL.route} render={props => this.applicationPortalMiddleware(props, ApplicationPortal)}></Route> */}
+            <Route path={routes.APPLY_PORTAL.route} render={props => this.applicationPortalMiddleware(props, ApplicationPortal)}></Route>
           </div>
           {
             this.state.location !== "" &&

@@ -15,7 +15,6 @@ import { RouteComponentProps } from 'react-router-dom';
 
 export interface ApplyProps extends RouteComponentProps {
   auth: AuthState;
-  history: History<LocationState>;
   updateLocation: (location: string) => void;
   createAccount: (email: string, password: string, user: User) => void;
   signIn: (email: string, password: string) => void;

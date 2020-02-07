@@ -88,7 +88,7 @@ export const STUDENT_DASHBOARD_SETTINGS: PageRoute = {
 
 // Student Application Routes
 export const APPLY: PageRoute = { name: 'Apply', route: '/apply' };
-export const APPLY_PORTAL: PageRoute = { name: 'Application Portal | Apply', route: '/apply/p/:application_id' };
+export const APPLY_PORTAL: PageRoute = { name: 'Application Portal | Apply', route: '/apply/p/:applicationId' };
 
 // Auth Routes
 export const SIGN_IN: PageRoute = { name: 'Sign In', route: '/auth/sign-in' };

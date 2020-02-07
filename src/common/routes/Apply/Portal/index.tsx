@@ -1,68 +1,61 @@
-import "./ApplicationPortal.css";
+import './ApplicationPortal.css';
 
-import React, { Component } from "react";
-import { NavLink, Route, withRouter } from "react-router-dom";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import propTypes from "prop-types";
-
-import * as applicationActions from "../../../actions/application/actions";
-import * as userActions from "../../../actions/userActions";
-import * as authActions from "../../../actions/authActions";
-import * as routes from "../../../constants/routes";
-
-import Button from "../../../components/Button";
-import LinkButton from "../../../components/LinkButton";
+import React, { PureComponent } from 'react';
+import { NavLink, Route, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import * as routes from '../../../constants/routes';
+import {
+  ApplyPortalProps as Props,
+  ApplyPortalState as State,
+  mapDispatchToProps,
+  mapStateToProps,
+  ApplicationTasks,
+  ApplicationTaskTracker
+} from './props';
+import NotificationsManager from '../../../models/NotificationsManager';
+import Button from '../../../components/Button';
+import LinkButton from '../../../components/LinkButton';
 import ApplicationTask from './ApplicationTask';
-import Notification from "../../../components/Notification";
-import PageMeta from "../../../components/PageMeta";
+import Notification from '../../../components/Notification';
+import PageMeta from '../../../components/PageMeta';
 
-import { getWordCount } from "../../../utils";
+import { getWordCount } from '../../../utils';
 
 const tasks = [
-  "Personal",
-  "Education",
-  "US Standardized Tests",
-  "National Tests",
-  "Miscellaneous",
-  "Essay",
-  "Review",
-  "Submit"
+  'Personal',
+  'Education',
+  'US Standardized Tests',
+  'National Tests',
+  'Miscellaneous',
+  'Essay',
+  'Review',
+  'Submit'
 ];
 
-const formattedTasks = tasks.map(task => {
-  return task.toLowerCase().split(" ").join("-");
+const formattedTasks = tasks.map((task) => {
+  return task.toLowerCase().split(' ').join('-');
 });
 
-class ApplicationPortal extends Component {
-  constructor(props) {
+class ApplicationPortal extends PureComponent<Props, State> {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
-      applicationId: this.props.match.params.application_id,
-      task: "welcome",
-      isComplete: {
-        personal: false,
-        education: false,
-        "us-standardized-tests": false,
-        "national-tests": false,
-        miscellaneous: false,
-        essay: false
-      },
-      hasError: false,
-      hasSent: false,
-      notificationClosed: false
+      applicationId: this.props.match.params.applicationId,
+      activeTask: ApplicationTasks.Welcome,
+      tasksTracker: new ApplicationTaskTracker(),
+      notificationsManager: new NotificationsManager()
     };
   }
 
-  componentDidMount() {
-    this.props.updateLocation("application portal");
+  public componentDidMount() {
+    this.props.updateLocation('application portal');
 
     this.props.userActions.doUserGet();
     this.props.applicationActions.doApplicationGet(this.state.applicationId);
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
+  public static getDerivedStateFromProps(nextProps, prevState) {
     let { isComplete } = prevState;
     let newState = null;
 
@@ -75,57 +68,47 @@ class ApplicationPortal extends Component {
       if ((application.educationLevel && application.educationLevel.length) &&
         (application.gpa && application.gpa.length) &&
         (application.lastSchool && application.lastSchool.length)) {
-        isComplete = Object.assign({}, isComplete, {
-          education: true
-        });
+        isComplete = {...isComplete, 
+          education: true};
       } else {
-        isComplete = Object.assign({}, isComplete, {
-          education: false
-        });
+        isComplete = {...isComplete, 
+          education: false};
       }
 
       if ((application.usTest && application.usTest.length) &&
         (application.score && application.score.length)) {
-        isComplete = Object.assign({}, isComplete, {
-          "us-standardized-tests": true
-        });
+        isComplete = {...isComplete, 
+          'us-standardized-tests': true};
       } else {
-        isComplete = Object.assign({}, isComplete, {
-          "us-standardized-tests": false
-        });
+        isComplete = {...isComplete, 
+          'us-standardized-tests': false};
       }
 
       if (application.tests && Object.keys(application.tests).length) {
-        isComplete = Object.assign({}, isComplete, {
-          "national-tests": true
-        });
+        isComplete = {...isComplete, 
+          'national-tests': true};
       } else {
-        isComplete = Object.assign({}, isComplete, {
-          "national-tests": false
-        });
+        isComplete = {...isComplete, 
+          'national-tests': false};
       }
 
       if ((application.income && application.income.length) &&
         (application.interest && application.interest.length) &&
         (application.workEthic && application.workEthic.length)) {
-        isComplete = Object.assign({}, isComplete, {
-          "miscellaneous": true
-        });
+        isComplete = {...isComplete, 
+          miscellaneous: true};
       } else {
-        isComplete = Object.assign({}, isComplete, {
-          "miscellaneous": false
-        });
+        isComplete = {...isComplete, 
+          miscellaneous: false};
       }
 
       if (application.essay && application.essay.blocks &&
         application.essay.blocks.length && getWordCount(application.essay.blocks) >= 300) {
-        isComplete = Object.assign({}, isComplete, {
-          essay: true
-        });
+        isComplete = {...isComplete, 
+          essay: true};
       } else {
-        isComplete = Object.assign({}, isComplete, {
-          essay: false
-        });
+        isComplete = {...isComplete, 
+          essay: false};
       }
     }
 
@@ -138,16 +121,14 @@ class ApplicationPortal extends Component {
       if ((user.name && user.name.first && user.name.last) &&
         (user.email && user.email.length) &&
         (user.address && user.address.country.length) &&
-        (user.dob && "number" === typeof user.dob) &&
+        (user.dob && 'number' === typeof user.dob) &&
         (user.gender && user.gender.length) &&
         (user.phone && user.phone.length)) {
-        isComplete = Object.assign({}, isComplete, {
-          personal: true
-        });
+        isComplete = {...isComplete, 
+          personal: true};
       } else {
-        isComplete = Object.assign({}, isComplete, {
-          personal: false
-        });
+        isComplete = {...isComplete, 
+          personal: false};
       }
     }
 
@@ -159,17 +140,19 @@ class ApplicationPortal extends Component {
         newState.error = nextProps.auth.error.message;
       }
 
-      if (nextProps.auth.hasSent)
+      if (nextProps.auth.hasSent) {
         newState.hasSent = true;
+      }
     }
 
-    if (newState)
-      return Object.assign({}, newState, { isComplete });
+    if (newState) {
+      return {...newState,  isComplete};
+    }
     
     return null;
   }
 
-  render() {
+  public render() {
     return (
       <div className="application_portal">
         <PageMeta route="APPLY_PORTAL" />
@@ -184,7 +167,7 @@ class ApplicationPortal extends Component {
           <div className="application__portal_sidebar">
             <ul className="application__sidebar">
               <li>
-                <NavLink exact to={this.props.match.url}>Welcome</NavLink>
+                <NavLink exact={true} to={this.props.match.url}>Welcome</NavLink>
               </li>
               { 
                 this.props.application.hasGotten && this.props.user.hasGotten ?
@@ -220,72 +203,75 @@ class ApplicationPortal extends Component {
                 :
                 null
             }
-            <Route exact path={`${this.props.match.url}/:task`}
-              render={props => {
+            <Route exact={true} path={`${this.props.match.url}/:task`}
+              render={(props) => {
                 return <ApplicationTask {...props} 
                   setTask={this.setTask}
                   user={this.state.user}
                   application={this.state.application} 
-                  complete={this.state.isComplete} />
+                  complete={this.state.isComplete} />;
               }}/>
-            <Route exact path={this.props.match.url}
+            <Route exact={true} path={this.props.match.url}
               render={this.renderWelcome}/>
           </div>
           <LinkButton target="/" classes="fixed fixed__bottom fixed__right round solid icon" icon="faHome"/>
         </main>
       </div>
-    )
+    );
   }
 
-  handleNextButtonClick = () => {
-    let nextIndex = formattedTasks.indexOf(this.state.task) + 1;
-    let next = formattedTasks[nextIndex];
+  public handleNextButtonClick = () => {
+    const nextIndex = formattedTasks.indexOf(this.state.task) + 1;
+    const next = formattedTasks[nextIndex];
     
-    if (next)
-      this.props.history.push(`${this.props.match.url}/${next}`)
+    if (next) {
+      this.props.history.push(`${this.props.match.url}/${next}`);
+    }
     
     if (nextIndex >= formattedTasks.length) {
-      this.setState({ task: "welcome" });
+      this.setState({ task: 'welcome' });
       this.props.history.push(this.props.match.url);
     }
   }
 
-  handlePreviousButtonClick = () => {
-    let previousIndex = formattedTasks.indexOf(this.state.task) - 1;
+  public handlePreviousButtonClick = () => {
+    const previousIndex = formattedTasks.indexOf(this.state.task) - 1;
 
     if (previousIndex >= 0) {
-      let previous = formattedTasks[previousIndex];
+      const previous = formattedTasks[previousIndex];
   
-      if (previous) 
+      if (previous) { 
         this.props.history.push(`${this.props.match.url}/${previous}`);
+      }
     } else {
-      this.setState({ task: "welcome" });
+      this.setState({ task: 'welcome' });
       this.props.history.push(this.props.match.url);
     }
 
-    if (this.state.task === "welcome")
+    if (this.state.task === 'welcome') {
       this.props.history.push(`${this.props.match.url}/submit`);
+    }
   }
 
-  setTask = task => {
+  public setTask = (task) => {
     this.setState({ task });
   }
 
-  createTaskList = () => {
-    return tasks.map(task => {
-      let formattedTask = task.toLowerCase().split(" ").join("-");
+  public createTaskList = () => {
+    return tasks.map((task) => {
+      const formattedTask = task.toLowerCase().split(' ').join('-');
       return (
         <li key={task}>
-          <NavLink exact to={`${this.props.match.url}/${formattedTask}`} activeClassName="active"
-            className={this.state.isComplete[formattedTask] === true ? "complete" : null}>
+          <NavLink exact={true} to={`${this.props.match.url}/${formattedTask}`} activeClassName="active"
+            className={this.state.isComplete[formattedTask] === true ? 'complete' : null}>
             {task}
           </NavLink>
         </li>
-      )
+      );
     });
   }
 
-  renderWelcome = () => {
+  public renderWelcome = () => {
     return (
       <div className="application_task__container application__welcome">
         <h1>Welcome</h1>
@@ -309,10 +295,10 @@ class ApplicationPortal extends Component {
           You will not be able to submit your application until you complete the required fields.
         </p>
       </div>
-    )
+    );
   }
 
-  resendEmailConfirmation = () => {
+  public resendEmailConfirmation = () => {
     this.setState({ hasSent: false });
     const { email } = this.state.user;
     const { applicationId } = this.state;
@@ -320,45 +306,17 @@ class ApplicationPortal extends Component {
     this.props.authActions.doSendEmailConfirmation(applicationId, email);
   }
 
-  handleNotificationClose = () => {
+  public handleNotificationClose = () => {
     this.setState({ notificationClosed: true, hasError: false, hasSent: false });
   }
 
-  handleSignOutClick = (e) => {
+  public handleSignOutClick = (e) => {
     e.preventDefault();
 
     this.props.authActions.doSignOut(this.state.user);
-    this.props.history.push("/")
+    this.props.history.push('/');
   }
 }
-
-ApplicationPortal.propTypes = {
-  updateLocation: propTypes.func,
-  match: propTypes.object,
-  authActions: propTypes.object,
-  auth: propTypes.oneOfType([propTypes.bool, propTypes.object]),
-  applicationActions: propTypes.object,
-  application: propTypes.object,
-  userActions: propTypes.object,
-  user: propTypes.object,
-  history: propTypes.object
-};
-
-const mapStateToProps = state => {
-  return {
-    application: state.application,
-    user: state.user,
-    auth: state.auth
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    applicationActions: bindActionCreators(applicationActions, dispatch),
-    userActions: bindActionCreators(userActions, dispatch),
-    authActions: bindActionCreators(authActions, dispatch)
-  };
-};
 
 export default withRouter(
   connect(
