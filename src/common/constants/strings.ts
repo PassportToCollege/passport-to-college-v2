@@ -20,4 +20,7 @@ export default {
   AuthError_UserAlreadyExists: 'A user was found linked to the account you provided. Try signing in instead.',
   AuthError_Generic: 'There was a problem with authorization. Please retry.',
   AuthSuccess_AccountCreated: 'Account created! You may now sign in using the continue application form.',
-};
+  ConfirmEmail_ConfirmingEmail: 'Confirming email address.',
+  ConfirmEmail_ConfirmationSuccess: 'Way to go! Your email address has been confirmed.',
+  ConfirmEmail_Continue: 'Continue Your Application',
+}
