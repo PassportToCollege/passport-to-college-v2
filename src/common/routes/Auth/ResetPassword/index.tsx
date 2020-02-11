@@ -1,112 +1,104 @@
-import "./ResetPassword.css";
+import './ResetPassword.css';
 
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import React, { Component } from "react";
-import propTypes from "prop-types";
+import { connect } from 'react-redux';
+import React, { PureComponent } from 'react';
+import {
+  ResetPasswordProps as Props,
+  ResetPasswordState as State,
+  mapDispatchToProps,
+  mapStateToProps
+} from './props';
+import NotificationsManager from '../../../models/NotificationsManager';
+import PageMeta from '../../../components/PageMeta';
+import { ResetPasswordForm } from '../../../components/Forms';
+import Notification from '../../../components/Notification';
+import iNotification, { NotificationType } from '../../../imodels/iNotification';
+import Strings, { Format, iStrings, getValidString } from '../../../constants/strings';
 
-import * as authActions from "../../../actions/authActions";
-
-import PageMeta from "../../../components/PageMeta";
-import { ResetPasswordForm } from "../../../components/Forms";
-import Notification from "../../../components/Notification";
-
-class ResetPassword extends Component {
-  constructor(props) {
+class ResetPassword extends PureComponent<Props, State> {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
-      email: "",
-      hasError: false,
-      hasSent: false,
-      notificationClosed: false
+      email: '',
+      notificationsManager: new NotificationsManager()
     };
   }
 
-  componentDidMount() {
-    this.props.updateLocation("reset");
-  }
+  private updateEmail = (e: React.ChangeEvent<HTMLInputElement>) => 
+    this.setState({ email: e.target.value })
 
-  componentWillUnmount() {
-    this.props.authActions.removeAuthErrors();
-  }
-
-  static getDerivedStateFromProps(nextProps) {
-    let newState = null;
-
-    if (nextProps.auth.hasFailed) {
-      newState = {
-        hasError: true,
-        error: nextProps.auth.error.message
-      };
-    }
-
-    if (nextProps.auth.hasSent) {
-      newState = {
-        hasSent: true
-      };
-    }
-
-    return newState
-  }
-
-  render() {
-    return (
-      <div className="reset__container">
-        <PageMeta route="RESET_PASSWORD" />
-        <ResetPasswordForm handleSubmit={this.handleSubmit}
-          updateEmail={this.updateEmail}
-          authError={this.state.hasError} 
-          title="Provide your email to reset your password"/>
-        {
-          this.state.hasError ?
-            <Notification doClose={this.handleNotificationClose} text={this.state.error} /> :
-            null
-        }
-        {
-          this.state.hasSent ?
-            <Notification doClose={this.handleNotificationClose} 
-              text={`Reset email sent to ${this.state.email}. Check your email.`} /> :
-            null
-        }
-      </div>
-    )
-  }
-
-  updateEmail = (e) => this.setState({ email: e.target.value });
-
-  handleSubmit = (e) => {
+  public handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const { email } = this.state;
-
-    this.props.authActions.doResetPasswordEmailSend(email);
+    this.props.sendResetPasswordEmail(email);
   }
 
-  handleNotificationClose = () => {
-    this.setState({ notificationClosed: true, hasError: false });
+  public handleNotificationClose = () =>
+    this.state.notificationsManager.close()
+
+  public componentDidMount() {
+    this.props.updateLocation('reset');
+  }
+
+  public componentDidUpdate(prevProps: Props) {
+    if (prevProps.auth.isSending) {
+      const notification: iNotification = {
+        type: NotificationType.AuthError,
+        isClosed: false,
+        isError: true,
+        message: ''
+      };
+
+      if (this.props.auth.hasSent) {
+        notification.type = NotificationType.AuthSuccess;
+        notification.isError = false;
+        notification.message = Format(
+          getValidString('ResetPassword_EmailSent'), 
+          [this.state.email]
+        );
+        
+        this.state.notificationsManager.add(notification);
+      }
+
+      if (this.props.auth.failedToSendEmail) {
+        notification.message = this.props.auth.error ? 
+          this.props.auth.error.message : Strings.AuthError_Generic;
+      }
+    }
+  }
+
+  public render() {
+    return (
+      <div className="reset__container">
+        <PageMeta route="RESET_PASSWORD" />
+        <ResetPasswordForm 
+          handleSubmit={this.handleSubmit}
+          updateEmail={this.updateEmail}
+          authError={!!this.state.notificationsManager.hasOpenErrorNotifications()} 
+          title={Strings.ResetPassword_ProvideEmail}
+        />
+        {
+          this.state.notificationsManager.hasOpenErrorNotifications() ?
+            <Notification 
+              doClose={this.handleNotificationClose} 
+              text={this.state.notificationsManager.getMessageOfNotificationOfType(NotificationType.AuthError)}
+            /> : null
+        }
+        {
+          this.state.notificationsManager.hasNotificationOfType(NotificationType.AuthSuccess) ?
+            <Notification 
+              doClose={this.handleNotificationClose} 
+              text={this.state.notificationsManager.getMessageOfNotificationOfType(NotificationType.AuthSuccess)} 
+            /> : null
+        }
+      </div>
+    );
   }
 }
 
-ResetPassword.propTypes = {
-  authActions: propTypes.object,
-  updateLocation: propTypes.func,
-  auth: propTypes.oneOfType([propTypes.bool, propTypes.object])
-};
-
-const mapStateToProps = state => {
-  return {
-    auth: state.auth
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    authActions: bindActionCreators(authActions, dispatch)
-  };
-};
-
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps)(ResetPassword);
+  mapDispatchToProps
+)(ResetPassword);

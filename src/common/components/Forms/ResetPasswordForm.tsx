@@ -3,12 +3,11 @@ import './Forms.css';
 import React, { Component } from 'react';
 
 interface ResetPasswordFormProps {
+  submitText?: string;
   title: string;
-  submitText: string;
   authError: boolean;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   updateEmail: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  updatePassword: () => void;
 }
 
 export default class ResetPasswordForm extends Component<ResetPasswordFormProps> {

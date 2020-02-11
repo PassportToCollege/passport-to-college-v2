@@ -1,6 +1,36 @@
-// tslint:disable: max-line-length
+export interface iStrings {
+  AboutUs_Intro: string;
+  AboutUs_StoriesCTA: string;
+  AddAccomplishment_Note: string;
+  AddAccomplishment_Info: string;
+  AddAccomplishment_SectionHeading_Student: string;
+  AddAccomplishment_Label_UID: string;
+  AddAccomplishment_Label_Fullname: string;
+  AddAccomplishment_SectionHeading_HeroImage: string;
+  AddAccomplishment_Info_HeroImage: string;
+  AddAccomplishment_DropUploader_Label: string;
+  AddAccomplishment_SectionHeading_AccomplishmentTitle: string;
+  AddAccomplishment_SectionHeading_Excerpt: string;
+  AddAccomplishment_Info_Excerpt: string;
+  AddAccomplishment_SectionHeading_FullDetails: string;
+  AddAccomplishment_Info_FullDetails: string;
+  AuthError_UserTypeMismatch: string;
+  AuthError_UserAlreadyExists: string;
+  AuthError_Generic: string;
+  AuthSuccess_AccountCreated: string;
+  ConfirmEmail_ConfirmingEmail: string;
+  ConfirmEmail_ConfirmationSuccess: string;
+  ConfirmEmail_Continue: string;
+  ResetPassword_ProvideEmail: string;
+  ResetPassword_EmailSent: string;
+}
 
-export default {
+export type ValidString = keyof iStrings;
+
+export const getValidString = (key: ValidString) => key;
+
+// tslint:disable: max-line-length
+const Strings: iStrings = {
   AboutUs_Intro: 'The people behind\n Passport to College',
   AboutUs_StoriesCTA: 'more\n about us',
   AddAccomplishment_Note: 'Note:',
@@ -23,4 +53,20 @@ export default {
   ConfirmEmail_ConfirmingEmail: 'Confirming email address.',
   ConfirmEmail_ConfirmationSuccess: 'Way to go! Your email address has been confirmed.',
   ConfirmEmail_Continue: 'Continue Your Application',
-}
+  ResetPassword_ProvideEmail: 'Provide your email to reset your password',
+  ResetPassword_EmailSent: 'Reset email sent to {0}. Check your email.',
+};
+
+export const Format = (validString: ValidString, args: string[]): string => {
+  const regex: RegExp = /{[0=9]}/;
+  let stringToBeFormatted = Strings[validString];
+  let i = 0;
+
+  while (stringToBeFormatted.match(regex)) {
+    stringToBeFormatted = stringToBeFormatted.replace(regex, args[i]);
+  }
+
+  return stringToBeFormatted;
+};
+
+export default Strings;
