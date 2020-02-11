@@ -10,7 +10,7 @@ import SSID from '../../models/SSID';
 import User from '../../models/User';
 import iUser from '../../imodels/iUser';
 import Cookies from 'universal-cookie';
-import { doUserUpdate } from '../userActions';
+import { doUpdateUser } from '../user/dispatchers';
 import { 
   signInAuthorizing, 
   gettingUser, 
@@ -446,7 +446,7 @@ export const doChangeEmailAddress = (
     if (user) {
       user.updateEmail(email)
         .then(() => {
-          dispatch(doUserUpdate({ email, emailConfirmed: false }, user.uid, true));
+          dispatch(doUpdateUser({ email, emailConfirmed: false }, user.uid, true));
           dispatch(changedEmailAddress());
         })
         .catch((error: Error) => {
