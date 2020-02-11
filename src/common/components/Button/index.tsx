@@ -7,8 +7,8 @@ interface ButtonProps {
   type: 'button' | 'reset' | 'submit' | undefined;
   doClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   text: string;
-  solid: boolean;
-  disabled: boolean;
+  solid?: boolean;
+  disabled?: boolean;
 }
 
 interface BackButtonProps {

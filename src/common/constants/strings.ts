@@ -1,6 +1,9 @@
-// tslint:disable: max-line-length
+// all strings used throughout the app that may need localization in the future.
+// capitalized strings should have capitalized keys
+// non capitalized strings should be camel case
 
 export default {
+  // tslint:disable: max-line-length
   AboutUs_Intro: 'The people behind\n Passport to College',
   AboutUs_StoriesCTA: 'more\n about us',
   AddAccomplishment_Note: 'Note:',
@@ -20,4 +23,21 @@ export default {
   AuthError_UserAlreadyExists: 'A user was found linked to the account you provided. Try signing in instead.',
   AuthError_Generic: 'There was a problem with authorization. Please retry.',
   AuthSuccess_AccountCreated: 'Account created! You may now sign in using the continue application form.',
+  AuthSuccess_ConfirmationEmail: 'Check your email address, we sent you a message.',
+  ApplyPortal_MainHeading: 'Student Application Portal',
+  Welcome: 'Welcome',
+  Instructions: 'Instructions',
+  signOut: 'sign out',
+  AuthError_EmailNotConfirmed: 'You have not confirmed your email address.',
+  Auth_ResendConfirmationEmail: 'Resend confirmation email.',
+  ApplyPortal_Welcome1: `Our mission is to identify students from developing countries 
+    that are strong in Science, Technology, Engineering and Mathematics, STEM, 
+    who lack the resources to attend college/university. We therefore require that all applicants 
+    fill out an application to evaluate their eligibility. Be honest in your answers as further 
+    eligibility data will be collected during the review process.`,
+  ApplyPortal_Welcome2: 'We promise to keep all information. We will not re-post them or use them outside the reviewing of your application.',
+  ApplyPortal_Instructions1: 'Your information is saved automatically. So do not worry about losing your information.',
+  ApplyPortal_Instructions2: `Some sections contain required fields, these fields must be completed.
+    Required fields are marked with an asterisk (*). You will not be able to submit your application until you complete the required fields.`,
+
 };

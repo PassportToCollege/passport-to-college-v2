@@ -7,7 +7,9 @@ export enum NotificationType {
   AccomplishmentDetailsError = 'AccomplishmentDetailsError',
   AuthError = 'AuthError',
   AuthAccountCreationError = 'AuthAccountCreationError',
-  AuthAccountCreated = 'AuthAccountCreated'
+  AuthAccountCreated = 'AuthAccountCreated',
+  AuthConfirmationEmailError = 'AuthConfirmationEmailError',
+  AuthConfirmationEmailSent = 'AuthConfirmationEmailSent'
 }
 
 export default interface iNotification {

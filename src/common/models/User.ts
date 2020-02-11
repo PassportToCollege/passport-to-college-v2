@@ -6,7 +6,7 @@ import iContentEditable from '../imodels/iContentEditable';
 export default class User implements iUser {
   public uid: string;
   public email: string;
-  public name: FullName | string;
+  public name: FullName;
   public isAdmin?: boolean;
   public isApplicant?: boolean;
   public isStudent?: boolean;

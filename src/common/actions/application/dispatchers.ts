@@ -29,16 +29,16 @@ const EMAIL_API = process.env.REACT_APP_EMAIL_API;
 
 export const doApplicationGet = (
   dispatch: Dispatch<Action<_, ApplicationState>>, 
-  user: User) => {
+  id: string) => {
     dispatch(gettingApplication());
 
     db.collection('applications')
-      .doc(user.uid)
+      .doc(id)
       .get()
-      .then((doc: any) => {
+      .then((doc: firebase.firestore.DocumentSnapshot) => {
         if (doc.exists) {
-          const data = doc.data();
-          const user = new User(data.user || data.User);
+          const data = doc.data() as Application;
+          const user = new User(data.User);
           const application = new Application(user, data);
 
           dispatch(gotApplication(application));
@@ -64,7 +64,7 @@ export const doApplicationUpdate = (
         dispatch(updatedApplication(application));
 
         if (refresh) {
-          doApplicationGet(dispatch, application.User);
+          doApplicationGet(dispatch, application.uid);
         }
       })
       .catch((error: Error) => {
@@ -83,7 +83,7 @@ export const doTestDelete = (
       .update({ [`tests.${test.slug}`]: firebase.firestore.FieldValue.delete() })
       .then(() => {
         dispatch(deletedTest());
-        doApplicationGet(dispatch, user);
+        doApplicationGet(dispatch, user.uid);
       })
       .catch((error: Error) => {
         dispatch(deletingTestFailed(error));
@@ -122,7 +122,7 @@ export const doApplicationSubmit = (
         doSendSubmissionEmail(dispatch, user)
           .then(() => {
             dispatch(sentSubmissionEmail());
-            doApplicationGet(dispatch, user);
+            doApplicationGet(dispatch, user.uid);
           })
           .catch((error: Error) => {
             dispatch(sendingSubmissionEmailFailed(error));

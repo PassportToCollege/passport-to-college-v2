@@ -1,7 +1,6 @@
 import iAppState, { AuthState } from '../../imodels/iAppState';
 import { Dispatch } from 'react';
 import { Action } from '../../actions';
-import { History, LocationState } from 'history';
 import User from '../../models/User';
 import NotificationsManager from '../../models/NotificationsManager';
 import { 

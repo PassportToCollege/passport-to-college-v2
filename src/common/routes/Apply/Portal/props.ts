@@ -8,7 +8,6 @@ import {
 } from '../../../actions/auth/dispatchers';
 import { doGetUser } from '../../../actions/user/dispatchers';
 import { doApplicationGet } from '../../../actions/application/dispatchers';
-import User from '../../../models/User';
 import NotificationsManager from '../../../models/NotificationsManager';
 
 export enum ApplicationTasks {
@@ -65,6 +64,8 @@ export class ApplicationTaskTracker {
 
     return false;
   }
+
+  public areAllTasksComplete: boolean = this.completedTasks.length === 7;
 }
 
 export interface ApplyPortalProps extends RouteComponentProps {
@@ -76,7 +77,7 @@ export interface ApplyPortalProps extends RouteComponentProps {
   signOut: () => void;
   sendConfirmationEmail: (id: string) => void;
   getCurrentUser: () => void;
-  getCurrentApplication: (user: User) => void;
+  getCurrentApplication: (id: string) => void;
 }
 
 export interface ApplyPortalState {
@@ -99,6 +100,6 @@ export const mapDispatchToProps = (dispatch: Dispatch<Action<any>>) => {
     signOut: () => doSignOut(dispatch),
     sendConfirmationEmail: (id: string) => doSendEmailConfirmation(dispatch, id),
     getCurrentUser: () => doGetUser(dispatch),
-    getCurrentApplication: (user: User) => doApplicationGet(dispatch, user),
+    getCurrentApplication: (id: string) => doApplicationGet(dispatch, id),
   };
 };
