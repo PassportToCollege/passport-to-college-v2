@@ -5,7 +5,7 @@
   "scripts": {
     "start": "NODE_ENV=production node build/server.js",
     "build": "razzle build",
-    "test": "razzle test --env=jsdom",
+    "test": "jest",
     "dev": "razzle start",
     "heroku-postbuild": "yarn run build"
   },
@@ -38,6 +38,9 @@
     "xhr2": "^0.2.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
+    "@babel/preset-typescript": "^7.8.3",
     "@types/cookie-parser": "^1.4.1",
     "@types/draft-js": "^0.10.35",
     "@types/express": "^4.17.0",
@@ -52,6 +55,7 @@
     "@types/universal-cookie": "^2.2.0",
     "@types/webpack-env": "^1.14.0",
     "awesome-typescript-loader": "^5.2.1",
+    "babel-jest": "^25.1.0",
     "jest": "^25.1.0",
     "razzle-plugin-typescript": "^3.0.0",
     "source-map-loader": "^0.2.4",
