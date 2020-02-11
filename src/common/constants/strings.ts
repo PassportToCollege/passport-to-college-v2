@@ -2,8 +2,50 @@
 // capitalized strings should have capitalized keys
 // non capitalized strings should be camel case
 
-export default {
-  // tslint:disable: max-line-length
+export interface iStrings {
+  AboutUs_Intro: string;
+  AboutUs_StoriesCTA: string;
+  AddAccomplishment_Note: string;
+  AddAccomplishment_Info: string;
+  AddAccomplishment_SectionHeading_Student: string;
+  AddAccomplishment_Label_UID: string;
+  AddAccomplishment_Label_Fullname: string;
+  AddAccomplishment_SectionHeading_HeroImage: string;
+  AddAccomplishment_Info_HeroImage: string;
+  AddAccomplishment_DropUploader_Label: string;
+  AddAccomplishment_SectionHeading_AccomplishmentTitle: string;
+  AddAccomplishment_SectionHeading_Excerpt: string;
+  AddAccomplishment_Info_Excerpt: string;
+  AddAccomplishment_SectionHeading_FullDetails: string;
+  AddAccomplishment_Info_FullDetails: string;
+  AuthError_UserTypeMismatch: string;
+  AuthError_UserAlreadyExists: string;
+  AuthError_Generic: string;
+  AuthSuccess_AccountCreated: string;
+  AuthSuccess_ConfirmationEmail: string;
+  Welcome: string;
+  Instructions: string;
+  signOut: string;
+  AuthError_EmailNotConfirmed: string;
+  Auth_ResendConfirmationEmail: string;
+  ApplyPortal_Welcome1: string;
+  ApplyPortal_Welcome2: string;
+  ApplyPortal_Instructions1: string;
+  ApplyPortal_Instructions2: string;
+  ApplyPortal_MainHeading: string;
+  ConfirmEmail_ConfirmingEmail: string;
+  ConfirmEmail_ConfirmationSuccess: string;
+  ConfirmEmail_Continue: string;
+  ResetPassword_ProvideEmail: string;
+  ResetPassword_EmailSent: string;
+}
+
+export type ValidString = keyof iStrings;
+
+export const getValidString = (key: ValidString) => key;
+
+// tslint:disable: max-line-length
+const Strings: iStrings = {
   AboutUs_Intro: 'The people behind\n Passport to College',
   AboutUs_StoriesCTA: 'more\n about us',
   AddAccomplishment_Note: 'Note:',
@@ -39,5 +81,24 @@ export default {
   ApplyPortal_Instructions1: 'Your information is saved automatically. So do not worry about losing your information.',
   ApplyPortal_Instructions2: `Some sections contain required fields, these fields must be completed.
     Required fields are marked with an asterisk (*). You will not be able to submit your application until you complete the required fields.`,
-
+  ConfirmEmail_ConfirmingEmail: 'Confirming email address.',
+  ConfirmEmail_ConfirmationSuccess: 'Way to go! Your email address has been confirmed.',
+  ConfirmEmail_Continue: 'Continue Your Application',
+  ResetPassword_ProvideEmail: 'Provide your email to reset your password',
+  ResetPassword_EmailSent: 'Reset email sent to {0}. Check your email.',
 };
+
+export const Format = (validString: ValidString, args: string[]): string => {
+  const regex: RegExp = /{[0=9]}/;
+  let stringToBeFormatted = Strings[validString];
+  let i = 0;
+
+  while (stringToBeFormatted.match(regex)) {
+    stringToBeFormatted = stringToBeFormatted.replace(regex, args[i]);
+    i++;
+  }
+
+  return stringToBeFormatted;
+};
+
+export default Strings;

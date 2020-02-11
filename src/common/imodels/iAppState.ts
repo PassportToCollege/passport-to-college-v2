@@ -297,7 +297,7 @@ export interface StatsState {
 }
 
 export interface UserState {
-  user?: User;
+  User?: User;
   id?: string;
   error?: Error;
   data?: any;

@@ -55,14 +55,14 @@ export const doGetUser = (dispatch: UserDispatch) => {
 
 export const doUpdateUser = (
   dispatch: UserDispatch,
-  data: iUser,
+  data: Partial<iUser>,
   refresh: boolean = false
 ) => {
   auth.onAuthStateChanged((user: firebase.User | null) => {
     if (user) {
       dispatch(updatingUser());
 
-      const { uid } = user;
+      const uid = data.uid || user.uid;
       db.collection('users')
         .doc(uid)
         .update(data)
