@@ -64,6 +64,7 @@ export const Format = (validString: ValidString, args: string[]): string => {
 
   while (stringToBeFormatted.match(regex)) {
     stringToBeFormatted = stringToBeFormatted.replace(regex, args[i]);
+    i++;
   }
 
   return stringToBeFormatted;
