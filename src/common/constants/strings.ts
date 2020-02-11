@@ -26,6 +26,7 @@ export interface iStrings {
   Welcome: string;
   Instructions: string;
   signOut: string;
+  SignIn: string;
   AuthError_EmailNotConfirmed: string;
   Auth_ResendConfirmationEmail: string;
   ApplyPortal_Welcome1: string;
@@ -38,6 +39,7 @@ export interface iStrings {
   ConfirmEmail_Continue: string;
   ResetPassword_ProvideEmail: string;
   ResetPassword_EmailSent: string;
+  SignInWithEmail: string;
 }
 
 export type ValidString = keyof iStrings;
@@ -86,6 +88,8 @@ const Strings: iStrings = {
   ConfirmEmail_Continue: 'Continue Your Application',
   ResetPassword_ProvideEmail: 'Provide your email to reset your password',
   ResetPassword_EmailSent: 'Reset email sent to {0}. Check your email.',
+  SignIn: 'Sign in',
+  SignInWithEmail: 'Or with your email:'
 };
 
 export const Format = (validString: ValidString, args: string[]): string => {

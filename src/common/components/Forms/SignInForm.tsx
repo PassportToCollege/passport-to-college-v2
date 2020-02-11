@@ -10,7 +10,7 @@ import { ValidProvider } from '../../actions/auth/dispatchers';
 interface SignInFormProps {
   title: string;
   subtitle: string;
-  submitText: string;
+  submitText?: string;
   authError: boolean;
   isWorking: boolean;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
