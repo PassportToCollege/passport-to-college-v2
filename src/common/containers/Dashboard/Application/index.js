@@ -52,7 +52,7 @@ class Application extends Component {
               this.props.application.hasGotten && this.state.application ?
                 <span>
                   <h1>{this.state.application.user.name.full}</h1>
-                  <p>{this.state.application.user.address.country}</p>
+                  <p>{this.state.application.user.address?.country}</p>
                 </span> :
                 <LoadingText options={{
                   class: "block__lines",
