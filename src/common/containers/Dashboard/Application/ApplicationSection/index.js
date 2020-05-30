@@ -213,7 +213,7 @@ class ApplicationSection extends Component {
                       { label: "email", text: this.state.application.user.email },
                       { label: "phone", text: this.state.application.user.phone },
                       { label: "gender", text: this.state.application.user.gender },
-                      { label: "country", text: this.state.application.user.address.country }
+                      { label: "country", text: this.state.application.user.address?.country }
                     ]} />
                   :
                     <LoadingText options={{

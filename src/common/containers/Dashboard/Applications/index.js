@@ -110,7 +110,7 @@ class Applications extends Component {
                             to={`/admin/dashboard/applications/view/${application.uid}`}>
                             {application.user.name.full}
                           </Link>
-                          <span>{application.user.address.country}</span>
+                          <span>{application.user.address?.country}</span>
                         </td>
                         <td>
                           {/* TODO: clicking should open send email modal */}
