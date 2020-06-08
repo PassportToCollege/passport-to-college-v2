@@ -162,10 +162,10 @@ class StudentSettings extends Component {
       <React.Fragment>
         {
           this.state.student ?
-            this.state.student.user.isAdmin ?
+            this.state.student.user?.isAdmin ?
             <PageMeta route="PROFILE_SETTINGS" /> :
             <PageMeta>
-              <title>Settings | {this.state.student.user.name.full} | Student Dashboard | Passport to College</title>
+              <title>Settings | {this.state.student.user?.name.full || ""} | Student Dashboard | Passport to College</title>
             </PageMeta> :
             <PageMeta>
               <title>Settings | Dashboard | Passport to College</title>
@@ -244,7 +244,7 @@ class StudentSettings extends Component {
               </p>
               {
                 this.state.student ?
-                  <h6>{this.state.student.user.email}</h6> :
+                  <h6>{this.state.student.user?.email}</h6> :
                   <h6>{auth.currentUser.email}</h6>
               }
             </span>

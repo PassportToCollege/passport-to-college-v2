@@ -99,7 +99,11 @@ class Hamburger extends Component {
 
     return [
       <li key="application-dashboard">
-        <NavLink to={routes.APPLY.route} onClick={this.handleCloseButtonClick}>
+        <NavLink 
+          to="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAO__S5A5tlUOVY4UUtTTU9NS0ozWUFBRVZJT0pJVklQUi4u" 
+          onClick={this.handleCloseButtonClick}
+          target="_blank"
+        >
           {routes.APPLY.name}
         </NavLink>
       </li>,
