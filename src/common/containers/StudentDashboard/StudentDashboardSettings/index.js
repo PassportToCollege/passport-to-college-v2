@@ -158,79 +158,79 @@ class StudentSettings extends Component {
   }
 
   render() {
-    return (
-      <React.Fragment>
-        {
-          this.state.student ?
-            this.state.student.user.isAdmin ?
-            <PageMeta route="PROFILE_SETTINGS" /> :
-            <PageMeta>
-              <title>Settings | {this.state.student.user.name.full} | Student Dashboard | Passport to College</title>
-            </PageMeta> :
-            <PageMeta>
-              <title>Settings | Dashboard | Passport to College</title>
-            </PageMeta>
-        }
-        {
-          this.state.hasNotification && !this.state.notificationClosed ?
-            <Notification doClose={
-              () => this.setState({ 
-                notificationClosed: true, 
-                hasNotification: false,
-                notification: null
-              })}
-              text={this.state.notification} /> : null
-        }
-        {
-          this.state.addingPassword ?
-            <Modal classes={["modal__settings_add_password"]}
-              doClose={() => this.setState({ addingPassword: false })}>
-              {this.renderPasswordProviderForm()}
-            </Modal> : null
-        }
-        {
-          this.state.changingEmail ?
-            <Modal classes={["modal__settings_change_email"]}
-              doClose={() => this.setState({ changingEmail: false })}>
-              {this.renderChangeEmailForm()}
-            </Modal> : null
-        }
-        {
-          this.state.signingIn ?
-            <SignInModal signup={false} cancelButton
-              intro="Please verify your account by signing in with your current connected provider."
-              doClose={this.handleSignInModalClose}
-              doGoogle={this.handleSocialSignIn}
-              doFacebook={this.handleSocialSignIn} /> :
-            null
-        }
-        <section className="student_dashboard__container student_dashboard__settings">
-          <h4>Account</h4>
-          <p>Make changes to your account settings here</p>
-          {this.renderPasswordProviderActions()}
-          <h5>Connections</h5>
-          <p>Connect you accounts</p>
+    if (this.state.student && this.state.student.user) {
+      return (
+        <React.Fragment>
           {
-            this.state.hasInlineNotification && !this.state.inlineNotificationClosed &&
-            !this.state.inlineLocation ?
-              <InlineNotification text={this.state.inlineNotification}
-                doClose={this.closeInlineNotification} /> : null
+              this.state.student.user.isAdmin ?
+              <PageMeta route="PROFILE_SETTINGS" /> :
+              <PageMeta>
+                <title>Settings | {this.state.student.user.name.full || ""} | Student Dashboard | Passport to College</title>
+              </PageMeta> 
           }
-          <ConnectionsStrip facebook twitter linkedin github google
-            whenConnectionClicked={this.handleAddConnection} />
           {
-            this.state.userProviders ?
-              this.state.userProviders.map(provider => {
-                if (provider.providerId === "password")
-                  return null;
-
-                return <SocialConnection key={provider.providerId} provider={provider} />
-              }) : 
+            this.state.hasNotification && !this.state.notificationClosed ?
+              <Notification doClose={
+                () => this.setState({ 
+                  notificationClosed: true, 
+                  hasNotification: false,
+                  notification: null
+                })}
+                text={this.state.notification} /> : null
+          }
+          {
+            this.state.addingPassword ?
+              <Modal classes={["modal__settings_add_password"]}
+                doClose={() => this.setState({ addingPassword: false })}>
+                {this.renderPasswordProviderForm()}
+              </Modal> : null
+          }
+          {
+            this.state.changingEmail ?
+              <Modal classes={["modal__settings_change_email"]}
+                doClose={() => this.setState({ changingEmail: false })}>
+                {this.renderChangeEmailForm()}
+              </Modal> : null
+          }
+          {
+            this.state.signingIn ?
+              <SignInModal signup={false} cancelButton
+                intro="Please verify your account by signing in with your current connected provider."
+                doClose={this.handleSignInModalClose}
+                doGoogle={this.handleSocialSignIn}
+                doFacebook={this.handleSocialSignIn} /> :
               null
           }
-        </section>
-      </React.Fragment>
-    )
+          <section className="student_dashboard__container student_dashboard__settings">
+            <h4>Account</h4>
+            <p>Make changes to your account settings here</p>
+            {this.renderPasswordProviderActions()}
+            <h5>Connections</h5>
+            <p>Connect you accounts</p>
+            {
+              this.state.hasInlineNotification && !this.state.inlineNotificationClosed &&
+              !this.state.inlineLocation ?
+                <InlineNotification text={this.state.inlineNotification}
+                  doClose={this.closeInlineNotification} /> : null
+            }
+            <ConnectionsStrip facebook twitter linkedin github google
+              whenConnectionClicked={this.handleAddConnection} />
+            {
+              this.state.userProviders ?
+                this.state.userProviders.map(provider => {
+                  if (provider.providerId === "password")
+                    return null;
+  
+                  return <SocialConnection key={provider.providerId} provider={provider} />
+                }) : 
+                null
+            }
+          </section>
+        </React.Fragment>
+      )
+    }
+
+    return null;
   }
 
   renderPasswordProviderActions = () => {
@@ -243,7 +243,7 @@ class StudentSettings extends Component {
                 email { !auth.currentUser.emailVerified ? "(not verified)" : "" }
               </p>
               {
-                this.state.student ?
+                this.state.student && this.state.student.user ?
                   <h6>{this.state.student.user.email}</h6> :
                   <h6>{auth.currentUser.email}</h6>
               }

@@ -94,6 +94,7 @@ class Applications extends Component {
                 <TableHeader heading="name" />
                 <TableHeader heading="email" />
                 <TableHeader heading="phone" />
+                <TableHeader heading="state" />
               </TableRow>
             }
             rows={this._renderTableData()} />
@@ -106,6 +107,10 @@ class Applications extends Component {
     if (this.props.applications.hasGotten &&
       !this.state.applications.empty) {
       return this.state.applications.map(application => {
+        const keys = Object.keys(application.state);
+        const values = Object.values(application.state);
+        const state = keys[values.indexOf(true)];
+
         return (
           <TableRow key={application.uid}>
             <TableData>
@@ -113,10 +118,13 @@ class Applications extends Component {
                 data-state={application.state.accepted ? "accepted" : application.state.rejected ? "rejected" : "pending"}></span>
             </TableData>
             <TableData>
-              <Link className="applications__name" 
-                to={`/admin/dashboard/applications/view/${application.uid}`}>
-                {application.user.name.full}
-              </Link>
+              {
+                state === "draft" ? application.user.name.full :
+                  <Link className="applications__name" 
+                    to={`/admin/dashboard/applications/view/${application.uid}`}>
+                    {application.user.name.full}
+                  </Link>
+              }
             </TableData>
             <TableData>
               {/* TODO: clicking should open send email modal */}
@@ -126,6 +134,9 @@ class Applications extends Component {
             </TableData>
             <TableData>
               {application.user.email}
+            </TableData>
+            <TableData>
+              {state}
             </TableData>
           </TableRow>
         )
