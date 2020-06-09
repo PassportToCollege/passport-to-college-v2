@@ -70,7 +70,7 @@ class ParallaxHeader extends Component {
               <ScrollIndicator />
               <span className="apply__button">
                   
-                <Link to="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAO__S5A5tlUOVY4UUtTTU9NS0ozWUFBRVZJT0pJVklQUi4u" target="_blank">apply</Link>
+                <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAO__S5A5tlUOVY4UUtTTU9NS0ozWUFBRVZJT0pJVklQUi4u" target="_blank">apply</a>
               </span>
             </div> :
             null
